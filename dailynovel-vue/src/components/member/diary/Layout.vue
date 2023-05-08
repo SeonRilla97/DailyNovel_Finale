@@ -259,6 +259,7 @@ height: var(100%-42px);
     background-color: #F9F4F4;
     display:flex;
     align-items: center;
+    text-indent: 10px;
 }
 .diary-main .list .content .date-container{
     height: 84px;

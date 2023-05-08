@@ -100,7 +100,8 @@ function animationedHandler() {
   max-height: 720px;
   width:90%;
   height:80%;
-
+  border-radius: 10px;
+  overflow: hidden;
 
   animation: show-effect 0.5s ease-in-out ;
   /* animation-fill-mode: forwards; */
