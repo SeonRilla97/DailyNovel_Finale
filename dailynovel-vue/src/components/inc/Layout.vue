@@ -3,8 +3,6 @@
     import Footer from './Footer.vue';
 
     import Canvas from './Canvas.vue';
-    
-
     import {ref} from 'vue';
 
 //=============모달 관련 속성들===================
@@ -38,7 +36,7 @@ function animationedHandler() {
 <template>
     <h1>Main Page</h1>
     <Header />
-    <Canvas />
+    <Canvas v-on:modalOpenHandler="modalOpenHandler" />
     <Footer />
 
     <router-link to="/main/modal/collection" @click="modalOpenHandler"><button>컬렉션</button></router-link>
