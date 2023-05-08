@@ -1,6 +1,8 @@
 <script setup>
     import Header from './Header.vue';
     import Footer from './Footer.vue';
+
+    import Canvas from './Canvas.vue';
     
 
     import {ref} from 'vue';
@@ -36,7 +38,7 @@ function animationedHandler() {
 <template>
     <h1>Main Page</h1>
     <Header />
-    <canvas></canvas>
+    <Canvas />
     <Footer />
 
     <router-link to="/main/modal/collection" @click="modalOpenHandler"><button>컬렉션</button></router-link>
@@ -108,7 +110,7 @@ function animationedHandler() {
 
   
 }
-.modal-screen .active{
+.modal-screen.active{
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;
