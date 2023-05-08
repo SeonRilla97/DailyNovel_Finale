@@ -56,6 +56,10 @@
                         <a href="#">나쁨</a>
                     </div>
                 </div>
+
+                <div>
+                    <input type="text">
+                </div>
         </header>
 
 

@@ -47,8 +47,8 @@ function animationedHandler() {
     
 
     <!-- 모달창 -->
-        <div class="screen"  :class="{'d-none':!isModalOpen}" @click.prevent="modalCloseHandler">
-            <section class="modal" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
+        <div class="modal-bg"  :class="{'d-none':!isModalOpen}" @click.prevent="modalCloseHandler">
+            <section class="modal-screen" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
                 <!-- <Modal  @closeModal="modalCloseHandler"/> -->
                 <Router-view @closeModal="modalCloseHandler"></Router-view>
             </section><!--modal FIN-->
@@ -80,7 +80,7 @@ function animationedHandler() {
     }
 
 
-.screen{
+.modal-bg{
   position:fixed;
   top:0;
 
@@ -92,13 +92,13 @@ function animationedHandler() {
 
   background-color:  #00000080
 }
-.screen > .modal{
+.modal-bg > .modal-screen{
   background-color: #FAFFF9;
 
   position: fixed;
   /* max-width:1920px; */
-  max-width:1920px;
-  max-height: 1080px;
+  max-width:1280px;
+  max-height: 720px;
   width:90%;
   height:80%;
 
@@ -108,7 +108,7 @@ function animationedHandler() {
 
   
 }
-.modal.active{
+.modal-screen .active{
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;

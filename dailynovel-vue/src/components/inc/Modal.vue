@@ -69,9 +69,10 @@ const handleClose =defineEmits('closeModal')
   background-color: #FAFFF9;
 
   position: fixed;
-  max-width:1600px;
-  width:90vw;
-  height: 90vh;
+  max-width:1280px;
+  max-height: 720px;
+  width:90%;
+  height: 90%;
 
 
   animation: show-effect 0.5s ease-in-out ;
