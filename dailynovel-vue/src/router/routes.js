@@ -1,6 +1,9 @@
 import memberLayout from '../components/member/Layout.vue';
-import memberModalLayout from '../components/member/modal/Layout.vue';
+
 import Index from '../components/Index.vue';
+
+import memberModalLayout from '../components/member/modal/Layout.vue';
+  import DiaryLayout from '../components/member/diary/Layout.vue'
 
 import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 const routes =  [
@@ -14,9 +17,10 @@ const routes =  [
     ]
   },
 
-  { path: '/member', component: memberLayout },
-  { path: '/modal', component: memberModalLayout, children:[
-    {path: 'guestbook', component:memberGuestBookLayout}
+  { path: '/member', component: memberLayout, children :[
+    {path: 'modal', component: memberModalLayout, children:[
+      {path: 'diary', component:DiaryLayout}
+    ]} 
   ]}
 
 

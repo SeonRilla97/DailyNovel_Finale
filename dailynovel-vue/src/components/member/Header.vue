@@ -1,7 +1,7 @@
 <template>
   <header class="member-header-container">
     <div class="member-main-header">
-      <span>아니 왜 이상하게 떠</span>
+      <span>DailyNovel</span>
 
     </div>
   </header>
@@ -11,7 +11,7 @@
 .member-header-container {
   width: 1920px;
   height: 72px;
-  background-color: red;
+  
 
   display: flex;
   justify-content: center;
