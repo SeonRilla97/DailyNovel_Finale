@@ -23,11 +23,9 @@ const routes =  [
   { path: '/member', component: memberLayout, children :[
     {path: 'modal', component: memberModalLayout, children:[
       {path: 'diary', component:DiaryLayout},
-      {path: 'guestbook', component:memberGuestLayout},
+      {path: 'guestbook', component:memberGuestBookLayout},
     ]} 
   ]}
-
-
 ]
 
 export default routes;
