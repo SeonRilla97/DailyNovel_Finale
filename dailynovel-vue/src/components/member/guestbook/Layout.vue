@@ -1,12 +1,8 @@
 <template>
   <section class="member-guestbook-container">
-
+    <h1>여기는 방명록입니다.</h1>
   </section>
 </template>
 <style scoped>
-.member-guestbook-container {
-  width: 1280px;
-  height: 648px;
-  background-color: aqua;
-}
+.member-guestbook-container {}
 </style>
