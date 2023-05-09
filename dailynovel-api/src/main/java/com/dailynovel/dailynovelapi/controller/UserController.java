@@ -63,7 +63,7 @@ public class UserController {
 		if (emailCheckNum == passwordChangeAuthCode) {
 			String checkNum = service.randNum();
 			session.setAttribute("passwordChangeauthCode", checkNum);
-			return true;
+			return true; //처리
 		}
 
 		return false;
