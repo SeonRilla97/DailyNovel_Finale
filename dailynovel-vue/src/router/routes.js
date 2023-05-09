@@ -1,10 +1,16 @@
 import memberLayout from '../components/member/Layout.vue';
 
+
 import Login from '../components/user/Login.vue';
 import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
-import memberModalLayout from '../components/member/modal/Layout.vue';
+
 import DiaryLayout from '../components/member/diary/Layout.vue'
+import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
+
+import Achievement from '../components/member/Achievements/Achievements.vue';
+import Chart from '../components/member/chart/Chart.vue';
+
 
 const routes =  [
   { path: '/user', component: LoginLayout, children:[
@@ -14,12 +20,12 @@ const routes =  [
   },
 
   { path: '/member', component: memberLayout, children :[
-    {path: 'modal', component: memberModalLayout, children:[
-      {path: 'diary', component:DiaryLayout}
-    ]} 
-  ]}
+      {path: 'diary', component:DiaryLayout},
+      {path: 'achievement', component:Achievement},
+      {path: 'chart', component:Chart}
+    ]},
+      {path: 'guestbook', component:memberGuestBookLayout}
+    ]
 
-
-]
 
 export default routes;

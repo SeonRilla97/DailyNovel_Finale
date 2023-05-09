@@ -1,13 +1,18 @@
 <script setup>
-    import Header from './Header.vue';
-    import Footer from './Footer.vue';
 
+    import Header from './Header.vue';
+    
     import Canvas from './Canvas.vue';
+    
+    import ModalHeader from './ModalHeader.vue'
+
+    import Footer from './Footer.vue';
     import {ref} from 'vue';
 
+
 //=============모달 관련 속성들===================
-    let closeEffect = ref(false); //애니메이션 동작 유무
-    let isModalOpen = ref(false); //모달창 제어
+let closeEffect = ref(false); //애니메이션 동작 유무
+let isModalOpen = ref(false); //모달창 제어
 
 function modalOpenHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
@@ -25,7 +30,7 @@ function animationedHandler() {
   //모달창의 애니메이션이 발생 했는지 안했는지 감지하는 이벤트
   // closeEffect = true;
   console.log(isModalOpen)
-  if(closeEffect.value == false){
+  if (closeEffect.value == false) {
     isModalOpen.value = false;
   }
 }
@@ -34,108 +39,122 @@ function animationedHandler() {
 </script>
 
 <template>
+
     <Header />
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
     <Footer />
 
     <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/modal/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
-    <router-link to="/main/modal/setting" @click="modalOpenHandler"><button>셋팅</button></router-link>
-    <router-link to="/main/modal/Community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
+    <router-link to="/member/chart" @click="modalOpenHandler"><button>셋팅</button></router-link>
+    <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+    <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
     <router-link to="/member"><button>메인</button></router-link>
     
 
     <!-- 모달창 -->
-        <div class="modal-bg"  :class="{'d-none':!isModalOpen}">
-            <section class="modal-screen" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
-                <!-- <Modal  @closeModal="modalCloseHandler"/> -->
-                <Router-view @closeModal="modalCloseHandler"></Router-view>
-            </section><!--modal FIN-->
-        </div>
+    <div class="modal-bg"  :class="{'d-none':!isModalOpen}">
+        <section class="modal-screen" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
+
+            <div class="modal-container">
+              <ModalHeader @modalCloseEventHandler="modalCloseHandler" class="header"/>
+              <Router-view class="content"/>
+            </div>
+        </section><!--modal FIN-->
+    </div>
+
 
 </template>
 
 
 <style scoped>
 /* 모달 화면 조정 css */
-@keyframes show-effect{
-     from{
-       transform: scale(0%);
-       /* transform: rotate(360deg); */
-      }
-      to{
-        transform: scale(100%);
-        /* transform: rotate(100000deg); */
-      }  
-    }
+@keyframes show-effect {
+  from {
+    transform: scale(0%);
+    /* transform: rotate(360deg); */
+  }
 
-    @keyframes close-effect{
-     from{
-       transform: scale(100%);
-    }
-    to{
-      transform: scale(0);
-     }  
-    }
+  to {
+    transform: scale(100%);
+    /* transform: rotate(100000deg); */
+  }
+}
+
+@keyframes close-effect {
+  from {
+    transform: scale(100%);
+  }
+
+  to {
+    transform: scale(0);
+  }
+}
 
 
-.modal-bg{
-  position:fixed;
-  top:0;
+.modal-bg {
+  position: fixed;
+  top: 0;
 
-  width:100vw;
+  width: 100vw;
   height: 100vh;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 
-  background-color:  #00000080
+  background-color: #00000080
 }
-.modal-bg > .modal-screen{
+
+.modal-bg>.modal-screen {
   background-color: #FAFFF9;
 
   position: fixed;
   /* max-width:1920px; */
-  max-width:1280px;
+  max-width: 1280px;
   max-height: 720px;
-  width:90%;
-  height:80%;
+  width: 90%;
+  height: 80%;
 
 
-  animation: show-effect 0.5s ease-in-out ;
+  animation: show-effect 0.5s ease-in-out;
   /* animation-fill-mode: forwards; */
 
-  
+
 }
-.modal-screen.active{
+
+.modal-screen.active {
+  animation: close-effect 0.5s ease-in-out !important;
+  /* animation-direction:reverse !important; */
+  animation-fill-mode: forwards;
+
+}
+
+.modal-container{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    height:100%;
+  }
+    .modal-container .header{
+      width:100%;
+      height:72px;
+    }
+    .modal-container .content{
+      width:100%;
+      flex-grow: 1;
+    }
+
+.modal.active{
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;
   
-}
+} 
+/*============================================== */
+/* style */
 
 
-/* util */
-.d-none{
-  display : none;
-}
-
-.flex-v{
-  display:flex;
-  flex-direction: column;
-}
-.flex-h{
-  display: flex;
-  flex-direction: row;
-}
-.flex-center{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.inline-block{
-  display: inline-block;
-}
-
+ 
 </style>
+
