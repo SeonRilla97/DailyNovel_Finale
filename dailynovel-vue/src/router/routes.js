@@ -16,7 +16,7 @@ const routes =  [
 
   { path: '/member', component: memberLayout, children :[
       {path: 'diary', component:DiaryLayout}
-    ]} 
+    ]}
 ]
 
 export default routes;
