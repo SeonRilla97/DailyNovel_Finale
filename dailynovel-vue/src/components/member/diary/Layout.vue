@@ -171,7 +171,7 @@
             </section>
 
             <article class="content">
-                s
+
             </article>
         </section>
     </div>
