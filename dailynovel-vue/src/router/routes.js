@@ -5,6 +5,8 @@ import memberLayout from '../components/member/Layout.vue';
 import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 import Index from '../components/Index.vue';
 
+import guestbook  from './guestbook.js';
+
 const routes =  [
   { path: '/', component: Index, children:[
       // {path: 'login', component: },
@@ -16,10 +18,19 @@ const routes =  [
     ]
   },
 
-  { path: '/member', component: memberLayout, children :[
+  { path: '/member', component: memberLayout, children :[    
       {path: 'diary', component:DiaryLayout},
-      {path: 'guestbook', component:memberGuestBookLayout},
+      // {path: 'guestbook', component:memberGuestBookLayout},
+      guestbook,
     ]}
+
+  // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
+  // { path: '/member', children:[
+  //   {path: 'room', component: Layout, children:[
+  //     diary,
+  //     guestbook
+  //   ]}
+  // ]}
 
 ]
 
