@@ -2,11 +2,9 @@ import memberLayout from '../components/member/Layout.vue';
 
 import Index from '../components/Index.vue';
 
-import memberModalLayout from '../components/member/modal/Layout.vue';
   import DiaryLayout from '../components/member/diary/Layout.vue'
 
-import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
-import Achivement from '../components/member/Achievements/Achievements.vue';
+import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
 const routes =  [
   { path: '/', component: Index, children:[
@@ -20,15 +18,12 @@ const routes =  [
   },
 
   { path: '/member', component: memberLayout, children :[
-    {path: 'modal', component: memberModalLayout, children:[
-      {path: 'diary', component:DiaryLayout}
+      {path: 'diary', component:DiaryLayout},
+      {path: 'achievement', component:Achievement},
+      {path: 'chart', component:Chart}
     ]},
   
- 
-],
-},
-{path: '/achivement', component:Achivement},
-{path: '/chart', component:Chart},
+
 
 ]
 

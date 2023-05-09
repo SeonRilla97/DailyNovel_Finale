@@ -1,8 +1,11 @@
 <script setup>
     import Header from './Header.vue';
-    import Footer from './Footer.vue';
-
+    
     import Canvas from './Canvas.vue';
+    
+    import ModalHeader from './ModalHeader.vue'
+
+    import Footer from './Footer.vue';
     import {ref} from 'vue';
 
 //=============모달 관련 속성들===================
@@ -39,19 +42,24 @@ function animationedHandler() {
     <Footer />
 
     <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/modal/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
-    <router-link to="/main/modal/setting" @click="modalOpenHandler"><button>셋팅</button></router-link>
-    <router-link to="/main/modal/Community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
+    <router-link to="/member/chart" @click="modalOpenHandler"><button>셋팅</button></router-link>
+    <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+    <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
     <router-link to="/member"><button>메인</button></router-link>
     
 
     <!-- 모달창 -->
-        <div class="modal-bg"  :class="{'d-none':!isModalOpen}">
-            <section class="modal-screen" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
-                <!-- <Modal  @closeModal="modalCloseHandler"/> -->
-                <Router-view @closeModal="modalCloseHandler"></Router-view>
-            </section><!--modal FIN-->
-        </div>
+    <div class="modal-bg"  :class="{'d-none':!isModalOpen}">
+        <section class="modal-screen" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
+
+            <div class="modal-container">
+              <ModalHeader @modalCloseEventHandler="modalCloseHandler" class="header"/>
+              <Router-view class="content"/>
+            </div>
+        </section><!--modal FIN-->
+    </div>
 
 </template>
 
@@ -114,28 +122,31 @@ function animationedHandler() {
   
 }
 
+.modal-container{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    height:100%;
+  }
+    .modal-container .header{
+      width:100%;
+      height:72px;
+    }
+    .modal-container .content{
+      width:100%;
+      flex-grow: 1;
 
-/* util */
-.d-none{
-  display : none;
-}
+    }
 
-.flex-v{
-  display:flex;
-  flex-direction: column;
-}
-.flex-h{
-  display: flex;
-  flex-direction: row;
-}
-.flex-center{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
+.modal.active{
+  animation: close-effect 0.5s ease-in-out !important;
+  /* animation-direction:reverse !important; */
+  animation-fill-mode: forwards;
+  
+} 
+/*============================================== */
+/* style */
 
-.inline-block{
-  display: inline-block;
-}
 
+ 
 </style>

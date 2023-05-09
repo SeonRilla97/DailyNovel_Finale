@@ -1,79 +1,49 @@
 <template>
-  <div class="screen">
-    <header class="app-header">
-      <a href="">
-        <div class="dailyNovel icon-logo"></div>
-      </a>
-      <ul>
-        <li>
-          <div class="icon-bell"></div>
-        </li>
-        <li>
-          <div class="icon-community"></div>
-        </li>
-        <li class="profile">
-          <div class="img"></div><span class="nickname"></span>
-        </li>
-      </ul>
-    </header>
+  
+  <main class="screen">
 
-    <!-- 업적 본문 -->
-
-    <section class="Achievement-screen">
+    <div class="select-box">
+      <router-link to="/member/achievement" @click="modalOpenHandler"><p class="Move">업적</p></router-link>
+      <router-link to="/member/chart" @click="modalOpenHandler"><p class="Move">차트</p></router-link>
+    </div>
 
 
-      <header class="Achievement-screen-header">
-        <h1 class="Achievement-screen-header-title">돌아보기</h1>
-        <a href="#" class="Achievement-screen-header-closeBtn"><span class="material-symbols-outlined">close</span></a>
-      </header>
+  <div class="chart-box">
+
+    <div class="chart">
+      <div>
+        <canvas id="feeling"></canvas>
+      </div>
+      <div>기분</div>
+    </div>
+
+    <div class="chart">
+      <div>
+        <canvas id="honesty"></canvas>
+      </div>
+
+      <div>솔직함</div>
+    </div>
+
+    <div class="chart">
+      <div>
+        <canvas id="Template"></canvas>
+      </div>
+      <div>템플릿</div>
+
+    </div>
+
+    </div>
+  </main>
 
 
-
-      <main class="chart-box">
-
-        <div class="chart">
-          <div>
-            <canvas id="feeling"></canvas>
-          </div>
-          <div>기분</div>
-        </div>
-
-        <div class="chart">
-          <div>
-            <canvas id="honesty"></canvas>
-          </div>
-
-          <div>솔직함</div>
-        </div>
-
-        <div class="chart">
-          <div>
-            <canvas id="Template"></canvas>
-          </div>
-          <div>템플릿</div>
-
-        </div>
-
-
-
-
-      </main>
-
-
-
-
-    </section>
-
-
-
-
-  </div>
 </template>
 
 
   
 
 <script>
+import Achievement from '../Achievements/Achievements.vue'
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
@@ -93,6 +63,9 @@ export default {
   },
   methods: {
 
+    moveController(){
+
+    },
 
     Tload() {
       Chart.register(ChartDataLabels);
@@ -137,7 +110,7 @@ export default {
         data,
         options: {
           maintainAspectRatio: false,
-          responsive: true,
+          responsive: false,
           plugins: {
             legend: {
               display: false,
@@ -238,6 +211,7 @@ export default {
         type: 'doughnut',
         data,
         options: {
+          responsive: false,
           plugins: {
             legend: {
               position: 'bottom',
@@ -286,6 +260,7 @@ export default {
         type: 'polarArea',
         data,
         options: {
+          responsive: false,
           plugins: {
             legend: {
               position: 'bottom',
@@ -314,120 +289,54 @@ export default {
   },
 
   components: {
-    
+
   },
 
 }
 </script>
 
 <style>
-.screen {
-  position: fixed;
-  top: 0;
 
-
-  max-width: 1980px;
-  max-height: 1080px;
-  width: 100vw;
-  height: 100vh;
-
-
+.screen{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #FFF
-}
-
-.app-header {
-  display: flex;
-  max-width: 1980px;
-  width: 100vh;
-  justify-content: space-between;
-}
-
-.app-header ul {
-  display: flex;
-  gap: 10px;
-  margin-right: 10px;
-  align-items: center;
-
-}
-
-.screen>.Achievement-screen {
-  background-color: #FFF;
-  display: flex;
-  flex-direction: column;
-
-  position: fixed;
-  max-width: 1280px;
-  max-height: 720;
-  width: 90vw;
-  height: 80vh;
-
-  justify-content: space-between;
-  align-items: center;
-
-
-}
-
-.Achievement-screen-header {
-  background-color: #F2C6C2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
-  min-width: 1000px;
-
-  max-width: 1280px;
-  width: 90vw;
-  height: 100px;
-
+  height: 100%;
 }
 
-.Achievement-screen-header-title {
-
-  font-size: 50px;
-  text-align: center;
-  margin: 0 auto;
-  /* 중앙정렬 */
-  flex: 1;
-  /* 확장 */
-
-}
-
-.Achievement-screen-header-closeBtn {
+.select-box{
   display: flex;
-  justify-content: flex-end;
-  /* 우측정렬 */
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-top: 30px;
+  text-align: center;
 
-  margin-right: 10px;
-
-  height: 100px;
-  align-items: center;
-  /* 고정크기 */
 
 }
+
+.select-box > *{
+  flex: 0.1 0.1 auto;
+  font-size: 30px;
+  font-weight: bold;
+
+}
+
+.Move:hover{
+  color: rgb(226, 226, 99);
+  text-decoration: underline;
+}
+
 
 .chart-box {
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
   align-items: center;
-
-
+  flex-wrap: wrap;
   gap: 15px;
+  width: 100%;
+  height: 100%;
 
-  max-width: 1280px;
-  min-width: 1000px;
-  width: 90vw;
-
-  max-height: 580px;
-  height: 80vh;
-
-
-
+  
 }
 
 .chart-box .chart {
@@ -439,59 +348,28 @@ export default {
 
 
   max-width: 320px;
-  min-width: 300px;
   max-height: 451px;
-  gap: 15px;
+  gap: 30px;
 
-  width: 80%;
-  height: 80%;
+  width: 50%;
+  height: 50%;
 
   background-color: #FFF;
 
 }
 
-.Achievement .first {
-  background-image: url('../../../src/assets/img/DiaryMainPage/jojang.jpg');
-  max-width: 179px;
-  width: 80%;
-  height: 90%;
-  max-height: 181px;
-}
+.chart-box .chart #feeling,
+.chart-box .chart #honesty,
+.chart-box .chart #Template {
 
-.Achievement .second {
-  background-image: url('../../../src/assets/img/DiaryMainPage/jojang.jpg');
-  max-width: 179px;
-  width: 80%;
-  height: 90%;
-  max-height: 181px;
-}
 
-.Achievement .third {
-  background-image: url('../../../src/assets/img/DiaryMainPage/jojang.jpg');
-  max-width: 179px;
-  width: 80%;
-  height: 90%;
-  max-height: 181px;
-}
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid #999999;
+  padding: 10px;
+  border-radius: 15px;
 
-.Achievement .fourth {
-  background-image: url('../../../src/assets/img/DiaryMainPage/jojang.jpg');
-  max-width: 179px;
-  width: 80%;
-  height: 90%;
-  max-height: 181px;
-}
-
-.Achievement .fifth {
-  background-image: url('../../../src/assets/img/DiaryMainPage/jojang.jpg');
-  max-width: 179px;
-  width: 80%;
-  height: 90%;
-  max-height: 181px;
 }
 
 
-.Achievement.completed {
-  background-color: yellow;
-}
 </style>
