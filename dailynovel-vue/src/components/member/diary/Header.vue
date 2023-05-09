@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted,ref, defineEmits } from 'vue';
+import { onMounted,ref} from 'vue';
 const props = defineProps({
     filter: {
         type: Object,
@@ -23,8 +23,6 @@ function optionClickHandler(e){
     console.log(e.target.parentNode.style);
 }
 
-
-
 </script>
 
 
@@ -41,9 +39,9 @@ function optionClickHandler(e){
             </div>
 
             <div class="dropdown">
-                <div class="btn"><span>날씨</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                <div class="btn"><span>{{ filter.diary.weather.menu[filter.diary.weather.idx] }}</span><span class="icon-clamp"></span></div>
+                <div class="content" @click="optionClickHandler" data-menuname = "weather">
+                    <a href="#" v-for="(f,idx) in filter.diary.weather.menu" :data-idx=idx>{{ f }}</a>
                 </div>
             </div>
 

@@ -25,6 +25,11 @@ function filterClickHandler(abc){
             diaryFilter.diary.feeling.idx = abc.menuIndex;
             console.log("바뀜!!")
             break;
+        case "weather":
+            diaryFilter.diary.weather.idx = abc.menuIndex;
+            console.log("바뀜!!")
+            break;
+            
     }
     console.log(diaryFilter.diary.feeling.idx)
         
