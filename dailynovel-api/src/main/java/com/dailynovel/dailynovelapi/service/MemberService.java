@@ -3,7 +3,7 @@ package com.dailynovel.dailynovelapi.service;
 import com.dailynovel.dailynovelapi.entity.Member;
 
 public interface MemberService {
-    boolean isValid(String string, String password);
+    boolean isValid(String email, String password);
 
-    Member getByUsername(String username);
+    Member getByEmail(String username);
 }
