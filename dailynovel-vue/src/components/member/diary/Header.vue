@@ -1,58 +1,77 @@
+<script setup>
+import { onMounted,ref, defineEmits } from 'vue';
+const props = defineProps({
+    filter: {
+        type: Object,
+        required:true
+    }
+})
+let emit = defineEmits('filterClickedHandler')
+const selectedMenu=  {
+ menuname:null,
+ menuIndex:null
+}
+function optionClickHandler(e){
+    console.log(e);
+//    console.log(e.target.innerText);  //value값 뽑기
+//    console.log(e.target.dataset.fidx);  // dataset 뽑기
+//    console.log(e.target.parentNode.dataset.menuname); //부모의 dataset 뽑기
+    selectedMenu.menuname = e.target.parentNode.dataset.menuname;
+    selectedMenu.menuIndex = e.target.dataset.idx;
+    console.log(selectedMenu);  
+    emit('filterClickedHandler',selectedMenu);
+    console.log(e.target.parentNode.style);
+}
+
+
+
+</script>
+
+
 <template>
     <header class="diary-header">
+        <h1></h1>
         <h1>나의일기</h1>
             <!-- 드롭다운 메뉴 -->
             <div class="dropdown">
-                <div class="btn"><span>기분</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#">좋음</a>
-                    <a href="#">기쁨</a>
-                    <a href="#">나쁨</a>
+                <div class="btn"><span>{{ filter.diary.feeling.menu[filter.diary.feeling.idx] }}</span><span class="icon-clamp"></span></div>
+                <div class="content" @click="optionClickHandler" data-menuname = "feeling">
+                    <a href="#" v-for="(f,idx) in filter.diary.feeling.menu" :data-idx=idx>{{ f }}</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <div class="btn"><span>날씨</span><span class="icon-clamp"></span></div>
                 <div class="content">
-                    <a href="#">좋음</a>
-                    <a href="#">기쁨</a>
-                    <a href="#">나쁨</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <div class="btn"><span>기분</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#">좋음</a>
-                    <a href="#">기쁨</a>
-                    <a href="#">나쁨</a>
+                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <div class="btn"><span>솔직함</span><span class="icon-clamp"></span></div>
                 <div class="content">
-                    <a href="#">좋음</a>
-                    <a href="#">기쁨</a>
-                    <a href="#">나쁨</a>
+                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
                 </div>
             </div>
 
             <div class="dropdown">
                 <div class="btn"><span>날짜</span><span class="icon-clamp"></span></div>
                 <div class="content">
-                    <a href="#">좋음</a>
-                    <a href="#">기쁨</a>
-                    <a href="#">나쁨</a>
+                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
                 </div>
             </div>
 
             <div class="dropdown">
-                <div class="btn"><span>날짜</span><span class="icon-clamp"></span></div>
+                <div class="btn"><span>정렬방식</span><span class="icon-clamp"></span></div>
                 <div class="content">
-                    <a href="#">좋음</a>
-                    <a href="#">기쁨</a>
-                    <a href="#">나쁨</a>
+                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="btn"><span>컬렉션</span><span class="icon-clamp"></span></div>
+                <div class="content">
+                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
                 </div>
             </div>
 
