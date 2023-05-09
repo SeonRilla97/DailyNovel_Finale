@@ -33,11 +33,11 @@ export default {
       this.x=(event.clientX);
       this.y=(event.clientY);
       if(this.x>=300){
-        this.$router.push('/member/modal/diary');
+        this.$router.push('/member/diary');
         this.$emit('modalOpenHandler');
       }
       if(this.x<=300){
-        this.$router.push('/member/modal/diary');
+        this.$router.push('/member/diary');
         this.$emit('modalOpenHandler');
       }
     },
