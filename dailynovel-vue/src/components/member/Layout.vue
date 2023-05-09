@@ -1,4 +1,5 @@
 <script setup>
+
     import Header from './Header.vue';
     
     import Canvas from './Canvas.vue';
@@ -8,9 +9,10 @@
     import Footer from './Footer.vue';
     import {ref} from 'vue';
 
+
 //=============모달 관련 속성들===================
-    let closeEffect = ref(false); //애니메이션 동작 유무
-    let isModalOpen = ref(false); //모달창 제어
+let closeEffect = ref(false); //애니메이션 동작 유무
+let isModalOpen = ref(false); //모달창 제어
 
 function modalOpenHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
@@ -28,7 +30,7 @@ function animationedHandler() {
   //모달창의 애니메이션이 발생 했는지 안했는지 감지하는 이벤트
   // closeEffect = true;
   console.log(isModalOpen)
-  if(closeEffect.value == false){
+  if (closeEffect.value == false) {
     isModalOpen.value = false;
   }
 }
@@ -37,6 +39,7 @@ function animationedHandler() {
 </script>
 
 <template>
+
     <Header />
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
     <Footer />
@@ -61,65 +64,70 @@ function animationedHandler() {
         </section><!--modal FIN-->
     </div>
 
+
 </template>
 
 
 <style scoped>
 /* 모달 화면 조정 css */
-@keyframes show-effect{
-     from{
-       transform: scale(0%);
-       /* transform: rotate(360deg); */
-      }
-      to{
-        transform: scale(100%);
-        /* transform: rotate(100000deg); */
-      }  
-    }
+@keyframes show-effect {
+  from {
+    transform: scale(0%);
+    /* transform: rotate(360deg); */
+  }
 
-    @keyframes close-effect{
-     from{
-       transform: scale(100%);
-    }
-    to{
-      transform: scale(0);
-     }  
-    }
+  to {
+    transform: scale(100%);
+    /* transform: rotate(100000deg); */
+  }
+}
+
+@keyframes close-effect {
+  from {
+    transform: scale(100%);
+  }
+
+  to {
+    transform: scale(0);
+  }
+}
 
 
-.modal-bg{
-  position:fixed;
-  top:0;
+.modal-bg {
+  position: fixed;
+  top: 0;
 
-  width:100vw;
+  width: 100vw;
   height: 100vh;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 
-  background-color:  #00000080
+  background-color: #00000080
 }
-.modal-bg > .modal-screen{
+
+.modal-bg>.modal-screen {
   background-color: #FAFFF9;
 
   position: fixed;
   /* max-width:1920px; */
-  max-width:1280px;
+  max-width: 1280px;
   max-height: 720px;
-  width:90%;
-  height:80%;
+  width: 90%;
+  height: 80%;
 
 
-  animation: show-effect 0.5s ease-in-out ;
+  animation: show-effect 0.5s ease-in-out;
   /* animation-fill-mode: forwards; */
 
-  
+
 }
-.modal-screen.active{
+
+.modal-screen.active {
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;
-  
+
 }
 
 .modal-container{
@@ -135,7 +143,6 @@ function animationedHandler() {
     .modal-container .content{
       width:100%;
       flex-grow: 1;
-
     }
 
 .modal.active{
@@ -150,3 +157,4 @@ function animationedHandler() {
 
  
 </style>
+

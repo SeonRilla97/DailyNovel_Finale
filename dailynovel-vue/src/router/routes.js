@@ -1,11 +1,13 @@
 import memberLayout from '../components/member/Layout.vue';
 
+import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 import Index from '../components/Index.vue';
 
   import DiaryLayout from '../components/member/diary/Layout.vue'
 
 import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
+
 const routes =  [
   { path: '/', component: Index, children:[
       // {path: 'login', component: },
@@ -24,6 +26,9 @@ const routes =  [
     ]},
   
 
+
+      {path: 'guestbook', component:memberGuestBookLayout},
+    ]}
 
 ]
 
