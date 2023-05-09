@@ -23,63 +23,82 @@ function optionClickHandler(e){
     console.log(e.target.parentNode.style);
 }
 
+let menuOpen = ref(null);
+function menuOpenHandler(clickedMenu){
+        menuOpen.value = clickedMenu
+}
 </script>
 
 
 <template>
     <header class="diary-header">
+        
         <h1></h1>
         <h1>나의일기</h1>
-            <!-- 드롭다운 메뉴 -->
-            <div class="dropdown">
-                <div class="btn"><span>{{ filter.diary.feeling.menu[filter.diary.feeling.idx] }}</span><span class="icon-clamp"></span></div>
-                <div class="content" @click="optionClickHandler" data-menuname = "feeling">
-                    <a href="#" v-for="(f,idx) in filter.diary.feeling.menu" :data-idx=idx>{{ f }}</a>
+        <!-- 드롭다운 메뉴 -->
+        
+                <div class="dropdown">
+                    <div class="btn" @click="menuOpenHandler(1)"><span>{{ filter.diary.feeling.menu[filter.diary.feeling.idx] }}</span><span class="icon-clamp"></span></div>
+                    <transition name="bounce">
+                        <div class="content" @click="optionClickHandler" data-menuname = "feeling" v-show="menuOpen==1">
+                            <a href="#" v-for="(f,idx) in filter.diary.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ f }}</a>
+                        </div>
+                    </transition>
                 </div>
-            </div>
 
-            <div class="dropdown">
-                <div class="btn"><span>{{ filter.diary.weather.menu[filter.diary.weather.idx] }}</span><span class="icon-clamp"></span></div>
-                <div class="content" @click="optionClickHandler" data-menuname = "weather">
-                    <a href="#" v-for="(f,idx) in filter.diary.weather.menu" :data-idx=idx>{{ f }}</a>
+                <div class="dropdown">
+                    <div class="btn" @click="menuOpenHandler(2)"><span>{{ filter.diary.weather.menu[filter.diary.weather.idx] }}</span><span class="icon-clamp"></span></div>
+                    <transition name="bounce">
+                        <div class="content" @click="optionClickHandler" data-menuname = "weather" v-show="menuOpen==2">
+                            <a href="#" v-for="(f,idx) in filter.diary.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ f }}</a>
+                        </div>
+                    </transition>
                 </div>
-            </div>
 
-            <div class="dropdown">
-                <div class="btn"><span>솔직함</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                <div class="dropdown">
+                    <div class="btn" @click="menuOpenHandler(3)"><span>솔직함</span><span class="icon-clamp"></span></div>
+                    <transition name="bounce">
+                        <div class="content"  v-show="menuOpen==3">
+                            <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                        </div>
+                    </transition>
                 </div>
-            </div>
 
-            <div class="dropdown">
-                <div class="btn"><span>날짜</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                <div class="dropdown">
+                    <div class="btn" @click="menuOpenHandler(4)"><span>날짜</span><span class="icon-clamp"></span></div>
+                    <transition name="bounce">
+                        <div class="content"  v-show="menuOpen==4">
+                            <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                        </div>
+                    </transition> 
                 </div>
-            </div>
 
-            <div class="dropdown">
-                <div class="btn"><span>정렬방식</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                <div class="dropdown">
+                    <div class="btn" @click="menuOpenHandler(5)"><span>{{ filter.diary.sort.menu[filter.diary.sort.idx] }}</span><span class="icon-clamp"></span></div>
+                    <transition name="bounce">
+                        <div class="content"  v-show="menuOpen==5">
+                            <a href="#" v-for="w in filter.diary.sort.menu">{{ w }}</a>
+                        </div>
+                    </transition>
                 </div>
-            </div>
 
-            <div class="dropdown">
-                <div class="btn"><span>컬렉션</span><span class="icon-clamp"></span></div>
-                <div class="content">
-                    <a href="#" v-for="w in filter.diary.weather.menu">{{ w }}</a>
+                <div class="dropdown">
+                    <div class="btn" @click="menuOpenHandler(6)"><span>{{ filter.diary.collection.menu[filter.diary.collection.idx] }}</span><span class="icon-clamp"></span></div>
+                    <transition name="bounce">
+                        <div class="content"  v-show="menuOpen==6">
+                            <a href="#" v-for="w in filter.diary.collection.menu">{{ w }}</a>
+                        </div>
+                    </transition>
                 </div>
-            </div>
 
-            <div class="search-container">
-                <form action="#">
-                <input type="text" placeholder="Search.." name="search">
-                <button>검색</button>
-                </form>
-            </div>
-    </header>
+                <div class="search-container">
+                    <form action="#">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button>검색</button>
+                    </form>
+                </div>
+            </header>
+        
 </template>
 
 <style scoped>
@@ -118,12 +137,13 @@ margin-left: 40px;
 }
 
 .diary-header .dropdown .content {
-display: none;
+/* display: none; */
 position: absolute;
 background-color: #f9f9f9;
 min-width: 160px;
 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 z-index: 1;
+text-align: center;
 }
 
 .diary-header .dropdown .content a {
@@ -135,10 +155,27 @@ display: block;
 
 .diary-header .dropdown .content a:hover {background-color: #f1f1f1}
 
-.diary-header .dropdown:hover .content{
+.diary-header .dropdown.active .content{
 display: block;
 }
 .diary-header .dropdown:hover .dropbtn {
 background-color: #3e8e41;
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.2s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.4s reverse;
+}
+@keyframes bounce-in {
+    0% {
+            opacity: 0;
+            transform: translate3d(0, 20%, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate(0);
+        }
 }
 </style>

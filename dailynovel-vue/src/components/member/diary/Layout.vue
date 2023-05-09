@@ -14,7 +14,7 @@ const diaryFilter = reactive({
         honesty:0,
         date:["날씨"],
         sort:new Filter(0,["정렬기준","인기순","최신순","오래된순"]),
-        collection:new Filter(0,["컬렉션,나만의 일기","배부른 일기","더망"])
+        collection:new Filter(0,["컬렉션","나만의 일기","배부른 일기","더망"])
     },
 })
 
