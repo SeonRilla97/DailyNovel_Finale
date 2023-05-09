@@ -1,0 +1,34 @@
+  /* 각 페이지 별로 만들고 싶을 때 */
+  /* 로그인, 메인 팀 */
+  .container-1-nmg{
+	
+    width: 100vw;
+    height: 100vh;
+      
+    display: grid;
+    grid-template-rows: 1fr 7.5fr 1fr; 
+    grid-template-columns: 1fr 23.75fr 1fr;
+  }
+  
+  .container-1-nmg > .header{
+
+    grid-column: 2/3;
+    grid-row:1/2;
+  }
+  
+  .container-1-nmg > .main{
+    grid-column: 1/4;
+    grid-row:2/3;
+  }
+  
+  .container-1-nmg > .footer{    
+
+    grid-column: 1/4;
+    grid-row:3/4;
+  }
+  
+ .container-1-nmg > .header-exit{
+
+    grid-column: 3/4;
+    grid-row:1/2;
+  }

@@ -1,19 +1,15 @@
 import memberLayout from '../components/member/Layout.vue';
 
-import Index from '../components/Index.vue';
-
+import Login from '../components/user/Login.vue';
+import LoginLayout from '../components/user/Inc/Layout.vue';
+import Signup from '../components/user/Signup.vue';
 import memberModalLayout from '../components/member/modal/Layout.vue';
-  import DiaryLayout from '../components/member/diary/Layout.vue'
+import DiaryLayout from '../components/member/diary/Layout.vue'
 
-import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 const routes =  [
-  { path: '/', component: Index, children:[
-      // {path: 'login', component: },
-      // {path: 'account-recovery', component: ,children:[
-      //   {path: 'id', component: , },
-      //   {path: 'password', component: , }
-      // ]},
-      // {path: 'sign-up', component: , },
+  { path: '/user', component: LoginLayout, children:[
+      {path: 'login', component:Login},
+      {path: 'signup', component:Signup}
     ]
   },
 
