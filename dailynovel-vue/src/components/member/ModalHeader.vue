@@ -9,7 +9,7 @@
 
 <template>
     <header class="modal-header">
-        <router-link to="/member" class="exit"><button @click="$emit('modalCloseEventHandler')" style="margin:10px;">모달창 끄기</button></router-link>
+        <router-link to="/member" class="exit"><button @click="$emit('modalCloseEventHandler')" class="close-btn"></button></router-link>
         <div class="title ">모아 보기</div>
     </header>
 </template>
@@ -39,7 +39,11 @@
         right : 20px;    
     }
     .modal-header .exit button{
-        font-size: 40px;
+        background-size:40px;
+        width:40px;
+        height: 40px;
+        background-color: transparent;
+        border:none;
 
     }
 
