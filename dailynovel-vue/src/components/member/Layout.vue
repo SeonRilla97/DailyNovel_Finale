@@ -63,7 +63,6 @@ function animationedHandler() {
       </div>
     </section><!--modal FIN-->
   </div>
-
 </template>
 
 
@@ -142,7 +141,7 @@ function animationedHandler() {
 
 .modal-container .header {
   width: 100%;
-  min-height: 72px;
+  height: 72px;
 }
 
 .modal-container .content {
