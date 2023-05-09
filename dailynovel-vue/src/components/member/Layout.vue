@@ -46,6 +46,8 @@ function animationedHandler() {
   <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
   <router-link to="/member/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
   <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
+  <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+  <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
   <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
   <router-link to="/member/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
   <router-link to="/member"><button>메인</button></router-link>
@@ -61,6 +63,7 @@ function animationedHandler() {
       </div>
     </section><!--modal FIN-->
   </div>
+
 </template>
 
 
