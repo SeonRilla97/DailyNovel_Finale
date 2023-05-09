@@ -38,7 +38,7 @@ let nickname = "동동이107"
   height: 72px;
 
   display: grid;
-  grid-template-columns: 2fr 7fr 3fr;
+  grid-template-columns: 2fr 7fr 2.5fr;
 
   background-color: #fcfcfc;
 }
@@ -119,9 +119,20 @@ let nickname = "동동이107"
 .member-header-profile-img {
   width: 72px;
   height: 72px;
+
   border-radius: 50px;
   background-size: 70%;
   background-color: aqua;
+
   text-indent: -999rem;
+}
+
+.member-header-profile-nickname {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+  font-weight: bold;
 }
 </style>
