@@ -69,6 +69,7 @@ let nickname = "동동이107"
 .member-header-info {
   display: grid;
   grid-template-columns: 1fr 3fr;
+  gap: 1rem;
 }
 
 
@@ -112,27 +113,37 @@ let nickname = "동동이107"
 }
 
 .member-header-profile {
+  width: fit-content;
+
   display: grid;
   grid-template-columns: 1fr 2fr;
+
+
+
 }
 
 .member-header-profile-img {
-  width: 72px;
-  height: 72px;
+  width: 52px;
+  height: 52px;
 
-  border-radius: 50px;
-  background-size: 70%;
+  border-radius: 30px;
+  background-size: cover;
+  background-position: center;
   background-color: aqua;
+  background-image: url(../../assets/img/temp/tempProfile.jpg);
+  background-repeat: no-repeat;
+
+  align-self: center;
 
   text-indent: -999rem;
 }
 
 .member-header-profile-nickname {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
 }
 </style>
