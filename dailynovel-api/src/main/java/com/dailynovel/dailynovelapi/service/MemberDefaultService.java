@@ -30,7 +30,7 @@ public class MemberDefaultService implements MemberService {
 
     @Override
     public Member getByEmail(String email) {
-        // TODO Auto-generated method stub
+
         return repository.findByEmail(email);
     }
 

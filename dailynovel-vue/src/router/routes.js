@@ -6,7 +6,6 @@ import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
 
 import DiaryLayout from '../components/member/diary/Layout.vue'
-import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 
 import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
@@ -15,11 +14,23 @@ import guestbook  from './guestbook.js';
 import display  from './display.js';
 
 const routes =  [
-  { path: '/user', component: LoginLayout, children:[
-      {path: 'login', component:Login},
-      {path: 'signup', component:Signup}
+  {
+    path: '/', component: LoginLayout, children: [
+      {path: 'signup', component:Signup} , 
+        { path: 'login', component: Login },
+        {
+            path: 'error', children: [
+                { path: '403', component: ()=> import ("./error/403.vue")}
+            ]
+        },
+        {
+            path:"/:pathMatch(.*)*",
+            component: ()=> import ("./error/404.vue")
+        }
     ]
-  },
+    //pathMatch,동적인  import-> 미리로드하지 않고 쓸지 않쓸지 모르는 걸 위한 Lazy로딩법
+},
+
 
   { path: '/member', children :[
     { path: 'room', component: memberLayout, children :[ 
