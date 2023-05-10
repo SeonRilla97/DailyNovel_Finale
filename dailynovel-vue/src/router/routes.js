@@ -12,6 +12,7 @@ import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
 
 import guestbook  from './guestbook.js';
+import display  from './display.js';
 
 const routes =  [
   { path: '/user', component: LoginLayout, children:[
@@ -25,6 +26,7 @@ const routes =  [
       {path: 'achievement', component:Achievement},
       {path: 'chart', component:Chart},
       guestbook,
+      display,
     ]}      
  ]
 
