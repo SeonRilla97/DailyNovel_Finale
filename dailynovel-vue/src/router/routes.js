@@ -5,15 +5,14 @@ import Login from '../components/user/Login.vue';
 import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
 
-import DiaryLayout from '../components/member/diary/Layout.vue'
-import Collection from '../components/member/collection/Layout.vue'
-import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
-
 import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
 
 import guestbook  from './guestbook.js';
+import collection  from './collection.js';
 import display  from './display.js';
+import diary  from './diary.js';
+
 
 const routes =  [
   {
@@ -32,17 +31,17 @@ const routes =  [
     ]
     //pathMatch,동적인  import-> 미리로드하지 않고 쓸지 않쓸지 모르는 걸 위한 Lazy로딩법
 },
+{ path: '/member', children :[
+  { path: 'room', component: memberLayout, children :[ 
+      diary,
+      {path: 'achievement', component:Achievement},
+      {path: 'chart', component:Chart},
+      collection,
+      guestbook,
+  ]}      
+]}
 
 
-  { path: '/member', children :[
-    { path: 'room', component: memberLayout, children :[ 
-        {path: 'diary', component:DiaryLayout},
-        {path: 'achievement', component:Achievement},
-        {path: 'chart', component:Chart},
-        {path: 'Collection', component:Collection},
-         guestbook,
-    ]}      
- ]}
 ]
 
 
