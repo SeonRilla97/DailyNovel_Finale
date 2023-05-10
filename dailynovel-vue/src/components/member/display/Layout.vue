@@ -12,11 +12,35 @@
         <br>
         <br>
         <section>
-            <h1 class="d-none">게시판 리스트</h1>
+            <h1 class="">게시판 리스트</h1>
             <ul class="commu-content-grid">
-                
-<!-- **********************<router-link :to="'detail?=id='+m.id" ><img class="menu-img" :src="'/image/product/'+m.img"></router-link> 4월7일 강의 참조-->
-                        
+                <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
+                <li class="" v-for="m in 10">
+                    <div class="content-box">
+                        <div class="content-title">
+                            <div></div>
+                            <p class="sspan">일이삼사오육칠팔구십</p>
+                        </div>
+                        <div class="content-underline">
+                            <hr>
+                        </div>
+                        <router-link :to="'/detail?id='">
+                            <div class="content-subject"> 
+                                일기 내용 칸<br>
+                                이<br>삼<br>사<br>오<br>육<br>칠<br>팔<br>구<br>십<br>십일<br>십이<br>십삼<br>십사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십<br>
+                                십오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십<br>
+                                십육<br>십칠<br>십팔<br>십규<br>이십<br>이십일<br>이십이<br>
+                            </div>
+                        </router-link>
+                        <div class="content-like-count">
+                            <div class="like-active inline"></div><span>50</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="center-grid"><div class="more-btn">더보기 + 99</div></div>
+            <!-- <h1 class="d-none">게시판 리스트</h1>
+            <ul class="commu-content-grid">
                 <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)">
                     {{currentCategory}}, {{m.category==currentCategory}}
                     <div class="content-box">
@@ -38,53 +62,53 @@
                 </li>
             </ul>
             <div class="center-grid"><div class="more-btn" v-show="currentCategory==''">카테고리를 선택해</div></div>
-            <div class="center-grid"><div class="more-btn" v-show="currentCategory!=''">더보기 + {{ count -8 }}</div></div>
+            <div class="center-grid"><div class="more-btn" v-show="currentCategory!=''">더보기 + {{ count -8 }}</div></div> -->
         </section>
     </main>
 </section>
 </template>
 <script setup>
 
-import { onMounted, reactive,ref, } from 'vue'
+// import { onMounted, reactive,ref, } from 'vue'
 
-// 되는 gpt코드 -> 비교해보기
-let model = reactive([]);
-let count = ref();
-let category = reactive([]);
-let currentCategory = ref(1);
-
-
-
-async function load() {
-const resList = await fetch('http://localhost:8080/community/populer')
-const data = await resList.json()
-model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
-
-const resLikeCount = await fetch('http://localhost:8080/community/count2')
-const data2 = await resLikeCount.json()
-console.log(data2);
-count.value = data2;
-
-const resCategory = await fetch('http://localhost:8080/community/category')
-const data3 = await resCategory.json()
-console.log(data3);
-category.splice(0, model.length, ...data3);
-
-// const resDetail = await fetch('http://localhost:8080/community/detail2?id='+model.id)
-// const resDetail = await fetch('http://localhost:8080/community/detail2?id=3')
-// const resDetail = await fetch(`http://localhost:8080/community/detail2?id=${this.$route.query.id}`);
-// const data4 = await resDetail.json()
-// console.log(data4);
-}
+// // 되는 gpt코드 -> 비교해보기
+// let model = reactive([]);
+// let count = ref();
+// let category = reactive([]);
+// let currentCategory = ref(1);
 
 
-onMounted(()=>{
-load()
-})
 
-function categoryClick(page){
-currentCategory.value=page;
-}
+// async function load() {
+// const resList = await fetch('http://localhost:8080/community/populer')
+// const data = await resList.json()
+// model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
+
+// const resLikeCount = await fetch('http://localhost:8080/community/count2')
+// const data2 = await resLikeCount.json()
+// console.log(data2);
+// count.value = data2;
+
+// const resCategory = await fetch('http://localhost:8080/community/category')
+// const data3 = await resCategory.json()
+// console.log(data3);
+// category.splice(0, model.length, ...data3);
+
+// // const resDetail = await fetch('http://localhost:8080/community/detail2?id='+model.id)
+// // const resDetail = await fetch('http://localhost:8080/community/detail2?id=3')
+// // const resDetail = await fetch(`http://localhost:8080/community/detail2?id=${this.$route.query.id}`);
+// // const data4 = await resDetail.json()
+// // console.log(data4);
+// }
+
+
+// onMounted(()=>{
+// load()
+// })
+
+// function categoryClick(page){
+// currentCategory.value=page;
+// }
 
 </script>
 <style scoped>
@@ -114,7 +138,7 @@ justify-content: center;
 li {
 display: inline-block;
 list-style: none;
-padding-left: 2.5rem;
+padding-left: 0.5rem;
 }
 
 .active-commu-category {
@@ -137,7 +161,7 @@ grid-gap: 20px;
 /* border: 1px solid fff8f3; */
 border-radius: 1rem;
 background-color: #fff8f3;
-width: 18.5rem;
+width: 17.5rem;
 height: 28.375rem;
 display: grid;
 grid-template-rows: 3rem 1rem 20rem 1fr;
@@ -155,7 +179,7 @@ align-self: center;
 .content-title p {
 /* 콘텐츠박스 제목의 중앙*/
 font-size: 1.5rem;
-width: 10em;
+width: 10rem;
 /* 최대 5글자까지만 보이도록 요소의 너비를 지정 */
 white-space: nowrap;
 /* 텍스트를 한 줄로 표시 */
@@ -209,7 +233,7 @@ line-height: 4rem;
 /*좋아요 활성화*/
 width: 1rem;
 height: 1rem;
-background-image: url('@/assets/heart-red.svg');
+background-image: url('@/assets/img/display/heart-red.svg');
 background-repeat: no-repeat;
 background-position: center bottom ;
 background-size: contain;
@@ -223,7 +247,7 @@ cursor: pointer;
 /*좋아요 비활성화*/
 width: 1rem;
 height: 1rem;
-background-image: url('@/assets/heart-gray.svg');
+background-image: url('@/assets/img/display/heart-gray.svg');
 background-repeat: no-repeat;
 background-size: contain;
 border: none;
