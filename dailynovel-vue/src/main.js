@@ -8,7 +8,7 @@ import 'v-calendar/style.css';
 // import './assets/main.css'
 
 
-const app = createApp(App)
+
 
 
 // 선유진 - 달력 API 230510
@@ -23,5 +23,6 @@ app.component('VDatePicker', DatePicker)
 
 
 app.use(createPinia())
+
 app.use(router)
 app.mount('#app')

@@ -1,7 +1,7 @@
 <script>
 import Slime from "./Canvas/item/slime.js"
 import Background from "./Canvas/item/background.js";
-import Layout from "./Layout.vue";
+
 export default {
   mounted() {
     this.canvas = this.$refs.canvas;
