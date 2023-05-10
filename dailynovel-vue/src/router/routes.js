@@ -11,6 +11,7 @@ import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
 
 import guestbook  from './guestbook.js';
+import display  from './display.js';
 
 const routes =  [
   {
@@ -31,13 +32,16 @@ const routes =  [
 },
 
 
-  { path: '/member', component: memberLayout, children :[    
-      {path: 'diary', component:DiaryLayout},
-      {path: 'achievement', component:Achievement},
-      {path: 'chart', component:Chart},
-      guestbook,
+  { path: '/member', children :[
+    { path: 'room', component: memberLayout, children :[ 
+        {path: 'diary', component:DiaryLayout},
+        {path: 'achievement', component:Achievement},
+        {path: 'chart', component:Chart},
+        {path: 'Collection', component:Collection},
+         guestbook,
     ]}      
- ]
+ ]}
+]
 
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
