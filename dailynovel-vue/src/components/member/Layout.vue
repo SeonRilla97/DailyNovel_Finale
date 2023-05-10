@@ -48,8 +48,7 @@ function onCalendarClickHandler() {
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
   </section>
   <section class="member-room-temp-linkes">
-    <router-link to="/member/room/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/room/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
+    <router-link to="/member/room/collection" @click="modalOpenHandler"><button>컬렉션</button></router-link>
     <router-link to="/member/room/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
     <router-link to="/member/room/chart" @click="modalOpenHandler"><button>차트</button></router-link>
     <router-link to="/member/room/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
