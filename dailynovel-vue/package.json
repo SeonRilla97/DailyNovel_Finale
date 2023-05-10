@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.7",
+    "chart.js": "^4.3.0",
     "pinia": "^2.0.32",
     "v-calendar": "^3.0.3",
     "vue": "^3.2.47",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
@@ -22,6 +24,7 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/test-utils": "^2.3.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "eslint": "^8.34.0",
     "eslint-plugin-vue": "^9.9.0",
     "jsdom": "^21.1.0",

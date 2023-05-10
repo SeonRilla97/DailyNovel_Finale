@@ -1,16 +1,18 @@
 <script setup>
-    import Header from './Header.vue';
-    
-    import Canvas from './Canvas.vue';
-    
-    import ModalHeader from './ModalHeader.vue'
 
-    import Footer from './Footer.vue';
-    import {ref} from 'vue';
+import Header from './Header.vue';
+
+import Canvas from './Canvas.vue';
+
+import ModalHeader from './ModalHeader.vue'
+
+import Footer from './Footer.vue';
+import { ref } from 'vue';
+
 
 //=============모달 관련 속성들===================
-    let closeEffect = ref(false); //애니메이션 동작 유무
-    let isModalOpen = ref(false); //모달창 제어
+let closeEffect = ref(false); //애니메이션 동작 유무
+let isModalOpen = ref(false); //모달창 제어
 
 function modalOpenHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
@@ -28,7 +30,7 @@ function animationedHandler() {
   //모달창의 애니메이션이 발생 했는지 안했는지 감지하는 이벤트
   // closeEffect = true;
   // console.log(isModalOpen)
-  if(closeEffect.value == false){
+  if (closeEffect.value == false) {
     isModalOpen.value = false;
   }
 }
@@ -37,86 +39,105 @@ function animationedHandler() {
 </script>
 
 <template>
-    <Header />
+  <Header />
+  <section class="member-room-canvas mgt-2">
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
-    <Footer />
-
+  </section>
+  <section class="member-room-temp-linkes">
     <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
     <router-link to="/member/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
     <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
+    <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+    <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
     <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
+    <router-link to="/member/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
     <router-link to="/member"><button>메인</button></router-link>
+  </section>
+  <Footer />
 
-    <!-- 모달창 -->
-    <div class="modal-bg"  :class="{'d-none':!isModalOpen}">
-        <section class="modal-screen" :class="{'active': !closeEffect}" @animationend="animationedHandler" @click.stop>
 
-            <div class="modal-container">
-              <ModalHeader @modalCloseEventHandler="modalCloseHandler" class="header"/>
-              <Router-view class="content"/>
-            </div>
-        </section><!--modal FIN-->
-    </div>
+
+  <!-- 모달창 -->
+  <div class="modal-bg" :class="{ 'd-none': !isModalOpen }">
+    <section class="modal-screen" :class="{ 'active': !closeEffect }" @animationend="animationedHandler" @click.stop>
+
+      <div class="modal-container">
+        <ModalHeader @modalCloseEventHandler="modalCloseHandler" class="header" />
+        <Router-view class="content" />
+      </div>
+    </section><!--modal FIN-->
+  </div>
 </template>
 
 
 <style scoped>
 /* 모달 화면 조정 css */
-@keyframes show-effect{
-     from{
-       transform: scale(0%);
-       /* transform: rotate(360deg); */
-      }
-      to{
-        transform: scale(100%);
-        /* transform: rotate(100000deg); */
-      }  
-    }
+@keyframes show-effect {
+  from {
+    transform: scale(0%);
+    /* transform: rotate(360deg); */
+  }
 
-    @keyframes close-effect{
-     from{
-       transform: scale(100%);
-    }
-    to{
-      transform: scale(0);
-     }  
-    }
+  to {
+    transform: scale(100%);
+    /* transform: rotate(100000deg); */
+  }
+}
 
+@keyframes close-effect {
+  from {
+    transform: scale(100%);
+  }
 
-.modal-bg{
-  position:fixed;
-  top:0;
+  to {
+    transform: scale(0);
+  }
+}
 
-  width:100vw;
+.member-room-canvas {
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+}
+
+.member-room-temp-linkes {
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-bg {
+  position: fixed;
+  top: 0;
+
+  width: 100vw;
   height: 100vh;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 
-  background-color:  #00000080
+  background-color: #00000080
 }
-.modal-bg > .modal-screen{
+
+.modal-bg>.modal-screen {
   background-color: #FAFFF9;
 
   position: fixed;
   /* max-width:1920px; */
-  max-width:1280px;
+  max-width: 1280px;
   max-height: 720px;
-  width:90%;
-  height:80%;
-  border-radius: 10px;
-  overflow: hidden;
+  width: 90%;
+  height: 80%;
 
-  animation: show-effect 0.5s ease-in-out ;
+  animation: show-effect 0.5s ease-in-out;
   /* animation-fill-mode: forwards; */
-
-  
 }
-.modal-screen.active{
+
+.modal-screen.active {
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;
-  
+
 }
 
 .modal-container{
@@ -134,15 +155,19 @@ function animationedHandler() {
       flex-grow: 1;
     }
 
-.modal.active{
+.modal-container .content {
+  width: 100%;
+  height: 648px;
+  flex-grow: 1;
+}
+
+.modal.active {
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;
-  
-} 
+}
+
 /*============================================== */
 /* style */
-
-
- 
 </style>
+
