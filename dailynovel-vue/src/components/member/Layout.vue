@@ -40,17 +40,21 @@ function animationedHandler() {
 
 <template>
   <Header />
-  <Canvas v-on:modalOpenHandler="modalOpenHandler" />
+  <section class="member-room-canvas mgt-2">
+    <Canvas v-on:modalOpenHandler="modalOpenHandler" />
+  </section>
+  <section class="member-room-temp-linkes">
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
+    <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+    <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
+    <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
+    <router-link to="/member/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
+    <router-link to="/member"><button>메인</button></router-link>
+  </section>
   <Footer />
 
-  <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-  <router-link to="/member/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
-  <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
-  <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
-  <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
-  <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
-  <router-link to="/member/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
-  <router-link to="/member"><button>메인</button></router-link>
 
 
   <!-- 모달창 -->
@@ -90,6 +94,17 @@ function animationedHandler() {
   }
 }
 
+.member-room-canvas {
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+}
+
+.member-room-temp-linkes {
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+}
 
 .modal-bg {
   position: fixed;
@@ -114,13 +129,8 @@ function animationedHandler() {
   width: 90%;
   height: 80%;
 
-
-
-
   animation: show-effect 0.5s ease-in-out;
   /* animation-fill-mode: forwards; */
-
-
 }
 
 .modal-screen.active {
@@ -135,8 +145,6 @@ function animationedHandler() {
   flex-direction: column;
   width: 100%;
   height: 100%;
-
-
 }
 
 .modal-container .header {
@@ -148,15 +156,12 @@ function animationedHandler() {
   width: 100%;
   height: 648px;
   flex-grow: 1;
-
-
 }
 
 .modal.active {
   animation: close-effect 0.5s ease-in-out !important;
   /* animation-direction:reverse !important; */
   animation-fill-mode: forwards;
-
 }
 
 /*============================================== */
