@@ -35,6 +35,10 @@ function animationedHandler() {
   }
 }
 
+function onCalendarClickHandler() {
+  console.log("클릭");
+}
+
 //==============모달 기본 동작 정의 =====================
 </script>
 

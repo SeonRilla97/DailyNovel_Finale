@@ -14,7 +14,8 @@ const diaryFilter = reactive({
         honesty:0,
         date:["날씨"],
         sort:new Filter(0,["정렬기준","인기순","최신순","오래된순"]),
-        collection:new Filter(0,["컬렉션","나만의 일기","배부른 일기","더망"])
+        collection:new Filter(0,["컬렉션","나만의 일기","배부른 일기","더망"]),
+        keyword: ""
     },
 })
 
@@ -22,25 +23,23 @@ const diaryFilter = reactive({
 function filterClickHandler(selected){
     switch(selected.menuname){
         case "feeling":
-            diaryFilter.diary.feeling.idx = selected.menuIndex;
-            console.log("feeling바뀜!!")
+            diaryFilter.diary.feeling.idx = selected.menuvalue;
             break;
         case "weather":
-            diaryFilter.diary.weather.idx = selected.menuIndex;
-            console.log("weather바뀜!!")
+            diaryFilter.diary.weather.idx = selected.menuvalue;
             break;
         case "date":
-            diaryFilter.diary.date = selected.menuIndex;
-            console.log("date바뀜!!")
-        break;
+            diaryFilter.diary.date = selected.menuvalue;
+            break;
         case "sort":
-            diaryFilter.diary.sort.idx = selected.menuIndex;
-            console.log("sort바뀜!!")
-        break;
+            diaryFilter.diary.sort.idx = selected.menuvalue;
+            break;
         case "collection":
-            diaryFilter.diary.collection.idx = selected.menuIndex;
-            console.log("collection바뀜!!")
-        break;
+            diaryFilter.diary.collection.idx = selected.menuvalue;
+            break;
+        case "keyword":
+            diaryFilter.diary.keyword = selected.menuvalue;
+            break;
             
     }
     console.log(diaryFilter.diary.feeling.idx)

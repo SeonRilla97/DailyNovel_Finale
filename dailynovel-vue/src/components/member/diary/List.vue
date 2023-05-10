@@ -7,9 +7,11 @@
         
         <!-- 달별 일기 -->
         <div class="content">
-            <!-- 년 월 타이틀-->
-            <div class="monthly-header">2023년 7월</div>
+            
+            
             <div class="date-list">
+                <!-- 년 월 타이틀-->
+                <div class="monthly-header">2023년 7월</div>
                 <!-- 일 박스 -->
                 <div class="date-container">
                     <div class="date"><span>화</span><span>10</span></div> 
@@ -30,9 +32,9 @@
                 </div>
             </div>
 
-
-            <div class="monthly-header">2023년 8월</div>
             <div class="date-list">
+                <!-- 년 월 타이틀-->
+                <div class="monthly-header">2023년 7월</div>
                 <!-- 일 박스 -->
                 <div class="date-container">
                     <div class="date"><span>화</span><span>10</span></div> 
@@ -53,9 +55,9 @@
                 </div>
             </div>
 
-
-            <div class="monthly-header">2023년 9월</div>
             <div class="date-list">
+                <!-- 년 월 타이틀-->
+                <div class="monthly-header">2023년 7월</div>
                 <!-- 일 박스 -->
                 <div class="date-container">
                     <div class="date"><span>화</span><span>10</span></div> 
@@ -76,9 +78,9 @@
                 </div>
             </div>
 
-
-            <div class="monthly-header">2023년 10월</div>
             <div class="date-list">
+                <!-- 년 월 타이틀-->
+                <div class="monthly-header">2023년 7월</div>
                 <!-- 일 박스 -->
                 <div class="date-container">
                     <div class="date"><span>화</span><span>10</span></div> 
@@ -98,6 +100,11 @@
                     
                 </div>
             </div>
+
+            
+
+
+      
         </div>
 
     </section>
