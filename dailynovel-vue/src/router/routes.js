@@ -37,8 +37,9 @@ const routes =  [
         {path: 'diary', component:DiaryLayout},
         {path: 'achievement', component:Achievement},
         {path: 'chart', component:Chart},
-        {path: 'Collection', component:Collection},
+        // {path: 'Collection', component:Collection},
          guestbook,
+         display,
     ]}      
  ]}
 ]
