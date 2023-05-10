@@ -1,6 +1,5 @@
 <script setup>
 import { ref,watch } from 'vue';
-import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 const props = defineProps({
     filter: {
         type: Object,
@@ -10,14 +9,14 @@ const props = defineProps({
 let emit = defineEmits('filterClickedHandler')
 const selectedMenu=  {
  menuname:null,
- menuIndex:null
+ menuvalue:null
 }
 function optionClickHandler(e){
 //    console.log(e.target.innerText);  //value값 뽑기
 //    console.log(e.target.dataset.fidx);  // dataset 뽑기
 //    console.log(e.target.parentNode.dataset.menuname); //부모의 dataset 뽑기
     selectedMenu.menuname = e.target.parentNode.dataset.menuname;
-    selectedMenu.menuIndex = e.target.dataset.idx;
+    selectedMenu.menuvalue = e.target.dataset.idx;
     console.log(selectedMenu);  
     emit('filterClickedHandler',selectedMenu);
     console.log(e.target.parentNode.style);
@@ -25,26 +24,35 @@ function optionClickHandler(e){
 
 let menuOpen = ref(null);
 function menuOpenHandler(clickedMenu){
+    
     if(menuOpen.value == clickedMenu && menuOpen.value != null){
         menuOpen.value = null;
         console.log("같은거 클릭");
         return;
     }
-
     menuOpen.value = clickedMenu
-
 }
-function clickss(){
-    console.log("click!");
+function dateInitialize(){
+    date.value = null;
 }
 
 const date = ref(new Date());
 watch(date,()=>{
     console.log("와치 동작!",date.value);
-    // selectedMenu.menuname = "date"
-    // selectedMenu.menuIndex= date.value;
-    // emit('filterClickedHandler',selectedMenu);
+    selectedMenu.menuname = "date"
+    selectedMenu.menuvalue= date.value;
+    emit('filterClickedHandler',selectedMenu);
 })
+
+
+let searchKeywork = ref("");
+function searchBtnHandler(){
+    console.log("클클릭")
+    console.log(searchKeywork.value)
+    selectedMenu.menuname = "keyword"
+    selectedMenu.menuvalue= searchKeywork.value;
+    emit('filterClickedHandler',selectedMenu);
+}
 </script>
 
 
@@ -74,25 +82,33 @@ watch(date,()=>{
             </transition>
         </div>
 
-        <!-- honesty -->
-        <div class="dropdown">
+        <!-- honesty 정렬 기준 이었으나
+        기준범위 나눠서 정렬기준 뜨는것과, 굳이 솔직함을 모아볼 필요가 있나
+    싶어서 필터링에서 제외시킵니다.-->
+        <!-- <div class="dropdown">
             <div class="btn" @click="menuOpenHandler(3)"><span>솔직함</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content"  v-show="menuOpen==3" data-menuname = "honesty">
                     <a href="#" class="item" v-for="(f,idx) in filter.diary.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
                 </div>
             </transition>
-        </div>
+        </div> -->
 
         <!-- date -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(4)"><span>날짜</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click.stop="menuOpenHandler(4)"><span>날짜</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
-                <div class="calendar" v-show="menuOpen==4" data-menuname = "date">
-                    <VDatePicker v-model="date" mode="date" @dayclick="clickss"/>
-                    <h1>{{ date }}</h1>
+                <div class="calendar-container" v-show="menuOpen==4" data-menuname = "date">
+                    <VDatePicker class="calendar" v-model="date" mode="date" @dayclick="menuOpenHandler">
+                        <template #footer>
+                            <div class="lc-center pdb-4" style="box-sizing=border-box">
+                                <button  class="btn-init" @click="dateInitialize">초기화</button>
+                            </div>
+                        </template>   
+            </VDatePicker> 
+                    <!-- <div class="btn initialize lc-center" @click.stop="dateInitialize"><span>초기화</span><span class="icon-clamp"></span></div> -->
                 </div>
-            </transition> 
+            </transition>
         </div>
 
         <!-- sort -->
@@ -118,8 +134,8 @@ watch(date,()=>{
         <!-- search box -->
         <div class="search-container">
             <form action="#">
-            <input type="text" placeholder="Search.." name="search">
-            <button>검색</button>
+                <input class="box-search" type="text" placeholder="검색어를 입력하세요..." name="search" v-model="searchKeywork">
+                <div class="btn-search" @click="searchBtnHandler">검색</div>
             </form>
         </div>
 
@@ -149,7 +165,6 @@ watch(date,()=>{
 
 /* dropDown(필터 메뉴) */
 .diary-header .dropdown .btn {
-
 font-size: 16px;
 border: none;
 cursor: pointer;
@@ -170,13 +185,28 @@ min-width: 160px;
 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 z-index: 1;
 text-align: center;
+top: 20px;
 }
-.diary-header .dropdown .calendar {
+.diary-header .dropdown .calendar-container {
+    position: absolute;
     z-index: 1;
-    top:30px;
+    top:20px;
     left:0;
-    
-    
+    width:300px;
+    height: 300px;
+    /* top: 20vh;
+    left: 20vh; */
+}
+.diary-header .dropdown .calendar-container .btn-init{
+    width:80%;
+    height:30px;
+    border:none;
+    background-color:  #5cb3e6;
+    border-radius: 10px;
+    color:white;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    font-size: 15px;
 }
 
 .diary-header .dropdown .content .item {
@@ -205,11 +235,32 @@ display: block;
         }
 }
 
-.calendar{
-    width:300px;
-    height: 300px;
-    position: absolute;
-    top: 20vh;
-    left: 20vh;
+
+.search-container form{
+    display:flex;
+    align-items: center;
+    background-color: #d8d8d8;
+    padding: 1px;
+    
+    box-sizing: border-box;
 }
+.search-container .box-search{
+    height: 30px;
+    /* background-color: #d8d8d8; */
+    text-indent: 10px;
+}
+
+.search-container .btn-search{
+    height: 30px;
+    width:40px;
+    margin-left:1px;
+    box-sizing: border-box;
+    border:none;
+    display:inline-block;
+    line-height: 30px;
+    text-align: center;
+    /* border-radius: 5px; */
+    
+}
+
 </style>
