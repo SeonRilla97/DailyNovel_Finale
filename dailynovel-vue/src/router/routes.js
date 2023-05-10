@@ -38,23 +38,9 @@ const routes =  [
       {path: 'chart', component:Chart},
       collection,
       guestbook,
+      display,
   ]}      
 ]}
-
-
-<<<<<<< HEAD
-  { path: '/member', children :[
-    { path: 'room', component: memberLayout, children :[ 
-        {path: 'diary', component:DiaryLayout},
-        {path: 'achievement', component:Achievement},
-        {path: 'chart', component:Chart},
-        // {path: 'Collection', component:Collection},
-         guestbook,
-         display,
-    ]}      
- ]}
-=======
->>>>>>> 877f792b4c339ed4c51c0231e33171e8d10e6916
 ]
 
 

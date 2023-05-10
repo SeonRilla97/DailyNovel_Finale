@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class diary {
+public class Diary {
     @Id
     private int id;
     @Column(name="member_id")
