@@ -9,7 +9,7 @@
 
 <template>
     <header class="modal-header">
-        <router-link to="/member" class="exit"><button @click="$emit('modalCloseEventHandler')" class="close-btn"></button></router-link>
+        <router-link to="/member/room" class="exit"><button @click="$emit('modalCloseEventHandler')" class="close-btn"></button></router-link>
         <div class="title ">모아 보기</div>
     </header>
 </template>
