@@ -48,14 +48,14 @@ function onCalendarClickHandler() {
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
   </section>
   <section class="member-room-temp-linkes">
-    <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
-    <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
-    <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
-    <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
-    <router-link to="/member/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
-    <router-link to="/member/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
-    <router-link to="/member"><button>메인</button></router-link>
+    <router-link to="/member/room/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
+    <router-link to="/member/room/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
+    <router-link to="/member/room/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
+    <router-link to="/member/room/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+    <router-link to="/member/room/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
+    <router-link to="/member/room/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
+    <router-link to="/member/room/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
+    <router-link to="/member/room"><button>메인</button></router-link>
   </section>
   <Footer />
 

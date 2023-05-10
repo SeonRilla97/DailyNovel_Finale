@@ -6,6 +6,7 @@ import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
 
 import DiaryLayout from '../components/member/diary/Layout.vue'
+import Collection from '../components/member/collection/Layout.vue'
 import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 
 import Achievement from '../components/member/Achievements/Achievements.vue';
