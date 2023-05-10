@@ -22,14 +22,14 @@ function modalOpenHandler() {
 }
 function modalCloseHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
-  console.log("click!")
+  // console.log("click!")
   isModalOpen.value = true;  //모달창 키기(상태유지)
   closeEffect.value = false; //내려오기 (애니메이션 작동)
 }
 function animationedHandler() {
   //모달창의 애니메이션이 발생 했는지 안했는지 감지하는 이벤트
   // closeEffect = true;
-  console.log(isModalOpen)
+  // console.log(isModalOpen)
   if (closeEffect.value == false) {
     isModalOpen.value = false;
   }
@@ -45,7 +45,7 @@ function animationedHandler() {
   </section>
   <section class="member-room-temp-linkes">
     <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/diary" @click="modalOpenHandler"><button>다이어리</button></router-link>
+    <router-link to="/member/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
     <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
     <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
     <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
@@ -140,17 +140,20 @@ function animationedHandler() {
 
 }
 
-.modal-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-}
-
-.modal-container .header {
-  width: 100%;
-  height: 72px;
-}
+.modal-container{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    height:100%;
+  }
+    .modal-container .header{
+      width:100%;
+      height:72px;
+    }
+    .modal-container .content{
+      width:100%;
+      flex-grow: 1;
+    }
 
 .modal-container .content {
   width: 100%;
