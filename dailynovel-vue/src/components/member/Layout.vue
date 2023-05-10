@@ -46,7 +46,6 @@ function animationedHandler() {
     <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
     <router-link to="/member/diary" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
     <router-link to="/member"><button>메인</button></router-link>
-    
 
     <!-- 모달창 -->
     <div class="modal-bg"  :class="{'d-none':!isModalOpen}">
@@ -58,7 +57,6 @@ function animationedHandler() {
             </div>
         </section><!--modal FIN-->
     </div>
-
 </template>
 
 

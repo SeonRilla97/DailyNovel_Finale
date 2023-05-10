@@ -19,16 +19,28 @@ const diaryFilter = reactive({
 })
 
 
-function filterClickHandler(abc){
-    switch(abc.menuname){
+function filterClickHandler(selected){
+    switch(selected.menuname){
         case "feeling":
-            diaryFilter.diary.feeling.idx = abc.menuIndex;
-            console.log("바뀜!!")
+            diaryFilter.diary.feeling.idx = selected.menuIndex;
+            console.log("feeling바뀜!!")
             break;
         case "weather":
-            diaryFilter.diary.weather.idx = abc.menuIndex;
-            console.log("바뀜!!")
+            diaryFilter.diary.weather.idx = selected.menuIndex;
+            console.log("weather바뀜!!")
             break;
+        case "date":
+            diaryFilter.diary.date = selected.menuIndex;
+            console.log("date바뀜!!")
+        break;
+        case "sort":
+            diaryFilter.diary.sort.idx = selected.menuIndex;
+            console.log("sort바뀜!!")
+        break;
+        case "collection":
+            diaryFilter.diary.collection.idx = selected.menuIndex;
+            console.log("collection바뀜!!")
+        break;
             
     }
     console.log(diaryFilter.diary.feeling.idx)
@@ -37,8 +49,7 @@ function filterClickHandler(abc){
 </script>
 <template>
     <div class="diary-container">
-        <Header :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
-
+        <Header class="no-scroll"  :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
 
         <section class="diary-main">
             <List/>
@@ -59,5 +70,12 @@ function filterClickHandler(abc){
 .diary-main{
 display:flex;
 flex-grow: 1;
+}
+
+.no-scroll {
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 </style>

@@ -133,7 +133,7 @@
     -webkit-user-select:none;
     -moz-user-select:none;
     -ms-user-select:none;
-    user-select:none
+    user-select:none;
 }
 
 .diary-main .list .content .monthly-header{
