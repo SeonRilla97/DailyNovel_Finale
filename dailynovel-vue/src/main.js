@@ -9,7 +9,7 @@ import 'v-calendar/style.css';
 
 
 
-
+const app = createApp(App);
 
 // 선유진 - 달력 API 230510
 // Use plugin defaults (optional)

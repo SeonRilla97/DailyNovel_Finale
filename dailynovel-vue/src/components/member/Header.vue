@@ -1,5 +1,16 @@
 <script setup>
+import { useRouter } from 'vue-router';
+let router = useRouter();
+
 let nickname = "동동이107"
+
+defineEmits(["modalOpenHandler"]);
+
+function openPageHandler() {
+
+
+}
+
 </script>
 <template>
   <header class="member-header-container">
@@ -9,7 +20,7 @@ let nickname = "동동이107"
         <div class="member-header-wordlogo"></div>
       </div>
       <div></div>
-      <div class="member-header-info">
+      <div class="member-header-info" @click="$emit('modalOpenHandler')">
         <div class="member-header-alram header-alram-img">
           <div class="member-header-alram-count">12</div>
         </div>

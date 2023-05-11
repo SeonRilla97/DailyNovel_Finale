@@ -20,6 +20,7 @@ function modalOpenHandler() {
   isModalOpen.value = true; //올라오기
 
 }
+
 function modalCloseHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
   // console.log("click!")
@@ -48,14 +49,16 @@ function onCalendarClickHandler() {
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
   </section>
   <section class="member-room-temp-linkes">
-    <router-link to="/member/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
-    <router-link to="/member/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
-    <router-link to="/member/chart" @click="modalOpenHandler"><button>차트</button></router-link>
-    <router-link to="/member/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
-    <router-link to="/member/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
-    <router-link to="/member/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
-    <router-link to="/member"><button>메인</button></router-link>
+    <router-link to="/member/room/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
+    <router-link to="/member/room/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
+    <router-link to="/member/room/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
+    <router-link to="/member/room/chart" @click="modalOpenHandler"><button>차트</button></router-link>
+    <router-link to="/member/room/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
+    <router-link to="/member/room/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
+    <router-link to="/member/room/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
+    <router-link to="/member/room/profile" @click="modalOpenHandler"><button>내 정보</button></router-link>
+    <router-link to="/member/room/follow" @click="modalOpenHandler"><button>구독페이지</button></router-link>
+    <router-link to="/member/room"><button>메인</button></router-link>
   </section>
   <Footer />
 
@@ -144,20 +147,22 @@ function onCalendarClickHandler() {
 
 }
 
-.modal-container{
-    display:flex;
-    flex-direction: column;
-    width:100%;
-    height:100%;
-  }
-    .modal-container .header{
-      width:100%;
-      height:72px;
-    }
-    .modal-container .content{
-      width:100%;
-      flex-grow: 1;
-    }
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-container .header {
+  width: 100%;
+  height: 72px;
+}
+
+.modal-container .content {
+  width: 100%;
+  flex-grow: 1;
+}
 
 .modal-container .content {
   width: 100%;
