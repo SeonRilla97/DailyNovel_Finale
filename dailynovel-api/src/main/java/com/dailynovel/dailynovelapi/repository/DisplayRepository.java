@@ -10,8 +10,8 @@ import com.dailynovel.dailynovelapi.entity.Diary;
 
 public interface DisplayRepository extends JpaRepository<Diary, Integer> {
 
-    @Query("SELECT d.* FROM Diary d INNER JOIN DiaryDisplay dd ON d.id = dd.diary_id;")
-    public
-    List<Diary> findSharedDiaries;
-    
+    List<Diary> findAll();
+
+    @Query("SELECT d FROM Diary d INNER JOIN DiaryDisplay dd ON d.id = dd.diaryId")
+    List<Diary> findSharedDiaries();
 }

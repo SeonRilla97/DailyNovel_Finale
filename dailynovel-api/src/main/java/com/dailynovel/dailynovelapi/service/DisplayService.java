@@ -5,7 +5,7 @@ import java.util.List;
 import com.dailynovel.dailynovelapi.entity.Diary;
 
 public interface DisplayService {
-
+    List<Diary> getByList();
     List<Diary> getBySharedDiaryList();
     
 }

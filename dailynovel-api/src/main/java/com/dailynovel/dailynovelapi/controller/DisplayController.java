@@ -17,9 +17,19 @@ public class DisplayController {
     @Autowired
     private DisplayService service;
 
+    @GetMapping("listall")
+    public List<Diary> listAll(){
+        return service.getByList();
+    }
+
     @GetMapping("list")
     public List<Diary> list(){
         return service.getBySharedDiaryList();
+    }
+
+    @GetMapping("fuck")
+    public String list333(){
+        return "이거나 드셔";
     }
     
 }
