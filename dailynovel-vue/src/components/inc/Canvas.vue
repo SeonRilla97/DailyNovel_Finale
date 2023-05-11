@@ -1,7 +1,7 @@
 <script>
-import Slime from "./Canvas/item/slime.js"
-import Background from "./Canvas/item/background.js";
-
+import Slime from "../Canvas/item/slime.js";
+import Background from "../Canvas/item/background.js";
+import Layout from "./Layout.vue";
 export default {
   mounted() {
     this.canvas = this.$refs.canvas;
@@ -33,11 +33,11 @@ export default {
       this.x=(event.clientX);
       this.y=(event.clientY);
       if(this.x>=300){
-        this.$router.push('/member/room/diary');
+        this.$router.push('/main/modal/collection');
         this.$emit('modalOpenHandler');
       }
       if(this.x<=300){
-        this.$router.push('/member/room/diary');
+        this.$router.push('/main/modal/diary');
         this.$emit('modalOpenHandler');
       }
     },
@@ -54,7 +54,7 @@ export default {
 
 <template>
   <img src="../../assets/img/background.png" id="background" style="display: none" />
-  <img src="../../assets/img/slime.png" id="slime" style="display: none" />
+  <img src="../../assets/img/silme.png" id="slime" style="display: none" />
   <canvas
     class="canvas"
     width="1280"

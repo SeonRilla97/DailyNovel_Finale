@@ -1,158 +1,80 @@
+<script setup>
+import Header from './Header.vue'
+import List from './List.vue'
+import Editor from './editor.vue'
+import { reactive } from 'vue';
+
+import Filter from './filter.js'
+
+
+const diaryFilter = reactive({
+    diary:{
+        feeling:new Filter(0,["기분","좋음","기쁨","나쁨"]),
+        weather:new Filter(0,["날씨","비","맑음","눈"]),
+        honesty:0,
+        date:["날씨"],
+        sort:new Filter(0,["정렬기준","인기순","최신순","오래된순"]),
+        collection:new Filter(0,["컬렉션","나만의 일기","배부른 일기","더망"]),
+        keyword: ""
+    },
+})
+
+
+function filterClickHandler(selected){
+    switch(selected.menuname){
+        case "feeling":
+            diaryFilter.diary.feeling.idx = selected.menuvalue;
+            break;
+        case "weather":
+            diaryFilter.diary.weather.idx = selected.menuvalue;
+            break;
+        case "date":
+            diaryFilter.diary.date = selected.menuvalue;
+            break;
+        case "sort":
+            diaryFilter.diary.sort.idx = selected.menuvalue;
+            break;
+        case "collection":
+            diaryFilter.diary.collection.idx = selected.menuvalue;
+            break;
+        case "keyword":
+            diaryFilter.diary.keyword = selected.menuvalue;
+            break;
+            
+    }
+    console.log(diaryFilter.diary.feeling.idx)
+        
+}
+</script>
 <template>
     <div class="diary-container">
-        <header class="diary-header">
-            <h1>나의일기</h1>
-                <!-- 드롭다운 메뉴 -->
-                <div class="dropdown">
-                    <div class="btn"><span>기분</span><span class="icon-clamp"></span></div>
-                    <div class="content">
-                        <a href="#">좋음</a>
-                        <a href="#">기쁨</a>
-                        <a href="#">나쁨</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="btn"><span>날씨</span><span class="icon-clamp"></span></div>
-                    <div class="content">
-                        <a href="#">좋음</a>
-                        <a href="#">기쁨</a>
-                        <a href="#">나쁨</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="btn"><span>기분</span><span class="icon-clamp"></span></div>
-                    <div class="content">
-                        <a href="#">좋음</a>
-                        <a href="#">기쁨</a>
-                        <a href="#">나쁨</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="btn"><span>솔직함</span><span class="icon-clamp"></span></div>
-                    <div class="content">
-                        <a href="#">좋음</a>
-                        <a href="#">기쁨</a>
-                        <a href="#">나쁨</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="btn"><span>날짜</span><span class="icon-clamp"></span></div>
-                    <div class="content">
-                        <a href="#">좋음</a>
-                        <a href="#">기쁨</a>
-                        <a href="#">나쁨</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <div class="btn"><span>날짜</span><span class="icon-clamp"></span></div>
-                    <div class="content">
-                        <a href="#">좋음</a>
-                        <a href="#">기쁨</a>
-                        <a href="#">나쁨</a>
-                    </div>
-                </div>
-
-                <div>
-                    <input type="text">
-                </div>
-        </header>
-
+        <Header class="no-scroll"  :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
 
         <section class="diary-main">
-            <nav class="list">
-                s
-            </nav>
+            <List/>
 
-            <article class="content">
-                s
-            </article>
+            <Editor />
         </section>
     </div>
 </template>
 
 
 <style scpoed>
+/* 페이지 컨테이너 */
 .diary-container{
     display:flex;
     flex-direction: column;
-    width:100%;
-    height:100%
 }
-
-.diary-header {
-    display:flex;
-    align-items: center;
-    height:42px;
-}
-
-    
-    .dropdown .btn {
-    
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    box-sizing: border-box;
-    }
-
-    .dropdown {
-    position: relative;
-    display: inline-block;
-    margin-left: 40px;
-    }
-
-    .dropdown .content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    }
-
-    .dropdown .content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    }
-
-    .dropdown .content a:hover {background-color: #f1f1f1}
-
-    .dropdown:hover .content{
-    display: block;
-    }
-    .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-    }
-
+/* 다이어리 컨텐츠 부분 레이아웃 잡기*/
 .diary-main{
 display:flex;
 flex-grow: 1;
 }
-    .diary-main .list{
-        width:30%;
-        /* background-color: #3e8e41; */
-        height: 100%;
-    }
-    .diary-main .content{
-        width:70%;
-        height:100%;
-        background-color:aqua ;
-    }
 
-
-
-
-    .icon-clamp{
-        background-image: url("/workspace/DailyNovel_Finale/dailynovel-vue/src/assets/img/clamp.svg");
-        width:20px;
-        height:20px;
-        background-repeat: no-repeat;
-        background-position: center center;
-    }
+.no-scroll {
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
 </style>
