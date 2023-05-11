@@ -44,6 +44,7 @@ const routes =  [
 ]
 
 
+
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
   // { path: '/member', children:[
   //   {path: 'room', component: Layout, children:[
