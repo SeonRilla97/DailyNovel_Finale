@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 let router = useRouter();
 
 function showDetailHandler() {
-  router.push("/member/room/guestbook/detail");
+  router.push("/member/guestbook/detail");
 }
 </script>
 
