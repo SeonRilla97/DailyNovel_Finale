@@ -10,13 +10,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+//
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class diary {
+public class Diary {
     @Id
     private int id;
     @Column(name="member_id")
@@ -24,9 +24,9 @@ public class diary {
     private String title;
     private String content;
     private String weather;
-    private String feelString;
+    private String feeling;
     private String honesty;
-    private String teg;
-    private int diaryId;
+    private String tag;
+    @Column(name="reg_date")
     private Date date;
 }
