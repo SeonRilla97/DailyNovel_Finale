@@ -126,7 +126,7 @@ function onCalendarClickHandler() {
   background-color: #FAFFF9;
 
   position: fixed;
-  /* max-width:1920px; */
+  max-width:1920px;
   max-width: 1280px;
   max-height: 720px;
   width: 90%;
