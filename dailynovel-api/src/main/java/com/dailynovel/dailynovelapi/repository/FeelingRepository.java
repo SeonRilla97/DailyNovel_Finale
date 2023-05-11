@@ -1,5 +1,6 @@
 package com.dailynovel.dailynovelapi.repository;
 
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.dailynovel.dailynovelapi.entity.Feeling;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 public interface FeelingRepository extends JpaRepository<Feeling, Integer>{
+    @Query("")
 
 }
 

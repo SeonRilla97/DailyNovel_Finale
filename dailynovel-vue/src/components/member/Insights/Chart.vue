@@ -3,8 +3,8 @@
   <main class="screen">
 
     <div class="select-box">
-      <router-link to="/member/achievement" @click="modalOpenHandler"><p class="Move">업적</p></router-link>
-      <router-link to="/member/chart" @click="modalOpenHandler"><p class="Move">차트</p></router-link>
+      <router-link to="/member/achievement" @click.prevent="modalOpenHandler"><p class="Move">업적</p></router-link>
+      <router-link to="/member/chart" @click.prevent="modalOpenHandler"><p class="Move">차트</p></router-link>
     </div>
 
 
@@ -43,7 +43,7 @@
   
 
 <script>
-import Achievement from '../Achievements/Achievements.vue'
+import Achievement from '../Insights/Achievements.vue'
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
