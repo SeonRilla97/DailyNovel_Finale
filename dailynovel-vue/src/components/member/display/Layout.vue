@@ -11,11 +11,11 @@
         </ul>
         <br>
         <br>
-        <section>
+        <section style="display:grid; justify-content:center ; overflow:hidden; grid-gap:1rem">
             <h1 class="">게시판 리스트</h1>
             <ul class="commu-content-grid">
                 <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
-                <li class="" v-for="m in 10">
+                <li class="" v-for="m in 4">
                     <div class="content-box">
                         <div class="content-title">
                             <div></div>
@@ -69,13 +69,13 @@
 </template>
 <script setup>
 
-// import { onMounted, reactive,ref, } from 'vue'
+import { onMounted, reactive,ref, } from 'vue'
 
-// // 되는 gpt코드 -> 비교해보기
-// let model = reactive([]);
-// let count = ref();
-// let category = reactive([]);
-// let currentCategory = ref(1);
+// 되는 gpt코드 -> 비교해보기
+let model = reactive([]);
+let count = ref();
+let category = reactive([]);
+let currentCategory = ref(1);
 
 
 
@@ -106,9 +106,9 @@
 // load()
 // })
 
-// function categoryClick(page){
-// currentCategory.value=page;
-// }
+function categoryClick(page){
+currentCategory.value=page;
+}
 
 </script>
 <style scoped>
@@ -138,7 +138,7 @@ justify-content: center;
 li {
 display: inline-block;
 list-style: none;
-padding-left: 0.5rem;
+/* padding-left: 0.5rem; */
 }
 
 .active-commu-category {

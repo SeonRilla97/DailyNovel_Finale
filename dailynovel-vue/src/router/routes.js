@@ -12,6 +12,8 @@ import guestbook  from './guestbook.js';
 import collection  from './collection.js';
 import display  from './display.js';
 import diary  from './diary.js';
+import follow from './follow.js';
+import profile from './profile.js';
 
 
 const routes =  [
@@ -38,11 +40,13 @@ const routes =  [
       {path: 'chart', component:Chart},
       collection,
       guestbook,
+      display,
+      profile,
+      follow,
   ]}      
 ]}
-
-
 ]
+
 
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
