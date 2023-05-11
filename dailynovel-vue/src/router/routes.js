@@ -12,6 +12,8 @@ import guestbook  from './guestbook.js';
 import collection  from './collection.js';
 import display  from './display.js';
 import diary  from './diary.js';
+import follow from './follow.js';
+import profile from './profile.js';
 
 
 const routes =  [
@@ -39,6 +41,8 @@ const routes =  [
       collection,
       guestbook,
       display,
+      profile,
+      follow,
   ]}      
 ]}
 ]
