@@ -3,10 +3,10 @@
 
 
     <div class="select-box">
-      <router-link to="/member/achievement" @click="modalOpenHandler">
+      <router-link to="/member/room/achievement" @click="modalOpenHandler">
         <p class="Move">업적</p>
       </router-link>
-      <router-link to="/member/chart" @click="modalOpenHandler">
+      <router-link to="/member/room/chart" @click="modalOpenHandler">
         <p class="Move">차트</p>
       </router-link>
     </div>

@@ -15,21 +15,17 @@
             <h1 class="">게시판 리스트</h1>
             <ul class="commu-content-grid">
                 <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
-                <li class="" v-for="m in 4">
+                <li class=""  v-for="(l, i) in model" :key="i">
                     <div class="content-box">
                         <div class="content-title">
-                            <div></div>
-                            <p class="sspan">일이삼사오육칠팔구십</p>
+                            <p><b>{{l.title}}</b></p>
                         </div>
                         <div class="content-underline">
                             <hr>
                         </div>
-                        <router-link :to="'/detail?id='">
+                        <router-link to="community/detail">
                             <div class="content-subject"> 
-                                일기 내용 칸<br>
-                                이<br>삼<br>사<br>오<br>육<br>칠<br>팔<br>구<br>십<br>십일<br>십이<br>십삼<br>십사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십<br>
-                                십오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십<br>
-                                십육<br>십칠<br>십팔<br>십규<br>이십<br>이십일<br>이십이<br>
+                                {{l.content}}
                             </div>
                         </router-link>
                         <div class="content-like-count">
@@ -39,30 +35,6 @@
                 </li>
             </ul>
             <div class="center-grid"><div class="more-btn">더보기 + 99</div></div>
-            <!-- <h1 class="d-none">게시판 리스트</h1>
-            <ul class="commu-content-grid">
-                <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)">
-                    {{currentCategory}}, {{m.category==currentCategory}}
-                    <div class="content-box">
-                        <div class="content-title">
-                            <div></div>
-                            <p class="sspan" v-show="m.share==1">{{m.title}}</p>
-                        </div>
-                        <div class="content-underline">
-                            <hr>
-                        </div>
-                        <router-link :to="'/detail?id='+m.id">
-                            <div class="content-subject">{{m.subject}}
-                            </div>
-                        </router-link>
-                        <div class="content-like-count">
-                            <div class="like-active inline"></div><span>{{m.like}}</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <div class="center-grid"><div class="more-btn" v-show="currentCategory==''">카테고리를 선택해</div></div>
-            <div class="center-grid"><div class="more-btn" v-show="currentCategory!=''">더보기 + {{ count -8 }}</div></div> -->
         </section>
     </main>
 </section>
@@ -79,10 +51,10 @@ let currentCategory = ref(1);
 
 
 
-// async function load() {
-// const resList = await fetch('http://localhost:8080/community/populer')
-// const data = await resList.json()
-// model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
+async function load() {
+const resList = await fetch('http://localhost:8080/display/list')
+const data = await resList.json()
+model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
 
 // const resLikeCount = await fetch('http://localhost:8080/community/count2')
 // const data2 = await resLikeCount.json()
@@ -99,12 +71,12 @@ let currentCategory = ref(1);
 // // const resDetail = await fetch(`http://localhost:8080/community/detail2?id=${this.$route.query.id}`);
 // // const data4 = await resDetail.json()
 // // console.log(data4);
-// }
+}
 
 
-// onMounted(()=>{
-// load()
-// })
+onMounted(()=>{
+load()
+})
 
 function categoryClick(page){
 currentCategory.value=page;
@@ -186,6 +158,7 @@ white-space: nowrap;
 overflow: hidden;
 /*요소의 영역을 벗어나는 내용은 잘리고 표시되지 않음 */
 text-overflow: ellipsis;
+text-align: center;
 /* 잘린 텍스트를 ...으로 표시 */
 }
 
