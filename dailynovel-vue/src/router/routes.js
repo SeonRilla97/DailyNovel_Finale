@@ -38,9 +38,11 @@ const routes =  [
       {path: 'chart', component:Chart},
       collection,
       guestbook,
-    ]}      
- ]
-}
+      display,
+  ]}      
+]}
+]
+
 
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
