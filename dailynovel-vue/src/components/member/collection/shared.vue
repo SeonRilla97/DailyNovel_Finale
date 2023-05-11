@@ -3,8 +3,8 @@
     <div class="shared-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <div class="ib active">일기</div>
-                <div class="ib mgl-2">댓글</div>
+                <div class="ib active">인기</div>
+                <div class="ib mgl-2">최신</div>
             </div>
             <div class="icon-back"></div>
         </header>

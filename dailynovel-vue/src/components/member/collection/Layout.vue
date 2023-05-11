@@ -2,7 +2,7 @@
 
 <section class="collection-container">
     <header>
-        <div class="pdl-5 h2 font-bold"><router-link class="" to="./main">컬렉션</router-link></div>
+        <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
     </header>
     <transition name="fade">
         <router-view></router-view>
