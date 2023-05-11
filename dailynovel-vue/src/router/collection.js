@@ -11,11 +11,9 @@ const route =
     path: 'collection', component:Layout, children:[
       { path: 'main', component:Main},
       { path: 'shared', component:shared},
-      {path: 'detail', compoent: DetailLayout, children :[
-        {path: 'diary', component: Diary},
-        {path: 'comment', component: Comment}
+      {path: 'diary', component: Diary},
         
-      ]}
+      
     ]
   }
 

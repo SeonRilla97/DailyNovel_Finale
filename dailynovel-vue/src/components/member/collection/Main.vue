@@ -10,160 +10,157 @@ function registerFromHandler(){
 
 <template>
 
-        <div class="slide-container" >
-            <div class="create-collection-form box">
+        <div class="collection-container" >
+            <div class="register-form box mgl-5">
 
             <transition name="fade">
-                <div class="register-form shape" v-if="registerMenuController">
+                <div class="create box" v-if="registerMenuController">
+                    
                     <div class="title">컬렉션의 제목은<br/>무엇인가요?</div>
-                    <div class="form">
-                        <input class="input mgt-6" type="text">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                    </div>
+                        <input class="input" type="text">
+                        <div class="err">컬렉션 이름은 중복할 수 없어요</div>
                     <div class="submit">
-                        <span class="register ib">생성</span>
-                        <span class="cancel ib mgl-5" @click="registerFromHandler">취소</span>
+                        <span class="btn-reg ib">생성</span>
+                        <span class="btn-cancel ib mgl-5" @click="registerFromHandler">취소</span>
                     </div>
                 </div>
             </transition>
 
             <transition name="fade">
-                <div class="register-btn" v-if="!registerMenuController" @click="registerFromHandler">
+                <div class="reg-btn box" v-if="!registerMenuController" @click="registerFromHandler">
                     <div class="header"></div>
-                    <div class="main">
-                        <div class="title">나만의 컬렉션을<br/>추가해보세요</div>
-                        <div class="icon-plus mgt-5"></div>
-                    </div>
+                    <div class="title">나만의 컬렉션을<br/>추가해보세요</div>
+                    <div class="icon-plus icon"></div>
                 </div>
             </transition>
             </div>
-            <router-link to="./shared">
-                <div class="box my-diary-btn mgl-5">
+            <router-link to="./shared" class="mgl-5">
+                <div class="box">
                     <div class="header"></div>
                     <h1 class="title">공유되었던 일기들</h1>
                     <div></div>
                 </div>
             </router-link>
 
-            <router-link to="./diary">
-                <div class="box content">
+            <router-link to="./diary" class="mgl-5">
+                <div class="box">
                     <div class="header"></div>
-                    <div class="icon-tack icon"></div>
                     <h1 class="title">가장 행복했던 순간들</h1>
-                    <div class="lc-center"><div class="icon-chat ib"></div><span class="ib mgl-2">12</span></div>
+                    <div class="icon-tack"></div>
+                </div>
+            </router-link>
+
+            <router-link to="./diary" class="mgl-5">
+                <div class="box">
+                    <div class="header"></div>
+                    <h1 class="title">나의 영화일지</h1>
+                    <div></div>
+                </div>
+            </router-link>
+
+            <router-link to="./diary" class="mgl-5">
+                <div class="box">
+                    <div class="header"></div>
+                    <h1 class="title">여행 가볼까요</h1>
+                    <div></div>
                 </div>
             </router-link>
 
         </div>
 </template>
 <style scoped>
-
-
-.collection-container > .main{
-    display:flex;
-    /* align-items: center; */
-    overflow-x:scroll;
-    width:100%;
-}
-
-.collection-container .main .slide-container{
+.collection-container{
     display:flex;
     align-items: center;
-    /* transform: translateY(-10%); */
-    padding:0 58px ;
-    /* box-sizing: border-box; */
-} 
+    overflow-x: scroll;
+}
 
-.collection-container .main .box{
+/* Box 관련 CSS */
+.collection-container .box{
+    /* background-color: aqua; */
     width:240px;
     height: 360px;
-    margin-left: 36px;
+
+    min-width:240px;
+    min-height:360px;
+
+    display:grid;
+    grid-template-rows: repeat(5,1fr);
+
     border: 1px solid #00000020;
     border-radius: 12px;
-    display:grid;
-    grid-template-rows: 1.35fr 4.24fr 1fr;
-    text-align: center;
-    position:relative;
-}
-.collection-container .main .box .shape,
-.collection-container .main .box .register-btn{
-    width:240px;
-    height: 360px;
-    display:grid;
-    grid-template-rows: 1.35fr 4.24fr 1fr;
-    text-align: center;
-    position:relative;
-}
-.collection-container .main .box:nth-child(1){
-    margin-left:0
-}
-.collection-container .main .box:nth-child(2){
-    /* margin-left:0 */
-}
-
-
-
-.collection-container .main .box .title{
-
+    
+    text-align:center;
     font-size: 20px;
-    font-weight: bold;
+    align-items: center;
+    /* justify-content: center; */
 }
-.collection-container .main .box .register-form{
+.collection-container > a:last-child{
+    margin-right:3rem;
+}
+.collection-container .box .title{
+    font-size:20px;
+    font-weight: bolder;
+}
+
+/* 컬렉션 등록 박스 */
+.collection-container .register-form{
+    position:relative;
     
 }
-.collection-container .main .box .register-form >.title{
-    align-self: end;
-    transform: translateY(30px);
+.box.create{
+    position:absolute;
+    margin-left: 0 !important;
+    border:none;
 }
-.collection-container .main .box .register-form .form >input{
-    width:180px;
-    height:40px;
+.box.create .title{
+    align-self: start;
+    grid-row-start: 2;
+    grid-row-end:3;
+}
+.box.create .input{
     border-radius: 10px;
-    border:1px solid #9f9f9f;
+    border: 1px solid #9f9f9f;
+    width:184px;
+    height:39px;
+    justify-self: center;
+    align-self: center;
     background-color: transparent;
-    text-align:center;
-    font-size:16px;
-}
-.collection-container .main .box .register-form .form >.title-err{
-    color:red;
-    font-weight: 550;
-    font-size:14px
-}
-.collection-container .main .box .register-form .submit{
+    text-align: center;
     font-size:20px;
-    font-weight: bold;
-    display:flex;
-    justify-content: center;
-    transform: translateY(-30px);
-    height:fit-content;
+    grid-row-start: 3;
+    grid-row-end:4;
 }
-
-.collection-container .main .box.register-form .submit > .register:hover{
-    color:#8ADA7D;
-    cursor:pointer;
-}
-.collection-container .main .box.register-form .submit > .cancel:hover{
+.box.create .err{
+    font-size:16px;
     color:red;
-    cursor:pointer;
+    grid-row-start: 4;
+    grid-row-end:5;
+    align-self: start;
 }
+.box.create .submit{
+    align-self: start;
+    grid-row-start: 5;
+}
+    .box.create .submit .btn-reg:hover{
+        color:#6ce04f;
+        cursor: pointer;
+    }
+    .box.create .submit .btn-cancel:hover{
+        color:red;
+        cursor: pointer;
+    }
 
-.collection-container .main .box.register-btn .main{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-}
-.collection-container .main .register-btn{
+/* 컬렉션 등록 버튼 */
+.box.reg-btn{
     position:absolute;
+    margin-left: 0;
+    border:none;
+    cursor: pointer;
 }
-.collection-container .main .register-btn,
-.collection-container .main .my-diary-btn,
-.collection-container .main .content{
-    cursor:pointer;
-}
-
-.collection-container .main .box.content .icon{
-    position:absolute;
-    right: 0;
+.box.reg-btn .icon{
+    justify-self: center;
+    align-self: end;
 }
 .icon-plus{
     background-image: url("../../../assets/img/plus.svg");
@@ -172,6 +169,7 @@ function registerFromHandler(){
     background-position: center center;
     width:32px;
     height: 32px;
+    
 }
 .icon-tack{
     background-image: url("../../../assets/img/pin.svg");
