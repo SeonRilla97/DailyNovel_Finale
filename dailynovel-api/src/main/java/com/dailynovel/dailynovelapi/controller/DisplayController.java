@@ -26,10 +26,5 @@ public class DisplayController {
     public List<Diary> list(){
         return service.getBySharedDiaryList();
     }
-
-    @GetMapping("fuck")
-    public String list333(){
-        return "이거나 드셔";
-    }
     
 }
