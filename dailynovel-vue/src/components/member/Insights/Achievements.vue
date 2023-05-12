@@ -3,10 +3,10 @@
 
 
     <div class="select-box">
-      <router-link to="/member/achievement" @click="modalOpenHandler">
+      <router-link to="/member/room/achievement">
         <p class="Move">업적</p>
       </router-link>
-      <router-link to="/member/chart" @click="modalOpenHandler">
+      <router-link to="/member/room/chart">
         <p class="Move">차트</p>
       </router-link>
     </div>
@@ -62,23 +62,26 @@ const honestyData = ref('');
 const feelingData = ref('');
 
 var myHeaders = new Headers();
-myHeaders.append("Cookie", "JSESSIONID=00FBFDB24A1BDD060C55F8F3B78E8B1F");
+myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+myHeaders.append("Cookie", "JSESSIONID=4964651022017A62454CE2C93A2427CA");
 
 const HrequestOptions = {
   method: 'GET',
   headers: myHeaders,
+  body: `memberId=${user.id}`,
   redirect: 'follow'
 };
 
 var FrequestOptions = {
   method: 'GET',
   headers: myHeaders,
+  body: `memberId=${user.id}`,
   redirect: 'follow'
 };
 
 
 async function Fload() {
-  const response = await fetch("http://localhost:8080/analysis/feeling-chart?name&frequency", FrequestOptions);
+  const response = await fetch("http://localhost:8080/analysis/feeling-chart?name", FrequestOptions);
   const data = await response.json();
   feeling = data;
   console.log("feeling:", feeling);

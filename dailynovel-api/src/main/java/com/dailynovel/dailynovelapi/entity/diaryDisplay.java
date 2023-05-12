@@ -1,8 +1,11 @@
 package com.dailynovel.dailynovelapi.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +16,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Member {
+@Table(name = "diary_display")
+public class diaryDisplay {
     @Id
-    private Integer id;
-    @Column(name="nickname")
-    private String nickname; //무조건 user_name으로 sql으로 들어가짐
-    @Column(name="password")
-    private String password;
-    private String email;
-    public boolean isEmpty() {
-        return false;
-    }
+    private int id;
+    @Column(name="member_id")
+    private int memberId;
+    @Column(name="diary_id")
+    private int diaryId;
+    @Column(name="reg_date")
+    private Date date;
+
 }

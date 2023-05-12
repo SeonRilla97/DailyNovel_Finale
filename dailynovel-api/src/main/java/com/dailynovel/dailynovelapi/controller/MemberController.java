@@ -23,6 +23,7 @@ public class MemberController {
     
     @PostMapping("login")
     public ResponseEntity<Map<String,Object>> isValid(String email , String password){
+        System.out.println(email+password);
         Map<String,Object> dto = new HashMap<>();
         dto.put("result",false);
         if(service.isValid(email, password)){

@@ -1,4 +1,44 @@
 <script setup>
+import { reactive, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useUserDetailsStore } from '../store/useUserDetailsStore.js';
+let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
+let router = useRouter();
+let route = useRoute();//라우팅의 정보를 가져다 주는애
+let user = reactive({
+    useremail: "",
+    password: "",
+    roles: ""
+});
+let loginFalse = ref(false);
+
+async function loginHandler() {
+    console.log(user.email);
+    let response = await fetch("http://localhost:8080/members/login", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-type": "application/x-www-form-urlencoded"
+        },
+        body: `email=${user.email}&password=${user.password}`
+    });
+    let json = await response.json();
+
+    //새롭게 데이터를 받아보자
+    userDetails.usernickname = json.result.usernickname;
+    //userDetails.password= json.result.pwd;
+    userDetails.email = json.result.email;
+    userDetails.roles = json.roles;
+    let returnURL = route.query.returnURL;
+
+    if(userDetails.email==null)
+    loginFalse.value =    true;
+    else if (returnURL)
+        router.push(returnURL);
+    else
+        router.push("./member");
+}
+
 
 </script>
 <template>
@@ -6,37 +46,43 @@
         <div class="main lc-vertical-alignment ">
             <div class="main-svg" />
             <div class="form">
-                <form method="post">
-                    <div class="input3 ">
+                <form method="post" enctype="application/x-www-form-urlencoded">
+                    <div class="mgt-4" v-if="loginFalse"><span>asdfasdfasdfasd</span></div>
+                    <div class="input3 mgt-4">
                         <div class="div-placeholder">
-                            <input id="email" class="text04 " type="text" tabindex="0" placeholder="이메일">
+                            <input id="email" class="text04 " type="text" tabindex="0" placeholder="이메일" required
+                                v-model="user.email" />
                         </div>
                     </div>
-                    <div class="input3 mgt-3">
-                        <div class="div-placeholder">
-                            <input class="text04" type="password" placeholder="비밀번호">
+                    <div class="input3">
+                        <div class="div-placeholder mgt-1">
+                            <input id="password" class="text04" type="password" placeholder="비밀번호" required
+                                v-model="user.password" />
                         </div>
                     </div>
-                    <button class="button1 mgt-3">
+                    <button class="button1 mgt-3" @click.prevent="loginHandler">
                         <router-link to="./login" class="text07">로그인</router-link>
                     </button>
                 </form>
-                <div class="main-logo lc-horizontal-alignment pdt-3">
-                    <router-link to="./" class="text">비밀번호 재설정</router-link>
-                    <router-link to="./" class="text02">회원가입</router-link>
+                <div class="lc-horizontal-alignment mgt-3">
+                    <div class="">
+                        <router-link to="./signup" class="text02 ">회원가입</router-link>
+                    </div>
                 </div>
             </div>
-            <div>
-            <router-link to="./login" class="text09">SNS계정으로 간편 로그인/회원가입</router-link>
+            <div class="mgt-3">
+                <router-link to="./login" class="text09">SNS계정으로 간편 로그인/회원가입</router-link>
             </div>
-            <div class="lc-horizontal-alignment">
-                <div class="facebook-svg" />
-                <div class="kakao-svg1" />
-                <div class="naver-svg2" />
+            <div class="lc-horizontal-alignment mgt-3">
+                <div class="facebook-svg " @click.prevent="googleLogin"/>
+                <div class="kakao-svg1 mgl-4"  @click.prevent="kakaoLogin"/>
+                <div class="naver-svg2 mgl-4"  @click.prevent="naverLogin"/>
             </div>
-            <span class="text11">
-                <router-link to="./login">로그인에 무슨 문제 있으신가요?</router-link>
-            </span>
+            <div class="mgt-3">
+                <span class="text11 ">
+                    <router-link to="./login">로그인에 무슨 문제 있으신가요?</router-link>
+                </span>
+            </div>
         </div>
     </div>
 </template>
@@ -55,7 +101,9 @@
 .main-svg {
     width: 11.75rem;
     height: 5.9375rem;
-    background-image: url('./assets/1.png');
+    background-image: url("../../assets/img/logo/mainlogo.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .form {
@@ -63,11 +111,7 @@
     height: 12.875rem;
 }
 
-.main-logo {
-    width: 18.75rem;
-    height: 0.9375rem;
 
-}
 
 .text {
     color: rgba(66, 66, 66, 1);
@@ -108,7 +152,9 @@
 }
 
 .text04 {
-    color: rgba(189, 189, 189, 1);
+    width: 16.75rem;
+    height: 3.125rem;
+    color: rgb(106, 96, 96);
     font-size: 0.9375rem;
     font-style: DemiLight;
     text-align: left;
@@ -159,18 +205,21 @@
 .facebook-svg {
     width: 48px;
     height: 50px;
+    background-repeat: no-repeat;
     background-image: url("data:image/svg+xml,%3Csvg width='48' height='49' viewBox='0 0 48 49' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1537_4364)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 24.9697C0 11.7147 10.745 0.969727 24 0.969727C37.255 0.969727 48 11.7147 48 24.9697C48 38.2247 37.255 48.9697 24 48.9697C10.745 48.9697 0 38.2247 0 24.9697Z' fill='%233B5998'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M25.77 35.9697V24.9697H29.154V21.5847H25.769V19.0467C25.757 18.2907 25.849 17.7617 27.462 17.3547H29.154V13.9697H25.769C22.519 13.9697 21.249 15.8097 21.539 19.0467V21.5847H19V24.9697H21.538V35.9697H25.769H25.77Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1537_4364'%3E%3Crect y='0.969727' width='48' height='48' rx='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
 }
 
 .kakao-svg1 {
     width: 48px;
     height: 50px;
+    background-repeat: no-repeat;
     background-image: url("data:image/svg+xml,%3Csvg width='48' height='49' viewBox='0 0 48 49' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1537_4369)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 24.9697C0 11.7147 10.745 0.969727 24 0.969727C37.255 0.969727 48 11.7147 48 24.9697C48 38.2247 37.255 48.9697 24 48.9697C10.745 48.9697 0 38.2247 0 24.9697Z' fill='%23FFEB00'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M24 12.2471C32.284 12.2471 39 17.5531 39 24.0971C39 30.6421 32.284 35.9471 24 35.9471C23.08 35.9471 22.178 35.8811 21.303 35.7561L15.222 39.8611C15.1492 39.9188 15.0597 39.9513 14.9668 39.9539C14.8739 39.9565 14.7827 39.9289 14.7069 39.8753C14.631 39.8217 14.5745 39.745 14.5459 39.6566C14.5172 39.5683 14.518 39.473 14.548 39.3851L15.962 34.1031C11.777 32.0011 9 28.3051 9 24.0971C9 17.5531 15.716 12.2471 24 12.2471ZM30.22 20.6541C29.804 20.6541 29.502 20.9511 29.502 21.3611V27.3001C29.502 27.7101 29.791 27.9861 30.22 27.9861C30.63 27.9861 30.938 27.6911 30.938 27.3001V25.3681L31.453 24.8421L33.338 27.4121C33.615 27.7861 33.764 27.9521 34.029 27.9801C34.066 27.9831 34.104 27.9851 34.141 27.9851C34.295 27.9851 34.801 27.9451 34.857 27.4221C34.895 27.1291 34.72 26.9021 34.509 26.6261L32.466 23.9511L34.193 22.2081L34.369 22.0121C34.603 21.7521 34.722 21.6221 34.722 21.4251C34.731 21.0031 34.382 20.7731 34.035 20.7641C33.761 20.7641 33.578 20.9141 33.465 21.0261L30.937 23.6601V21.3601C30.937 20.9381 30.649 20.6541 30.22 20.6541ZM20.856 20.6541C20.296 20.6541 19.938 21.0861 19.789 21.4911L17.706 27.0081C17.6642 27.1079 17.6422 27.2149 17.641 27.3231C17.641 27.6951 17.951 27.9861 18.347 27.9861C18.706 27.9861 18.925 27.8241 19.037 27.4761L19.358 26.5061H22.357L22.67 27.4881C22.781 27.8231 23.01 27.9861 23.37 27.9861C23.737 27.9861 24.025 27.7131 24.025 27.3661C24.025 27.3101 24.008 27.1701 23.944 26.9971L21.925 21.4891C21.738 20.9591 21.348 20.6541 20.856 20.6541ZM17.936 20.7181H13.484C13.067 20.7181 12.842 21.0551 12.842 21.3721C12.842 21.6721 13.01 22.0241 13.484 22.0241H14.994V27.2341C14.994 27.6981 15.268 27.9861 15.71 27.9861C16.153 27.9861 16.428 27.6981 16.428 27.2351V22.0251H17.936C18.41 22.0251 18.579 21.6731 18.579 21.3721C18.579 21.0551 18.354 20.7181 17.936 20.7181ZM25.49 20.6541C25.048 20.6541 24.773 20.9411 24.773 21.4041V27.1111C24.773 27.6081 25.053 27.9051 25.523 27.9051H28.197C28.631 27.9051 28.874 27.5841 28.883 27.2781C28.8888 27.1909 28.8767 27.1034 28.8474 27.021C28.8182 26.9387 28.7724 26.8631 28.713 26.7991C28.591 26.6691 28.413 26.5991 28.197 26.5991H26.207V21.4041C26.207 20.9411 25.933 20.6541 25.49 20.6541ZM20.87 21.9701L21.953 25.2351H19.761L20.842 21.9701C20.8431 21.9672 20.845 21.9648 20.8475 21.9631C20.85 21.9614 20.853 21.9605 20.856 21.9605C20.859 21.9605 20.862 21.9614 20.8645 21.9631C20.867 21.9648 20.8689 21.9672 20.87 21.9701Z' fill='%233C2929'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1537_4369'%3E%3Crect y='0.969727' width='48' height='48' rx='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E ");
 }
 
 .naver-svg2 {
     width: 48px;
     height: 50px;
+    background-repeat: no-repeat;
     background-image: url("data:image/svg+xml,%3Csvg width='48' height='49' viewBox='0 0 48 49' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1537_4374)'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 24.9697C0 11.7147 10.745 0.969727 24 0.969727C37.255 0.969727 48 11.7147 48 24.9697C48 38.2247 37.255 48.9697 24 48.9697C10.745 48.9697 0 38.2247 0 24.9697Z' fill='%2300C63B'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M21 26.2007V34.9697H14V15.9697H21L27 24.7387V15.9697H34V34.9697H27L21 26.2007Z' fill='white'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1537_4374'%3E%3Crect y='0.969727' width='48' height='48' rx='24' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
 }
 

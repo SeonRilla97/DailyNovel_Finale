@@ -8,5 +8,5 @@ public interface MemberService {
     // 레파지토리인지 엔티티껄 사용하는지
     // 그럼 db는 언제들고오는지
     // 
-    Member getByEmail(String username);
+    Member getByEmail(String email);
 }

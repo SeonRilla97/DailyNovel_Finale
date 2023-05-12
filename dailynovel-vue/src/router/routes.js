@@ -12,21 +12,40 @@ import Achievement from '../components/member/Insights/Achievements.vue';
 import Chart from '../components/member/Insights/Chart.vue';
 
 import guestbook  from './guestbook.js';
+import collection  from './collection.js';
+import display  from './display.js';
+import diary  from './diary.js';
+
 
 const routes =  [
-  { path: '/user', component: LoginLayout, children:[
-      {path: 'login', component:Login},
-      {path: 'signup', component:Signup}
+  {
+    path: '/', component: LoginLayout, children: [
+      {path: 'signup', component:Signup} , 
+        { path: 'login', component: Login },
+        {
+            path: 'error', children: [
+                { path: '403', component: ()=> import ("./error/403.vue")}
+            ]
+        },
+        {
+            path:"/:pathMatch(.*)*",
+            component: ()=> import ("./error/404.vue")
+        }
     ]
-  },
-
-  { path: '/member', component: memberLayout, children :[    
-      {path: 'diary', component:DiaryLayout},
+    //pathMatch,동적인  import-> 미리로드하지 않고 쓸지 않쓸지 모르는 걸 위한 Lazy로딩법
+},
+{ path: '/member', children :[
+  { path: 'room', component: memberLayout, children :[ 
+      diary,
       {path: 'achievement', component:Achievement},
       {path: 'chart', component:Chart},
+      collection,
       guestbook,
-    ]}      
- ]
+  ]}      
+]}
+
+
+]
 
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
