@@ -42,7 +42,7 @@ function registerFromHandler(){
                 </div>
             </router-link>
 
-            <router-link to="./diary" class="mgl-5">
+            <router-link to="./detail/comment" class="mgl-5">
                 <div class="box">
                     <div class="header"></div>
                     <h1 class="title">가장 행복했던 순간들</h1>
@@ -50,7 +50,7 @@ function registerFromHandler(){
                 </div>
             </router-link>
 
-            <router-link to="./diary" class="mgl-5">
+            <router-link to="./detail/diary" class="mgl-5">
                 <div class="box">
                     <div class="header"></div>
                     <h1 class="title">나의 영화일지</h1>
