@@ -2,6 +2,8 @@
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserDetailsStore } from '../store/useUserDetailsStore.js';
+import { decodeCredential } from 'vue3-google-login';
+import { googleLogout } from 'vue3-google-login';
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 let router = useRouter();
 let route = useRoute();//라우팅의 정보를 가져다 주는애
@@ -31,12 +33,39 @@ async function loginHandler() {
     userDetails.roles = json.roles;
     let returnURL = route.query.returnURL;
 
-    if(userDetails.email==null)
-    loginFalse.value =    true;
+    if (userDetails.email == null)
+        loginFalse.value = true;
     else if (returnURL)
         router.push(returnURL);
     else
         router.push("./member");
+}
+
+function googleLogin(response) {
+
+    let userData = decodeCredential(response.credential);
+
+    userDetails.usernickname = userData.name;
+    userDetails.email = userData.email;
+    userDetails.roles = ["MEMBER"];
+    let returnURL = route.query.returnURL;
+
+    if (userDetails.email == null)
+        loginFalse.value = true;
+
+    else if (returnURL)
+        router.push(returnURL);
+    else
+        router.push("./member/room");
+
+
+
+}
+
+
+function logoutHandler() {
+    googleLogout();
+    userDetails.logout();
 }
 
 
@@ -74,9 +103,10 @@ async function loginHandler() {
                 <router-link to="./login" class="text09">SNS계정으로 간편 로그인/회원가입</router-link>
             </div>
             <div class="lc-horizontal-alignment mgt-3">
-                <div class="facebook-svg " @click.prevent="googleLogin"/>
-                <div class="kakao-svg1 mgl-4"  @click.prevent="kakaoLogin"/>
-                <div class="naver-svg2 mgl-4"  @click.prevent="naverLogin"/>
+                <GoogleLogin :callback="googleLogin" />
+                <div class="kakao-svg1 mgl-4" @click.prevent="kakaoLogin" />
+
+                <div class="naver-svg2 mgl-4" @click.prevent="naverLogin" />
             </div>
             <div class="mgt-3">
                 <span class="text11 ">

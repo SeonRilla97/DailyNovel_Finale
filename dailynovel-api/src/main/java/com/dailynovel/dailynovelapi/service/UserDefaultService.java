@@ -1,63 +1,92 @@
-// package com.dailynovel.dailynovelapi.service;
+package com.dailynovel.dailynovelapi.service;
 
-// import java.util.Random;
+import java.util.Random;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.mail.javamail.JavaMailSenderImpl;
-// import org.springframework.stereotype.Service;
-// import org.springframework.security.crypto.password.PasswordEncoder;
-// import com.dailynovel.dailynovelapi.entity.Member;
-// import com.dailynovel.dailynovelapi.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.dailynovel.dailynovelapi.entity.Member;
+import com.dailynovel.dailynovelapi.repository.MemberRepository;
 
-// @Service
-// public class UserDefaultService  implements UserService {
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
-//     @Autowired
-// 	private PasswordEncoder encoder;
-	
-// 	@Autowired
-// 	private JavaMailSenderImpl sender;	
+@Service
+public class UserDefaultService implements UserService {
 
-//     @Autowired
-//     private MemberRepository repository;
+    @Autowired
+    private PasswordEncoder encoder;
 
-//     @Override
-//     public String randNum() {
-// 		Random rand = new Random();
-// 		String randNum = Integer.toString(rand.nextInt(999999));
-	
-// 		return randNum;
+    @Autowired
+    private JavaMailSenderImpl sender;
 
-//     }
+    @Autowired
+    private MemberRepository repository;
 
-//     @Override
-//     public boolean mailCheck(String email, String authCode, String string, String string2) {
-   
+    @Override
+    public String randNum() {
+        Random rand = new Random();
+        String randNum = Integer.toString(rand.nextInt(999999));
 
-//     }
+        return randNum;
 
-//     @Override
-//     public int FindSameNickname(String nickname) {
-     
+    }
 
-//     }
+    @Override
+    public boolean mailCheck(String email, String authCode, String Subject, String Text) {
+        Member member = repository.findByEmail(email);
+        if (member.getId() != null) {
+            MimeMessage message = sender.createMimeMessage();
+            // use the true flag to indicate you need a multipart message
+            MimeMessageHelper helper;
+            try {
+                helper = new MimeMessageHelper(message, false);
+                helper.setTo(email);
+                helper.setSubject("DailyNovel" + Subject);
+                // use the true flag to indicate the text included is HTML
+                helper.setText("<html><body>" + Text + ":" + authCode + "</body></html>", true);
+                // let's include the infamous windows Sample file (this time copied to c:/)
+                sender.send(message);
+            } catch (MessagingException e) {
 
-//     @Override
-//     public String PasswordEncoder(String password) {
-   
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
 
-//     }
+    }
 
-//     @Override
-//     public void signup(String password, String email, String phoneNumber) {
+    @Override
+    public int FindSameNickname(String nickname) {
+        int samenicknameNumber=0;
+        Member member = repository.findByNickname(nickname);
+        if(member !=null)
 
+        samenicknameNumber = member.getId();
 
-//     }
+        return samenicknameNumber;
 
-//     @Override
-//     public Member SetMember(String username, String password, String email, String phoneNumber, int sex) {
+    }
 
+    @Override
+    public String PasswordEncoder(String password) {
+        password = encoder.encode(password);
+        return password;
 
-//     }
-    
-// }
+    }
+
+    @Override
+    public  signup(int id, String nickname, String password, String email, String phoneNumber) {
+
+        Member member = new Member();
+        member.setEmail(email);
+        member.setNickname(nickname);
+        member.setPassword(password);
+        repository.save(member);
+        return 
+    }
+
+}

@@ -9,5 +9,12 @@ public interface MemberRepository extends JpaRepository<Member,Integer> {
     @Query("from Member where email = :email")
     Member findByEmail(String email);
 
+
+    @Query("from Member where nickname = :nickname")
+    Member findByNickname(String nickname);
+
+    @Query("insert Member into value")
+    int insertMember( String nickname, String password, String email, String phoneNumber);
+
     
 }

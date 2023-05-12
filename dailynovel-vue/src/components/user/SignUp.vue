@@ -1,4 +1,57 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import Modal from './LoginModal.vue';
+
+let content= ref("");
+
+let showModal = ref(false);
+
+async  function showHandler(event) {
+
+  
+  if(event =='닉네임'){ 
+    // let response = await fetch("http://localhost:8080/users/nicknamecheck", {
+    //     method: "POST",
+    //     headers: {
+    //         "Accept": "application/json",
+    //         "Content-type": "application/x-www-form-urlencoded"
+    //     },
+    //     body: `email=${user.email}&password=${user.password}`
+    // });
+    // let json = await response.json();
+
+
+    content.value = '사용가능한 닉네임입니다.';
+
+    content.value = '중복된 닉네임입니다.';
+  }
+  
+  else if(event=='이메일'){
+
+    content.value = '사용가능한 이메일입니다.';
+
+    content.value = '이미 가입된 이메일입니다.';
+    
+    
+  }
+
+  else{
+
+    content.value = '회원가입에 성공했습니다.';
+
+
+  }
+
+  showModal.value = true;
+}
+function dlgHandler(a) {
+
+  showModal.value = false;
+
+}
+
+
+</script>
 <template>
   <div class="container-1-nmg container-s1">
     <div class="main lc-vertical-alignment">
@@ -18,17 +71,10 @@
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="email"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="이메일을 입력해주세요"
-                required
-              />
+              <input id="email" class="input-1" type="text" tabindex="0" placeholder="이메일을 입력해주세요" required />
             </div>
             <div class="mgl-3">
-              <button type="button" class="btn-1">증복확인</button>
+              <button type="button" class="btn-1" @click="showHandler('이메일')">증복확인</button>
             </div>
           </div>
 
@@ -41,17 +87,9 @@
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="password"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="패스워드를 입력해주세요"
-                required
-              />
+              <input id="password" class="input-1" type="text" tabindex="0" placeholder="패스워드를 입력해주세요" required />
             </div>
           </div>
-
           <!--비밀번호 확인-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -61,14 +99,8 @@
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="password-check"
-                class="input-1"
-                type="password"
-                tabindex="0"
-                placeholder="패스워드를 한번 더 입력해주세요"
-                required
-              />
+              <input id="password-check" class="input-1" type="password" tabindex="0" placeholder="패스워드를 한번 더 입력해주세요"
+                required />
             </div>
           </div>
 
@@ -81,17 +113,10 @@
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="nickname"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="닉네임을 입력해주세요"
-                required
-              />
+              <input id="nickname" class="input-1" type="text" tabindex="0" placeholder="닉네임을 입력해주세요" required />
             </div>
             <div class="mgl-3">
-              <button type="button" class="btn-1">증복확인</button>
+              <button type="button" class="btn-1" @click="showHandler('닉네임')">증복확인</button>
             </div>
           </div>
 
@@ -104,14 +129,7 @@
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="phone-number"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="숫자만 입력해주세요"
-                required
-              />
+              <input id="phone-number" class="input-1" type="text" tabindex="0" placeholder="숫자만 입력해주세요" required />
             </div>
           </div>
 
@@ -121,45 +139,26 @@
               <label for="birth"> 생년월일 </label>
             </div>
             <div class="div-input-2">
-              <input
-                id="birth-year"
-                class="input-2"
-                type="text"
-                tabindex="0"
-                placeholder="YYYY"
-                required
-              />
+              <input id="birth-year" class="input-2" type="text" tabindex="0" placeholder="YYYY" required />
               <span class="birth-deco">
               </span>
-              <input
-                id="birth-month"
-                class="input-2"
-                type="text"
-                tabindex="0"
-                placeholder="MM"
-                required
-              />
+              <input id="birth-month" class="input-2" type="text" tabindex="0" placeholder="MM" required />
               <span class="birth-deco">
               </span>
-              <input
-                id="birth-day"
-                class="input-2"
-                type="text"
-                tabindex="0"
-                placeholder="DD"
-                required
-              />
+              <input id="birth-day" class="input-2" type="text" tabindex="0" placeholder="DD" required />
             </div>
           </div>
         </from>
       </div>
       <div class="div-btn">
-        <button class="btn-2">
-          <span class="text-5"> 가입하기 </span>
+        <button class="btn-2" @click="showHandler">
+          <span class="text-5" > 가입하기 </span>
         </button>
       </div>
     </div>
   </div>
+    <Modal :content="content" :show="showModal" @ok="dlgHandler">
+  </Modal>
 </template>
 
 <style scoped>
@@ -175,6 +174,7 @@
   margin-bottom: 60px;
   background-color: #fff;
 }
+
 .form-1 {
   width: 640px;
   margin: 0px auto;
@@ -186,6 +186,7 @@
   display: flex;
   flex-direction: row;
 }
+
 .text-1 {
   margin-bottom: 50px;
   font-size: 32px;
@@ -226,6 +227,7 @@
   border: 1px solid rgb(235, 155, 56);
   margin: 0;
 }
+
 .div-btn {
   display: flex;
   -moz-box-pack: center;
@@ -246,6 +248,7 @@
   background-color: rgb(235, 155, 56);
   border: 0px none;
 }
+
 .div-input {
   position: relative;
   height: 52px;
@@ -262,11 +265,13 @@
   width: 139px;
   padding-top: 20px;
 }
+
 .label-1 {
   font-weight: 500;
   color: rgb(51, 51, 51);
   line-height: 20px;
 }
+
 .input-1 {
   width: 360px;
   height: 52px;
@@ -280,8 +285,9 @@
   outline: none;
   box-sizing: border-box;
 }
+
 .input-2 {
-  width: 120px;
+  width: 116px;
   height: 52px;
   padding: 0px 11px 1px 15px;
   font-weight: 400;
@@ -313,7 +319,7 @@
 }
 
 
-.birth-deco::after{
+.birth-deco::after {
 
   content: "/";
   font-size: 14px;
