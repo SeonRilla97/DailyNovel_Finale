@@ -4,6 +4,8 @@ let router = useRouter();
 
 let nickname = "동동이107"
 
+let alramCount = 15;
+
 defineEmits(["modalOpenHandler"]);
 
 function openPageHandler() {
@@ -22,7 +24,7 @@ function openPageHandler() {
       <div></div>
       <div class="member-header-info" @click="$emit('modalOpenHandler')">
         <div class="member-header-alram header-alram-img">
-          <div class="member-header-alram-count">12</div>
+          <div class="member-header-alram-count">{{ alramCount }}</div>
         </div>
         <div class="member-header-profile">
           <div class="member-header-profile-img">프로필이미지</div>
