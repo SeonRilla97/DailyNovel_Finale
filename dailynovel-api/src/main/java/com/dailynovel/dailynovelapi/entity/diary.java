@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Diary {
     @Id
-    private int id;
+    private Integer id;
     @Column(name="member_id")
-    private int memberId;
+    private Integer memberId;
     private String title;
     private String content;
     private String weather;
