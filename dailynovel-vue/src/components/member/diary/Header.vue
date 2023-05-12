@@ -240,8 +240,7 @@ display: block;
     display:flex;
     align-items: center;
     background-color: #d8d8d8;
-    padding: 1px;
-    
+    padding: 2px;
     box-sizing: border-box;
 }
 .search-container .box-search{
