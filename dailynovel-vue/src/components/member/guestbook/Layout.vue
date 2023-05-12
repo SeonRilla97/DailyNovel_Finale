@@ -30,10 +30,11 @@ function showDetailHandler() {
       </ul>
     </div> -->
 
-    <main class="m-guestbook-main">
-      <router-view></router-view>
-    </main>
+    <!-- <main class="m-guestbook-main">
+      <router-view class="m-guestbook-main"></router-view>
+    </main> -->
 
+    <router-view class="m-guestbook-main"></router-view>
   </section>
 </template>
 <style scoped>
