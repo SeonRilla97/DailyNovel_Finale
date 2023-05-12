@@ -1,6 +1,6 @@
 import Layout from '../components/member/display/Layout.vue';
 import Detail from '../components/member/display/Detail.vue';
-import test from '../components/member/display/test.vue';
+import DetailInterface from '../components/member/display/DetailInterface.vue';
 
 // export default [
 //   {path : 'community', component:Layout, children:[
@@ -15,14 +15,16 @@ export default [
     ]
   },
   {
-    path: 'community/:id', 
-    name: 'detail',
-    component:Detail 
+    path: 'community/:id',
+    name: 'detailInterface',
+    component:DetailInterface
   },
-  {
-    path: 'test',
-    component: test,
-  },
+  // {
+  //   path: 'community/:id', 
+  //   // path: '',
+  //   name: 'detail',
+  //   component:Detail 
+  // },
 
 
 ];

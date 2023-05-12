@@ -23,7 +23,7 @@
                         <div class="content-underline">
                             <hr>
                         </div>
-                        <router-link to="community/3" @click="modalOpenHandler">
+                        <router-link :to="'community/'+l.id">
                             <div class="content-subject"> 
                                 {{l.content}}
                             </div>
@@ -48,7 +48,6 @@ let model = reactive([]);
 let count = ref();
 let category = reactive([]);
 let currentCategory = ref(1);
-
 
 
 async function load() {
