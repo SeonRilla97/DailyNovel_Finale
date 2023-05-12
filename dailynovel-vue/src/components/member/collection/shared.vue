@@ -1,4 +1,13 @@
+<script setup>
+import {ref} from 'vue'
 
+
+let menuOpen = ref(true);
+// 컬렉션 리스트 오픈 핸들러
+function mOpenHandler(){
+    menuOpen.value = !menuOpen.value;
+}
+</script>
 <template>
     <div class="shared-container">
         <header class="header">
@@ -11,13 +20,34 @@
         <section class="main">
             <div class="slide-container" >
 
-                <section class="box" >
-                        <div class="title">날씨가 유난히도 맑은 날</div>
-                        <div class="main">
-                            <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                        </div>
-                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-                </section>
+
+                    <section class="box" >
+                            <div class="title">날씨가 유난히도 맑은 날</div>
+                            <div class="main">
+                                <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
+                            </div>
+                            <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
+                            <!-- <div class="reg-btn">추가</div>
+                            <ul class=".collection-list dropdown">
+                                <li class="item">가장 행복했던 순간들</li>
+                                <li class="item">나의 영화일지</li>
+                                <li class="item">여행 가볼까요</li>
+                            </ul> -->
+                            <div class="dropdown collection-list">
+                                <div class="btn" @click="mOpenHandler"><span>추가</span><span class="icon-clamp"></span></div>
+                                <transition name="bounce">
+                                    <div class="content" @click="optionClickHandler" v-show="menuOpen">
+                                        <a href="#"  class="item">가장 행복했던 순간들</a>
+                                        <a href="#"  class="item">나의 영화일지</a>
+                                        <a href="#"  class="item">여행 가볼까요</a>
+                                        <a href="#"  class="item">여행 가볼까요</a>
+                                        <a href="#"  class="item">여행 가볼까요</a>
+                                    </div>
+                                </transition>
+                            </div>
+                    </section>
+
+
                 <section class="box" >
                         <div class="title">날씨가 유난히도 맑은 날</div>
                         <div class="main">
@@ -118,7 +148,6 @@
 
 
 
-
 .shared-container .main .box .title{
     font-size: 20px;
     font-weight: bold;
@@ -161,17 +190,90 @@
     text-underline-position : under;
 }
 
+
+/* DropDown */
+
+/* dropDown(필터 메뉴) */
+.collection-list.dropdown .btn {
+    
+    bottom:0;
+    align-self:center;
+    position:absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translate(-50%);
+
+    width:100px;
+    height: 30px;
+    background-color: #7594e960;
+    color: #fcfcfc;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    transition: all 0.2s linear;
+}
+.collection-list.dropdown .btn:hover{
+    background-color: #7594e9;
+    cursor: pointer;
+}
+
+
+.collection-list.dropdown {
+position: relative;
+display: inline-block;
+/* margin-left: 40px; */
+}
+
+.collection-list.dropdown .content {
+/* display: none;  */
+position: absolute;
+background-color: #fcfcfc;
+min-width: 220px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+text-align: center;
+left:4%;
+/* transform:translate(-50% ,-100%) */
+border-radius: 12px;
+bottom:100%;
+}
+
+
+.collection-list.dropdown .content .item {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+
+.collection-list.dropdown .content a:hover {
+    background-color: #f1f1f1;
+    
+    
+}
+
+
+
 /* vue Transition */
-
-
-.fade-enter-active {
-  transition: opacity 0.5s ease;
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
 }
-
-.fade-enter-from
- {
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: translateY(+40%);
     opacity: 0;
+  }
+  50% {
+    transform: translateY(-10%);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
-
 
 </style>
