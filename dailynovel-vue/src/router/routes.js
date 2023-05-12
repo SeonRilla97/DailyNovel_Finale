@@ -38,7 +38,7 @@ const routes =  [
       {path: 'chart', component:Chart},
       collection,
       guestbook,
-      display,
+      ...display,
   ]}      
 ]}
 ]

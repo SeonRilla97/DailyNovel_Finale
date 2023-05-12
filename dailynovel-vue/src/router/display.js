@@ -7,20 +7,22 @@ import test from '../components/member/display/test.vue';
 //     {path: ':id', component:DetailLayout  },
 //   ]},
 // ]
-const route = [{
+export default [
+  {
     path: 'community', 
     component:Layout, 
     children:[
-      {
-        path: 'detail', 
-        component:Detail 
-      }
     ]
+  },
+  {
+    path: 'community/:id', 
+    name: 'detail',
+    component:Detail 
   },
   {
     path: 'test',
     component: test,
-  }
-]
+  },
 
-export default route;
+
+];

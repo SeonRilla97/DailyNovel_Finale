@@ -23,7 +23,7 @@
                         <div class="content-underline">
                             <hr>
                         </div>
-                        <router-link to="community/detail">
+                        <router-link to="community/3" @click="modalOpenHandler">
                             <div class="content-subject"> 
                                 {{l.content}}
                             </div>
