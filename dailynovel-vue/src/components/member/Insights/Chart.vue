@@ -3,10 +3,8 @@
   <main class="screen">
 
     <div class="select-box">
-      <!-- <router-link to="/member/room/achievement" @click.prevent="modalOpenHandler"><p class="Move">업적</p></router-link>
-      <router-link to="/member/room/chart" @click.prevent="modalOpenHandler"><p class="Move">차트</p></router-link> -->
-      <router-link to="/member/room/achievement"><p class="Move">업적</p></router-link>
-      <router-link to="/member/room/chart"><p class="Move">차트</p></router-link>
+      <router-link to="/member/achievement"><p class="Move">업적</p></router-link>
+      <router-link to="/member/chart"><p class="Move">차트</p></router-link>
     </div>
 
 
@@ -45,7 +43,6 @@
   
 
 <script>
-import Achievement from '../Insights/Achievements.vue'
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
@@ -78,7 +75,6 @@ export default {
       var TrequestOptions = {
         method: 'GET',
         headers: myHeaders,
-        body: `{memberId=${user.id}}`,
         redirect: 'follow'
       };
 
@@ -133,13 +129,11 @@ export default {
     Hload() {
       Chart.register(ChartDataLabels);
       var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-      myHeaders.append("Cookie", "JSESSIONID=4964651022017A62454CE2C93A2427CA");
+      myHeaders.append("Cookie", "JSESSIONID=00FBFDB24A1BDD060C55F8F3B78E8B1F");
 
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,
-        body: `{memberId=${user.id}}`,
         redirect: 'follow'
       };
 
@@ -158,15 +152,12 @@ export default {
 
     Fload() {
       Chart.register(ChartDataLabels);
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        myHeaders.append("Cookie", "JSESSIONID=4964651022017A62454CE2C93A2427CA");
-
+      var myHeaders = new Headers();
+      myHeaders.append("Cookie", "JSESSIONID=045AC4FE93F9AA0C9B08C0ECEAA1986F");
 
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,
-        body: `{memberId=${user.id}}`,
         redirect: 'follow'
       };
 

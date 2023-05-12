@@ -9,4 +9,5 @@ public interface MemberService {
     // 그럼 db는 언제들고오는지
     // 
     Member getByEmail(String email);
+
 }

@@ -123,6 +123,7 @@
     border-right: solid 1px #c4c4c4;
     /* display:grid; 
     grid-template-rows:2% 98%; */
+    /* overflow:scroll; */
     
 }
     
@@ -234,6 +235,7 @@ border-radius: 10px;
 }
 
 .diary-main .list .content::-webkit-scrollbar-track {
-background: #84848447;  /*스크롤바 뒷 배경 색상*/
+/* background: #84848447;  스크롤바 뒷 배경 색상 */
+background-color: transparent;
 }
 </style>

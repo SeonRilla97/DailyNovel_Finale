@@ -10,15 +10,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+//
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class diary {
+public class Diary {
     @Id
-    private int id;
+    private Integer id;
     @Column(name="member_id")
     private Integer memberId;
     private String title;

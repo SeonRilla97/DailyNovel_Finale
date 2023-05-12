@@ -8,29 +8,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dailynovel.dailynovelapi.entity.diary;
-import com.dailynovel.dailynovelapi.service.InsightService;
+import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.service.DiaryService;
 
 
 @RestController("apiInstightController")
 @RequestMapping("/insights1")
-public class InsightControllerAPI {
+public class InsightController {
     
 
 
     // 차트 부분
     @Autowired
-     private InsightService service;
+     private DiaryService service;
 
 
     @GetMapping("/chart")
-        public List<diary> getList(
+        public List<Diary> getList(
 			
         @RequestParam(name = "feeling") String feeling,
         @RequestParam(name = "count", defaultValue = "0") Integer count
         )
         {		
-        List<diary> List = service.getByFeeling();
+        List<Diary> List = service.getByFeeling(1);
         return List;
 
         }

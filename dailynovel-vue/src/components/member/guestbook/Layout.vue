@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 let router = useRouter();
 
 function showDetailHandler() {
-  router.push("/member/room/guestbook/detail");
+  router.push("/member/guestbook/detail");
 }
 </script>
 
@@ -15,7 +15,7 @@ function showDetailHandler() {
         <span class="font-bold h2 ">방명록</span>
       </div>
     </div>
-    <div class="m-guestbook-main">
+    <!-- <div class="m-guestbook-main">
       <ul class="m-guestbook-content-list">
         <li class="lc-center" v-for="n in 20" @click="showDetailHandler">
           <div class="m-guestbook-content-item shadow-1">
@@ -28,8 +28,11 @@ function showDetailHandler() {
           </div>
         </li>
       </ul>
+    </div> -->
 
-    </div>
+    <main class="m-guestbook-main">
+      <router-view></router-view>
+    </main>
 
   </section>
 </template>

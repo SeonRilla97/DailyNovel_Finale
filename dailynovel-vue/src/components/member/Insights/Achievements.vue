@@ -234,8 +234,4 @@ onMounted(() => {
 
 }
 
-
-.Achievement.completed {
-  background-color: #8aa9cf;
-}
 </style>

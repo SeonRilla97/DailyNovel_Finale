@@ -13,15 +13,7 @@ public class MemberDefaultService implements MemberService {
     @Autowired
     private MemberRepository repository;
 
-    @Autowired
-    private FeelingRepository feelingRepository;
-
-    @Autowired
-    private HonestyRepository honestyRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
+    
     @Override
     public boolean isValid(String email, String password) {
         // TODO Auto-generated method stub
@@ -39,29 +31,6 @@ public class MemberDefaultService implements MemberService {
 
 
    
-
-
-   
-
-    @Override
-    public List<diary> getByFeeling(Integer memberId){
-        return feelingRepository.findByFeeling(memberId);
-    }
-
-    @Override
-    public List<diary> getByHonesty(Integer memberId) {
-        // TODO Auto-generated method stub
-        return honestyRepository.findByHonesty(memberId);
-    }
-
-
-    @Override
-    public List<diary> getByTag(Integer memberId) {
-        // TODO Auto-generated method stub
-        return tagRepository.findByTag(memberId);
-    }
-
-
     @Override
     public Member getByEmail(String email) {
 
