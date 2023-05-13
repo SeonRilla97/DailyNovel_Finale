@@ -58,6 +58,7 @@ function onCalendarClickHandler() {
     <router-link to="/member/room/profile" @click="modalOpenHandler"><button>내 정보</button></router-link>
     <router-link to="/member/room/follow" @click="modalOpenHandler"><button>구독페이지</button></router-link>
     <router-link to="/member/room"><button>메인</button></router-link>
+    <router-link to="/member/room/InfinityScroll" @click="modalOpenHandler"><button>인피니티</button></router-link>
   </section>
   <Footer />
 

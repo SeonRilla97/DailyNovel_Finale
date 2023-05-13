@@ -4,6 +4,8 @@ import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 import App from './App.vue'
 import router from './router'
 import 'v-calendar/style.css';
+import InfiniteLoading from "v3-infinite-loading"; // 무한 스크롤 용 api
+import "v3-infinite-loading/lib/style.css";  // 무한 스크롤 용 css
 
 // import './assets/main.css'
 
@@ -19,7 +21,7 @@ app.use(setupCalendar, {})
 app.component('VCalendar', Calendar)
 app.component('VDatePicker', DatePicker)
 
-
+app.component("infinite-loading", InfiniteLoading); // 무한 스크롤용
 
 
 app.use(createPinia())
