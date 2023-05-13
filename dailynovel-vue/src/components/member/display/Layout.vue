@@ -17,7 +17,6 @@
             <ul class="commu-content-grid">
                 <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
                     <li class=""  v-for="(l, i) in model" :key="i" v-show="currentCategory==l.tag || currentCategory === '1' && l.like >= 3 || currentCategory === '2'">
-                <!-- <li class=""  v-for="(l, i) in model" :key="i" v-show="currentCategory==l.tag"> -->
                     <div class="content-box">
                         <div class="content-title">
                             <p><b>{{l.title}}</b></p>
@@ -31,7 +30,8 @@
                             </div>
                         </router-link>
                         <div class="content-like-count">
-                            <div class="like-active inline"></div><span>50</span>
+                            <div class="like-deactive"></div><span>{{l.like}}</span>
+                            <div class="like-active inline"></div><span>{{l.like}}</span>
                         </div>
                     </div>
                 </li>

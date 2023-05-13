@@ -2,7 +2,7 @@
     <main class=" center-grid">
         <section class=" center-grid article-box">
             
-            <h1>디테일</h1>
+            <h1 class="d-none">디테일</h1>
                 <article>
                     <h1 class="title">{{title}}</h1>
                     <hr>
