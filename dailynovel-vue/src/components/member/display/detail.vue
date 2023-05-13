@@ -4,17 +4,18 @@
             
             <h1>디테일</h1>
                 <article>
-                    <h1 class="title">{{props.detailPage[0].title}}</h1>
+                    <h1 class="title">{{title}}</h1>
                     <hr>
                     <div class="userInfo">
                         <div class="d-inline">하트마크 / </div>
-                        <div class="d-inline">좋아요 수 / </div>
-                        <div class="d-inline">프로필 이미지 / </div>
-                        <div class="d-inline">작성자</div>
+                        <div class="d-inline">{{like}} / </div>
+                        <div class="d-inline">{{image}} / </div>
+                        <div class="d-inline" @click="statusz">{{nickname}}</div>
+                        
                     </div>
                     <br>
                     <p>
-                        {{props.detailPage[0].content}}
+                        {{content}}
                     </p>
                 </article>
         </section>
@@ -22,26 +23,49 @@
 </template>
 
 <script setup>
-    import { useRoute } from 'vue-router';
-    import {reactive} from 'vue';
-
-    let route = useRoute();
-
-    let id = route.params.id;
+    import {reactive, ref, onMounted} from 'vue';
 
     const props = defineProps({
         detailPage: {
-            type:Array
+            type:Object 
         }
     })
+    console.log(props)
+    let data = ref();
+    let title = ref('');
+    let content = ref('');
+    let like = ref();//좋아요
+    let image = ref('');//이미지
+    let nickname = ref('');//닉네임
+    
+    function load(){
+        setTimeout(() => {
+            data = props.detailPage
+            console.log(data)
+            
+            title.value =data.title 
+            content.value =data.content 
+            like.value=data.like;
+            image.value=data.image;
+            nickname.value=data.nickname;
+            
 
+        }, 50);
+    }
+    
+    onMounted(() => {
+        load();
+    })
+  
+    function statusz(){
+        console.log("하이룽")
+    }
 </script>
 
 <style scoped>
  .article-box {
     width: 39rem;
     height: minmax(1rem, auto);
-
 }
 
 .article-box .title {

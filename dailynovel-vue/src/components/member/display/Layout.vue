@@ -1,5 +1,5 @@
 <template lang="">
-    <section>
+    <section class="container">
     <main>
         <br>
         <ul>
@@ -11,7 +11,7 @@
         </ul>
         <br>
         <br>
-        <section style="display:grid; justify-content:center ; overflow:hidden; grid-gap:1rem">
+        <section class="community">
             <h1 class="">게시판 리스트</h1>
             <ul class="commu-content-grid">
                 <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
@@ -23,7 +23,7 @@
                         <div class="content-underline">
                             <hr>
                         </div>
-                        <router-link :to="'community/'+l.id">
+                        <router-link :to="'community/'+i">
                             <div class="content-subject"> 
                                 {{l.content}}
                             </div>
@@ -51,7 +51,7 @@ let currentCategory = ref(1);
 
 
 async function load() {
-const resList = await fetch('http://localhost:8080/display/list')
+const resList = await fetch('http://localhost:8080/display/listall')
 const data = await resList.json()
 model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
 
@@ -83,6 +83,24 @@ currentCategory.value=page;
 
 </script>
 <style scoped>
+.container {
+    /* width: 300px; */
+  /* height: 200px; */
+  position: relative;
+}
+
+.community{
+    display:grid; 
+    justify-content:center ; 
+    grid-gap:1rem;
+    position: absolute;
+    top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
 .point{
 cursor: pointer;
 }

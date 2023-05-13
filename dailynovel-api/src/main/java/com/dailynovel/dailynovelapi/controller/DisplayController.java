@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.entity.DisplayView;
 import com.dailynovel.dailynovelapi.service.DisplayService;
 
 @RestController
@@ -18,13 +18,18 @@ public class DisplayController {
     private DisplayService service;
 
     @GetMapping("listall")
-    public List<Diary> listAll(){
+    public List<DisplayView> listAll(){
         return service.getByList();
     }
 
-    @GetMapping("list")
-    public List<Diary> list(){
-        return service.getBySharedDiaryList();
-    }
+    // @GetMapping("listall")
+    // public List<Diary> listAll(){
+    //     return service.getByList();
+    // }
+
+    // @GetMapping("list")
+    // public List<Diary> list(){
+    //     return service.getBySharedDiaryList();
+    // }
     
 }
