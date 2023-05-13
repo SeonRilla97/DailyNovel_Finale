@@ -2,20 +2,22 @@
     <section class="container">
     <main>
         <br>
-        <ul>
-            <li class="point" :class="1==currentCategory?'active-commu-category':''" @click="categoryClick(1)"><h1>인기</h1></li>
-            <li class="point" :class="2==currentCategory?'active-commu-category':''" @click="categoryClick(2)"><h1>최신</h1></li>
-            <li class="point" :class="3==currentCategory?'active-commu-category':''" @click="categoryClick(3)"><h1>자유</h1></li> 
-            <li class="point" :class="4==currentCategory?'active-commu-category':''" @click="categoryClick(4)"><h1>영화</h1></li>
-            <li class="point" :class="5==currentCategory?'active-commu-category':''" @click="categoryClick(5)"><h1>여행</h1></li>
+        <ul class="ulMargin">
+            <li class="point" :class="'1'==currentCategory?'active-commu-category':''" @click="categoryClick('1')"><h1>인기</h1></li>
+            <li class="point" :class="'2'==currentCategory?'active-commu-category':''" @click="categoryClick('2')"><h1>최신</h1></li>
+            <li class="point" :class="'자유'==currentCategory?'active-commu-category':''" @click="categoryClick('자유')"><h1>자유</h1></li> 
+            <li class="point" :class="'영화'==currentCategory?'active-commu-category':''" @click="categoryClick('영화')"><h1>영화</h1></li>
+            <li class="point" :class="'여행'==currentCategory?'active-commu-category':''" @click="categoryClick('여행')"><h1>여행</h1></li>
         </ul>
         <br>
         <br>
+        <section class="container">
         <section class="community">
-            <h1 class="">게시판 리스트</h1>
+            <h1 class="d-none">게시판 리스트</h1>
             <ul class="commu-content-grid">
                 <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
-                <li class=""  v-for="(l, i) in model" :key="i">
+                    <li class=""  v-for="(l, i) in model" :key="i" v-show="currentCategory==l.tag || currentCategory === '1' && l.like >= 3 || currentCategory === '2'">
+                <!-- <li class=""  v-for="(l, i) in model" :key="i" v-show="currentCategory==l.tag"> -->
                     <div class="content-box">
                         <div class="content-title">
                             <p><b>{{l.title}}</b></p>
@@ -36,6 +38,7 @@
             </ul>
             <div class="center-grid"><div class="more-btn">더보기 + 99</div></div>
         </section>
+    </section>
     </main>
 </section>
 </template>
@@ -47,45 +50,29 @@ import { onMounted, reactive,ref, } from 'vue'
 let model = reactive([]);
 let count = ref();
 let category = reactive([]);
-let currentCategory = ref(1);
+let currentCategory = ref('1');
 
 
 async function load() {
-const resList = await fetch('http://localhost:8080/display/listall')
-const data = await resList.json()
-model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
-
-// const resLikeCount = await fetch('http://localhost:8080/community/count2')
-// const data2 = await resLikeCount.json()
-// console.log(data2);
-// count.value = data2;
-
-// const resCategory = await fetch('http://localhost:8080/community/category')
-// const data3 = await resCategory.json()
-// console.log(data3);
-// category.splice(0, model.length, ...data3);
-
-// // const resDetail = await fetch('http://localhost:8080/community/detail2?id='+model.id)
-// // const resDetail = await fetch('http://localhost:8080/community/detail2?id=3')
-// // const resDetail = await fetch(`http://localhost:8080/community/detail2?id=${this.$route.query.id}`);
-// // const data4 = await resDetail.json()
-// // console.log(data4);
+    const resList = await fetch('http://localhost:8080/display/listall')
+    const data = await resList.json()
+    model.splice(0, model.length, ...data); //이게 핵심인 거 같다.
 }
 
 
 onMounted(()=>{
-load()
+    load()
 })
 
 function categoryClick(page){
-currentCategory.value=page;
+    currentCategory.value=page;
 }
 
 </script>
 <style scoped>
 .container {
-    /* width: 300px; */
-  /* height: 200px; */
+    width: 80rem;
+  height: 544px;
   position: relative;
 }
 
@@ -100,9 +87,13 @@ currentCategory.value=page;
   bottom: 0;
   overflow-y: auto;
 }
-
+.ulMargin{
+    margin-left: 2.0rem;
+}
 .point{
-cursor: pointer;
+    cursor: pointer;
+    margin-left: 1rem;
+    font-size: 1.875rem;
 }
 .inline{
 display: inline-block;
