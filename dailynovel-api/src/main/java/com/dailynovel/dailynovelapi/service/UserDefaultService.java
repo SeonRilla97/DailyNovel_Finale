@@ -1,5 +1,8 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,65 +13,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.dailynovel.dailynovelapi.entity.Member;
 import com.dailynovel.dailynovelapi.repository.MemberRepository;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-
 @Service
 public class UserDefaultService implements UserService {
 
     @Autowired
     private PasswordEncoder encoder;
 
-    @Autowired
-    private JavaMailSenderImpl sender;
+
 
     @Autowired
     private MemberRepository repository;
 
-    @Override
-    public String randNum() {
-        Random rand = new Random();
-        String randNum = Integer.toString(rand.nextInt(999999));
 
-        return randNum;
-
-    }
 
     @Override
-    public boolean mailCheck(String email, String authCode, String Subject, String Text) {
-        Member member = repository.findByEmail(email);
-        if (member.getId() != null) {
-            MimeMessage message = sender.createMimeMessage();
-            // use the true flag to indicate you need a multipart message
-            MimeMessageHelper helper;
-            try {
-                helper = new MimeMessageHelper(message, false);
-                helper.setTo(email);
-                helper.setSubject("DailyNovel" + Subject);
-                // use the true flag to indicate the text included is HTML
-                helper.setText("<html><body>" + Text + ":" + authCode + "</body></html>", true);
-                // let's include the infamous windows Sample file (this time copied to c:/)
-                sender.send(message);
-            } catch (MessagingException e) {
-
-                e.printStackTrace();
-            }
+    public boolean FindSameNickname(String nickname) {
+        Member member  = repository.findByNickname(nickname);
+        if(member!=null){
             return true;
         }
         return false;
-
-    }
-
-    @Override
-    public int FindSameNickname(String nickname) {
-        int samenicknameNumber=0;
-        Member member = repository.findByNickname(nickname);
-        if(member !=null)
-
-        samenicknameNumber = member.getId();
-
-        return samenicknameNumber;
-
     }
 
     @Override
@@ -79,14 +43,38 @@ public class UserDefaultService implements UserService {
     }
 
     @Override
-    public  signup(int id, String nickname, String password, String email, String phoneNumber) {
+    public boolean  signup(String nickname, String password, String email, String phoneNumber) {
+        if(FindSameNickname(nickname)){
+            return false;
+        }
+        else if(FindSameEmail(email)){
+            return false;
+        }
 
+        password = PasswordEncoder(password);
+
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
         Member member = new Member();
         member.setEmail(email);
         member.setNickname(nickname);
         member.setPassword(password);
-        repository.save(member);
-        return 
+        member.setPhoneNumber(phoneNumber);
+        member.setTimestamp(timestamp);
+        String a =repository.saveAndFlush(member).getEmail();
+        if(a==null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean FindSameEmail(String email) {
+        Member member  = repository.findByEmail(email);
+        if(member!=null){
+            return true;
+        }
+        return false;
     }
 
 }

@@ -15,7 +15,6 @@ public class MemberDefaultService implements MemberService {
 
     @Override
     public boolean isValid(String email, String password) {
-        // TODO Auto-generated method stub
         Member member = repository.findByEmail(email);
 
         if (member == null)

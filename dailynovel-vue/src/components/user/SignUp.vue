@@ -1,67 +1,124 @@
 <script setup>
-import { ref } from 'vue';
-import Modal from './LoginModal.vue';
+import { ref } from "vue";
+import Modal from "./LoginModal.vue";
 
-let content= ref("");
+let email = ref("");
+let emailBtn = ref(false);
+let password = ref("");
+let passwordBtn = ref(false);
+let passwordCheck = ref("");
+let phoneNumber = ref();
+let phoneNumberBtn = ref(false);
+let emailcheck = ref("");
+let mailcheckBtn = ref(false);
+let nickName = ref("");
+let nickNameBtn = ref(false);
+let content = ref("");
 
 let showModal = ref(false);
 
-async  function showHandler(event) {
-
+async function showHandler(event) {
+  if (event == "닉네임") {
+    console.log(nickName.value);
+    let response = await fetch(
+      "http://localhost:8080/users/nicknameCheck?nickname="+nickName.value
+    );
+    let data = await response.text();
+    console.log(data);
+    if (data === "false") {
+      content.value = "사용할 수 있는 닉네임입니다.";
+    } else if (data === "true") {
+      content.value = "중복된 닉네임입니다.";
+      nickNameBtn.value = true;
+    } else {
+      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
+      content.value = "응답을 처리할 수 없습니다.";
+    }
+  } 
   
-  if(event =='닉네임'){ 
-    // let response = await fetch("http://localhost:8080/users/nicknamecheck", {
-    //     method: "POST",
-    //     headers: {
-    //         "Accept": "application/json",
-    //         "Content-type": "application/x-www-form-urlencoded"
-    //     },
-    //     body: `email=${user.email}&password=${user.password}`
-    // });
-    // let json = await response.json();
+  else if (event == "이메일") {
+    let response = await fetch(
+      "http://localhost:8080/users/emailCheck?email="+email.value
+    );
+    let data = await response.text();
 
-
-    content.value = '사용가능한 닉네임입니다.';
-
-    content.value = '중복된 닉네임입니다.';
+    if (data === "true") {
+      content.value = "사용 가능한 이메일입니다.";
+      emailBtn.value = true;
+    } else if (data === "false") {
+      content.value = "이미 가입된 이메일입니다.";
+    } else {
+      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
+      content.value = "응답을 처리할 수 없습니다.";
+    }
   }
   
-  else if(event=='이메일'){
+  
+  else if (event == "이메일인증번호확인") {
+    let response = await fetch(
+      "http://localhost:8080/users/emailCheckNum?email="+email.value+'&emailCheckNum='+emailcheck.value
+    );
+    let data = await response.text();
 
-    content.value = '사용가능한 이메일입니다.';
-
-    content.value = '이미 가입된 이메일입니다.';
-    
-    
-  }
-
-  else{
-
-    content.value = '회원가입에 성공했습니다.';
-
-
+    if (data === "true") {
+      content.value = "인증에 성공했습니다.";
+      mailcheckBtn = true;
+    } else if (data === "false") {
+      content.value = "인증에 실패했습니다.";
+      emailBtn.value = true;
+    } else {
+      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
+      content.value = "응답을 처리할 수 없습니다.";
+    }
+  } else {
+    if (!emailBtn) {
+      content.value = "이메일을 다시 입력하세요";
+    } else if (!passwordBtn) {
+      content.value = "패스워드 검사가 잘못되었습니다.";
+    } else if (!phoneNumberBtn) {
+      content.value = "올바른 전화번호가 아닙니다.";
+    } else if (!mailcheckBtn) {
+      content.value = "이메일 인증을 시도해주세요";
+    } else if (!nickNameBtn) {
+      content.value = "닉네임을 다시 입력해주세요";
+    } else 
+    content.value = "회원가입에 성공했습니다.";
   }
 
   showModal.value = true;
 }
 function dlgHandler(a) {
-
   showModal.value = false;
-
 }
 
+function updateInput(event) {
+  if (event == "이메일") {
+    emailBtn.value = false;
+    console.log(emailBtn.value);
+  } else if (event == "닉네임") {
 
+  } else if (event == "이메일인증번호") {
+    mailcheckBtn = false;
+  } else if (event == "패스워드") {
+
+  } else if (event == "패스워드확인") {
+
+  } else {
+  
+  }
+}
 </script>
 <template>
   <div class="container-1-nmg container-s1">
     <div class="main lc-vertical-alignment">
       <div class="text-1">회원가입</div>
+
       <div class="form-1">
         <div class="text-2">
           <span class="essential-color">*</span>
           필수입력사항
         </div>
-        <from class="mgt-1 lc-vertical-alignment">
+        <form class="mgt-1 lc-vertical-alignment">
           <!--이메일-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -71,10 +128,58 @@ function dlgHandler(a) {
               </label>
             </div>
             <div class="div-input">
-              <input id="email" class="input-1" type="text" tabindex="0" placeholder="이메일을 입력해주세요" required />
+              <input
+                id="email"
+                class="input-1"
+                type="text"
+                tabindex="0"
+                placeholder="이메일을 입력해주세요"
+                required
+                @input="updateInput('이메일')"
+                v-model="email"
+              />
             </div>
             <div class="mgl-3">
-              <button type="button" class="btn-1" @click="showHandler('이메일')">증복확인</button>
+              <button
+                type="button"
+                :class="[emailBtn ? 'btn-1-off' : 'btn-1']"
+                @click="showHandler('이메일')"
+                :disabled="emailBtn == true"
+              >
+                인증번호 받기
+              </button>
+            </div>
+          </div>
+
+          <!--이메일 확인 -->
+          <div class="mgt-3 display-flex" :class="[!emailBtn ? 'd-none' : '']">
+            <div class="div-label">
+              <label for="email">
+                이메일 인증하기
+                <span class="essential-color">*</span>
+              </label>
+            </div>
+            <div class="div-input">
+              <input
+                id="email"
+                class="input-1"
+                type="text"
+                tabindex="0"
+                placeholder="이메일을 입력해주세요"
+                required
+                @change="updateInput(이메일인증번호)"
+                v-model="emailcheck"
+              />
+            </div>
+            <div class="mgl-3">
+              <button
+                type="button"
+                :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']"
+                @click="showHandler('이메일인증번호확인')"
+                :disabled="mailcheckBtn ==true"
+              >
+                인증번호 확인
+              </button>
             </div>
           </div>
 
@@ -87,7 +192,14 @@ function dlgHandler(a) {
               </label>
             </div>
             <div class="div-input">
-              <input id="password" class="input-1" type="text" tabindex="0" placeholder="패스워드를 입력해주세요" required />
+              <input
+                id="password"
+                class="input-1"
+                type="text"
+                tabindex="0"
+                placeholder="패스워드를 입력해주세요"
+                v-model="password"
+              />
             </div>
           </div>
           <!--비밀번호 확인-->
@@ -99,8 +211,15 @@ function dlgHandler(a) {
               </label>
             </div>
             <div class="div-input">
-              <input id="password-check" class="input-1" type="password" tabindex="0" placeholder="패스워드를 한번 더 입력해주세요"
-                required />
+              <input
+                id="password-check"
+                class="input-1"
+                type="password"
+                tabindex="0"
+                placeholder="패스워드를 한번 더 입력해주세요"
+                required
+                v-model="passwordCheck"
+              />
             </div>
           </div>
 
@@ -113,10 +232,25 @@ function dlgHandler(a) {
               </label>
             </div>
             <div class="div-input">
-              <input id="nickname" class="input-1" type="text" tabindex="0" placeholder="닉네임을 입력해주세요" required />
+              <input
+                id="nickname"
+                class="input-1"
+                type="text"
+                tabindex="0"
+                placeholder="닉네임을 입력해주세요"
+                required
+                v-model="nickName"
+              />
             </div>
             <div class="mgl-3">
-              <button type="button" class="btn-1" @click="showHandler('닉네임')">증복확인</button>
+              <button
+                type="button"
+                :class="[nickNameBtn ? 'btn-1-off' : 'btn-1']"
+                @click="showHandler('닉네임')"
+                :disabled="nickNameBtn"
+              >
+                증복확인
+              </button>
             </div>
           </div>
 
@@ -129,7 +263,15 @@ function dlgHandler(a) {
               </label>
             </div>
             <div class="div-input">
-              <input id="phone-number" class="input-1" type="text" tabindex="0" placeholder="숫자만 입력해주세요" required />
+              <input
+                id="phone-number"
+                class="input-1"
+                type="text"
+                tabindex="0"
+                placeholder="숫자만 입력해주세요"
+                required
+                v-model="phoneNumber"
+              />
             </div>
           </div>
 
@@ -139,26 +281,44 @@ function dlgHandler(a) {
               <label for="birth"> 생년월일 </label>
             </div>
             <div class="div-input-2">
-              <input id="birth-year" class="input-2" type="text" tabindex="0" placeholder="YYYY" required />
-              <span class="birth-deco">
-              </span>
-              <input id="birth-month" class="input-2" type="text" tabindex="0" placeholder="MM" required />
-              <span class="birth-deco">
-              </span>
-              <input id="birth-day" class="input-2" type="text" tabindex="0" placeholder="DD" required />
+              <input
+                id="birth-year"
+                class="input-2"
+                type="text"
+                tabindex="0"
+                placeholder="YYYY"
+                required
+              />
+              <span class="birth-deco"> </span>
+              <input
+                id="birth-month"
+                class="input-2"
+                type="text"
+                tabindex="0"
+                placeholder="MM"
+                required
+              />
+              <span class="birth-deco"> </span>
+              <input
+                id="birth-day"
+                class="input-2"
+                type="text"
+                tabindex="0"
+                placeholder="DD"
+                required
+              />
             </div>
           </div>
-        </from>
+        </form>
       </div>
       <div class="div-btn">
-        <button class="btn-2" @click="showHandler">
-          <span class="text-5" > 가입하기 </span>
+        <button class="btn-2" @click="showHandler" v-bind:disabled="emailBtn == false">
+          <span class="text-5"> 가입하기 </span>
         </button>
       </div>
     </div>
   </div>
-    <Modal :content="content" :show="showModal" @ok="dlgHandler">
-  </Modal>
+  <Modal :content="content" :show="showModal" @ok="dlgHandler"> </Modal>
 </template>
 
 <style scoped>
@@ -225,6 +385,22 @@ function dlgHandler(a) {
   color: rgb(235, 155, 56);
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(235, 155, 56);
+  margin: 0;
+}
+
+.btn-1-off {
+  width: 120px;
+  font-weight: 500;
+  font-size: 14px;
+  display: block;
+  padding: 0px 10px;
+  text-align: center;
+  overflow: hidden;
+  height: 52px;
+  border-radius: 3px;
+  color: rgb(94, 94, 94);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(94, 94, 94);
   margin: 0;
 }
 
@@ -318,14 +494,11 @@ function dlgHandler(a) {
   align-items: center;
 }
 
-
 .birth-deco::after {
-
   content: "/";
   font-size: 14px;
   color: rgb(204, 204, 204);
   text-align: center;
   line-height: 40px;
-
 }
 </style>

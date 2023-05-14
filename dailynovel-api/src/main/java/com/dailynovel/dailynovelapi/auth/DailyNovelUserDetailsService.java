@@ -18,16 +18,16 @@ public class DailyNovelUserDetailsService implements UserDetailsService {
     @Autowired
     private MemberRepository repository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
 
         DailyNovelUserDetails user = new DailyNovelUserDetails();
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Member  member = repository.findByUserName(username);
+        Member  member = repository.findByEmail(email);
         user.setId(member.getId());
         user.setEmail(member.getEmail());
-        user.setPassword(member.getPwd());
+        user.setPassword(member.getPassword());
         user.getAuthorities(authorities);
         return user;
 
