@@ -37,7 +37,7 @@ function mOpenHandler(){
                                 <div class="btn" @click="mOpenHandler"><span>추가</span><span class="icon-clamp"></span></div>
                                 <transition name="bounce">
                                     <div class="content" @click="optionClickHandler" v-show="menuOpen">
-                                        <a href="#"  class="item">가장 행복했던 순간들</a>
+                                        <a href="#"  class="item shared">가장 행복했던 순간들</a>
                                         <a href="#"  class="item">나의 영화일지</a>
                                         <a href="#"  class="item">여행 가볼까요</a>
                                         <a href="#"  class="item">여행 가볼까요</a>
@@ -245,6 +245,10 @@ color: black;
 padding: 12px 16px;
 text-decoration: none;
 display: block;
+}
+
+.collection-list.dropdown .content .item.shared {
+color: #00000040;
 }
 
 .collection-list.dropdown .content a:hover {

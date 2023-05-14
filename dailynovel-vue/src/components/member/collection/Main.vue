@@ -2,9 +2,26 @@
 import{ref} from 'vue'
 let registerMenuController = ref(false);
 
+// 컬렉션 추가 Form 변경 함수
 function registerFromHandler(){
     registerMenuController.value = !registerMenuController.value
 }
+
+
+
+
+const props = defineProps({
+    collection: {
+        type: Object,
+        required:true
+    }
+})
+
+
+function menuClickHandler(e){
+    console.log(e.target);
+}
+console.log(props.collection.List[3]);
 </script>
 
 
@@ -34,35 +51,19 @@ function registerFromHandler(){
                 </div>
             </transition>
             </div>
-            <router-link to="./shared" class="mgl-5">
+            <router-link to="./shared" class="mgl-5" @click="menuClickHandler">
                 <div class="box">
                     <div class="header"></div>
                     <h1 class="title">공유되었던 일기들</h1>
                     <div></div>
                 </div>
             </router-link>
-
-            <router-link to="./detail/comment" class="mgl-5">
+            
+            <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List">
                 <div class="box">
                     <div class="header"></div>
-                    <h1 class="title">가장 행복했던 순간들</h1>
+                    <h1 class="title">{{colList}}</h1>
                     <div class="icon-tack"></div>
-                </div>
-            </router-link>
-
-            <router-link to="./detail/diary" class="mgl-5">
-                <div class="box">
-                    <div class="header"></div>
-                    <h1 class="title">나의 영화일지</h1>
-                    <div></div>
-                </div>
-            </router-link>
-
-            <router-link to="./diary" class="mgl-5">
-                <div class="box">
-                    <div class="header"></div>
-                    <h1 class="title">여행 가볼까요</h1>
-                    <div></div>
                 </div>
             </router-link>
 

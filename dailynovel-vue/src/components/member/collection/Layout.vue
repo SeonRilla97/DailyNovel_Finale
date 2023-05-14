@@ -1,13 +1,11 @@
 <script setup>
 import { reactive } from 'vue';
 
-const collectionList = reactive({
-    List: null
+const collection = reactive({
+    List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에"]
 })
 
-// defineProps({
-//     collectionList
-// })
+defineProps()
 
 </script>
 
@@ -18,7 +16,7 @@ const collectionList = reactive({
             <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
         </header>
         <transition name="fade">
-            <router-view></router-view>
+            <router-view :collection="collection"></router-view>
         </transition>
     </section>
 </template>
