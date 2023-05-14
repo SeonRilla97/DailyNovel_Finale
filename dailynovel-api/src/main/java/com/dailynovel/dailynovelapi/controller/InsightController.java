@@ -27,9 +27,9 @@ public class InsightController {
 
 
      @GetMapping("/chart")
-     public Map<String, Object> feelingChart(Integer memberId){
+     public Map<String, Object> feelingChart(){
     
-        List<Diary> feeling = service.getByFeeling(memberId);
+        List<Object[]> feeling = service.getByFeeling();
         Map<String,Object> map = new HashMap<>();
         map.put("feeling", feeling);
         
