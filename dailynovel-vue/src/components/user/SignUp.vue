@@ -15,13 +15,24 @@ let nickName = ref("");
 let nickNameBtn = ref(false);
 let content = ref("");
 
+let emailVerification = /^[a-zA-Z0-9+-_.]+@[a-zA-Z-]+\.[a-zA-Z-.]+$/;
+let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+let passwordVerificationMiddle = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
+let nickNameVerification = /^.{1,8}$/;
+let phoneNumberVerification = /d{11}/;
 let showModal = ref(false);
+
+let emailVerificationResult = ref(false);
+let passwordVerificationStrongResult = ref(false);
+let passwordVerificationMiddleResult = ref(false);
+let nickNameVerificationResult = ref(false);
+let phoneNumberVerificationResult = ref(false);
 
 async function showHandler(event) {
   if (event == "닉네임") {
     console.log(nickName.value);
     let response = await fetch(
-      "http://localhost:8080/users/nicknameCheck?nickname="+nickName.value
+      "http://localhost:8080/users/nicknameCheck?nickname=" + nickName.value
     );
     let data = await response.text();
     console.log(data);
@@ -34,29 +45,27 @@ async function showHandler(event) {
       // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
       content.value = "응답을 처리할 수 없습니다.";
     }
-  } 
-  
-  else if (event == "이메일") {
+  } else if (event == "이메일") {
     let response = await fetch(
-      "http://localhost:8080/users/emailCheck?email="+email.value
+      "http://localhost:8080/users/emailCheck?email=" + email.value
     );
     let data = await response.text();
 
     if (data === "true") {
-      content.value = "사용 가능한 이메일입니다.";
+      content.value = "발송된 인증번호를 확인해주세요";
       emailBtn.value = true;
     } else if (data === "false") {
       content.value = "이미 가입된 이메일입니다.";
     } else {
       // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-      content.value = "응답을 처리할 수 없습니다.";
+      content.value = "이메일을 다시 확인해주세요";
     }
-  }
-  
-  
-  else if (event == "이메일인증번호확인") {
+  } else if (event == "이메일인증번호확인") {
     let response = await fetch(
-      "http://localhost:8080/users/emailCheckNum?email="+email.value+'&emailCheckNum='+emailcheck.value
+      "http://localhost:8080/users/emailCheckNum?email=" +
+        email.value +
+        "&emailCheckNum=" +
+        emailcheck.value
     );
     let data = await response.text();
 
@@ -74,15 +83,14 @@ async function showHandler(event) {
     if (!emailBtn) {
       content.value = "이메일을 다시 입력하세요";
     } else if (!passwordBtn) {
-      content.value = "패스워드 검사가 잘못되었습니다.";
+      content.value = "패스워드를 다시입력해주세요.";
     } else if (!phoneNumberBtn) {
       content.value = "올바른 전화번호가 아닙니다.";
     } else if (!mailcheckBtn) {
       content.value = "이메일 인증을 시도해주세요";
     } else if (!nickNameBtn) {
       content.value = "닉네임을 다시 입력해주세요";
-    } else 
-    content.value = "회원가입에 성공했습니다.";
+    } else content.value = "회원가입에 성공했습니다.";
   }
 
   showModal.value = true;
@@ -91,20 +99,46 @@ function dlgHandler(a) {
   showModal.value = false;
 }
 
-function updateInput(event) {
-  if (event == "이메일") {
-    emailBtn.value = false;
-    console.log(emailBtn.value);
-  } else if (event == "닉네임") {
-
-  } else if (event == "이메일인증번호") {
-    mailcheckBtn = false;
-  } else if (event == "패스워드") {
-
-  } else if (event == "패스워드확인") {
-
+//비밀번호 정규식
+function passwordVerification() {
+  if (password.value.match(passwordVerificationStrong)) {
+    passwordVerificationStrongResult = true;
+    console.log("정규식 통과");
+  } else if (password.value.match(passwordVerificationMiddle)) {
+    passwordVerificationMiddleResult = true;
+    console.log("약한정규식 통과");
   } else {
-  
+    console.log("실패");
+  }
+}
+//비밀번호 일치
+function passwordverify() {
+  if (password.value == passwordCheck.value) {
+    console.log("같다!");
+  } else console.log("다르다");
+}
+
+async function updateInput(event) {
+  console.log("이거 뜨긴해?");
+  if (event == "이메일") {
+    if (email.value.match(emailVerification)) {
+      emailVerificationResult.value = true;
+      emailBtn.value = false;
+    } else {
+      content.value = "올바른 이메일을 입력해주세요";
+      emailVerificationResult.value = false;
+      emailBtn.value = false;
+    }
+  } else if (event == "닉네임") {
+    // ...
+  } else if (event == "이메일인증번호") {
+    // ...
+  } else if (event == "패스워드") {
+    // ...
+  } else if (event == "패스워드확인") {
+    // ...
+  } else {
+    // ...
   }
 }
 </script>
@@ -130,7 +164,13 @@ function updateInput(event) {
             <div class="div-input">
               <input
                 id="email"
-                class="input-1"
+                :class="[
+                  email === ''
+                    ? 'input-1'
+                    : emailVerificationResult
+                    ? 'input-1-ok'
+                    : 'input-1-no',
+                ]"
                 type="text"
                 tabindex="0"
                 placeholder="이메일을 입력해주세요"
@@ -149,6 +189,13 @@ function updateInput(event) {
                 인증번호 받기
               </button>
             </div>
+          </div>
+          <div
+            class="mgt-1"
+            style="color: red"
+            :class="[emailVerificationResult ? 'd-none' : '']"
+          >
+            이메일 형식을 지켜주세요
           </div>
 
           <!--이메일 확인 -->
@@ -176,7 +223,7 @@ function updateInput(event) {
                 type="button"
                 :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']"
                 @click="showHandler('이메일인증번호확인')"
-                :disabled="mailcheckBtn ==true"
+                :disabled="mailcheckBtn == true"
               >
                 인증번호 확인
               </button>
@@ -195,13 +242,21 @@ function updateInput(event) {
               <input
                 id="password"
                 class="input-1"
-                type="text"
+                type="password"
                 tabindex="0"
                 placeholder="패스워드를 입력해주세요"
                 v-model="password"
+                @input="passwordVerification()"
+                @change="passwordverify()"
               />
             </div>
           </div>
+          <div class="mgt-1"       
+          :class="[passwordVerificationStrongResult ? 'color-green' :passwordVerificationMiddleResult?'color-yellow' : 'color-red']"
+          >비밀번호 형식(8~25문자및숫자포함)
+          </div>
+         
+         
           <!--비밀번호 확인-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -219,9 +274,11 @@ function updateInput(event) {
                 placeholder="패스워드를 한번 더 입력해주세요"
                 required
                 v-model="passwordCheck"
+                @input="passwordverify()"
               />
             </div>
           </div>
+          <div class="mgt-1" style="color: red">비밀번호와 일치하지 않습니다.</div>
 
           <!--닉네임-->
           <div class="mgt-3 display-flex">
@@ -253,6 +310,7 @@ function updateInput(event) {
               </button>
             </div>
           </div>
+          <div class="mgt-1" style="color: red">닉네임:2~8글자(특수문자제외)</div>
 
           <!--전화 번호-->
           <div class="mgt-3 display-flex">
@@ -462,6 +520,34 @@ function updateInput(event) {
   box-sizing: border-box;
 }
 
+.input-1-ok {
+  width: 360px;
+  height: 52px;
+  padding: 0px 11px 1px 15px;
+  border-radius: 4px;
+  border: 1px solid rgb(176, 246, 177);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(51, 51, 51);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-1-no {
+  width: 360px;
+  height: 52px;
+  padding: 0px 11px 1px 15px;
+  border-radius: 4px;
+  border: 1px solid rgb(235, 143, 143);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(51, 51, 51);
+  outline: none;
+  box-sizing: border-box;
+}
+
 .input-2 {
   width: 116px;
   height: 52px;
@@ -500,5 +586,15 @@ function updateInput(event) {
   color: rgb(204, 204, 204);
   text-align: center;
   line-height: 40px;
+}
+
+.color-red{
+  color: red;
+}
+.color-green{
+  color:greenyellow
+}
+.color-yellow{
+  color: yellow;
 }
 </style>
