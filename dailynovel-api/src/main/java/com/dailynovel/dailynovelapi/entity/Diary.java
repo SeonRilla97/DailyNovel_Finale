@@ -16,11 +16,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+
 public class Diary {
     @Id
     private int id;
     @Column(name="member_id")
     private int memberId;
+
     private String title;
     private String content;
     private String weather;
@@ -29,6 +31,4 @@ public class Diary {
     private String tag;
     @Column(name="reg_date")
     private Date date;
-
-    //주석
 }

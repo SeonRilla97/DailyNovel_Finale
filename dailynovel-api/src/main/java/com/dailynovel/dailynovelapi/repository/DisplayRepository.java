@@ -7,7 +7,4 @@ import com.dailynovel.dailynovelapi.entity.DisplayView;
 
 public interface DisplayRepository extends JpaRepository<DisplayView, Integer> {
 
-
-
-
 }

@@ -8,6 +8,7 @@ import com.dailynovel.dailynovelapi.entity.Member;
 public interface MemberRepository extends JpaRepository<Member,Integer> {
     @Query("from Member where email = :email")
     Member findByEmail(String email);
+    // email만 들고오는지
 
     
 }

@@ -24,7 +24,7 @@ public class DisplayController {
     public List<DisplayView> listAll(){
         return service.getByList();
     }
-
+  
     // @GetMapping("listall")
     // public List<Diary> listAll(){
     //     return service.getByList();

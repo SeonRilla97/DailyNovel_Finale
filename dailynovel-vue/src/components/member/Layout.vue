@@ -130,12 +130,14 @@ function onCalendarClickHandler() {
   background-color: #FAFFF9;
 
   position: fixed;
-  max-width:1920px;
+  max-width: 1920px;
   max-width: 1280px;
   max-height: 720px;
   width: 90%;
   height: 80%;
 
+  border-radius: 8px;
+  overflow: hidden;
   animation: show-effect 0.5s ease-in-out;
   /* animation-fill-mode: forwards; */
 }
@@ -152,6 +154,9 @@ function onCalendarClickHandler() {
   flex-direction: column;
   width: 100%;
   height: 100%;
+
+
+
 }
 
 .modal-container .header {
