@@ -1,6 +1,6 @@
 <script setup>
 import quill from './quill.vue';
-
+import quillCopy from './quill copy.vue';
 
 </script>
 
@@ -28,6 +28,7 @@ import quill from './quill.vue';
     <quill
           />
 
+          <!-- <quillCopy/> -->
 
   </main>
 
@@ -50,8 +51,9 @@ import quill from './quill.vue';
 }
 .editor-main{
   height: 80%;
+
+  /* height: auto; */
   overflow-y: scroll;
-  /* overflow-x: hidden; */
 
 }
 
