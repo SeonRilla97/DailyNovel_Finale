@@ -94,6 +94,7 @@ function categoryClick(page){
     cursor: pointer;
     margin-left: 1rem;
     font-size: 1.875rem;
+    user-select: none;
 }
 .inline{
 display: inline-block;
@@ -154,6 +155,7 @@ align-content: space-between;
 /* 콘텐츠박스 제목의 중앙*/
 justify-self: center;
 align-self: center;
+user-select: none;
 }
 
 .content-title p {
@@ -187,6 +189,7 @@ word-wrap: break-word;
 display: -webkit-box;
 -webkit-line-clamp: 15;
 -webkit-box-orient: vertical;
+user-select: none;
 }
 
 .content-box .content-like-count {
