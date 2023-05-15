@@ -1,69 +1,76 @@
 <template lang="">
     <main class=" center-grid">
+        
         <section class=" center-grid article-box">
-            
             <h1 class="d-none">디테일</h1>
                 <article>
                     <h1 class="title">{{title}}</h1>
                     <hr>
                     <div class="userInfo">
-                        <div class="d-inline">하트마크 / </div>
+                        <div class="d-inline like-active"></div>
                         <div class="d-inline">{{like}} / </div>
                         <div class="d-inline">{{image}} / </div>
                         <div class="d-inline" @click="statusz">{{nickname}}</div>
                         
                     </div>
                     <br>
-                    <p>
-                        {{content}}
+                    <p class="detail-width">
+                        {{content}}<br>
+                        그것은 천국인 거야 야야야야야야야야야야야야야야야ㅑ야야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+                        노란 머리가 젤다죠? 
+                        
                     </p>
                 </article>
         </section>
+        <div class="subscribeBtn" v-show="subscribe" style="position: relative;"><span>구독하기</span></div>
     </main>
 </template>
 
 <script setup>
-    import {reactive, ref, onMounted} from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 
-    const props = defineProps({
-        detailPage: {
-            type:Object 
-        }
-    })
-    console.log(props)
-    let data = ref();
-    let title = ref('');
-    let content = ref('');
-    let like = ref();//좋아요
-    let image = ref('');//이미지
-    let nickname = ref('');//닉네임
-    
-    function load(){
-        setTimeout(() => {
-            data = props.detailPage
-            console.log(data)
-            
-            title.value =data.title 
-            content.value =data.content 
-            like.value=data.like;
-            image.value=data.image;
-            nickname.value=data.nickname;
-            
+const props = defineProps({
+    detailPage: {
+        type: Object
+    }
+})
+console.log(props)
+let data = ref();
+let title = ref('');
+let content = ref('');
+let like = ref();//좋아요
+let image = ref('');//이미지
+let nickname = ref('');//닉네임
+let subscribe = ref(false);
 
-        }, 50);
-    }
-    
-    onMounted(() => {
-        load();
-    })
-  
-    function statusz(){
-        console.log("하이룽")
-    }
+function load() {
+    setTimeout(() => {
+        data = props.detailPage
+        console.log(data)
+
+        title.value = data.title
+        content.value = data.content
+        like.value = data.like;
+        image.value = data.image;
+        nickname.value = data.nickname;
+
+
+    }, 50);
+}
+
+onMounted(() => {
+    load();
+})
+
+function statusz() {
+    // console.log("하이룽");
+    subscribe.value = !subscribe.value;
+    console.log(subscribe.value)
+}
 </script>
 
 <style scoped>
- .article-box {
+.article-box {
     width: 39rem;
     height: minmax(1rem, auto);
 }
@@ -192,14 +199,51 @@ li {
     /*-webkit-text-stroke: 0.5px black; /* font에 테두리 주는 */
 }
 
-.active-like {
+.like-active {
     /*좋아요 활성화*/
-    /* <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.655 13.9159C7.65523 13.9161 7.65543 13.9162 8 13.25C8.34457 13.9162 8.34477 13.9161 8.34501 13.9159C8.12889 14.0277 7.87111 14.0277 7.655 13.9159ZM7.655 13.9159L8 13.25L8.34501 13.9159L8.34731 13.9147L8.35269 13.9119L8.37117 13.9022C8.38687 13.8939 8.40926 13.882 8.4379 13.8665C8.49516 13.8356 8.57746 13.7904 8.6812 13.7317C8.8886 13.6142 9.18229 13.442 9.53358 13.2199C10.2346 12.7767 11.1728 12.13 12.1147 11.3181C13.9554 9.7312 16 7.35031 16 4.5C16 1.83579 13.9142 0 11.75 0C10.2026 0 8.84711 0.80151 8 2.01995C7.15289 0.80151 5.79736 0 4.25 0C2.08579 0 0 1.83579 0 4.5C0 7.35031 2.04459 9.7312 3.8853 11.3181C4.82717 12.13 5.76538 12.7767 6.46642 13.2199C6.81771 13.442 7.1114 13.6142 7.3188 13.7317C7.42254 13.7904 7.50484 13.8356 7.5621 13.8665C7.59074 13.882 7.61313 13.8939 7.62883 13.9022L7.64731 13.9119L7.65269 13.9147L7.655 13.9159Z" fill="#F13838" /></svg> */
+    width: 1rem;
+    height: 1rem;
+    background-image: url('@/assets/img/display/heart-red.svg');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /*  */
 }
 
-.deactive-like {
+.like-deactive {
     /*좋아요 비활성화*/
-    /* <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.655 13.9159C7.65523 13.9161 7.65543 13.9162 8 13.25C8.34457 13.9162 8.34477 13.9161 8.34501 13.9159C8.12889 14.0277 7.87111 14.0277 7.655 13.9159ZM7.655 13.9159L8 13.25L8.34501 13.9159L8.34731 13.9147L8.35269 13.9119L8.37117 13.9022C8.38687 13.8939 8.40926 13.882 8.4379 13.8665C8.49516 13.8356 8.57746 13.7904 8.6812 13.7317C8.8886 13.6142 9.18229 13.442 9.53358 13.2199C10.2346 12.7767 11.1728 12.13 12.1147 11.3181C13.9554 9.7312 16 7.35031 16 4.5C16 1.83579 13.9142 0 11.75 0C10.2026 0 8.84711 0.80151 8 2.01995C7.15289 0.80151 5.79736 0 4.25 0C2.08579 0 0 1.83579 0 4.5C0 7.35031 2.04459 9.7312 3.8853 11.3181C4.82717 12.13 5.76538 12.7767 6.46642 13.2199C6.81771 13.442 7.1114 13.6142 7.3188 13.7317C7.42254 13.7904 7.50484 13.8356 7.5621 13.8665C7.59074 13.882 7.61313 13.8939 7.62883 13.9022L7.64731 13.9119L7.65269 13.9147L7.655 13.9159Z" fill="#ACACAC" /></svg> */
+    width: 1rem;
+    height: 1rem;
+    background-image: url('@/assets/img/display/heart-gray.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /*  */
+}
+
+.detail-width {
+    width: 100%;
+    min-width: 500px;
+    max-width: 1100px;
+    /* width: minmax(500px, 1280px); */
+    text-align: left;
+}
+
+.subscribeBtn {
+    text-align: center;
+    background-color: #989797;
+    width: 10rem;
+    height: 5rem;
+    position: absolute;
+  top: 0px;
+  left: 630px;
+  
+
 }
 </style>
 

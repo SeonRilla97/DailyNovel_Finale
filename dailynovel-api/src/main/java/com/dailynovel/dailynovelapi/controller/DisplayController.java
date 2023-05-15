@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dailynovel.dailynovelapi.entity.DiaryLikeId;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
-import com.dailynovel.dailynovelapi.repository.DiaryLikeRepository;
 import com.dailynovel.dailynovelapi.service.DisplayService;
 
 @RestController
@@ -20,8 +18,7 @@ public class DisplayController {
     @Autowired
     private DisplayService service;
 
-    @Autowired
-    private DiaryLikeRepository repository;
+    
 
     @GetMapping("listall")
     public List<DisplayView> listAll(){
@@ -38,8 +35,11 @@ public class DisplayController {
     //     return service.getBySharedDiaryList();
     // }
     
-    @PostMapping("like")
-    public void like(){
-        repository.save(2,9);
+    @PostMapping("save")
+    public String save(/* 회원id와 일기id를 받아오게 */){
+        int memberId = 2;
+        int diaryId = 17;
+        service.insertLike(memberId, diaryId);
+        return "세이브 완료";
     }
 }

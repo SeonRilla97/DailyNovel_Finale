@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
+import com.dailynovel.dailynovelapi.repository.DiaryLikeRepository;
 import com.dailynovel.dailynovelapi.repository.DisplayRepository;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 @Service
 public class DefaultDisplayService implements DisplayService {
@@ -18,23 +16,22 @@ public class DefaultDisplayService implements DisplayService {
     @Autowired
     private DisplayRepository repository;
 
+    @Autowired
+    private DiaryLikeRepository diaryRepository;
+
     @Override
     public List<DisplayView> getByList() {
         return repository.findAll();
     }
 
     @Override
-    public void insertLike(DiaryLike like) {
-        
+    public void insertLike(int mId, int dId) {
+        DiaryLike diarylike = new DiaryLike();
+        diarylike.setMemberId(mId);
+        diarylike.setDiaryId(dId);
+        // diarylike.setMemberId(2);
+        // diarylike.setDiaryId(17);
+
+        diaryRepository.save(diarylike);
     }
-
-    @Override
-    public void deleteLike(DiaryLike like) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteLike'");
-    }
-
-
-
-    
 }
