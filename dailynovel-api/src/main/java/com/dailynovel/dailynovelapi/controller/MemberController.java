@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,14 @@ public class MemberController {
             dto.put("roles", new String[]{"MEMBER"});
         }
         return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
+    }
+
+
+    @GetMapping("test")
+    public String test(String test){
+
+        System.out.println("asdfasdf");
+        return "test"; 
     }
 
 }

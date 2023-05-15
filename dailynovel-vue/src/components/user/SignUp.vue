@@ -7,25 +7,32 @@ let emailBtn = ref(false);
 let password = ref("");
 let passwordBtn = ref(false);
 let passwordCheck = ref("");
-let phoneNumber = ref();
+let phoneNumber = ref("");
 let phoneNumberBtn = ref(false);
 let emailcheck = ref("");
 let mailcheckBtn = ref(false);
 let nickName = ref("");
 let nickNameBtn = ref(false);
 let content = ref("");
-
+let birthYear= ref();
+let birthMonth= ref();
+let birthDay= ref();
+//1은남자 2는여자
+let gender = ref();
 let emailVerification = /^[a-zA-Z0-9+-_.]+@[a-zA-Z-]+\.[a-zA-Z-.]+$/;
-let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/;
 let passwordVerificationMiddle = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
-let nickNameVerification = /^.{1,8}$/;
-let phoneNumberVerification = /d{11}/;
+let phoneNumberVerification = /^(\d{3})(\d{3,4})(\d{4})$/;
 let showModal = ref(false);
+let birthYearVerification=/^(\d{4})$/;
+let birthMonthVerification=/^(\d{2})$/;
+let birthDayVerification=/^(\d{2})$/;
+
 
 let emailVerificationResult = ref(false);
 let passwordVerificationStrongResult = ref(false);
 let passwordVerificationMiddleResult = ref(false);
-let nickNameVerificationResult = ref(false);
+let passwordVerifyResult = ref(false);
 let phoneNumberVerificationResult = ref(false);
 
 async function showHandler(event) {
@@ -35,12 +42,13 @@ async function showHandler(event) {
       "http://localhost:8080/users/nicknameCheck?nickname=" + nickName.value
     );
     let data = await response.text();
-    console.log(data);
+
     if (data === "false") {
       content.value = "사용할 수 있는 닉네임입니다.";
-    } else if (data === "true") {
-      content.value = "중복된 닉네임입니다.";
       nickNameBtn.value = true;
+    } else if (data === "true") {
+      nickNameBtn.value = false;
+      content.value = "중복된 닉네임입니다.";
     } else {
       // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
       content.value = "응답을 처리할 수 없습니다.";
@@ -63,15 +71,15 @@ async function showHandler(event) {
   } else if (event == "이메일인증번호확인") {
     let response = await fetch(
       "http://localhost:8080/users/emailCheckNum?email=" +
-        email.value +
-        "&emailCheckNum=" +
-        emailcheck.value
+      email.value +
+      "&emailCheckNum=" +
+      emailcheck.value
     );
     let data = await response.text();
 
     if (data === "true") {
       content.value = "인증에 성공했습니다.";
-      mailcheckBtn = true;
+      mailcheckBtn.value = true;
     } else if (data === "false") {
       content.value = "인증에 실패했습니다.";
       emailBtn.value = true;
@@ -80,47 +88,102 @@ async function showHandler(event) {
       content.value = "응답을 처리할 수 없습니다.";
     }
   } else {
-    if (!emailBtn) {
+    if (!emailBtn.value) {
       content.value = "이메일을 다시 입력하세요";
-    } else if (!passwordBtn) {
+    } else if (!passwordBtn.value) {
       content.value = "패스워드를 다시입력해주세요.";
-    } else if (!phoneNumberBtn) {
+    } else if (!phoneNumberBtn.value) {
       content.value = "올바른 전화번호가 아닙니다.";
-    } else if (!mailcheckBtn) {
+    } else if (!mailcheckBtn.value) {
       content.value = "이메일 인증을 시도해주세요";
-    } else if (!nickNameBtn) {
+    } else if (!nickNameBtn.value) {
       content.value = "닉네임을 다시 입력해주세요";
     } else content.value = "회원가입에 성공했습니다.";
   }
 
   showModal.value = true;
 }
-function dlgHandler(a) {
+function dlgHandler() {
   showModal.value = false;
 }
+
 
 //비밀번호 정규식
 function passwordVerification() {
   if (password.value.match(passwordVerificationStrong)) {
-    passwordVerificationStrongResult = true;
-    console.log("정규식 통과");
+    passwordVerificationStrongResult.value = true;
+
+
   } else if (password.value.match(passwordVerificationMiddle)) {
-    passwordVerificationMiddleResult = true;
-    console.log("약한정규식 통과");
+    passwordVerificationMiddleResult.value = true;
+
   } else {
-    console.log("실패");
+    passwordVerificationMiddleResult.value = false;
+    passwordVerificationStrongResult.value = false;
+
   }
 }
+
 //비밀번호 일치
 function passwordverify() {
-  if (password.value == passwordCheck.value) {
-    console.log("같다!");
-  } else console.log("다르다");
+  if (password.value === passwordCheck.value) {
+    passwordVerifyResult.value = true;
+  }
+  else
+    passwordVerifyResult.value = false;
 }
 
+
+function nickNameVerify() {
+  nickNameBtn.value = false;
+}
+
+
+/**let checkphone = phoneNumber.value.replace(/\d/g, "");
+let formattedPhone = checkphone.replace(phoneNumberVerification, "$1-$2-$3");*/
+function phoneNumberChange() {
+  let phoneNumberCheck = phoneNumber.value.replace(/\D/g, "");
+let formattedPhone = phoneNumberCheck.replace(phoneNumberVerification, "$1-$2-$3");
+
+return formattedPhone;
+}
+function phoneNumberInput() {
+  let formattedPhoneNumber = phoneNumberChange();
+  phoneNumber.value = formattedPhoneNumber;
+}
+
+function birthYearVerify(){
+  let birthYearCheck = birthYear.value.replace(/\D/g, "");
+  let formattedbirthYear = birthYearCheck.replace(birthYearVerification, "$1");
+  return formattedbirthYear;
+}
+function birthYearInput() {
+  let formattedBirthYear = birthYearVerify();
+  birthYear.value = formattedBirthYear;
+}
+
+function birthMonthVerify(){
+  let birthYearCheck = birthYear.value.replace(/\D/g, "");
+  let formattedbirthYear = birthYearCheck.replace(birthYearVerification, "$1");
+  return formattedbirthYear;
+}
+function birthMonthInput() {
+  let formattedBirthYear = birthMonthVerify();
+  birthYear.value = formattedBirthYear;
+}
+function birthDayVerify(){
+  let birthYearCheck = birthYear.value.replace(/\D/g, "");
+  let formattedbirthYear = birthYearCheck.replace(birthYearVerification, "$1");
+  return formattedbirthYear;
+}
+function birthDayInput() {
+  let formattedBirthYear = birthDayVerify();
+  birthYear.value = formattedBirthYear;
+}
+
+
 async function updateInput(event) {
-  console.log("이거 뜨긴해?");
-  if (event == "이메일") {
+  if (event === "이메일") {
     if (email.value.match(emailVerification)) {
       emailVerificationResult.value = true;
       emailBtn.value = false;
@@ -129,16 +192,6 @@ async function updateInput(event) {
       emailVerificationResult.value = false;
       emailBtn.value = false;
     }
-  } else if (event == "닉네임") {
-    // ...
-  } else if (event == "이메일인증번호") {
-    // ...
-  } else if (event == "패스워드") {
-    // ...
-  } else if (event == "패스워드확인") {
-    // ...
-  } else {
-    // ...
   }
 }
 </script>
@@ -162,39 +215,23 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="email"
-                :class="[
-                  email === ''
-                    ? 'input-1'
-                    : emailVerificationResult
+              <input id="email" :class="[
+                email === ''
+                  ? 'input-1'
+                  : emailVerificationResult
                     ? 'input-1-ok'
                     : 'input-1-no',
-                ]"
-                type="text"
-                tabindex="0"
-                placeholder="이메일을 입력해주세요"
-                required
-                @input="updateInput('이메일')"
-                v-model="email"
-              />
+              ]" type="text" tabindex="0" placeholder="이메일을 입력해주세요" required @input="updateInput('이메일')"
+                v-model="email" />
             </div>
             <div class="mgl-3">
-              <button
-                type="button"
-                :class="[emailBtn ? 'btn-1-off' : 'btn-1']"
-                @click="showHandler('이메일')"
-                :disabled="emailBtn == true"
-              >
+              <button type="button" :class="[emailBtn ? 'btn-1-off' : 'btn-1']" @click="showHandler('이메일')"
+                :disabled="emailBtn == true">
                 인증번호 받기
               </button>
             </div>
           </div>
-          <div
-            class="mgt-1"
-            style="color: red"
-            :class="[emailVerificationResult ? 'd-none' : '']"
-          >
+          <div class="mgt-1" style="color: red" :class="[emailVerificationResult ? 'd-none' : '']">
             이메일 형식을 지켜주세요
           </div>
 
@@ -207,24 +244,12 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="email"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="이메일을 입력해주세요"
-                required
-                @change="updateInput(이메일인증번호)"
-                v-model="emailcheck"
-              />
+              <input id="email" class="input-1" type="text" tabindex="0" placeholder="이메일을 입력해주세요" required
+                @change="updateInput(이메일인증번호)" v-model="emailcheck" />
             </div>
             <div class="mgl-3">
-              <button
-                type="button"
-                :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']"
-                @click="showHandler('이메일인증번호확인')"
-                :disabled="mailcheckBtn == true"
-              >
+              <button type="button" :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']" @click="showHandler('이메일인증번호확인')"
+                :disabled="mailcheckBtn == true">
                 인증번호 확인
               </button>
             </div>
@@ -239,24 +264,22 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="password"
-                class="input-1"
-                type="password"
-                tabindex="0"
-                placeholder="패스워드를 입력해주세요"
-                v-model="password"
-                @input="passwordVerification()"
-                @change="passwordverify()"
-              />
+              <input id="password" :class="[
+                password === ''
+                  ? 'input-1'
+                  : (passwordVerificationMiddleResult || passwordVerificationStrongResult) == true
+                    ? 'input-1-ok'
+                    : 'input-1-no',
+              ]" type="password" tabindex="0" placeholder="패스워드를 입력해주세요" v-model="password"
+                v-on:input="passwordVerification(), passwordverify()" />
             </div>
           </div>
-          <div class="mgt-1"       
-          :class="[passwordVerificationStrongResult ? 'color-green' :passwordVerificationMiddleResult?'color-yellow' : 'color-red']"
-          >비밀번호 형식(8~25문자및숫자포함)
+          <div class="mgt-1"
+            :class="[passwordVerificationStrongResult ? 'color-green' : passwordVerificationMiddleResult ? 'color-yellow' : 'color-red']">
+            비밀번호 형식(8~25 문자 및 숫자포함)
           </div>
-         
-         
+
+
           <!--비밀번호 확인-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -266,16 +289,14 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="password-check"
-                class="input-1"
-                type="password"
-                tabindex="0"
-                placeholder="패스워드를 한번 더 입력해주세요"
-                required
-                v-model="passwordCheck"
-                @input="passwordverify()"
-              />
+              <input id="password-check" :class="[
+                passwordCheck === ''
+                  ? 'input-1'
+                  : passwordVerifyResult == true
+                    ? 'input-1-ok'
+                    : 'input-1-no',
+              ]" type="password" tabindex="0" placeholder="패스워드를 한번 더 입력해주세요" required v-model="passwordCheck"
+                @input="passwordverify()" />
             </div>
           </div>
           <div class="mgt-1" style="color: red">비밀번호와 일치하지 않습니다.</div>
@@ -289,23 +310,18 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="nickname"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="닉네임을 입력해주세요"
-                required
-                v-model="nickName"
-              />
+              <input id="nickname" :class="[
+                nickName === ''
+                  ? 'input-1'
+                  : !nickNameBtn
+                    ? 'input-1-no'
+                    : 'input-1-ok',
+              ]" type="text" tabindex="0" placeholder="닉네임을 입력해주세요" required v-model="nickName"
+                @input="nickNameVerify()" />
             </div>
             <div class="mgl-3">
-              <button
-                type="button"
-                :class="[nickNameBtn ? 'btn-1-off' : 'btn-1']"
-                @click="showHandler('닉네임')"
-                :disabled="nickNameBtn"
-              >
+              <button type="button" :class="[!nickNameBtn ? 'btn-1' : 'btn-1-off']" @click="showHandler('닉네임')"
+                :disabled="nickNameBtn">
                 증복확인
               </button>
             </div>
@@ -321,15 +337,8 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input
-                id="phone-number"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="숫자만 입력해주세요"
-                required
-                v-model="phoneNumber"
-              />
+              <input id="phone-number" class="input-1" @input="phoneNumberInput()" type="text" tabindex="0"
+                placeholder="숫자만 입력해주세요" required v-model="phoneNumber" />
             </div>
           </div>
 
@@ -337,38 +346,42 @@ async function updateInput(event) {
           <div class="mgt-3 display-flex">
             <div class="div-label">
               <label for="birth"> 생년월일 </label>
+              <span class="essential-color">*</span>
             </div>
             <div class="div-input-2">
-              <input
-                id="birth-year"
-                class="input-2"
-                type="text"
-                tabindex="0"
-                placeholder="YYYY"
-                required
-              />
+              <input id="birth-year" class="input-2" type="NUMBER" maxlength="4" tabindex="0" placeholder="YYYY" required
+              @input="birthYearInput()" />
               <span class="birth-deco"> </span>
-              <input
-                id="birth-month"
-                class="input-2"
-                type="text"
-                tabindex="0"
-                placeholder="MM"
-                required
-              />
+              <input id="birth-month" class="input-2" type="NUMBER" maxlength="2" tabindex="0" placeholder="MM" required />
               <span class="birth-deco"> </span>
-              <input
-                id="birth-day"
-                class="input-2"
-                type="text"
-                tabindex="0"
-                placeholder="DD"
-                required
-              />
+              <input id="birth-day" class="input-2" type="NUMBER"  maxlength="2" tabindex="0" placeholder="DD" required />
+            </div>
+          </div>
+
+          
+          <!--성별-->
+          <div class="mgt-3 display-flex">
+            <div class="div-label">
+              <label for="gender"> 성별 </label>
+              <span class="essential-color">*</span>
+            </div>
+            <div class="input-1-noborder">
+              <input  @click="GenderCheck(1)" type="radio" tabindex="0" name="gender" value="1"
+                required /><label for="gender" class="mgl-2">
+                  남자
+                  </label>
+                <input  @input="GenderCheck(2)" type="radio" tabindex="0" name="gender" value="2"
+                required   class="mgl-5"/>
+                <label for="gender"  class="mgl-2">
+                  여자
+                  </label>
             </div>
           </div>
         </form>
       </div>
+
+      
+
       <div class="div-btn">
         <button class="btn-2" @click="showHandler" v-bind:disabled="emailBtn == false">
           <span class="text-5"> 가입하기 </span>
@@ -520,6 +533,45 @@ async function updateInput(event) {
   box-sizing: border-box;
 }
 
+.input-1-noborder {
+  width: 360px;
+  height: 52px;
+  padding: 0px 11px 1px 15px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  outline: none;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 체크박스와 라벨의 수직 정렬을 위해 추가 */
+}
+
+
+[type="radio"] {
+  vertical-align: middle;
+  appearance: none;
+}
+
+.input-1-noborder input[type="radio"] {
+  margin: 0 5px; /* 원하는 여백을 설정하세요 */
+  transform: scale(1.5); /* 원하는 크기를 설정하세요 */
+  vertical-align: middle;
+  appearance: none;
+  border: max(1px, 0.1em) solid rgb(235, 155, 56);
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+}
+
+.input-1-noborder input[type="radio"]:checked {
+  background: rgb(235, 155, 56); /* 선택 시 원하는 배경색을 지정하세요 */
+}
+
+.input-1-noborder input[type="radio"]:checked + label {
+  color: rgb(235, 155, 56); /* 선택 시 원하는 텍스트 색상을 지정하세요 */
+}
+
 .input-1-ok {
   width: 360px;
   height: 52px;
@@ -588,13 +640,15 @@ async function updateInput(event) {
   line-height: 40px;
 }
 
-.color-red{
+.color-red {
   color: red;
 }
-.color-green{
-  color:greenyellow
+
+.color-green {
+  color: greenyellow
 }
-.color-yellow{
+
+.color-yellow {
   color: yellow;
 }
 </style>

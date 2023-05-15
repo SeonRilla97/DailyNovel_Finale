@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class DailyNovelUserDetails implements UserDetails {
-    private int id;
+    private long id;
     private String username;
     private String password;
     private String email;
@@ -23,7 +23,7 @@ public class DailyNovelUserDetails implements UserDetails {
         return authorties;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public void setUsername(String username) {
