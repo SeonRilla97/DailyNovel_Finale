@@ -13,6 +13,8 @@ public interface UserService {
 
     boolean FindSameEmail(String email);
 
+    boolean signup(Member member);
+
 
 
 }

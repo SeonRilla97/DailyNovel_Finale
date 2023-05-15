@@ -14,9 +14,9 @@ let mailcheckBtn = ref(false);
 let nickName = ref("");
 let nickNameBtn = ref(false);
 let content = ref("");
-let birthYear= ref();
-let birthMonth= ref();
-let birthDay= ref();
+let birthYear = ref();
+let birthMonth = ref();
+let birthDay = ref();
 //1은남자 2는여자
 let gender = ref();
 let emailVerification = /^[a-zA-Z0-9+-_.]+@[a-zA-Z-]+\.[a-zA-Z-.]+$/;
@@ -24,10 +24,9 @@ let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{
 let passwordVerificationMiddle = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 let phoneNumberVerification = /^(\d{3})(\d{3,4})(\d{4})$/;
 let showModal = ref(false);
-let birthYearVerification=/^(\d{4})$/;
-let birthMonthVerification=/^(\d{2})$/;
-let birthDayVerification=/^(\d{2})$/;
-
+let birthYearVerification = /^(\d{4})$/;
+let birthMonthVerification = /^(\d{2})$/;
+let birthDayVerification = /^(\d{2})$/;
 
 let emailVerificationResult = ref(false);
 let passwordVerificationStrongResult = ref(false);
@@ -37,7 +36,6 @@ let phoneNumberVerificationResult = ref(false);
 
 async function showHandler(event) {
   if (event == "닉네임") {
-    console.log(nickName.value);
     let response = await fetch(
       "http://localhost:8080/users/nicknameCheck?nickname=" + nickName.value
     );
@@ -71,9 +69,9 @@ async function showHandler(event) {
   } else if (event == "이메일인증번호확인") {
     let response = await fetch(
       "http://localhost:8080/users/emailCheckNum?email=" +
-      email.value +
-      "&emailCheckNum=" +
-      emailcheck.value
+        email.value +
+        "&emailCheckNum=" +
+        emailcheck.value
     );
     let data = await response.text();
 
@@ -107,20 +105,15 @@ function dlgHandler() {
   showModal.value = false;
 }
 
-
 //비밀번호 정규식
 function passwordVerification() {
   if (password.value.match(passwordVerificationStrong)) {
     passwordVerificationStrongResult.value = true;
-
-
   } else if (password.value.match(passwordVerificationMiddle)) {
     passwordVerificationMiddleResult.value = true;
-
   } else {
     passwordVerificationMiddleResult.value = false;
     passwordVerificationStrongResult.value = false;
-
   }
 }
 
@@ -128,59 +121,25 @@ function passwordVerification() {
 function passwordverify() {
   if (password.value === passwordCheck.value) {
     passwordVerifyResult.value = true;
-  }
-  else
-    passwordVerifyResult.value = false;
+  } else passwordVerifyResult.value = false;
 }
-
 
 function nickNameVerify() {
   nickNameBtn.value = false;
 }
 
-
 /**let checkphone = phoneNumber.value.replace(/\d/g, "");
 let formattedPhone = checkphone.replace(phoneNumberVerification, "$1-$2-$3");*/
 function phoneNumberChange() {
   let phoneNumberCheck = phoneNumber.value.replace(/\D/g, "");
-let formattedPhone = phoneNumberCheck.replace(phoneNumberVerification, "$1-$2-$3");
+  let formattedPhone = phoneNumberCheck.replace(phoneNumberVerification, "$1-$2-$3");
 
-return formattedPhone;
+  return formattedPhone;
 }
 function phoneNumberInput() {
   let formattedPhoneNumber = phoneNumberChange();
   phoneNumber.value = formattedPhoneNumber;
 }
-
-function birthYearVerify(){
-  let birthYearCheck = birthYear.value.replace(/\D/g, "");
-  let formattedbirthYear = birthYearCheck.replace(birthYearVerification, "$1");
-  return formattedbirthYear;
-}
-function birthYearInput() {
-  let formattedBirthYear = birthYearVerify();
-  birthYear.value = formattedBirthYear;
-}
-
-function birthMonthVerify(){
-  let birthYearCheck = birthYear.value.replace(/\D/g, "");
-  let formattedbirthYear = birthYearCheck.replace(birthYearVerification, "$1");
-  return formattedbirthYear;
-}
-function birthMonthInput() {
-  let formattedBirthYear = birthMonthVerify();
-  birthYear.value = formattedBirthYear;
-}
-function birthDayVerify(){
-  let birthYearCheck = birthYear.value.replace(/\D/g, "");
-  let formattedbirthYear = birthYearCheck.replace(birthYearVerification, "$1");
-  return formattedbirthYear;
-}
-function birthDayInput() {
-  let formattedBirthYear = birthDayVerify();
-  birthYear.value = formattedBirthYear;
-}
-
 
 async function updateInput(event) {
   if (event === "이메일") {
@@ -194,6 +153,35 @@ async function updateInput(event) {
     }
   }
 }
+async function signupHandler() {
+
+  let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value+1);
+  let dateString = date.toISOString().split('T')[0];
+  await fetch("http://localhost:8080/users/signup", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value,
+      nickName: nickName.value,
+      phoneNumber: phoneNumber.value,
+      gender: gender.value,
+      birthday: dateString
+    },
+    ),
+  }).then((response) => response.text())
+    .then((data) => {
+      // 응답 처리
+      content.value = "회원가입에 성공했습니다.";
+    })
+    .catch((error) => {
+      // 에러 처리
+      content.value = "회원가입에 실패했습니다 빠진 정보를 확인해주세요.";
+    });
+}
 </script>
 <template>
   <div class="container-1-nmg container-s1">
@@ -205,7 +193,10 @@ async function updateInput(event) {
           <span class="essential-color">*</span>
           필수입력사항
         </div>
-        <form class="mgt-1 lc-vertical-alignment">
+        <form
+          class="mgt-1 lc-vertical-alignment"
+          enctype="application/x-www-form-urlencoded"
+        >
           <!--이메일-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -215,23 +206,40 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input id="email" :class="[
-                email === ''
-                  ? 'input-1'
-                  : emailVerificationResult
+              <input
+                id="email"
+                :class="[
+                  email === ''
+                    ? 'input-1'
+                    : emailVerificationResult
                     ? 'input-1-ok'
                     : 'input-1-no',
-              ]" type="text" tabindex="0" placeholder="이메일을 입력해주세요" required @input="updateInput('이메일')"
-                v-model="email" />
+                ]"
+                type="text"
+                tabindex="0"
+                placeholder="이메일을 입력해주세요"
+                required
+                @input="updateInput('이메일')"
+                v-model="email"
+              />
             </div>
             <div class="mgl-3">
-              <button type="button" :class="[emailBtn ? 'btn-1-off' : 'btn-1']" @click="showHandler('이메일')"
-                :disabled="emailBtn == true">
+              <button
+                type="button"
+                :class="[emailBtn ? 'btn-1-off' : 'btn-1']"
+                @click="showHandler('이메일')"
+                :disabled="emailBtn == true"
+              >
                 인증번호 받기
               </button>
             </div>
           </div>
-          <div class="mgt-1" style="color: red" :class="[emailVerificationResult ? 'd-none' : '']">
+          <div
+            class="mgt-2"
+            :class="[
+              email == '' ? 'd-none' : emailVerificationResult ? 'd-none' : 'color-red',
+            ]"
+          >
             이메일 형식을 지켜주세요
           </div>
 
@@ -244,12 +252,24 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input id="email" class="input-1" type="text" tabindex="0" placeholder="이메일을 입력해주세요" required
-                @change="updateInput(이메일인증번호)" v-model="emailcheck" />
+              <input
+                id="email"
+                class="input-1"
+                type="text"
+                tabindex="0"
+                placeholder="이메일을 입력해주세요"
+                required
+                @change="updateInput(이메일인증번호)"
+                v-model="emailcheck"
+              />
             </div>
             <div class="mgl-3">
-              <button type="button" :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']" @click="showHandler('이메일인증번호확인')"
-                :disabled="mailcheckBtn == true">
+              <button
+                type="button"
+                :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']"
+                @click="showHandler('이메일인증번호확인')"
+                :disabled="mailcheckBtn == true"
+              >
                 인증번호 확인
               </button>
             </div>
@@ -264,21 +284,38 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input id="password" :class="[
-                password === ''
-                  ? 'input-1'
-                  : (passwordVerificationMiddleResult || passwordVerificationStrongResult) == true
+              <input
+                id="password"
+                :class="[
+                  password === ''
+                    ? 'input-1'
+                    : (passwordVerificationMiddleResult ||
+                        passwordVerificationStrongResult) == true
                     ? 'input-1-ok'
                     : 'input-1-no',
-              ]" type="password" tabindex="0" placeholder="패스워드를 입력해주세요" v-model="password"
-                v-on:input="passwordVerification(), passwordverify()" />
+                ]"
+                type="password"
+                tabindex="0"
+                placeholder="패스워드를 입력해주세요"
+                v-model="password"
+                v-on:input="passwordVerification(), passwordverify()"
+              />
             </div>
           </div>
-          <div class="mgt-1"
-            :class="[passwordVerificationStrongResult ? 'color-green' : passwordVerificationMiddleResult ? 'color-yellow' : 'color-red']">
+          <div
+            class="mgt-2"
+            :class="[
+              password === ''
+                ? 'd-none'
+                : passwordVerificationStrongResult
+                ? 'color-green'
+                : passwordVerificationMiddleResult
+                ? 'color-yellow'
+                : 'color-red',
+            ]"
+          >
             비밀번호 형식(8~25 문자 및 숫자포함)
           </div>
-
 
           <!--비밀번호 확인-->
           <div class="mgt-3 display-flex">
@@ -289,17 +326,36 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input id="password-check" :class="[
-                passwordCheck === ''
-                  ? 'input-1'
-                  : passwordVerifyResult == true
+              <input
+                id="password-check"
+                :class="[
+                  passwordCheck === ''
+                    ? 'input-1'
+                    : passwordVerifyResult == true
                     ? 'input-1-ok'
                     : 'input-1-no',
-              ]" type="password" tabindex="0" placeholder="패스워드를 한번 더 입력해주세요" required v-model="passwordCheck"
-                @input="passwordverify()" />
+                ]"
+                type="password"
+                tabindex="0"
+                placeholder="패스워드를 한번 더 입력해주세요"
+                required
+                v-model="passwordCheck"
+                @input="passwordverify()"
+              />
             </div>
           </div>
-          <div class="mgt-1" style="color: red">비밀번호와 일치하지 않습니다.</div>
+          <div
+            class="mgt-2"
+            :class="[
+              passwordCheck === ''
+                ? 'd-none'
+                : passwordVerifyResult == true
+                ? 'd-none'
+                : 'color-red',
+            ]"
+          >
+            비밀번호와 일치하지 않습니다.
+          </div>
 
           <!--닉네임-->
           <div class="mgt-3 display-flex">
@@ -310,23 +366,35 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input id="nickname" :class="[
-                nickName === ''
-                  ? 'input-1'
-                  : !nickNameBtn
+              <input
+                id="nickname"
+                :class="[
+                  nickName === ''
+                    ? 'input-1'
+                    : !nickNameBtn
                     ? 'input-1-no'
                     : 'input-1-ok',
-              ]" type="text" tabindex="0" placeholder="닉네임을 입력해주세요" required v-model="nickName"
-                @input="nickNameVerify()" />
+                ]"
+                type="text"
+                tabindex="0"
+                placeholder="닉네임을 입력해주세요"
+                required
+                v-model="nickName"
+                @input="nickNameVerify()"
+              />
             </div>
             <div class="mgl-3">
-              <button type="button" :class="[!nickNameBtn ? 'btn-1' : 'btn-1-off']" @click="showHandler('닉네임')"
-                :disabled="nickNameBtn">
+              <button
+                type="button"
+                :class="[!nickNameBtn ? 'btn-1' : 'btn-1-off']"
+                @click="showHandler('닉네임')"
+                :disabled="nickNameBtn"
+              >
                 증복확인
               </button>
             </div>
           </div>
-          <div class="mgt-1" style="color: red">닉네임:2~8글자(특수문자제외)</div>
+          <div class="mgt-2">닉네임:2~8글자(특수문자제외)</div>
 
           <!--전화 번호-->
           <div class="mgt-3 display-flex">
@@ -337,8 +405,16 @@ async function updateInput(event) {
               </label>
             </div>
             <div class="div-input">
-              <input id="phone-number" class="input-1" @input="phoneNumberInput()" type="text" tabindex="0"
-                placeholder="숫자만 입력해주세요" required v-model="phoneNumber" />
+              <input
+                id="phone-number"
+                class="input-1"
+                @input="phoneNumberInput()"
+                type="text"
+                tabindex="0"
+                placeholder="숫자만 입력해주세요"
+                required
+                v-model="phoneNumber"
+              />
             </div>
           </div>
 
@@ -349,16 +425,41 @@ async function updateInput(event) {
               <span class="essential-color">*</span>
             </div>
             <div class="div-input-2">
-              <input id="birth-year" class="input-2" type="NUMBER" maxlength="4" tabindex="0" placeholder="YYYY" required
-              @input="birthYearInput()" />
+              <input
+                id="birth-year"
+                class="input-2"
+                type="NUMBER"
+                maxlength="4"
+                tabindex="0"
+                placeholder="YYYY"
+                required
+                v-model="birthYear"
+              />
               <span class="birth-deco"> </span>
-              <input id="birth-month" class="input-2" type="NUMBER" maxlength="2" tabindex="0" placeholder="MM" required />
+              <input
+                id="birth-month"
+                class="input-2"
+                type="NUMBER"
+                maxlength="2"
+                tabindex="0"
+                placeholder="MM"
+                required
+                v-model="birthMonth"
+              />
               <span class="birth-deco"> </span>
-              <input id="birth-day" class="input-2" type="NUMBER"  maxlength="2" tabindex="0" placeholder="DD" required />
+              <input
+                id="birth-day"
+                class="input-2"
+                type="NUMBER"
+                maxlength="2"
+                tabindex="0"
+                placeholder="DD"
+                required
+                v-model="birthDay"
+              />
             </div>
           </div>
 
-          
           <!--성별-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -366,24 +467,32 @@ async function updateInput(event) {
               <span class="essential-color">*</span>
             </div>
             <div class="input-1-noborder">
-              <input  @click="GenderCheck(1)" type="radio" tabindex="0" name="gender" value="1"
-                required /><label for="gender" class="mgl-2">
-                  남자
-                  </label>
-                <input  @input="GenderCheck(2)" type="radio" tabindex="0" name="gender" value="2"
-                required   class="mgl-5"/>
-                <label for="gender"  class="mgl-2">
-                  여자
-                  </label>
+              <input
+                
+                type="radio"
+                tabindex="0"
+                name="gender"
+                value=1
+                required
+                v-model="gender"
+              /><label for="gender" class="mgl-2"> 남자 </label>
+              <input
+               
+                type="radio"
+                tabindex="0"
+                name="gender"
+                value=2
+                required
+                class="mgl-5"
+                v-model="gender"
+              />
+              <label for="gender" class="mgl-2"> 여자 </label>
             </div>
           </div>
         </form>
       </div>
-
-      
-
       <div class="div-btn">
-        <button class="btn-2" @click="showHandler" v-bind:disabled="emailBtn == false">
+        <button class="btn-2" @click="signupHandler">
           <span class="text-5"> 가입하기 </span>
         </button>
       </div>
@@ -547,7 +656,6 @@ async function updateInput(event) {
   align-items: center; /* 체크박스와 라벨의 수직 정렬을 위해 추가 */
 }
 
-
 [type="radio"] {
   vertical-align: middle;
   appearance: none;
@@ -645,7 +753,7 @@ async function updateInput(event) {
 }
 
 .color-green {
-  color: greenyellow
+  color: greenyellow;
 }
 
 .color-yellow {

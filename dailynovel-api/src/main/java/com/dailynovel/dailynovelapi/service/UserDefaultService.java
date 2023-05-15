@@ -28,7 +28,7 @@ public class UserDefaultService implements UserService {
 
     @Override
     public boolean FindSameNickname(String nickname) {
-        Member member  = repository.findByNickname(nickname);
+        Member member  = repository.findByNickName(nickname);
         if(member!=null){
             return true;
         }
@@ -57,7 +57,7 @@ public class UserDefaultService implements UserService {
         Timestamp timestamp = new Timestamp(date.getTime());
         Member member = new Member();
         member.setEmail(email);
-        member.setNickname(nickname);
+        member.setNickName(nickname);
         member.setPassword(password);
         member.setPhoneNumber(phoneNumber);
         member.setTimestamp(timestamp);
@@ -75,6 +75,30 @@ public class UserDefaultService implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean signup(Member member) {
+
+        if(FindSameNickname(member.getNickName())){
+            return false;
+        }
+        else if(FindSameEmail(member.getEmail())){
+            return false;
+        }
+        System.out.println(member.getEmail());
+        System.out.println(member.getNickName());
+        System.out.println(member.getBirthday());
+       String password = PasswordEncoder(member.getPassword());
+       member.setPassword(password);
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        member.setTimestamp(timestamp);
+        String a =repository.saveAndFlush(member).getEmail();
+        if(a==null){
+            return false;
+        }
+        return true;
     }
 
 }

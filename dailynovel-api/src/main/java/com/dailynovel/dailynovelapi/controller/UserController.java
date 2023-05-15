@@ -1,16 +1,26 @@
 package com.dailynovel.dailynovelapi.controller;
 
 
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dailynovel.dailynovelapi.entity.Member;
 import com.dailynovel.dailynovelapi.service.EmailVerificationService;
 import com.dailynovel.dailynovelapi.service.MailCheckService;
 
 import com.dailynovel.dailynovelapi.service.UserService;
+import com.nimbusds.oauth2.sdk.ParseException;
 
 
 @RestController
@@ -23,11 +33,24 @@ public class UserController {
 	private MailCheckService mailService;
 	@Autowired
 	private EmailVerificationService emailVerificationService;
-
+	
 	@PostMapping("signup")
-	public boolean signup(String nickname, String password, String email,
-			String phoneNumber) {
-				boolean result= service.signup(nickname,password, email, phoneNumber);
+	public boolean signup(@RequestBody Member member) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String birthdayString = dateFormat.format(member.getBirthday());
+			LocalDate birthday = LocalDate.parse(birthdayString, formatter);
+			member.setBirthday(java.sql.Date.valueOf(birthday));
+		} catch (DateTimeParseException e) {
+			e.printStackTrace();
+		}
+	
+		// 이후 로직 실행
+	
+		System.out.println("왜 안뜨냐"+member.getBirthday()); 
+	
+		boolean result = service.signup(member);
 		return result;
 	}
 
