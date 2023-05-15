@@ -26,5 +26,4 @@ public class DiaryDisplay {
     private int diaryId;
     @Column(name="reg_date")
     private Date date;
-
 }
