@@ -25,5 +25,5 @@ public class DiaryLike {
     @Id
     @Column(name="diary_id")
     private int diaryId;
-    
+    //대소문자 바꾸기
 }
