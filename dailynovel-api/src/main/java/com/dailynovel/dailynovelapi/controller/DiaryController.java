@@ -1,17 +1,19 @@
 package com.dailynovel.dailynovelapi.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.dailynovel.dailynovelapi.service.DiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dailynovel.dailynovelapi.entity.Diary;
-import com.dailynovel.dailynovelapi.service.DiaryService;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 
 @RestController
 @RequestMapping("diary")
@@ -27,14 +29,27 @@ public class DiaryController {
     public String getListGroupingMonthly(
         @RequestParam(required = false) String feeling,
         @RequestParam(required = false) String weather,
-        @RequestParam(required = false) Date date,
+        @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") String date,
         @RequestParam(required = false) String order,
         @RequestParam(required = false) String collection,
         @RequestParam(required = false) String query
-    ){
-        Map<String,List<Diary>> list = service.getListGroupingMonthly(
-            feeling,weather,date,order,collection,query
-        );
+    ) throws UnsupportedEncodingException {
+//        Map<String,List<Diary>> list = service.getListGroupingMonthly(
+//            feeling,weather,date,order,collection,query
+//        );
+
+        // URL 디코딩
+        Date realdate = new Date(date);
+
+
+        System.out.println("====================");
+
+        System.out.println(feeling);
+        System.out.println(weather);
+        System.out.println(date);
+        System.out.println(query);
+        System.out.println(order);
+
         
         return "hi";
     }

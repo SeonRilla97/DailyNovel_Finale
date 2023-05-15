@@ -19,7 +19,8 @@ function optionClickHandler(e){
     selectedMenu.menuvalue = e.target.dataset.idx;
     console.log(selectedMenu);  
     emit('filterClickedHandler',selectedMenu);
-    console.log(e.target.parentNode.style);
+    // console.log(e.target.parentNode.style);
+    console.log(selectedMenu);
 }
 
 let menuOpen = ref(null);
@@ -27,7 +28,7 @@ function menuOpenHandler(clickedMenu){
     
     if(menuOpen.value == clickedMenu && menuOpen.value != null){
         menuOpen.value = null;
-        console.log("같은거 클릭");
+        // console.log("같은거 클릭");
         return;
     }
     menuOpen.value = clickedMenu
@@ -38,7 +39,7 @@ function dateInitialize(){
 
 const date = ref(new Date());
 watch(date,()=>{
-    console.log("와치 동작!",date.value);
+    // console.log("와치 동작!",date.value);
     selectedMenu.menuname = "date"
     selectedMenu.menuvalue= date.value;
     emit('filterClickedHandler',selectedMenu);
@@ -47,8 +48,8 @@ watch(date,()=>{
 
 let searchKeywork = ref("");
 function searchBtnHandler(){
-    console.log("클클릭")
-    console.log(searchKeywork.value)
+    // console.log("클클릭")
+    // console.log(searchKeywork.value)
     selectedMenu.menuname = "keyword"
     selectedMenu.menuvalue= searchKeywork.value;
     emit('filterClickedHandler',selectedMenu);

@@ -1,19 +1,15 @@
 package com.dailynovel.dailynovelapi.repository;
 
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.entity.QDiary;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.QueryFactory;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import jakarta.persistence.EntityManager;
+import java.util.Date;
+import java.util.List;
 
 public class DiaryRepositoryCustomImpl implements DiaryRepositoryCustom {
 
@@ -28,16 +24,21 @@ public class DiaryRepositoryCustomImpl implements DiaryRepositoryCustom {
             String query) {
 
         
-        return jpaQueryFactory
-		.selectFrom(diary)
-		.where(
-            // feelingEq(feeling),
-            // weatherEq(weather),
-            // dateEq(date),
-            // queryContentEq(query),
-            // queryTitleEq(query)
-        )
-		.fetch();
+
+
+        OrderSpecifier<Date> orderSpecifier;
+        if (order.equals("1")) {
+        orderSpecifier = diary.date.desc();
+        } else {
+        orderSpecifier = diary.date.asc();
+        }
+
+        List<Diary> list = jpaQueryFactory
+        .selectFrom(diary)
+        .where()
+        .orderBy(orderSpecifier)
+        .fetch();
+        return list;
     }
 
 
