@@ -1,14 +1,26 @@
-<template>
+<script setup>
+import { reactive } from 'vue';
 
-<section class="collection-container">
-    <header>
-        <div class="pdl-5 h2 font-bold"><router-link class="" to="./main">컬렉션</router-link></div>
-    </header>
-    <transition name="fade">
-        <router-view></router-view>
-    </transition>
-</section>
+const collection = reactive({
+    List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에"]
+})
+
+defineProps()
+
+</script>
+
+
+<template>
+    <section class="collection-container">
+        <header>
+            <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
+        </header>
+        <transition name="fade">
+            <router-view :collection="collection"></router-view>
+        </transition>
+    </section>
 </template>
+
 
 <style scoped>
 .collection-container{

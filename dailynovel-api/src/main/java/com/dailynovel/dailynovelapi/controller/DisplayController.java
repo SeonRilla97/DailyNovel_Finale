@@ -26,5 +26,7 @@ public class DisplayController {
     public List<Diary> list(){
         return service.getBySharedDiaryList();
     }
+
+
     
 }

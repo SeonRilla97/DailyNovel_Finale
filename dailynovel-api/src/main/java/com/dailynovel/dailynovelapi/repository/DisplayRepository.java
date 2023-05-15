@@ -14,4 +14,7 @@ public interface DisplayRepository extends JpaRepository<Diary, Integer> {
 
     @Query("SELECT d FROM Diary d INNER JOIN DiaryDisplay dd ON d.id = dd.diaryId")
     List<Diary> findSharedDiaries();
+
+
+    
 }
