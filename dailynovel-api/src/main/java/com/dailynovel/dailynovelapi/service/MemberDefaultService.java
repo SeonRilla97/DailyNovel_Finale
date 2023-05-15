@@ -13,7 +13,6 @@ public class MemberDefaultService implements MemberService {
     @Autowired
     private MemberRepository repository;
 
-    
     @Override
     public boolean isValid(String email, String password) {
         // TODO Auto-generated method stub
@@ -29,12 +28,15 @@ public class MemberDefaultService implements MemberService {
         return true;
     }
 
-
-   
     @Override
     public Member getByEmail(String email) {
 
         return repository.findByEmail(email);
+    }
+
+    @Override
+    public Member viewMemberInfo(int id) {
+        return repository.findById(1);
     }
 
 }
