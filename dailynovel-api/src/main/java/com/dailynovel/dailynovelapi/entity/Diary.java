@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "diary")
-public class Diary {
+public class Diary{
     @Id
     private Integer id;
     @Column(name="member_id")
