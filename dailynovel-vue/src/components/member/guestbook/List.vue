@@ -1,14 +1,47 @@
+<script setup>
+import { onBeforeMount, reactive } from 'vue';
+
+let guestbooks = reactive({
+  list: null
+});
+
+// let json = reactive("");
+
+onBeforeMount(async () => {
+  let response = await fetch("http://localhost:8080/members/guestbooks/all",
+    {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+    });
+
+  guestbooks.list = await response.json();
+  console.log(guestbooks.list);
+  // console.log(guestbooks[0].content);
+
+
+});
+
+// function loadGuestBooks() {
+//   fetch("http://localhost:8080/members/guestbooks/all");
+// }
+
+
+</script>
 <template>
   <main>
     <ul class="m-guestbook-content-list">
-      <li class="lc-center" v-for="n in 20">
+      <!-- <li class="lc-center" v-for="n in 20"> -->
+      <li class="lc-center" v-for="item in guestbooks.list">
         <div class="m-guestbook-content-item shadow-1">
           <div class="m-guestbook-item-header">
             <div class="m-guestbook-content-title"><span>방명록 제목</span></div>
-            <div class="m-guestbook-content-writer"><span>글쓴이</span></div>
+            <div class="m-guestbook-content-writer"><span>{{ item.writerId }}</span></div>
           </div>
-          <div class="m-guestbook-content-text"><span>방명록 내용</span></div>
-          <div class="m-guestbook-content-comment"><span>방명록 답글</span></div>
+          <div class="m-guestbook-content-text"><span>{{ item.content }}</span></div>
+          <div class="m-guestbook-content-comment"><span>{{ '방명록 답글' }}</span></div>
         </div>
       </li>
     </ul>
