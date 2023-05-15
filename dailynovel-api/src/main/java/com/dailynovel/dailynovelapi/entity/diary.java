@@ -5,6 +5,7 @@ import java.util.Date;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +17,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "diary")
 public class Diary {
     @Id
-    private int id;
+    private Integer id;
     @Column(name="member_id")
-    private int memberId;
+    private Integer memberId;
     private String title;
     private String content;
     private String weather;

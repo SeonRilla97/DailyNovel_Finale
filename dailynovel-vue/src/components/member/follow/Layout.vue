@@ -1,4 +1,5 @@
 <script setup>
+import Index from './Index.vue';
 let name = "선릴라424";
 </script>
 
@@ -6,26 +7,38 @@ let name = "선릴라424";
   <section class="m-follow-container">
 
     <header class="m-follow-header">
-      <div class="m-follow-header-profile">
+      <div class="m-follow-header-info">
+        <div class="m-follow-header-profile">
+          <!-- <div class="m-follow-header-profile-img">프로필이미지</div> -->
+          <div class="m-follow-header-profile-name">
+            <span class="font-bold h2">{{ name }}님의 페이지</span>
+          </div>
+        </div>
+        <hr style="height: 50%; margin:0;">
 
-        <span class="font-bold h2">{{ name }}님의 페이지</span>
+        <router-link to="/member/room/follow/index">
+          <span class="font-bold h2">메인</span>
+        </router-link>
+
+        <router-link to="/member/room/follow/collection">
+          <span class="font-bold h2">컬렉션</span>
+        </router-link>
+
+        <router-link to="/member/room/follow/guestbook">
+          <span class="font-bold h2">방명록</span>
+        </router-link>
       </div>
-      <hr style="height: 50%; margin:0;">
 
-      <router-link to="./collection">
-        <span class="font-bold h2 ">컬렉션</span>
-      </router-link>
-
-      <router-link to="follow/guestbook">
-        <span class="font-bold h2 ">방명록</span>
-      </router-link>
-
-      <div>
-        <span>구독하기</span>
+      <div class="m-follow-header-btn">
+        <div class="">
+          <span>구독하기</span>
+        </div>
       </div>
     </header>
 
-    <router-view class="m-follow-main"></router-view>
+    <main class="m-follow-main">
+      <router-view></router-view>
+    </main>
 
 
   </section>
@@ -41,22 +54,66 @@ let name = "선릴라424";
 }
 
 .m-follow-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* display: flex;
   align-items: center;
   gap: 1rem;
 
   padding-left: 1rem;
   padding-right: 1rem;
+  box-sizing: border-box; */
+
+}
+
+.m-follow-header-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  padding-left: 1rem;
+  padding-right: 1rem;
   box-sizing: border-box;
+}
 
-  /* padding-left: 2rem; */
+.m-follow-header-profile {
+  padding-left: 1rem;
+  display: flex;
+  gap: 1.2rem;
+}
 
-  /* border-bottom: 1px solid gray; */
+.m-follow-header-profile-img {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 30px;
+  background-size: cover;
+  background-position: center;
+  background-color: aqua;
+  background-image: url(../../../assets/img/temp/tempProfile.jpg);
+  background-repeat: no-repeat;
+
+  align-self: center;
+
+  text-indent: -999rem;
+}
+
+.m-follow-header-profile-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.m-follow-header-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 3rem;
 }
 
 .m-follow-main {
-  overflow: scroll;
+  /* overflow: scroll; */
   box-sizing: border-box;
-  padding: 1rem;
+
 }
 </style>

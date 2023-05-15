@@ -1,0 +1,177 @@
+<template lang="">
+    <main class=" center-grid">
+        <section class=" center-grid article-box">
+            <h1>디테일</h1>
+                <article>
+                    <h1 class="title">제목</h1>
+                    <hr>
+                    <div class="userInfo">
+                        <div class="d-inline">하트마크 / </div>
+                        <div class="d-inline">좋아요 수 / </div>
+                        <div class="d-inline">프로필 이미지 / </div>
+                        <div class="d-inline">작성자</div>
+                    </div>
+                    <br>
+                    <p>
+
+                    </p>
+                </article>
+
+                    <!-- <div>{{ss}}</div> -->
+                    <hr>
+
+        </section>
+    </main>
+</template>
+
+<script setup>
+    import { useRoute } from 'vue-router';
+
+    let route = useRoute();
+
+    let id = route.params.id;
+
+    console.log(id);
+</script>
+
+<style scoped>
+ .article-box {
+    width: 39rem;
+    height: minmax(1rem, auto);
+
+}
+
+.article-box .title {
+    font-size: 2.25rem;
+    text-align: center;
+}
+
+.article-box .userInfo {
+    text-align: right;
+}
+
+.d-inline {
+    display: inline-block;
+}
+
+.header-band {
+    background-color: #F2C6C2;
+    display: grid;
+    justify-content: space-between;
+    grid-auto-flow: column;
+}
+
+.header-band .content {
+    display: grid;
+    justify-content: space-between;
+}
+
+.center-grid {
+    display: grid;
+    justify-content: center;
+}
+
+li {
+    display: inline-block;
+    list-style: none;
+    padding-left: 2.5rem;
+}
+
+.active-commu-category {
+    /* 선택된 커뮤니티 카테고리 */
+    color: rgb(255, 208, 0);
+    text-decoration: underline;
+}
+
+.commu-content-grid {
+    /* 콘텐츠박스의 부모 그리드*/
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-width: 1280px;
+    grid-gap: 20px;
+
+}
+
+.content-box {
+    /* 게시판 콘탠츠박스 디자인 */
+    /* border: 1px solid fff8f3; */
+    border-radius: 1rem;
+    background-color: #fff8f3;
+    width: 18.5rem;
+    height: 28.375rem;
+    display: grid;
+    grid-template-rows: 3rem 1rem 20rem 1fr;
+    align-content: space-between;
+
+}
+
+/* 콘탠츠박스 내용의 배치에 대한 그리드*/
+.content-box .content-title {
+    /* 콘텐츠박스 제목의 중앙*/
+    justify-self: center;
+    align-self: center;
+}
+
+.content-title p {
+    /* 콘텐츠박스 제목의 중앙*/
+    font-size: 1.5rem;
+    width: 10em;
+    /* 최대 5글자까지만 보이도록 요소의 너비를 지정 */
+    white-space: nowrap;
+    /* 텍스트를 한 줄로 표시 */
+    overflow: hidden;
+    /*요소의 영역을 벗어나는 내용은 잘리고 표시되지 않음 */
+    text-overflow: ellipsis;
+    /* 잘린 텍스트를 ...으로 표시 */
+}
+
+.content-box .content-underline {
+    grid-auto-flow: row;
+}
+
+/*https://webdir.tistory.com/483*/
+.content-box .content-subject {
+    padding: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 1.2;
+    height: 17rem;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 15;
+    -webkit-box-orient: vertical;
+}
+
+.content-box .content-like-count {
+    text-align: center;
+}
+
+.more-btn {
+    /* 더보기 버튼 */
+
+    text-align: center;
+    vertical-align: middle;
+    background-color: #F2C6C2;
+    color: #000;
+    width: 8rem;
+    height: 4rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    height: 4rem;
+    line-height: 4rem;
+    /*-webkit-text-stroke: 0.5px black; /* font에 테두리 주는 */
+}
+
+.active-like {
+    /*좋아요 활성화*/
+    /* <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.655 13.9159C7.65523 13.9161 7.65543 13.9162 8 13.25C8.34457 13.9162 8.34477 13.9161 8.34501 13.9159C8.12889 14.0277 7.87111 14.0277 7.655 13.9159ZM7.655 13.9159L8 13.25L8.34501 13.9159L8.34731 13.9147L8.35269 13.9119L8.37117 13.9022C8.38687 13.8939 8.40926 13.882 8.4379 13.8665C8.49516 13.8356 8.57746 13.7904 8.6812 13.7317C8.8886 13.6142 9.18229 13.442 9.53358 13.2199C10.2346 12.7767 11.1728 12.13 12.1147 11.3181C13.9554 9.7312 16 7.35031 16 4.5C16 1.83579 13.9142 0 11.75 0C10.2026 0 8.84711 0.80151 8 2.01995C7.15289 0.80151 5.79736 0 4.25 0C2.08579 0 0 1.83579 0 4.5C0 7.35031 2.04459 9.7312 3.8853 11.3181C4.82717 12.13 5.76538 12.7767 6.46642 13.2199C6.81771 13.442 7.1114 13.6142 7.3188 13.7317C7.42254 13.7904 7.50484 13.8356 7.5621 13.8665C7.59074 13.882 7.61313 13.8939 7.62883 13.9022L7.64731 13.9119L7.65269 13.9147L7.655 13.9159Z" fill="#F13838" /></svg> */
+}
+
+.deactive-like {
+    /*좋아요 비활성화*/
+    /* <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.655 13.9159C7.65523 13.9161 7.65543 13.9162 8 13.25C8.34457 13.9162 8.34477 13.9161 8.34501 13.9159C8.12889 14.0277 7.87111 14.0277 7.655 13.9159ZM7.655 13.9159L8 13.25L8.34501 13.9159L8.34731 13.9147L8.35269 13.9119L8.37117 13.9022C8.38687 13.8939 8.40926 13.882 8.4379 13.8665C8.49516 13.8356 8.57746 13.7904 8.6812 13.7317C8.8886 13.6142 9.18229 13.442 9.53358 13.2199C10.2346 12.7767 11.1728 12.13 12.1147 11.3181C13.9554 9.7312 16 7.35031 16 4.5C16 1.83579 13.9142 0 11.75 0C10.2026 0 8.84711 0.80151 8 2.01995C7.15289 0.80151 5.79736 0 4.25 0C2.08579 0 0 1.83579 0 4.5C0 7.35031 2.04459 9.7312 3.8853 11.3181C4.82717 12.13 5.76538 12.7767 6.46642 13.2199C6.81771 13.442 7.1114 13.6142 7.3188 13.7317C7.42254 13.7904 7.50484 13.8356 7.5621 13.8665C7.59074 13.882 7.61313 13.8939 7.62883 13.9022L7.64731 13.9119L7.65269 13.9147L7.655 13.9159Z" fill="#ACACAC" /></svg> */
+}
+</style>

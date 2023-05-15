@@ -24,6 +24,7 @@ public class DiaryDisplay {
     private int memberId;
     @Column(name="diary_id")
     private int diaryId;
+    @Column(name="reg_date")
     private Date date;
 
 }
