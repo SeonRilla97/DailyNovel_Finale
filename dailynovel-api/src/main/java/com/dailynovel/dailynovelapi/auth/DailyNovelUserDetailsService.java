@@ -24,11 +24,11 @@ public class DailyNovelUserDetailsService implements UserDetailsService {
         DailyNovelUserDetails user = new DailyNovelUserDetails();
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Member  member = repository.findByUserName(username);
-        user.setId(member.getId());
-        user.setEmail(member.getEmail());
-        user.setPassword(member.getPwd());
-        user.getAuthorities(authorities);
+//        Member  member = repository.findByUserName(username);
+//        user.setId(member.getId());
+//        user.setEmail(member.getEmail());
+//        user.setPassword(member.getPwd());
+//        user.getAuthorities(authorities);
         return user;
 
     }
