@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
@@ -29,7 +28,7 @@ public class DiaryController {
     public String getListGroupingMonthly(
         @RequestParam(required = false) String feeling,
         @RequestParam(required = false) String weather,
-        @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") String date,
+        @RequestParam(required = false) String date,
         @RequestParam(required = false) String order,
         @RequestParam(required = false) String collection,
         @RequestParam(required = false) String query
@@ -38,12 +37,11 @@ public class DiaryController {
 //            feeling,weather,date,order,collection,query
 //        );
 
-        // URL 디코딩
-        Date realdate = new Date(date);
-
+//       ISO 8601 날짜형식으로 인코딩 된거 Decoder를 통해 LocalDate형식으로 변환
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
 
         System.out.println("====================");
-
+        System.out.println(localDate);
         System.out.println(feeling);
         System.out.println(weather);
         System.out.println(date);

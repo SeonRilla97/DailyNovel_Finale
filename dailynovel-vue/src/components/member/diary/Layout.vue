@@ -65,7 +65,7 @@ function getListwithFiltering() {
         query += `&weather=${weather.menu[weather.idx]}`;
     }
     if(date!= null){
-        query += `&date=${date}`;
+        query += `&date=${date.toISOString()}`;
     }
     if(sort.idx != 0){
         query += `&order=${sort.menu[sort.idx]}`;
@@ -75,7 +75,7 @@ function getListwithFiltering() {
     }
     console.log(query);
 }
-console.log(new Date().getFullYear)
+console.log(new Date().toISOString())
 </script>
 <template>
     <div class="diary-container">
