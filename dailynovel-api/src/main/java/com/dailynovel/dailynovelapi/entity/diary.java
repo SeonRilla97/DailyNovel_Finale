@@ -29,4 +29,6 @@ public class Diary {
     private String tag;
     @Column(name="reg_date")
     private Date date;
+
+    //주석
 }
