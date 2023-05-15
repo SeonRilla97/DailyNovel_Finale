@@ -16,7 +16,7 @@ public class DefaultGuestBookService implements GuestBookService {
   private GuestBookRepository repository;
 
   @Override
-  public List<GuestBook> viewGuestBook() {
+  public List<GuestBook> viewGuestBooks() {
     List<GuestBook> list = repository.findByMemberId(1);
 
     return list;
