@@ -1,5 +1,6 @@
 <script setup>
 import quill from './quill.vue';
+import MapBox from './MapBox.vue'
 import quillCopy from './quill copy.vue';
 
 </script>
@@ -25,9 +26,7 @@ import quillCopy from './quill copy.vue';
  
   <main class="editor-main">
 
-    <quill
-          />
-
+    <quill/>
           <!-- <quillCopy/> -->
 
   </main>
@@ -50,12 +49,13 @@ import quillCopy from './quill copy.vue';
   margin: 15px 40px;
 }
 .editor-main{
+
   height: 80%;
 
   /* height: auto; */
   overflow-y: scroll;
-
 }
+
 
 .editor-title-content{
     color: #3F3F3F;
