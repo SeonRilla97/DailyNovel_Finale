@@ -1,7 +1,8 @@
 package com.dailynovel.dailynovelapi.repository;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,8 +13,11 @@ import com.dailynovel.dailynovelapi.entity.Diary;
 public interface DiaryRepository extends JpaRepository<Diary, Integer>, DiaryRepositoryCustom {
 
 
-    @Query("SELECT d.feeling, COUNT(d.feeling) FROM Diary d where d.memberId = 1 and d.feeling IS NOT NULL GROUP BY d.feeling")
+    @Query("SELECT d.feeling, COUNT(d.feeling) FROM Diary d where d.memberId = 1 and d.feeling IS NOT NULL GROUP BY d.feeling ORDER BY d.feeling ASC" )
     List<Object[]> findByFeeling(@Param("memberId") Integer memberId);
+    
+
+
 
     @Query("SELECT CASE "
     + "WHEN honesty BETWEEN 0 AND 20 THEN '0-20' "
@@ -26,9 +30,9 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>, DiaryRep
     + "FROM Diary d "
     + "WHERE d.memberId = 1 AND d.honesty IS NOT NULL "
     + "GROUP BY honestyRange "
-    + "ORDER BY honestyRange ASC")
-    List<Object[]> findByHonesty(Integer memberId);
+    + "ORDER BY honestyRange DESC")
+    List<Object[]> findByHonesty(@Param("memberId") Integer memberId);
 
-    @Query("select d.memberId, d.tag, count(tag) from Diary d where d.memberId = 1  group by d.tag")
-    List<Object[]> findByTag(Integer memberId);
+    @Query("select d.tag, count(d.tag) from Diary d where d.memberId = 1  group by d.tag")
+    List<Object[]> findByTag(@Param("memberId") Integer memberId);
 }

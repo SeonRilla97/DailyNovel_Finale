@@ -1,8 +1,11 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,20 +22,54 @@ public class DiaryDefaultService implements DiaryService{
     private DiaryRepository repository;
 
     @Override
-    public List<Object[]> getByFeeling(){
-        return repository.findByFeeling(null);
+    public TreeMap<String, Integer> getByFeeling(){
+        List<Object[]> FeelingCount = repository.findByFeeling(null);
+        Map<String, Integer> map = new TreeMap<String, Integer>();
+
+    // object라 형변환
+        for(Object[] o : FeelingCount){
+        String feeling = String.valueOf(o[0]);
+        Integer count = Integer.parseInt(o[1].toString());
+        map.put(feeling,count);
+    }
+    System.out.println(map);
+    return (TreeMap<String, Integer>) map;
     }
 
-    @Override
-    public List<Object[]> getByTag(Integer memberId) {
-        // TODO Auto-generated method stub
-        return repository.findByTag(memberId);
-    }
+
+
+   
 
     @Override
-    public List<Object[]> getByHonesty(Integer memberId) {
-        // TODO Auto-generated method stub
-        return repository.findByHonesty(memberId);
+    public TreeMap<String, Integer> getByHonesty() {
+        List<Object[]> HonestyCount = repository.findByHonesty(null);
+        Map<String, Integer> map = new TreeMap<String, Integer>();
+    
+        for (Object[] o : HonestyCount) {
+            String honestyRange = String.valueOf(o[0]);
+            Integer count = Integer.parseInt(o[1].toString());
+            map.put(honestyRange, count);
+        }
+    
+        System.out.println(map);
+        return (TreeMap<String, Integer>) map;
+    }
+
+
+
+    @Override
+    public TreeMap<String, Integer>  getByTag() {
+        List<Object[]> TagCount = repository.findByTag(null);
+        Map<String, Integer> map = new TreeMap<String, Integer>();
+
+        for(Object[] o : TagCount){
+            String tag = String.valueOf(o[0]);
+            Integer count = Integer.parseInt(o[1].toString());
+            map.put(tag, count);
+        }
+
+        System.out.println(map);
+        return (TreeMap<String, Integer>) map;
     }
 
     @Override

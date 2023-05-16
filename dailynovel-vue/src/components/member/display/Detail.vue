@@ -1,28 +1,40 @@
 <template lang="">
     <main class=" center-grid">
-        
-        <section class=" center-grid article-box">
-            <h1 class="d-none">디테일</h1>
-                <article>
-                    <h1 class="title">{{title}}</h1>
-                    <hr>
-                    <div class="userInfo">
-                        <div class="d-inline like-active"></div>
-                        <div class="d-inline">{{like}} / </div>
-                        <div class="d-inline">{{image}} / </div>
-                        <div class="d-inline" @click="statusz">{{nickname}}</div>
-                        
+        <div class="subscribeBtn nodouble-drag" v-show="subscribe">
+            <div @click="subscribeHandler">구독하기</div>
+            <router-link to="/member/room/collection/main" v-show="">구경가기</router-link>
+                <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
+                <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
+        </div>
+        <div class="content-center">
+            <section class=" center-grid article-box scroll">
+                <h1 class="d-none">디테일</h1>
+                    <article> 
+                        <div class="sticky">
+                            <h1 class="title nodouble-drag">{{title}}</h1>
+                            <hr>
+                            <div class="userInfo">
+                                <div class="d-inline like-active"></div>
+                                <div class="d-inline nodouble-drag">{{like}} / </div>
+                                <div class="d-inline nodouble-drag">{{image}} / </div>
+                                <div class="d-inline nodouble-drag" @click="statusz">{{nickname}}</div>
+                            </div>
+                        </div>
+                        <br>
+                        <p class="detail-width nodouble-drag">
+                            {{content}}<br>
+                            도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득
+                            득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득
+                        </p>
+                    </article>
+                    <div class="center-grid padding-bottom">
+                        <div style="display:inline-block">
+                            <div class="more-btn nodouble-drag d-inline">좋아요</div>
+                            <div class="more-btn nodouble-drag d-inline">신고하기</div>
+                        </div>
                     </div>
-                    <br>
-                    <p class="detail-width">
-                        {{content}}<br>
-                        그것은 천국인 거야 야야야야야야야야야야야야야야야ㅑ야야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-                        노란 머리가 젤다죠? 
-                        
-                    </p>
-                </article>
-        </section>
-        <div class="subscribeBtn" v-show="subscribe" style="position: relative;"><span>구독하기</span></div>
+            </section>
+        </div>
     </main>
 </template>
 
@@ -55,7 +67,7 @@ function load() {
         nickname.value = data.nickname;
 
 
-    }, 50);
+    }, 100);
 }
 
 onMounted(() => {
@@ -67,6 +79,12 @@ function statusz() {
     subscribe.value = !subscribe.value;
     console.log(subscribe.value)
 }
+
+function subscribeHandler(){
+    
+    console.log("구독했습니다.")
+}
+
 </script>
 
 <style scoped>
@@ -144,6 +162,7 @@ li {
     /* 콘텐츠박스 제목의 중앙*/
     justify-self: center;
     align-self: center;
+
 }
 
 .content-title p {
@@ -240,10 +259,37 @@ li {
     width: 10rem;
     height: 5rem;
     position: absolute;
-  top: 0px;
-  left: 630px;
-  
-
+    top: 120px;
+    left: 960px;
 }
+
+.content-center {
+    position: absolute;
+    top: 74px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nodouble-drag {
+    user-select: none;
+}
+
+.scroll {
+    overflow: auto;
+    height: 648px;
+}
+
+.sticky{
+    position: sticky;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    top: 0px;
+    background-color: #FAFFF9;
+}
+.padding-bottom{
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+}
+
 </style>
 
