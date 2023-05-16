@@ -14,12 +14,12 @@ onMounted(() => {
 
 
 //날씨관련 객체
-  const weatherData = ref(null);
+  const weatherData = ref("");
 
   weatherData.value = {
       'city' : '평양',
       'weatherCode': '0',
-      'weatherDesc': '날씨'
+      'weatherDes': '날씨'
   };
 
  //현재 위치 받아오기 API
@@ -63,24 +63,25 @@ onMounted(() => {
 
     function weatherCodeToDesc(weatherCode){
       console.log(weatherCode);
+      console.log(weatherData.value.weatherDes);
 
-      if(weatherCode % 100 == 2)
-        weatherData.value.weatherDesc = "천둥번개";
-      else if(weatherCode % 100 == 3)
-        weatherData.value.weatherDesc = "천둥번개";
-      else if(weatherCode % 100 == 5)
-      weatherData.value.weatherDesc = "비";
-      else if(weatherCode % 100 == 6)
-      weatherData.value.weatherDesc = "눈";
-      else if(weatherCode % 100 == 7)
-      weatherData.value.weatherDesc = "미세먼지";
+      if(weatherCode / 100 == 2)
+        weatherData.value.weatherDes = "천둥번개";
+      else if(weatherCode / 100 == 3)
+        weatherData.value.weatherDes = "천둥번개";
+      else if(weatherCode / 100 == 5)
+      weatherData.value.weatherDes = "비";
+      else if(weatherCode / 100 == 6)
+      weatherData.value.weatherDes = "눈";
+      else if(weatherCode / 100 == 7)
+      weatherData.value.weatherDes = "미세먼지";
       else if(weatherCode / 100 == 8){
         if(weatherCode / 800 == 1)
-          weatherData.value.weatherDesc = "맑음";
+          weatherData.value.weatherDes = "맑음";
         else 
-          weatherData.value.weatherDesc = "흐림";
+          weatherData.value.weatherDes = "흐림";
       }
-      console.log( weatherData.value.weatherDesc);
+      console.log( weatherData.value.weatherDes);
     }
 
 </script>
@@ -94,7 +95,7 @@ onMounted(() => {
     <div class="editor-attribue-box">
       <div class="editor-data">2023년 4월 10일 오후 02시 01분 </div>
       <div class="editor-attribue">#여행</div>
-      <div class="editor-attribue">{{weatherData.weatherDesc}}</div>
+      <div class="editor-attribue">{{weatherData.weatherDes}}</div>
       <div class="editor-attribue">화남</div>
     </div>
 
