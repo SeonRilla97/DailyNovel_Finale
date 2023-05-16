@@ -51,7 +51,6 @@ function onCalendarClickHandler() {
   <section class="member-room-temp-linkes">
     <router-link to="/member/room/collection/main" @click="modalOpenHandler"><button>컬렉션</button></router-link>
     <router-link to="/member/room/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
-    <router-link to="/member/room/chart" @click="modalOpenHandler"><button>차트</button></router-link>
     <router-link to="/member/room/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
     <router-link to="/member/room/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
     <router-link to="/member/room/guestbook/list" @click="modalOpenHandler"><button>방명록</button></router-link>
