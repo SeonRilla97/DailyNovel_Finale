@@ -2,60 +2,63 @@
 import Header from './Header.vue'
 import List from './List.vue'
 import Editor from './editor.vue'
-import { reactive } from 'vue';
+import { reactive, onBeforeMount } from 'vue';
 
 import Filter from './filter.js'
 import filter from './filter.js';
 
-
+getCollectionList();
 const diaryFilter = reactive({
-    diary:{
         feeling:new Filter(0,["기분","좋음","기쁨","나쁨"]),
-        weather:new Filter(0,["날씨","비","맑음","눈"]),
+        weather:new Filter(0,["날씨","천둥번개", "이슬비",  "비",  "눈", "미세먼지", "맑음", "흐림"]),
         date:null,
         sort:new Filter(0,["정렬기준","최신순","오래된순"]),
         collection:new Filter(0,["컬렉션","나만의 일기","배부른 일기","더망"]),
         keyword: ""
-    },
 })
-
+// onBeforeMount(() => {
+//     getCollectionList();
+// }),
 
 function filterClickHandler(selected){
+    console.log(selected);
     switch(selected.menuname){
         case "feeling":
-            diaryFilter.diary.feeling.idx = selected.menuvalue;
+            diaryFilter.feeling.idx = selected.menuvalue;
             break;
         case "weather":
-            diaryFilter.diary.weather.idx = selected.menuvalue;
+            diaryFilter.weather.idx = selected.menuvalue;
             break;
         case "date":
-            diaryFilter.diary.date = selected.menuvalue;
+            diaryFilter.date = selected.menuvalue;
             break;
         case "sort":
-            diaryFilter.diary.sort.idx = selected.menuvalue;
+            diaryFilter.sort.idx = selected.menuvalue;
             break;
         case "collection":
-            diaryFilter.diary.collection.idx = selected.menuvalue;
+            diaryFilter.collection.idx = selected.menuvalue;
             break;
         case "keyword":
-            diaryFilter.diary.keyword = selected.menuvalue;
+            diaryFilter.keyword = selected.menuvalue;
             break;
-            
         }
-        console.log(diaryFilter.diary.date)  
+
+        console.log(diaryFilter.date)
         getListwithFiltering()
+
 }
 
 // console.log(diaryFilter.diary.date);
 function getListwithFiltering() {
     // console.log("실험")
-    const filterList =diaryFilter.diary
 
-    const feeling = diaryFilter.diary.feeling;
-    const weather = diaryFilter.diary.weather;
-    const date = diaryFilter.diary.date;
-    const sort = diaryFilter.diary.sort;
-    const keyword = diaryFilter.diary.keyword;
+    const feeling = diaryFilter.feeling;
+    const weather = diaryFilter.weather;
+    const date = diaryFilter.date;
+    const sort = diaryFilter.sort;
+    const collection = diaryFilter.collection;
+    const keyword = diaryFilter.keyword;
+    console.log("이거나옴???")
     let query = "?";
 
     if(feeling.idx != 0){
@@ -73,8 +76,39 @@ function getListwithFiltering() {
     if(keyword != ""){
         query += `&query=${keyword}`;
     }
+    if(collection != "" && collection.idx !=0){
+        query += `&collection=${collection.id[collection.idx]}`;
+    }
     console.log(query);
 }
+// 컬렉션 메뉴 넣기
+function getCollectionList() {
+    let requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+    };
+
+fetch("http://localhost:8080/collection/all", requestOptions)
+  .then(response => response.json())
+  .then(collections => {
+    //배열 생성
+    let tmpnameList = [];
+    let tmpIdList = [];
+    tmpnameList.push("컬렉션")
+    tmpIdList.push(null)
+    for(let index in collections){
+        let col=collections[index];
+        tmpnameList.push(collections[index].name);
+        tmpIdList.push(collections[index].id)
+        // tmpIdList
+    }
+    diaryFilter.collection.menu = tmpnameList;
+    diaryFilter.collection.id = tmpIdList;
+  })
+  .catch(error => console.log('error', error));
+}
+
+console.log(diaryFilter.collection);
 console.log(new Date().toISOString())
 </script>
 <template>
@@ -88,7 +122,6 @@ console.log(new Date().toISOString())
         </section>
     </div>
 </template>
-
 
 <style scpoed>
 /* 페이지 컨테이너 */

@@ -36,7 +36,8 @@ public class MemberDefaultService implements MemberService {
 
     @Override
     public Member viewMemberInfo(int id) {
-        return repository.findById(1);
+//        return repository.findById(1);
+        return null;
     }
 
 }

@@ -42,6 +42,7 @@ public class DiaryController {
 
         System.out.println("====================");
         System.out.println(localDate);
+        System.out.println(collection);
         System.out.println(feeling);
         System.out.println(weather);
         System.out.println(date);
