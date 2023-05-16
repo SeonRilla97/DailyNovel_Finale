@@ -22,9 +22,9 @@ public class DiaryDefaultService implements DiaryService{
     private DiaryRepository repository;
 
     @Override
-    public HashMap<String, Integer> getByFeeling(){
+    public TreeMap<String, Integer> getByFeeling(){
         List<Object[]> FeelingCount = repository.findByFeeling(null);
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new TreeMap<String, Integer>();
 
     // object라 형변환
         for(Object[] o : FeelingCount){
@@ -33,7 +33,7 @@ public class DiaryDefaultService implements DiaryService{
         map.put(feeling,count);
     }
     System.out.println(map);
-    return (HashMap<String, Integer>) map;
+    return (TreeMap<String, Integer>) map;
     }
 
 
@@ -43,20 +43,7 @@ public class DiaryDefaultService implements DiaryService{
     @Override
     public TreeMap<String, Integer> getByHonesty() {
         List<Object[]> HonestyCount = repository.findByHonesty(null);
-        Map<String, Integer> map = new TreeMap<String, Integer>(
-            new Comparator<String>() {
-                @Override
-                public int compare(String a, String b) {
-                    if (a.equals("0-20") && !b.equals("0-20")) {
-                        return -1;
-                    } else if (!a.equals("0-20") && b.equals("0-20")) {
-                        return 1;
-                    } else {
-                        return a.compareTo(b);
-                    }
-                }
-            }
-        );
+        Map<String, Integer> map = new TreeMap<String, Integer>();
     
         for (Object[] o : HonestyCount) {
             String honestyRange = String.valueOf(o[0]);
@@ -71,9 +58,9 @@ public class DiaryDefaultService implements DiaryService{
 
 
     @Override
-    public HashMap<String, Integer>  getByTag() {
+    public TreeMap<String, Integer>  getByTag() {
         List<Object[]> TagCount = repository.findByTag(null);
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new TreeMap<String, Integer>();
 
         for(Object[] o : TagCount){
             String tag = String.valueOf(o[0]);
@@ -82,7 +69,7 @@ public class DiaryDefaultService implements DiaryService{
         }
 
         System.out.println(map);
-        return (HashMap<String, Integer>) map;
+        return (TreeMap<String, Integer>) map;
     }
 
     @Override

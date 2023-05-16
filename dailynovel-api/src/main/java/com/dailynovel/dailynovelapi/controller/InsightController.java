@@ -28,11 +28,11 @@ public class InsightController {
 
 
      @GetMapping("Feeling")
-    public HashMap<String, Integer> getFList(
+    public TreeMap<String, Integer> getFList(
         @RequestParam(name = "feeling", required = false) String feeling,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        HashMap<String, Integer> list = service.getByFeeling();
+        TreeMap<String, Integer> list = service.getByFeeling();
         System.out.println(list);
         return list;
     }
@@ -48,11 +48,11 @@ public class InsightController {
     }
 
     @GetMapping("Tag")
-    public HashMap<String, Integer> getTList(
+    public TreeMap<String, Integer> getTList(
         @RequestParam(name = "tag", required = false) String tag,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        HashMap<String, Integer> list = service.getByTag();
+        TreeMap<String, Integer> list = service.getByTag();
         System.out.println(list);
         return list;
     }
