@@ -27,7 +27,6 @@ public class InsightControllerAPI {
     ){
         List<Object[]> list = service.getByFeeling();
         System.out.println(list);
-        System.out.println(list);
         return list;
     }
 }
