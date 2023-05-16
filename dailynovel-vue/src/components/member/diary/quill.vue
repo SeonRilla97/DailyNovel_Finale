@@ -1,3 +1,4 @@
+
 <script setup>
 
 import { ref,onMounted, onUpdated } from 'vue';
@@ -31,49 +32,51 @@ onMounted(() => {
     console.log(quill.value);
 
     let contents = quill.value.getContents();
+    // quill.value.on('text-change', () =>{
+    //     console.log(quill.value.getContents());
+
+    // });
+
     let refValue = quill.value;
     refValue.on('text-change',editortrigger);
     // refValue.on('text-change',geoFindMe);
-    
-
-    
 });
 
 onUpdated(() => {
 
-
-
 })
 
-
-  
-
-    function editortrigger (delta, oldDelta, source) {
-        if (source == 'api') {
-            console.log("An API call triggered this change.");
-        } else if (source == 'user') {
-            console.log("A user action triggered this change.");
-        }
+function editortrigger (delta, oldDelta, source) {
+    if (source == 'api') {
+        console.log("An API call triggered this change.");
+    } else if (source == 'user') {
+        console.log("A user action triggered this change.");
     }
-
-   
+}
 
 </script>
 
 <template>
 
-    <!-- <p id="status"></p>
-    <a id="map-link" target="_blank"></a> -->
 
-    <!-- <div>{{ weatherData.weatherDesc }}</div> -->
     <!-- <div
-        class="editor-quill"> -->
-    <QuillEditor 
-        class="editor-quill"
-        placeholder="나의 마음을 찬찬히 넣어주세요"
-        :toolbar="['bold', 'italic', 'underline', 'image']"
-        :modules="modules"
-        />
+        class="editor-main-quill"> -->
+        <!-- <p id="status"></p>
+        <a id="map-link" target="_blank"></a> -->
+
+        <!-- <div>{{ weatherData.weatherDesc }}</div> -->
+        <!-- <div
+            class="editor-quill"> -->
+        <QuillEditor 
+            class="editor-quill"
+            placeholder="나의 마음을 찬찬히 넣어주세요"
+            :toolbar="['bold', 'italic', 'underline', 'image']"
+            :modules="modules"
+            />
+
+
+
+    
     <!-- </div> -->
     
 </template>
@@ -81,11 +84,16 @@ onUpdated(() => {
 
 <style scoped>
 
-.editor-quill{
+
+.ql-container{
     /* border: none; */
 
     /* width: 100%;
     height: 500px; */
+
+    height: 80%;
+    overflow-y: scroll;
+
 
 
 }
