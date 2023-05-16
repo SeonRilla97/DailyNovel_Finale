@@ -3,10 +3,12 @@ package com.dailynovel.dailynovelapi.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dailynovel.dailynovelapi.service.DiaryService;
@@ -25,17 +27,34 @@ public class InsightController {
          
 
 
-     @GetMapping("/chart")
-     public Map<String, Object> feelingChart(){
-    
-        List<Object[]> feeling = service.getByFeeling();
-        Map<String,Object> map = new HashMap<>();
-        map.put("feeling", feeling);
-        
-        
-        return map;
+     @GetMapping("Feeling")
+    public TreeMap<String, Integer> getFList(
+        @RequestParam(name = "feeling", required = false) String feeling,
+        @RequestParam(name = "count", required = false) Integer count
+    ){
+        TreeMap<String, Integer> list = service.getByFeeling();
+        System.out.println(list);
+        return list;
+    }
 
+    @GetMapping("Honesty")
+    public TreeMap<String, Integer> getHList(
+        @RequestParam(name = "honestyRange", required = false) String honestyRange,
+        @RequestParam(name = "count", required = false) Integer count
+    ){
+        TreeMap<String, Integer> list = service.getByHonesty();
+        System.out.println(list);
+        return list;
+    }
 
-     }
+    @GetMapping("Tag")
+    public TreeMap<String, Integer> getTList(
+        @RequestParam(name = "tag", required = false) String tag,
+        @RequestParam(name = "count", required = false) Integer count
+    ){
+        TreeMap<String, Integer> list = service.getByTag();
+        System.out.println(list);
+        return list;
+    }
 
  }
