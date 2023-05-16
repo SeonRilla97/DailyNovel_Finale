@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "display")
+@Table(name = "display_3days")
 public class DisplayView {
     @Id
     private int id;

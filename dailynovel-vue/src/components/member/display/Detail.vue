@@ -1,28 +1,29 @@
 <template lang="">
     <main class=" center-grid">
-        
-        <section class=" center-grid article-box">
-            <h1 class="d-none">디테일</h1>
-                <article>
-                    <h1 class="title">{{title}}</h1>
-                    <hr>
-                    <div class="userInfo">
-                        <div class="d-inline like-active"></div>
-                        <div class="d-inline">{{like}} / </div>
-                        <div class="d-inline">{{image}} / </div>
-                        <div class="d-inline" @click="statusz">{{nickname}}</div>
-                        
-                    </div>
-                    <br>
-                    <p class="detail-width">
-                        {{content}}<br>
-                        그것은 천국인 거야 야야야야야야야야야야야야야야야ㅑ야야ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-                        노란 머리가 젤다죠? 
-                        
-                    </p>
-                </article>
-        </section>
-        <div class="subscribeBtn" v-show="subscribe" style="position: relative;"><span>구독하기</span></div>
+        <div class="subscribeBtn" v-show="subscribe"><span>구독하기</span></div>
+        <div class="content-center">
+            <section class=" center-grid article-box scroll">
+                <h1 class="d-none">디테일</h1>
+                    <article> 
+                        <div class="sticky">
+                            <h1 class="title nodouble-drag">{{title}}</h1>
+                            <hr>
+                            <div class="userInfo">
+                                <div class="d-inline like-active"></div>
+                                <div class="d-inline nodouble-drag">{{like}} / </div>
+                                <div class="d-inline nodouble-drag">{{image}} / </div>
+                                <div class="d-inline nodouble-drag" @click="statusz">{{nickname}}</div>
+                            </div>
+                        </div>
+                        <br>
+                        <p class="detail-width nodouble-drag">
+                            {{content}}<br>
+                            도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득
+                            득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득
+                        </p>
+                    </article>
+            </section>
+        </div>
     </main>
 </template>
 
@@ -144,6 +145,7 @@ li {
     /* 콘텐츠박스 제목의 중앙*/
     justify-self: center;
     align-self: center;
+
 }
 
 .content-title p {
@@ -232,6 +234,7 @@ li {
     max-width: 1100px;
     /* width: minmax(500px, 1280px); */
     text-align: left;
+    padding-bottom: 5rem;
 }
 
 .subscribeBtn {
@@ -240,10 +243,32 @@ li {
     width: 10rem;
     height: 5rem;
     position: absolute;
-  top: 0px;
-  left: 630px;
-  
+    top: 120px;
+    left: 960px;
+}
 
+.content-center {
+    position: absolute;
+    top: 74px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nodouble-drag {
+    user-select: none;
+}
+
+.scroll {
+    overflow: auto;
+    height: 648px;
+}
+
+.sticky{
+    position: sticky;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    top: 0px;
+    background-color: #FAFFF9;
 }
 </style>
 
