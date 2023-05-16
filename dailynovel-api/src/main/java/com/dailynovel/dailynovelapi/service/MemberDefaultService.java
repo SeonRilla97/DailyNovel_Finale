@@ -1,5 +1,7 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -35,8 +37,8 @@ public class MemberDefaultService implements MemberService {
     }
 
     @Override
-    public Member viewMemberInfo(int id) {
-        return repository.findById(1);
+    public Optional<Member> viewMemberInfo(int id) {
+        return repository.findById(id);
     }
 
 }
