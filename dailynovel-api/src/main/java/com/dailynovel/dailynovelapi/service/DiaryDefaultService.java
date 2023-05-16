@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.dailynovel.dailynovelapi.mbrepository.MbDiaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class DiaryDefaultService implements DiaryService{
 
     @Autowired
     private DiaryRepository repository;
+
+    @Autowired
+    private MbDiaryRepository mbRepository;
 
     @Override
     public TreeMap<String, Integer> getByFeeling(){
