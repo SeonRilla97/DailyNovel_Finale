@@ -53,7 +53,7 @@ let count = ref();
 let category = reactive([]);
 let currentCategory = ref('1');
 
-let indeLikeLikst = reactive([])
+let indeLikeList = reactive([])
 
 async function load() {
     const resList = await fetch('http://localhost:8080/display/listall')
@@ -63,7 +63,7 @@ async function load() {
 
     const likeList = await fetch('http://localhost:8080/display/likeScan')
     const data = await likeList.json()
-    indeLikeLikst.splice(0, indeLikeLikst.length, ...data);
+    indeLikeList.splice(0, indeLikeList.length, ...data);
 }
 
 
@@ -77,16 +77,16 @@ function categoryClick(page) {
 }
 
 function isDiaryIdMatched(id){// 좋아요 클릭했는지 확인하는 함수
-    return this.indeLikeLikst.some(item => item.diaryId === id);
+    return this.indeLikeList.some(item => item.diaryId === id);
 }
 
 
 // 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
 async function likeSwitchHandler(diaryId) {
-    console.log("좋아요 " + (this.indeLikeLikst.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
+    console.log("좋아요 " + (this.indeLikeList.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
 
     try {
-        const response = await fetch(`http://localhost:8080/display/${this.indeLikeLikst.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
+        const response = await fetch(`http://localhost:8080/display/${this.indeLikeList.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ async function likeSwitchHandler(diaryId) {
     setTimeout(load, 50);
 }
 
-function goToNextPage(){
+function goToNextPage(){ //스크롤 페이징
     console.log("추가페이지")
 }
 

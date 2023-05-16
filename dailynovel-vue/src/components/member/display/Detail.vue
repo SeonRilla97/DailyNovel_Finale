@@ -44,8 +44,12 @@ import { reactive, ref, onMounted } from 'vue';
 const props = defineProps({
     detailPage: {
         type: Object
+    },
+    likeInfo:{
+        type: Object
     }
 })
+
 console.log(props)
 let data = ref();
 let title = ref('');
@@ -54,6 +58,9 @@ let like = ref();//좋아요
 let image = ref('');//이미지
 let nickname = ref('');//닉네임
 let subscribe = ref(false);
+
+let myLike = ref(''); // 내가 좋아요 했는지
+let targetDiary = ref('') // 좋아요 선택 된 일기
 
 function load() {
     setTimeout(() => {
@@ -66,6 +73,11 @@ function load() {
         image.value = data.image;
         nickname.value = data.nickname;
 
+        
+        myLike=props.likeInfo.member_id;
+        targetDiary=props.likeInfo.diary_id;
+        console.log(myLike);
+        console.log(targetDiary);
 
     }, 100);
 }
@@ -81,7 +93,6 @@ function statusz() {
 }
 
 function subscribeHandler(){
-    
     console.log("구독했습니다.")
 }
 
