@@ -33,7 +33,7 @@ onMounted(() => {
     let contents = quill.value.getContents();
     let refValue = quill.value;
     refValue.on('text-change',editortrigger);
-    refValue.on('text-change',geoFindMe);
+    // refValue.on('text-change',geoFindMe);
     
 
     
@@ -62,10 +62,10 @@ onUpdated(() => {
 
 <template>
 
-    <p id="status"></p>
-    <a id="map-link" target="_blank"></a>
+    <!-- <p id="status"></p>
+    <a id="map-link" target="_blank"></a> -->
 
-    <div>{{ weatherData.weatherDesc }}</div>
+    <!-- <div>{{ weatherData.weatherDesc }}</div> -->
     <!-- <div
         class="editor-quill"> -->
     <QuillEditor 
