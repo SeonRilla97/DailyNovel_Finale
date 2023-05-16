@@ -22,6 +22,8 @@ import com.dailynovel.dailynovelapi.service.MailCheckService;
 import com.dailynovel.dailynovelapi.service.UserService;
 import com.nimbusds.oauth2.sdk.ParseException;
 
+import ch.qos.logback.core.util.SystemInfo;
+
 
 @RestController
 @RequestMapping("users")
@@ -46,9 +48,6 @@ public class UserController {
 			e.printStackTrace();
 		}
 	
-		// 이후 로직 실행
-	
-		System.out.println("왜 안뜨냐"+member.getBirthday()); 
 	
 		boolean result = service.signup(member);
 		return result;
@@ -65,7 +64,8 @@ public class UserController {
 
 	@RequestMapping("emailCheck")
 	public boolean emailCheck(String email) {
-
+		System.out.println("이메일체크 컨트롤러 왔니");
+		System.out.println(email);
 		boolean result= false;
 		boolean sameemail = service.FindSameEmail(email);
 
@@ -77,7 +77,19 @@ public class UserController {
 			boolean mailCheck = mailService.mailCheck(email, authCode, "회원가입 인증메일 입니다.", "이메일 인증번호:");
 			result =mailCheck;
 		}
+
+		System.out.println(result);
 		return result;
+
+	}
+
+	@RequestMapping("emailCheckAuth")
+	public boolean emailCheckAuth(String email) {
+		System.out.println("이메일체크 컨트롤러 왔니");
+		System.out.println(email);
+		boolean sameemail = service.FindSameEmail(email);
+		System.out.println(sameemail);
+		return !sameemail;
 
 	}
 

@@ -4,7 +4,7 @@ import memberLayout from '../components/member/Layout.vue';
 import Login from '../components/user/Login.vue';
 import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
-
+import signupSocial from '../components/user/SignupSocial.vue';
 import Achievement from '../components/member/Achievements/Achievements.vue';
 import Chart from '../components/member/chart/Chart.vue';
 
@@ -20,6 +20,7 @@ const routes =  [
   {
     path: '/', component: LoginLayout, children: [
       {path: 'signup', component:Signup} , 
+      {path: 'signupsocial', component:signupSocial} , 
         { path: 'login', component: Login },
         {
             path: 'error', children: [

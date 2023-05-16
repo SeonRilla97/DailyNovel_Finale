@@ -13,7 +13,7 @@ public class DailyNovelUserDetails implements UserDetails {
     private String email;
     private List<GrantedAuthority> authorties;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
     public String getEmail() {
