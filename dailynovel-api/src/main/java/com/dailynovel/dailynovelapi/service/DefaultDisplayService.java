@@ -17,7 +17,7 @@ public class DefaultDisplayService implements DisplayService {
     private DisplayRepository repository;
 
     @Autowired
-    private DiaryLikeRepository diaryRepository;
+    private DiaryLikeRepository diaryLikeRepository;
 
     @Override
     public List<DisplayView> getByList() {
@@ -25,13 +25,22 @@ public class DefaultDisplayService implements DisplayService {
     }
 
     @Override
-    public void insertLike(int mId, int dId) {
+    public void insertLike(int mId, int dId) {  // 좋아요 눌러서 태이블에 레코드(?) 삽입하기 위해 있는 거
         DiaryLike diarylike = new DiaryLike();
         diarylike.setMemberId(mId);
         diarylike.setDiaryId(dId);
         // diarylike.setMemberId(2);
         // diarylike.setDiaryId(17);
 
-        diaryRepository.save(diarylike);
+        diaryLikeRepository.save(diarylike);
     }
+
+    @Override
+    public List<DiaryLike> getByLikeList(int memberId) { // 로그인 한 회원이 자신이 좋아요 누른 글을 표시하기 위해 있는 것
+        List<DiaryLike> aa = diaryLikeRepository.findByMemberId(memberId);
+        return aa;
+    }
+
+    
+
 }
