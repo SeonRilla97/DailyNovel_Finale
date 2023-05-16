@@ -1,10 +1,12 @@
 package com.dailynovel.dailynovelapi.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,23 +28,42 @@ public class DisplayController {
         return service.getByList();
     }
   
-    // @GetMapping("listall")
-    // public List<Diary> listAll(){
-    //     return service.getByList();
+    /* 실험실 삭제할 가능성 농후함 31~ */
+    // @GetMapping("listall2")
+    // public List<DisplayView> listAll(
+    //     @RequestParam(name = "page", defaultValue = "0") int page,
+    //     @RequestParam(name = "limit", defaultValue = "10") int limit
+    // ){
+    //     // int offset = page * limit;
+    //     List<DisplayView> result = service.getByListWithPagination(limit);
+    //     return result;
     // }
+    /* 실험실 삭제할 가능성 농후함 31~ */
 
-    // @GetMapping("list")
-    // public List<Diary> list(){
-    //     return service.getBySharedDiaryList();
-    // }
-    
-    @PostMapping("save")
-    public String save(/* 회원id와 일기id를 받아오게 */){
-        int memberId = 2;
-        int diaryId = 17;
+    @PostMapping("addlike")
+    public String addLike(
+                    @RequestBody DiaryLike dl
+                    // @RequestBody Map<String,Object> dl                      
+                    ){
+        int memberId = dl.getMemberId();
+        int diaryId = dl.getDiaryId();
         service.insertLike(memberId, diaryId);
+        System.out.println(dl);
         return "세이브 완료";
     }
+
+    @PostMapping("deletelike")
+    public String deleteLike(
+                    @RequestBody DiaryLike dl
+                    // @RequestBody Map<String,Object> dl                      
+                    ){
+        int memberId = dl.getMemberId();
+        int diaryId = dl.getDiaryId();
+        service.deleteLike(memberId, diaryId);
+        System.out.println(dl);
+        return "세이브 완료";
+    }
+
 
     @GetMapping("likeScan")
     public List<DiaryLike> IndivisualLikeList(){
