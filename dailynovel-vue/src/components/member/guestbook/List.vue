@@ -1,32 +1,80 @@
 <script setup>
-import { onBeforeMount, reactive } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 
+// 방명록 리스트 불러오기
 let guestbooks = reactive({
   list: null
 });
 
+let guestbook = {
+
+}
+
+let writerId = ref("");
+
+fetch("http://localhost:8080/members/guestbooks/all",
+  {
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-type": "application/x-www-form-urlencoded"
+    },
+  })
+  .then(response => response.json())
+  .then((data) => guestbooks.list = data);
+
+
+fetch(`http://localhost:8080/members/info?id=2`,
+  {
+    method: "GET",
+  })
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+
+
+// 방명록 답글 불러오기
+let comment = ref("");
 // let json = reactive("");
+fetch("http://localhost:8080/members/guestbooks/comment", {
+  method: "POST",
+  headers: {
+    "Accept": "application/json",
+    "Content-type": "application/x-www-form-urlencoded"
+  },
+  // body: JSON.stringify(data),
+})
+  .then((response) => response.json())
+  .then((data) => comment = data.content);
 
-onBeforeMount(async () => {
-  let response = await fetch("http://localhost:8080/members/guestbooks/all",
-    {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-type": "application/x-www-form-urlencoded"
-      },
-    });
-
-  guestbooks.list = await response.json();
-  console.log(guestbooks.list);
-  // console.log(guestbooks[0].content);
-
-
-});
-
-// function loadGuestBooks() {
-//   fetch("http://localhost:8080/members/guestbooks/all");
+// function getComments(callback, errorHandling) {
+//   fetch("!!")
+//     .then((res) => res.json())
+//     .then(callback)
+//     .catch(errorHandling)
 // }
+
+// function displayComment(data) {
+//   comment.value = data.content
+// }
+
+// function 샬라샬라() {
+
+// }
+
+// getComments(displayComment);
+
+
+  // .then(console.log(guestbooks));
+
+// guestbooks.list = await response.json();
+// let json = await response.json();
+// console.log(json);
+
+// guestbooks = json;
+
+// console.log(guestbooks);
+
+
 
 
 </script>
@@ -34,14 +82,15 @@ onBeforeMount(async () => {
   <main>
     <ul class="m-guestbook-content-list">
       <!-- <li class="lc-center" v-for="n in 20"> -->
+      <!-- <li class="lc-center" v-for="item in guestbooks.list"> -->
       <li class="lc-center" v-for="item in guestbooks.list">
-        <div class="m-guestbook-content-item shadow-1">
+        <div class="m-guestbook-content-item">
           <div class="m-guestbook-item-header">
-            <div class="m-guestbook-content-title"><span>방명록 제목</span></div>
+            <span>From.</span>
             <div class="m-guestbook-content-writer"><span>{{ item.writerId }}</span></div>
           </div>
           <div class="m-guestbook-content-text"><span>{{ item.content }}</span></div>
-          <div class="m-guestbook-content-comment"><span>{{ '방명록 답글' }}</span></div>
+          <div class="m-guestbook-content-comment"><span>{{ comment }}</span></div>
         </div>
       </li>
     </ul>
@@ -53,15 +102,19 @@ onBeforeMount(async () => {
 .m-guestbook-content-list {
   width: 100%;
   /* height: 100%; */
+  min-height: 100%;
   box-sizing: border-box;
-  border-radius: 16px;
+  border-radius: 12px;
+  /* border: 3px solid rgba(10, 115, 4, 0.606); */
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   /* grid-template-rows: 1fr 1fr; */
 
   background-color: rgba(10, 115, 4, 0.606);
+
+  background-color: #FFF8F3;
 
   /* border-radius: 16px; */
   /* overflow: scroll; */
@@ -85,10 +138,12 @@ onBeforeMount(async () => {
   flex-direction: column;
   align-items: center;
   /* gap: 16px; */
-  width: 80%;
-  height: 200px;
-  background-color: yellow;
-  border-radius: 4px;
+  width: 230px;
+  height: 346px;
+  /* background-color: yellow; */
+  background-color: #fafafa;
+  border: 2px solid #FCD602;
+  border-radius: 8px;
 
   justify-content: space-between;
 
@@ -97,9 +152,10 @@ onBeforeMount(async () => {
 
 .m-guestbook-item-header {
   display: flex;
+  padding: 1rem;
 }
 
-.m-guestbook-content-title {
+.m-guestbook-content-writer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,6 +168,7 @@ onBeforeMount(async () => {
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 1rem;
 }
 
 .m-guestbook-content-comment {
@@ -119,5 +176,6 @@ onBeforeMount(async () => {
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 1rem;
 }
 </style>

@@ -1,5 +1,7 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.util.Optional;
+
 import com.dailynovel.dailynovelapi.entity.Member;
 
 public interface MemberService {
@@ -11,5 +13,5 @@ public interface MemberService {
     //
     Member getByEmail(String email);
 
-    Member viewMemberInfo(int id);
+    Optional<Member> viewMemberInfo(int id);
 }
