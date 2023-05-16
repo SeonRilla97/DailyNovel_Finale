@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.service.DiaryService;
 
 

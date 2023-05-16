@@ -1,34 +1,29 @@
 package com.dailynovel.dailynovelapi.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "diary")
-public class Diary {
+@Table(name = "diary_like")
+@IdClass(DiaryLikeId.class) 
+public class DiaryLike {
     @Id
-    private Integer id;
     @Column(name="member_id")
-    private Integer memberId;
-    private String title;
-    private String content;
-    private String weather;
-    private String feeling;
-    private String honesty;
-    private String tag;
-    @Column(name="reg_date")
-    private Date date;
+    private int memberId;
+    
+    @Id
+    @Column(name="diary_id")
+    private int diaryId;
+    //대소문자 바꾸기
 }

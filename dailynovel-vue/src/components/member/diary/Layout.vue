@@ -5,15 +5,15 @@ import Editor from './editor.vue'
 import { reactive } from 'vue';
 
 import Filter from './filter.js'
+import filter from './filter.js';
 
 
 const diaryFilter = reactive({
     diary:{
         feeling:new Filter(0,["기분","좋음","기쁨","나쁨"]),
         weather:new Filter(0,["날씨","비","맑음","눈"]),
-        honesty:0,
-        date:["날씨"],
-        sort:new Filter(0,["정렬기준","인기순","최신순","오래된순"]),
+        date:null,
+        sort:new Filter(0,["정렬기준","최신순","오래된순"]),
         collection:new Filter(0,["컬렉션","나만의 일기","배부른 일기","더망"]),
         keyword: ""
     },
@@ -41,10 +41,41 @@ function filterClickHandler(selected){
             diaryFilter.diary.keyword = selected.menuvalue;
             break;
             
-    }
-    console.log(diaryFilter.diary.feeling.idx)
-        
+        }
+        console.log(diaryFilter.diary.date)  
+        getListwithFiltering()
 }
+
+// console.log(diaryFilter.diary.date);
+function getListwithFiltering() {
+    // console.log("실험")
+    const filterList =diaryFilter.diary
+
+    const feeling = diaryFilter.diary.feeling;
+    const weather = diaryFilter.diary.weather;
+    const date = diaryFilter.diary.date;
+    const sort = diaryFilter.diary.sort;
+    const keyword = diaryFilter.diary.keyword;
+    let query = "?";
+
+    if(feeling.idx != 0){
+        query += `&feeling=${feeling.menu[feeling.idx]}`;
+    }
+    if(weather.idx != 0){
+        query += `&weather=${weather.menu[weather.idx]}`;
+    }
+    if(date!= null){
+        query += `&date=${date}`;
+    }
+    if(sort.idx != 0){
+        query += `&order=${sort.menu[sort.idx]}`;
+    }
+    if(keyword != ""){
+        query += `&query=${keyword}`;
+    }
+    console.log(query);
+}
+console.log(new Date().getFullYear)
 </script>
 <template>
     <div class="diary-container">
