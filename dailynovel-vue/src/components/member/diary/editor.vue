@@ -26,16 +26,19 @@ onMounted(() => {
     }
 
     let date = new Date();
+    titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
     return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
+
   }
 
-
+  let titleDate = "";
   const mapToggle = ref(false);
   const imageToggle = ref(false);
 
 
 //현재시간 받아오기
   const time = getDate();
+
 //날씨관련 객체
   const weatherData = ref("");
 
@@ -126,7 +129,7 @@ onMounted(() => {
                 class="editor-title-content editor-header"
                 @click="editHandler"
                 >
-          4월 10일의 일기
+          {{titleDate+'의 일기'}}
         </header>
         <div class="editor-share">공유 중</div>
     </div>
@@ -259,14 +262,14 @@ onMounted(() => {
   /* grid-row: 2/3; */
   grid-column: 2/3;
 
-  margin-top: 10px;
+  /* margin-top: 10px; */
   height: 200px;
 }
 .editor-map{
   /* grid-row: 3 / 4; */
   grid-column: 2/3;
 
-  margin-top: 10px;
+  /* margin-top: 10px; */
 
   height: 200px;
 }
