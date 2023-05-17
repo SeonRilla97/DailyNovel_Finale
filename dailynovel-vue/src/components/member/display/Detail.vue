@@ -17,7 +17,7 @@
                                 <div class="d-inline like-active"></div>
                                 <div class="d-inline nodouble-drag">{{like}} / </div>
                                 <div class="d-inline nodouble-drag">{{image}} / </div>
-                                <div class="d-inline nodouble-drag" @click="statusz">{{nickname}}</div>
+                                <div class="d-inline nodouble-drag" @click="openSubscribeBox">{{nickname}}</div>
                             </div>
                         </div>
                         <br>
@@ -45,27 +45,26 @@ const props = defineProps({
     detailPage: {
         type: Object
     },
-    likeInfo:{
-        type: Object
-    }
+    likeInfo: {
+        type : String
+    },
 })
 
-console.log(props)
+// console.log(props)
 let data = ref();
 let title = ref('');
 let content = ref('');
-let like = ref();//좋아요
+let like = ref();//게시글의 총 좋아요 수
 let image = ref('');//이미지
 let nickname = ref('');//닉네임
 let subscribe = ref(false);
+let likeStatus = ref();
 
-let myLike = ref(''); // 내가 좋아요 했는지
-let targetDiary = ref('') // 좋아요 선택 된 일기
+let memberId = 1; // 멤버 아이디 받아오는 걱 수정해야 함
 
 function load() {
     setTimeout(() => {
         data = props.detailPage
-        console.log(data)
 
         title.value = data.title
         content.value = data.content
@@ -73,12 +72,10 @@ function load() {
         image.value = data.image;
         nickname.value = data.nickname;
 
-        
-        myLike=props.likeInfo.member_id;
-        targetDiary=props.likeInfo.diary_id;
-        console.log(myLike);
-        console.log(targetDiary);
+        likeStatus = props.likeInfo
 
+        console.log(likeStatus)
+        console.log(props.memberId)
     }, 100);
 }
 
@@ -86,7 +83,45 @@ onMounted(() => {
     load();
 })
 
-function statusz() {
+function isDiaryIdMatched(id){// 좋아요 클릭했는지 확인하는 함수
+    return this.indeLikeList.some(item => item.diaryId === id);
+}
+
+
+// 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
+async function likeSwitchHandler(diaryId) {
+    console.log("좋아요 " + (this.indeLikeList.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
+
+    try {
+        const response = await fetch(`http://localhost:8080/display/${this.indeLikeList.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                memberId: 1,         // 멤버 정보 가지고 오기
+                diaryId: diaryId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('요청에 실패했습니다.');
+        }
+
+        const data = response;
+        console.log(data); // 응답 데이터 처리
+    } catch (error) {
+        console.error(error); // 에러 처리
+    }
+
+    setTimeout(load, 50);
+}
+
+
+
+
+
+function openSubscribeBox() {
     // console.log("하이룽");
     subscribe.value = !subscribe.value;
     console.log(subscribe.value)
@@ -95,6 +130,8 @@ function statusz() {
 function subscribeHandler(){
     console.log("구독했습니다.")
 }
+
+
 
 </script>
 

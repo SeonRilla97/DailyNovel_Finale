@@ -61,7 +61,7 @@ async function load() {
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
     model.splice(0, model.length, ...list);
-    console.log(list)
+    // console.log(list)
 
     const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
