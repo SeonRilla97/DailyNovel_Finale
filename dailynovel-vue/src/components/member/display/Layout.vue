@@ -55,13 +55,15 @@ let currentCategory = ref('1');
 
 let indeLikeList = reactive([])
 
+let memberId = 1; // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
+
 async function load() {
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
     model.splice(0, model.length, ...list);
     console.log(list)
 
-    const likeList = await fetch('http://localhost:8080/display/likeScan')
+    const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
     indeLikeList.splice(0, indeLikeList.length, ...data);
 }

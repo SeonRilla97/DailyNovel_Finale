@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
@@ -65,9 +66,9 @@ public class DisplayController {
     }
 
 
-    @PostMapping("likeScan")
+    @GetMapping("likeScan")
     public List<DiaryLike> IndivisualLikeList(
-                                @RequestBody int memberId  
+                                @RequestParam(name = "mId") int memberId
                             ){
         List<DiaryLike> likeList = service.getByLikeList(memberId); // 일단은 1번으로 고정해 놨지만 이후 값을 받아와야 함
         return  likeList;
