@@ -1,5 +1,6 @@
 <script setup>
-import { ref,watch } from 'vue';
+import { ref,watch,reactive } from 'vue';
+import filter from './filter';
 const props = defineProps({
     filter: {
         type: Object,
@@ -34,17 +35,7 @@ function menuOpenHandler(clickedMenu){
 function dateInitialize(){
     date.value = null;
 }
-
-const date = ref(null);
-watch(date,()=>{
-    console.log("와치 동작!",date.value);
-    
-    selectedMenu.menuname = "date"
-    selectedMenu.menuvalue= date.value;
-    console.log("선택된 Date" + selectedMenu.menuvalue);
-    emit('filterClickedHandler',selectedMenu);
-})
-
+console.log(props.filter.date);
 
 let searchKeywork = ref("");
 function searchBtnHandler(){
@@ -54,13 +45,39 @@ function searchBtnHandler(){
     selectedMenu.menuvalue= searchKeywork.value;
     emit('filterClickedHandler',selectedMenu);
 }
+
+let date = ref(null);
+const attributes = reactive(
+  {
+    highlight: true,
+    dates:props.filter.date
+  }
+);
+console.log(attributes.dates)
+// watch(attributes.dates,()=>{
+//     console.log("와치 동작!");
+//     selectedMenu.menuname = "date"
+//     selectedMenu.menuvalue= props.filter.date;
+//     console.log("선택된 Date" + selectedMenu.menuvalue);
+//     emit('filterClickedHandler',selectedMenu);
+// })
+
+watch(() => attributes.dates, (newDates, oldDates) => {
+  console.log("와치 동작!");
+    selectedMenu.menuname = "date"
+    selectedMenu.menuvalue= attributes.dates;
+    console.log("선택된 Date" + selectedMenu.menuvalue);
+    emit('filterClickedHandler',selectedMenu);
+});
+// watch(() => props.filter.date, (newDates, oldDates) => {
+//   console.log("와아치 동작!");
+// });
 </script>
 
 
 <template>
     <header class="diary-header">
         <h1>나의일기</h1>
-
         <!-- 드롭다운 메뉴 -->
 
         <!-- feeling -->
@@ -100,13 +117,13 @@ function searchBtnHandler(){
             <div class="btn" @click.stop="menuOpenHandler(4)"><span>날짜</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="calendar-container" v-show="menuOpen==4" data-menuname = "date">
-                    <VDatePicker class="calendar" v-model="date" mode="date" @dayclick="menuOpenHandler">
+                    <VDatePicker class="calendar" v-model="attributes.dates" :attributes="attributes" mode="date" @dayclick="menuOpenHandler">
                         <template #footer>
                             <div class="lc-center pdb-4" style="box-sizing=border-box">
                                 <button  class="btn-init" @click="dateInitialize">초기화</button>
                             </div>
                         </template>   
-            </VDatePicker> 
+                    </VDatePicker> 
                     <!-- <div class="btn initialize lc-center" @click.stop="dateInitialize"><span>초기화</span><span class="icon-clamp"></span></div> -->
                 </div>
             </transition>

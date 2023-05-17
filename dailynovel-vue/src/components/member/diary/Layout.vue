@@ -46,7 +46,8 @@ function filterClickHandler(selected){
             break;
         case "date":
             backupMenu.name = "date";
-            console.log("이 날짜 들어감!" + diaryFilter.date);
+            console.log("기존에 있던거" + diaryFilter.date);
+            console.log("이 날짜 들어감!" + selected.menuvalue);
             backupMenu.value=diaryFilter.date;
             diaryFilter.date = selected.menuvalue;
             break;
@@ -94,9 +95,9 @@ function getListwithFiltering(backup) {
     if(date!= null){
         let offset = date.getTimezoneOffset() * 60000; 
         let dateOffset = new Date(date.getTime() - offset);
-        console.log("offset변환전"+date);
-        console.log("offset변환후"+dateOffset);
-        console.log("iso8601변환후"+dateOffset.toISOString());
+        // console.log("offset변환전"+date);
+        // console.log("offset변환후"+dateOffset);
+        // console.log("iso8601변환후"+dateOffset.toISOString());
         query += `&date=${dateOffset.toISOString()}`;
     }
     if(sort.idx != 0){
@@ -131,8 +132,10 @@ function getListwithFiltering(backup) {
                         diaryFilter.weather.idx = backup.value;
                         break;
                     case "date":
+                        console.log(backup)
                         console.log("데이트터짐" + backup.value)
                         diaryFilter.date = backup.value;
+                        console.log("최종적으로 데이트 바뀐거 확인" + diaryFilter.date)
                         break;
                     case "sort":
                         diaryFilter.sort.idx = backup.value;
