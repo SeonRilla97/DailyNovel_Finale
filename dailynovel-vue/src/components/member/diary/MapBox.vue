@@ -217,7 +217,8 @@ button:hover {
     height: 600px;
     z-index: 10000;
     background-color: #ffffffaa;
-    width: 300px;
+    width: 200px;
+    overflow-x: auto;
     overflow-y: auto;
 
     display: flex;
