@@ -6,4 +6,6 @@ public interface MemberService {
     boolean isValid(String email, String password);
 
     Member getByEmail(String email);
+
+    boolean isValidLoginAuth(String email);
 }

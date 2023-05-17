@@ -38,35 +38,60 @@ async function loginHandler() {
   else router.push("./member");
 }
 
-async function googleLogin(response) {
-  let userData = decodeCredential(response.credential);
-  userDetails.nickname = userData.name;
-  userDetails.email = userData.email;
-  userDetails.roles = ["MEMBER"];
+
+async function loginoAuthHandler(event) {
+  let response = await fetch("http://localhost:8080/members/loginAuth", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/x-www-form-urlencoded",
+    },
+    body: `email=${event}`,
+  });
+  let json = await response.json();
+
+  //새롭게 데이터를 받아보자
+  userDetails.id = json.result.id;
+  userDetails.nickname = json.result.usernickname;
+  //userDetails.password= json.result.pwd;
+  userDetails.email = json.result.email;
+  userDetails.roles = json.roles;
   let returnURL = route.query.returnURL;
-
+  console.log(userDetails.id);
   if (userDetails.email == null) loginFalse.value = true;
-  else {
-    let response = await fetch(
-      "http://localhost:8080/users/emailCheck?email=" + userDetails.email
-    );
-    if (!response.ok) {
-      console.log("실패했나");
-    }
-    let data = await response.text();
-
-    if (data === "true") {
-      router.push("./signup");
-    } else {
-      router.push({
-        path: returnURL || "./member/room",
-        state: {
-          userDetails: userDetails,
-        },
-      });
-    }
-  }
+  else if (returnURL) router.push(returnURL);
+  else router.push("/member/room");
 }
+
+// async function googleLogin(response) {
+//   let userData = decodeCredential(response.credential);
+//   userDetails.nickname = userData.name;
+//   userDetails.email = userData.email;
+//   userDetails.roles = ["MEMBER"];
+//   let returnURL = route.query.returnURL;
+
+//   if (userDetails.email == null) loginFalse.value = true;
+//   else {
+//     let response = await fetch(
+//       "http://localhost:8080/users/emailCheck?email=" + userDetails.email
+//     );
+//     if (!response.ok) {
+//       console.log("실패했나");
+//     }
+//     let data = await response.text();
+
+//     if (data === "true") {
+//       router.push("./signup");
+//     } else {
+//       router.push({
+//         path: returnURL || "./member/room",
+//         state: {
+//           userDetails: userDetails,
+//         },
+//       });
+//     }
+//   }
+// }
 
 function logoutHandler() {
   googleLogout();
@@ -84,31 +109,7 @@ async function customLoginHandler(response) {
 }
 
 
-async function FindSignupUser(event) {
-  let returnURL = route.query.returnURL;
-  if (event == null) loginFalse.value = true;
-  else {
-    let response = await fetch(
-      "http://localhost:8080/users/emailCheckAuth?email=" + event
-    );
-    let userEmailData = event;
-    let data = await response.text();
-    if (data === "true") {
-      router.push({
-        path: "./signupSocial",
-        query: {
-          AuthEmail: userEmailData
-        },
-      });
-    } else {
-      userDetails.email = userEmailData;
 
-      router.push({
-        path: returnURL || "./member/room",
-      });
-    }
-  }
-}
 
 // 사용자 정보를 가져오는 함수
 async function fetchUserInfo(accessToken) {
@@ -119,7 +120,7 @@ async function fetchUserInfo(accessToken) {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },
     });
-
+    
     if (response.ok) {
       const userInfo = await response.json();
       return userInfo;
@@ -187,35 +188,83 @@ async function kakaoLogin2() {
   });
 }
 
+let naverLogin = null; // 전역 변수로 naverLogin 객체 선언
 
-let  naverLogin="";
-const email = ref('');
+const naverService = () => {
+  const setNaver = () => {
+    naverLogin = new window.naver.LoginWithNaverId({ // 전역 변수에 객체 할당
+      clientId: 'wrbhmlU28DOMvzGf8SAv',
+      callbackUrl: 'http://localhost:5173/login',
+      loginButton: {
+        color: "green",
+        type: 1,
+        height: 50,
+      },
+      popup: true,
+    });
+    naverLogin.init();
+  };
+
+  const getUserInfo = () => {
+    naverLogin.getLoginStatus((status) => {
+      if (status) {
+        const email = naverLogin.user.email;
+        FindSignupUser(email);
+        const name = naverLogin.user.name;
+        console.log(email, name);
+      } else {
+        console.log("AccessToken이 올바르지 않습니다.");
+      }
+    });
+  };
+
+  const logout = () => {
+    naverLogin.logout();
+  };
+
+  return {
+    setNaver,
+    getUserInfo,
+    logout,
+  };
+};
 
 onMounted(() => {
-  const naverLoginScript = document.createElement('script');
-  naverLoginScript.src = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js';
-  naverLoginScript.defer = true;
-  document.head.appendChild(naverLoginScript);
-   naverLogin = new naver.LoginWithNaverId({
-    clientId: 'wrbhmlU28DOMvzGf8SAv',
-      callbackUrl: 'http://localhost:5173/login',
-    loginButton: { color: 'green', type: 3, height: 60 },
-  });
-
+  const { setNaver, getUserInfo } = naverService(); // naverService에서 setNaver 함수도 가져오도록 수정
+  setNaver(); // naverLogin 객체 설정
+  getUserInfo();
 });
 
-function naverLoginHandler() {
+async function FindSignupUser(event) {
+  let returnURL = route.query.returnURL;
+  if (event == null) loginFalse.value = true;
+  else {
+    let response = await fetch(
+      "http://localhost:8080/users/emailCheckAuth?email=" + event
+    );
+    let userEmailData = event;
+    console.log(userEmailData);
+    let data = await response.text();
+    localStorage.removeItem('com.naver.nid.oauth.state_token');
+    if (data === "true") {
+      router.push({
+        path: "./signupSocial",
+        query: {
+          AuthEmail: userEmailData,
+        },
+      });
+    } else {
 
-  naverLogin.init();
-  naverLogin.getLoginStatus((status) => {
-    if (status) {
-      email.value = naverLogin.user.getEmail();
-      FindSignupUser(email.value);
+      loginoAuthHandler(event);
+      userDetails.email = userEmailData;
+      router.push({
+        path: returnURL || "./member/room",
+      });
     }
-  });
+  }
+
+  naverService().logout(); // 수정: 전역 변수인 naverLogin을 사용하여 로그아웃 호출
 }
-
-
 </script>
 <template>
   <div class="container-1-nmg">
@@ -260,8 +309,7 @@ function naverLoginHandler() {
 
         <div class="kakao-svg1 mgl-4" @click.prevent="getUserInfoWithLogin" />
 
-
-        <div id="naverIdLogin"  class="mgl-4 mgt-2" @click.prevent="naverLoginHandler" ></div>
+        <div id="naverIdLogin" class="mgl-4 mgt-2" @click.prevent="openNaverLogin"></div>
 
 
       </div>

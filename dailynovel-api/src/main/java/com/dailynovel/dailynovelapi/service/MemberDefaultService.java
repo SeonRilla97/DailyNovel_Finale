@@ -33,4 +33,17 @@ public class MemberDefaultService implements MemberService {
         return repository.findByEmail(email);
     }
 
+    @Override
+    public boolean isValidLoginAuth(String email) {
+
+        Member member = repository.findByEmail(email);
+
+        if (member == null)
+
+            return false;
+
+
+            return true;
+    }
+
 }
