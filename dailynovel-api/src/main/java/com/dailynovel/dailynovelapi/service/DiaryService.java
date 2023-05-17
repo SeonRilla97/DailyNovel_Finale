@@ -1,17 +1,19 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 
 public interface DiaryService {
     public TreeMap<String, Integer> getByFeeling();
     public TreeMap<String, Integer>  getByTag();
     public TreeMap<String, Integer>  getByHonesty();
-    Map<String, List<Diary>> getListGroupingMonthly(String feeling, String weather, Date date, String order,
-            String collection, String query);
+    public Map<String, List<MbDiaryCollectionView>> getListGroupingMonthly(int memberId, String feeling, String weather,
+            LocalDate localDate, String order, String collection, String query);
 }
  

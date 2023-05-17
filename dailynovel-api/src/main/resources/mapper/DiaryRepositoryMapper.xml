@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbDiaryRepository">
+	<resultMap id="DiaryCollectionResultMap" type="MbDiaryCollectionView">
+      <result property="memberId" column="member_id" />
+      <result property="diaryId" column="id" />
+      <result property="collectionName" column="collection_name" />
+      <result property="regDate" column="reg_date" />
+	</resultMap>
+	
+
+  
+  	<select id="getListByFiltering" resultMap="DiaryCollectionResultMap">
+		select *
+		FROM diary_filter
+		where member_id = #{memberId}
+			<if test="feeling != null">
+				and feeling = #{feeling}</if> 
+            <if test="weather != null">
+				and weather = #{weather}</if>
+            <if test="localDate != null">
+				and Date(reg_date) = #{localDate}</if>
+            <if test="collection != null">
+				and collection_id = #{collection}</if>
+            <if test="query != null">
+                AND (title LIKE CONCAT('%', #{query}, '%')
+                OR content LIKE CONCAT('%', #{query}, '%'))
+            </if>
+
+        ORDER BY
+        <choose>
+            <when test="order == '오래된순'">
+                reg_date ASC
+            </when>
+            <otherwise>
+                reg_date DESC
+            </otherwise>
+        </choose>
+
+            
+	</select>
+      
+  
+</mapper>
