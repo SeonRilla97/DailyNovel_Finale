@@ -26,10 +26,7 @@ function formatDateToCustomString(date) {
   return `${period} ${formattedHours}시 ${formattedMinutes}분`;
 }
 
-function sharedValue(isShared){
-    if(isShared)
-        return
-}
+
 const day = ["일","월","화","수","목","금","토"]
 </script>
 

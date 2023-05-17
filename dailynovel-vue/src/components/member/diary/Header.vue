@@ -35,11 +35,13 @@ function dateInitialize(){
     date.value = null;
 }
 
-const date = ref(new Date());
+const date = ref(null);
 watch(date,()=>{
-    // console.log("와치 동작!",date.value);
+    console.log("와치 동작!",date.value);
+    
     selectedMenu.menuname = "date"
     selectedMenu.menuvalue= date.value;
+    console.log("선택된 Date" + selectedMenu.menuvalue);
     emit('filterClickedHandler',selectedMenu);
 })
 
