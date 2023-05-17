@@ -15,5 +15,11 @@ public interface DiaryService {
     public TreeMap<String, Integer>  getByHonesty();
     public Map<String, List<MbDiaryCollectionView>> getListGroupingMonthly(int memberId, String feeling, String weather,
             LocalDate localDate, String order, String collection, String query);
+
+    //모재영 : 테스트 용
+    public boolean isValid(String id);
+
+    public int writeDiary(Diary diary);
+
 }
  

@@ -1,7 +1,11 @@
 package com.dailynovel.dailynovelapi.controller;
 
+
+
+import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.service.DiaryService;
+import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
+
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +45,13 @@ public class DiaryController {
         @RequestParam(required = false) String collection,
         @RequestParam(required = false) String query
     ) throws UnsupportedEncodingException {
-        
+
+//        Map<String,List<Diary>> list = service.getListGroupingMonthly(
+//            feeling,weather,date,order,collection,query
+//        );
+
+
+//        LocalDateTime
         //ISO 8601 날짜형식으로 인코딩 된거 Decoder를 통해 LocalDate형식으로 변환
         LocalDate localDate = null;
         if(date !=null)
@@ -48,16 +62,58 @@ public class DiaryController {
         );
         System.out.println("어서오세요 컨트롤러 입니다 " +list);
 
-        // System.out.println("====================");
-        // System.out.println(localDate);
-        // System.out.println(collection);
-        // System.out.println(feeling);
-        // System.out.println(weather);
-        // System.out.println(date);
-        // System.out.println(query);
-        // System.out.println(order);
+        // URL 디코딩
+        Date realdate = new Date(date);
 
+
+        System.out.println("====================");
+
+        System.out.println(feeling);
+        System.out.println(weather);
+        System.out.println(date);
+        System.out.println(query);
+        System.out.println(order);
         
         return list;
     }
+
+    @GetMapping("get")
+    public boolean get(){
+
+        boolean qqq = service.isValid("1");
+
+        return qqq;
+    }
+
+    @GetMapping("write")
+    public  void write(){
+
+        Integer id = null;
+
+        int memberId = 1;
+        String title = "하와이";
+         String content = "가자";
+         String weather = "맑음";
+         String feeling = "사랑";
+         String honesty = "100";
+         String tag = "영화";
+         String date = "2023-05-17 17:02:25";
+
+//        LocalDateTime
+        //ISO 8601 날짜형식으로 인코딩 된거 Decoder를 통해 LocalDate형식으로 변환
+        LocalDateTime localDateTime = null;
+        if(date  != null)
+            localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
+        System.out.println(localDateTime);
+
+        Timestamp time = Timestamp.valueOf(localDateTime);
+
+
+
+        Diary diary = new Diary(null, memberId,title,content,weather,feeling,honesty,tag,time);
+
+        int tmp = service.writeDiary(diary);
+
+    }
+
 }

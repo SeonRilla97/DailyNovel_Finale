@@ -1,14 +1,9 @@
 package com.dailynovel.dailynovelapi.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+
+import java.util.*;
+
 
 import com.dailynovel.dailynovelapi.mbrepository.MbDiaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +84,7 @@ public class DiaryDefaultService implements DiaryService{
     public Map<String, List<MbDiaryCollectionView>> getListGroupingMonthly(int memberId, String feeling, String weather,
             LocalDate localDate, String order, String collection, String query) {
 
+
             //**년 ***월 으로 그룹화 시키는 Map 객체 생성*/
             Map<String, List<MbDiaryCollectionView>> groupingList = new LinkedHashMap<>();
             //========DB에서 불러온 일기 목록========
@@ -108,7 +104,9 @@ public class DiaryDefaultService implements DiaryService{
                 String month = String.valueOf(diary.getRegDate().getMonthValue());
                 // {}년 {}월 으로 그룹화 시키기 위해 String 생성 (Map의 Key가 될거임)
                 String group = year + "년 "+ month+"월";
+
                 // System.out.println(group);
+
                 if(groupingList.containsKey(group)){
                     //Map에 키가 있으면
 
@@ -124,15 +122,29 @@ public class DiaryDefaultService implements DiaryService{
                     groupingList.put(group, tmpList);
                 }
 
-
-
-                
             }
         return groupingList;
     }
 
+    @Override
+    public boolean isValid(String id) {
+        Optional<Diary> diary = repository.findById(1);
+
+        if(diary.isPresent())
+            System.out.println(diary.toString());
+
+        return false;
+    }
 
 
     
+    @Override
+    public int writeDiary(Diary diary) {
+
+        Diary diary1 = repository.save(diary);
+        System.out.println(diary1.toString());
+
+        return 1;
+    }
 }
 
