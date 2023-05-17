@@ -1,11 +1,7 @@
 package com.dailynovel.dailynovelapi.service;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.time.LocalDate;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,13 +69,61 @@ public class DiaryDefaultService implements DiaryService{
     }
 
     @Override
-    public Map<String, List<Diary>> getListGroupingMonthly(String feeling, String weather, Date date, String order,
-            String collection, String query) {
-                List<Diary> list = repository.getListWithFiltering(feeling,weather,date,order,collection,query);
-                System.out.println(list);
-        return null;
+    public Map<String, List<MbDiaryCollectionView>> getListGroupingMonthly(int memberId, String feeling, String weather,
+            LocalDate localDate, String order, String collection, String query) {
+            System.out.println("서비스단 실행!");
+            System.out.println(order);
+
+            //**년 ***월 으로 그룹화 시키는 Map 객체 */
+            Map<String, List<MbDiaryCollectionView>> groupingList = new HashMap<>();
+            //DB에서 불러온 일기 목록
+            List<MbDiaryCollectionView> list = mbRepository.getListByFiltering(
+                    memberId,feeling,weather, localDate, order, collection , query
+                    );
+
+            for(MbDiaryCollectionView diary : list){
+                //년 추출
+                String year = String.valueOf(diary.getRegDate().getYear());
+                //월 추출
+                String month = String.valueOf(diary.getRegDate().getMonthValue());
+                // {}년 {}월 으로 그룹화 시키기 위해 String 생성 (Map의 Key가 될거임)
+                String group = year + "년 "+ month+"월";
+                System.out.println(group);
+                if(groupingList.containsKey(group)){
+                    //Map에 키가 있으면
+
+                    //1. 해당 키의 값에 일기 집어넣기
+                    groupingList.get(group).add(diary);
+                }else{
+                    //키가 없다면
+                    // 1. ArrayList 생성
+                    List<MbDiaryCollectionView> tmpList = new ArrayList<>();
+                    // 2. ArrayList 에 일기 넣기
+                    tmpList.add(diary);
+                    // 3. Map에 Key와 Value로 생성
+                    groupingList.put(group, tmpList);
+                }
+            }
+        return groupingList;
     }
 
+    @Override
+    public boolean isValid(String id) {
+        Optional<Diary> diary = repository.findById(1);
+
+        if(diary.isPresent())
+            System.out.println(diary.toString());
+
+        return false;
+    }
 
     
+    @Override
+    public int writeDiary(Diary diary) {
+
+        Diary diary1 = repository.save(diary);
+        System.out.println(diary1.toString());
+
+        return 1;
+    }
 }

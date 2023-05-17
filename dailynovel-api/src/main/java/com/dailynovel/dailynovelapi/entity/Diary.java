@@ -1,5 +1,7 @@
 package com.dailynovel.dailynovelapi.entity;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -18,8 +20,10 @@ import lombok.NoArgsConstructor;
 @Entity
 
 public class Diary {
+
+    //변겅자 모재영 null 받기위해서 바꿈
     @Id
-    private int id;
+    private Integer id;
     @Column(name="member_id")
     private int memberId;
 
@@ -30,5 +34,8 @@ public class Diary {
     private String honesty;
     private String tag;
     @Column(name="reg_date")
-    private Date date;
+    private Timestamp date;
+
+//    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
+//    private List<DiaryCollection> collections;
 }
