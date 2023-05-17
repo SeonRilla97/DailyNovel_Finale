@@ -185,7 +185,24 @@ box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 z-index: 1;
 text-align: center;
 top: 20px;
+height: 120px;
+overflow-y:scroll;
 }
+
+    /* 스크롤바 커스터마이징 */
+    .diary-header .dropdown .content::-webkit-scrollbar {
+    width: 1px;  /* 스크롤바의 너비 */
+    }
+    .diary-header .dropdown .content::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #848484; /* 스크롤바의 색상 */
+    border-radius: 10px;
+    }
+
+    .diary-header .dropdown .content::-webkit-scrollbar-track {
+    /* background: #84848447;  스크롤바 뒷 배경 색상 */
+    background-color: transparent;
+    }
 .diary-header .dropdown .calendar-container {
     position: absolute;
     z-index: 1;
