@@ -92,7 +92,7 @@ async function likeSwitchHandler(diaryId) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                memberId: 1,
+                memberId: 1,         // 멤버 정보 가지고 오기
                 diaryId: diaryId,
             }),
         });

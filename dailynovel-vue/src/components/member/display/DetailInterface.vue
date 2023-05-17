@@ -23,15 +23,13 @@ async function load() {
 
     const likeList = await fetch('http://localhost:8080/display/likeScan')
     const data = await likeList.json()
-
-    console.log(data)
-
-    indeLikeLikst.splice(0, indeLikeLikst.length, ...data);
+    like.splice(0, like.length, ...data);
+    console.log(like)
 }
 
 
 onMounted(()=>{
-load()
+    load()
 })
 
 

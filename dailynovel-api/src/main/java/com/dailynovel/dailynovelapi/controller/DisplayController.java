@@ -65,9 +65,11 @@ public class DisplayController {
     }
 
 
-    @GetMapping("likeScan")
-    public List<DiaryLike> IndivisualLikeList(){
-        List<DiaryLike> likeList = service.getByLikeList(1); // 일단은 1번으로 고정해 놨지만 이후 값을 받아와야 함
+    @PostMapping("likeScan")
+    public List<DiaryLike> IndivisualLikeList(
+                                @RequestBody int memberId  
+                            ){
+        List<DiaryLike> likeList = service.getByLikeList(memberId); // 일단은 1번으로 고정해 놨지만 이후 값을 받아와야 함
         return  likeList;
     }
 }
