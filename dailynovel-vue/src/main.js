@@ -27,6 +27,7 @@ app.use(pinia)
 app.use(vue3GoogleLogin,{
     clientId:'171277420861-evm2i2iojla9dom7b7fo5evdl3j2n63g.apps.googleusercontent.com'
 })
+
 app.use(VueKakaoSdk, { apiKey })
 app.use(router)
 app.mount('#app')

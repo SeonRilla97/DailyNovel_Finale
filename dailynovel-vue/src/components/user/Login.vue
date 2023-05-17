@@ -1,10 +1,9 @@
 <script setup>
-import { reactive, ref } from "vue";
+import {onBeforeUnmount  , onMounted , reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUserDetailsStore } from "../store/useUserDetailsStore.js";
 import { decodeCredential } from "vue3-google-login";
 import { googleLogout } from "vue3-google-login";
-
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 let router = useRouter();
 let route = useRoute(); //라우팅의 정보를 가져다 주는애
@@ -75,65 +74,148 @@ function logoutHandler() {
 }
 
 async function customLoginHandler(response) {
-  let returnURL = route.query.returnURL;
   await fetch(
     `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${response.access_token}`
   )
     .then((res) => res.json())
     .then(async (userData) => {
-      if (userData.email == null) loginFalse.value = true;
-      else {
-        let response = await fetch(
-          "http://localhost:8080/users/emailCheckAuth?email="+userData.email
-        );
-        let userEmailData =userData.email;
-        let data = await  response.text();
-        if (data === "true") {
-            router.push({
-            path: "./signupSocial",
-            query: {
-              AuthEmail : userEmailData
-            },
-          });
-        } else {
-          userDetails.email = userEmailData;
-          userDetails.roles = json.roles;
-
-          router.push({
-            path: returnURL || "./member/room",
-          });
-        }
-      }
+      FindSignupUser(userData.email);
     });
 }
-async function kakaoLogin(){
-  Kakao.Auth.login({
-  scope: 'account_email',
-  success: auth => {
-    console.log(auth);
-    // 로그인 성공시 처리
-    console.log(auth.account_email)
-    // 클라이언트에서 로그인 성공 후 이메일 정보를 사용하고자 할 경우
-    if (auth.kakao_account && auth.kakao_account.email) {
-      console.log(auth.kakao_account.email);
-      // 이메일 정보 처리
+
+
+async function FindSignupUser(event) {
+  let returnURL = route.query.returnURL;
+  if (event == null) loginFalse.value = true;
+  else {
+    let response = await fetch(
+      "http://localhost:8080/users/emailCheckAuth?email=" + event
+    );
+    let userEmailData = event;
+    let data = await response.text();
+    if (data === "true") {
+      router.push({
+        path: "./signupSocial",
+        query: {
+          AuthEmail: userEmailData
+        },
+      });
     } else {
-      console.log("이메일 정보를 가져올 수 없습니다.");
-    }r
-  },
-  fail: err => {
-    console.error(err);
-    // 로그인 실패시 처리
+      userDetails.email = userEmailData;
+
+      router.push({
+        path: returnURL || "./member/room",
+      });
+    }
   }
+}
+
+// 사용자 정보를 가져오는 함수
+async function fetchUserInfo(accessToken) {
+  try {
+    const response = await fetch('https://kapi.kakao.com/v2/user/me', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+      },
+    });
+
+    if (response.ok) {
+      const userInfo = await response.json();
+      return userInfo;
+    } else {
+      throw new Error('Failed to fetch user info');
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// 사용자 정보 가져오기
+async function getUserInfoWithLogin() {
+  try {
+    const accessToken = await kakaoLogin();
+    const userInfo = await fetchUserInfo(accessToken);
+    console.log(userInfo);
+    console.log(userInfo.kakao_account.email);
+    FindSignupUser(userInfo.kakao_account.email);
+    // 사용자 정보 출력 또는 다른 작업 수행
+  } catch (error) {
+    // 오류 처리
+    console.error(error);
+  }
+}
+
+// 카카오 로그인 실행 함수
+async function kakaoLogin() {
+  return new Promise((resolve, reject) => {
+    Kakao.Auth.login({
+      scope: 'account_email',
+      success: auth => {
+        resolve(auth.access_token);
+      },
+      fail: err => {
+        reject(err);
+      }
+    });
+  });
+}
+
+async function kakaoLogin2() {
+  return new Promise((resolve, reject) => {
+    Kakao.Auth.login({
+      scope: 'account_email',
+      success: auth => {
+        console.log(auth);
+        // 로그인 성공시 처리
+        console.log(auth.account_email);
+        // 클라이언트에서 로그인 성공 후 이메일 정보를 사용하고자 할 경우
+        if (auth.kakao_account && auth.kakao_account.email) {
+          console.log(auth.kakao_account.email);
+          // 이메일 정보 처리
+        } else {
+          console.log("이메일 정보를 가져올 수 없습니다.");
+        }
+        resolve(); // 로그인 성공 시 Promise를 이행(resolve)합니다.
+      },
+      fail: err => {
+        console.error(err);
+        reject(err); // 로그인 실패 시 Promise를 거부(reject)합니다.
+      }
+    });
+  });
+}
+
+
+let  naverLogin="";
+const email = ref('');
+
+onMounted(() => {
+  const naverLoginScript = document.createElement('script');
+  naverLoginScript.src = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js';
+  naverLoginScript.defer = true;
+  document.head.appendChild(naverLoginScript);
+   naverLogin = new naver.LoginWithNaverId({
+    clientId: 'wrbhmlU28DOMvzGf8SAv',
+      callbackUrl: 'http://localhost:5173/login',
+    loginButton: { color: 'green', type: 3, height: 60 },
+  });
+
 });
+
+function naverLoginHandler() {
+
+  naverLogin.init();
+  naverLogin.getLoginStatus((status) => {
+    if (status) {
+      email.value = naverLogin.user.getEmail();
+      FindSignupUser(email.value);
+    }
+  });
 }
 
 
-
-async function naverLogin(){
-
-
-}
 </script>
 <template>
   <div class="container-1-nmg">
@@ -146,27 +228,12 @@ async function naverLogin(){
           </div>
           <div class="input3 mgt-4">
             <div class="div-placeholder">
-              <input
-                id="email"
-                class="text04"
-                type="text"
-                tabindex="0"
-                placeholder="이메일"
-                required
-                v-model="user.email"
-              />
+              <input id="email" class="text04" type="text" tabindex="0" placeholder="이메일" required v-model="user.email" />
             </div>
           </div>
           <div class="input3">
             <div class="div-placeholder mgt-1">
-              <input
-                id="password"
-                class="text04"
-                type="password"
-                placeholder="비밀번호"
-                required
-                v-model="user.password"
-              />
+              <input id="password" class="text04" type="password" placeholder="비밀번호" required v-model="user.password" />
             </div>
           </div>
           <button class="button1 mgt-3" @click.prevent="loginHandler">
@@ -180,9 +247,7 @@ async function naverLogin(){
         </div>
       </div>
       <div class="mgt-5">
-        <router-link to="./login" class="text09 mgt-4"
-          >SNS계정으로 간편 로그인/회원가입</router-link
-        >
+        <router-link to="./login" class="text09 mgt-4">SNS계정으로 간편 로그인/회원가입</router-link>
       </div>
       <div class="lc-horizontal-alignment mgt-3">
         <!-- <GoogleLogin :callback="googleLogin">
@@ -193,9 +258,12 @@ async function naverLogin(){
           <div class="google-svg" />
         </GoogleLogin>
 
-        <div class="kakao-svg1 mgl-4" @click.prevent="kakaoLogin" />
+        <div class="kakao-svg1 mgl-4" @click.prevent="getUserInfoWithLogin" />
 
-        <div class="naver-svg2 mgl-4" @click.prevent="naverLogin" />
+
+        <div id="naverIdLogin"  class="mgl-4 mgt-2" @click.prevent="naverLoginHandler" ></div>
+
+
       </div>
       <div class="mgt-3">
         <span class="text11">
