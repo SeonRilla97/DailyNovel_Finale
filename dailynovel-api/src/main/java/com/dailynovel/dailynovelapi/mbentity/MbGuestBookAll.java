@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MbGuestBook {
-
+public class MbGuestBookAll {
   private Integer id;
   private Integer memberId;
   private Integer writerId;
+  private String writerName;
   private String content;
+  private String comment;
   private Timestamp regDate;
-
 }
