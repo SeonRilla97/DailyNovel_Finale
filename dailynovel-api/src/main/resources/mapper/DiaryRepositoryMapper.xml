@@ -8,6 +8,7 @@
       <result property="diaryId" column="id" />
       <result property="collectionName" column="collection_name" />
       <result property="regDate" column="reg_date" />
+      <result property="sharedEndDate" column="display_end_date" />
 	</resultMap>
 	
 
