@@ -1,6 +1,6 @@
 <template lang="">
-    <detail :detailPage="model[id]" :likeInfo="likeStatus"></detail>
-    
+    <detail :detailPage="model[id]" :likeInfo="likeStatus" :segnal="load(memberId)"></detail>
+     
 </template>
 
 <script setup>
@@ -15,7 +15,7 @@ let indeLikeList = reactive([]);
 
 let id = ref();
 let likeStatus = ref();
-let memberId = ref(1); // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
+let memberId = 1; // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
 
 async function load() {
     const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)

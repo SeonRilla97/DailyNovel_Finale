@@ -78,8 +78,8 @@ function categoryClick(page) {
     load()
 }
 
-function isDiaryIdMatched(id){// 좋아요 클릭했는지 확인하는 함수
-    return this.indeLikeList.some(item => item.diaryId === id);
+function isDiaryIdMatched(diaryId){// 좋아요 클릭했는지 확인하는 함수
+    return this.indeLikeList.some(item => item.diaryId === diaryId);
 }
 
 
