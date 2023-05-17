@@ -1,101 +1,88 @@
 <script setup>
-import { onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, reactive, ref } from 'vue';
+
+// 방명록 주인 ID
+let hostId = 1;
+let guestId = 2;
 
 // 방명록 리스트 불러오기
 let guestbooks = reactive({
   list: null
 });
 
-let guestbook = {
+let guestbook = reactive({
+  memberId: hostId,
+  writerId: guestId,
+  content: null
+});
+
+let gbtojson = JSON.stringify(guestbook);
+
+function writeGuestBookHandler() {
+  fetch("http://localhost:8080/members/guestbooks/save",
+    {
+      method: "POST",
+      headers: {
+        // "Accept": "application/json",
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(guestbook)
+    })
+    .then(response => response.json())
+    .then((data) => { if (data == 1) console.log("완료") })
+    .catch(error => console.log(error));
+}
+
+
+// onUpdated(() => {
+//   console.log(guestbooktxt);
+// })
+
+onMounted(() => {
+  getGuestbookList();
+})
+
+
+function getGuestbookList() {
+  fetch("http://localhost:8080/members/guestbooks/list",
+    {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+    })
+    .then(response => response.json())
+    .then((data) => guestbooks.list = data);
 
 }
 
-let writerId = ref("");
-
-fetch("http://localhost:8080/members/guestbooks/all",
-  {
-    method: "POST",
-    headers: {
-      "Accept": "application/json",
-      "Content-type": "application/x-www-form-urlencoded"
-    },
-  })
-  .then(response => response.json())
-  .then((data) => guestbooks.list = data);
-
-
-fetch(`http://localhost:8080/members/info?id=2`,
-  {
-    method: "GET",
-  })
-  .then((response) => response.json())
-  .then((data) => console.log(data));
-
-
-// 방명록 답글 불러오기
-let comment = ref("");
-// let json = reactive("");
-fetch("http://localhost:8080/members/guestbooks/comment", {
-  method: "POST",
-  headers: {
-    "Accept": "application/json",
-    "Content-type": "application/x-www-form-urlencoded"
-  },
-  // body: JSON.stringify(data),
-})
-  .then((response) => response.json())
-  .then((data) => comment = data.content);
-
-// function getComments(callback, errorHandling) {
-//   fetch("!!")
-//     .then((res) => res.json())
-//     .then(callback)
-//     .catch(errorHandling)
+// function saveGuestbook(){
+//   fetch("",{
+//     method:
+//   })
 // }
-
-// function displayComment(data) {
-//   comment.value = data.content
-// }
-
-// function 샬라샬라() {
-
-// }
-
-// getComments(displayComment);
-
-
-  // .then(console.log(guestbooks));
-
-// guestbooks.list = await response.json();
-// let json = await response.json();
-// console.log(json);
-
-// guestbooks = json;
-
-// console.log(guestbooks);
-
-
-
 
 </script>
 <template>
-  <main>
-    <ul class="m-guestbook-content-list">
-      <!-- <li class="lc-center" v-for="n in 20"> -->
-      <!-- <li class="lc-center" v-for="item in guestbooks.list"> -->
-      <li class="lc-center" v-for="item in guestbooks.list">
-        <div class="m-guestbook-content-item">
-          <div class="m-guestbook-item-header">
-            <span>From.</span>
-            <div class="m-guestbook-content-writer"><span>{{ item.writerId }}</span></div>
-          </div>
-          <div class="m-guestbook-content-text"><span>{{ item.content }}</span></div>
-          <div class="m-guestbook-content-comment"><span>{{ comment }}</span></div>
+  <ul class="m-guestbook-content-list">
+    <li class="lc-center" v-show="true">
+      <div class="m-guestbook-content-writeForm">
+        <textarea class="m-guestbook-content-writeBox" v-model="guestbook.content"></textarea>
+        <button @click.prevent="writeGuestBookHandler" type="submit" value="">작성</button>
+      </div>
+    </li>
+    <li class="lc-center" v-for="item in guestbooks.list">
+      <div class="m-guestbook-content-item">
+        <div class="m-guestbook-item-header">
+          <span>From.</span>
+          <div class="m-guestbook-content-writer"><span>{{ item.writerName }}</span></div>
         </div>
-      </li>
-    </ul>
-
-  </main>
+        <div class="m-guestbook-content-text"><span>{{ item.content }}</span></div>
+        <div class="m-guestbook-content-comment"><span>{{ item.comment }}</span></div>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
@@ -109,6 +96,7 @@ fetch("http://localhost:8080/members/guestbooks/comment", {
 
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
   /* grid-template-rows: 1fr 1fr; */
 
@@ -138,7 +126,7 @@ fetch("http://localhost:8080/members/guestbooks/comment", {
   flex-direction: column;
   align-items: center;
   /* gap: 16px; */
-  width: 230px;
+  width: 240px;
   height: 346px;
   /* background-color: yellow; */
   background-color: #fafafa;
@@ -169,6 +157,31 @@ fetch("http://localhost:8080/members/guestbooks/comment", {
   align-items: center;
   width: 100%;
   padding: 1rem;
+}
+
+.m-guestbook-content-writeForm {
+  width: 240px;
+  height: 346px;
+
+  background-color: #fafafa;
+  border: 2px solid #FCD602;
+  border-radius: 8px;
+
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-rows: 8fr 1fr;
+
+
+}
+
+.m-guestbook-content-writeBox {
+  width: 90%;
+  height: 90%;
+  /* background-color: #FCD602; */
+  border: 1px solid #FCD602;
+
+  justify-self: center;
 }
 
 .m-guestbook-content-comment {
