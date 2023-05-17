@@ -1,11 +1,13 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 
 public interface DiaryService {
     public TreeMap<String, Integer> getByFeeling();
@@ -18,5 +20,6 @@ public interface DiaryService {
     public boolean isValid(String id);
 
     public int writeDiary(Diary diary);
+
 }
  

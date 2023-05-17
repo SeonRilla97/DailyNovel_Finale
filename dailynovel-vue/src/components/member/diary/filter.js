@@ -1,7 +1,8 @@
 export default class filter{
-    constructor(idx,menu){
+    constructor(idx,menu,id){
         this.idx = idx,
-        this.menu = menu
+        this.menu = menu,
+        this.id = id
     }
 
     setidx(idx){

@@ -1,12 +1,16 @@
 package com.dailynovel.dailynovelapi.service;
 
 import java.time.LocalDate;
+
 import java.util.*;
 
+
+import com.dailynovel.dailynovelapi.mbrepository.MbDiaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.repository.DiaryRepository;
 
 @Service
@@ -16,6 +20,9 @@ public class DiaryDefaultService implements DiaryService{
 
     @Autowired
     private DiaryRepository repository;
+
+    @Autowired
+    private MbDiaryRepository mbRepository;
 
     @Override
     public TreeMap<String, Integer> getByFeeling(){
@@ -68,27 +75,38 @@ public class DiaryDefaultService implements DiaryService{
         return (TreeMap<String, Integer>) map;
     }
 
+
+
+
+
+    // 필터링 시켜 일기 목록 들고오기
     @Override
     public Map<String, List<MbDiaryCollectionView>> getListGroupingMonthly(int memberId, String feeling, String weather,
             LocalDate localDate, String order, String collection, String query) {
-            System.out.println("서비스단 실행!");
-            System.out.println(order);
 
-            //**년 ***월 으로 그룹화 시키는 Map 객체 */
-            Map<String, List<MbDiaryCollectionView>> groupingList = new HashMap<>();
-            //DB에서 불러온 일기 목록
+
+            //**년 ***월 으로 그룹화 시키는 Map 객체 생성*/
+            Map<String, List<MbDiaryCollectionView>> groupingList = new LinkedHashMap<>();
+            //========DB에서 불러온 일기 목록========
             List<MbDiaryCollectionView> list = mbRepository.getListByFiltering(
                     memberId,feeling,weather, localDate, order, collection , query
                     );
-
+            //======불러온 일기를 Map객체에 넣기======
             for(MbDiaryCollectionView diary : list){
+                // ================ 공유 상태 설정======null : 공유안함 true : 공유중 false: 공유완료
+                diary.setIsShared();
+
+                System.out.println(diary);
+
                 //년 추출
                 String year = String.valueOf(diary.getRegDate().getYear());
                 //월 추출
                 String month = String.valueOf(diary.getRegDate().getMonthValue());
                 // {}년 {}월 으로 그룹화 시키기 위해 String 생성 (Map의 Key가 될거임)
                 String group = year + "년 "+ month+"월";
-                System.out.println(group);
+
+                // System.out.println(group);
+
                 if(groupingList.containsKey(group)){
                     //Map에 키가 있으면
 
@@ -103,6 +121,7 @@ public class DiaryDefaultService implements DiaryService{
                     // 3. Map에 Key와 Value로 생성
                     groupingList.put(group, tmpList);
                 }
+
             }
         return groupingList;
     }
@@ -117,6 +136,7 @@ public class DiaryDefaultService implements DiaryService{
         return false;
     }
 
+
     
     @Override
     public int writeDiary(Diary diary) {
@@ -127,3 +147,4 @@ public class DiaryDefaultService implements DiaryService{
         return 1;
     }
 }
+

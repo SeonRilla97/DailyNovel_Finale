@@ -8,19 +8,17 @@ const props = defineProps({
 })
 let emit = defineEmits('filterClickedHandler')
 const selectedMenu=  {
- menuname:null,
- menuvalue:null
-}
+        menuname:null,
+        menuvalue:null
+    }
 function optionClickHandler(e){
+
 //    console.log(e.target.innerText);  //value값 뽑기
 //    console.log(e.target.dataset.fidx);  // dataset 뽑기
 //    console.log(e.target.parentNode.dataset.menuname); //부모의 dataset 뽑기
     selectedMenu.menuname = e.target.parentNode.dataset.menuname;
     selectedMenu.menuvalue = e.target.dataset.idx;
-    console.log(selectedMenu);  
     emit('filterClickedHandler',selectedMenu);
-    // console.log(e.target.parentNode.style);
-    console.log(selectedMenu);
 }
 
 let menuOpen = ref(null);
@@ -31,7 +29,7 @@ function menuOpenHandler(clickedMenu){
         // console.log("같은거 클릭");
         return;
     }
-    menuOpen.value = clickedMenu
+    menuOpen.value = clickedMenu;
 }
 function dateInitialize(){
     date.value = null;
@@ -65,20 +63,20 @@ function searchBtnHandler(){
 
         <!-- feeling -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(1)"><span>{{ filter.diary.feeling.menu[filter.diary.feeling.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(1)"><span>{{ filter.feeling.menu[filter.feeling.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" data-menuname = "feeling" v-show="menuOpen==1">
-                    <a href="#"  class="item" v-for="(feeling,idx) in filter.diary.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ feeling }}</a>
+                    <a href="#"  class="item" v-for="(feeling,idx) in filter.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ feeling }}</a>
                 </div>
             </transition>
         </div>
 
         <!-- weather -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(2)"><span>{{ filter.diary.weather.menu[filter.diary.weather.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(2)"><span>{{ filter.weather.menu[filter.weather.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" data-menuname = "weather" v-show="menuOpen==2">
-                    <a href="#"  class="item" v-for="(weather,idx) in filter.diary.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ weather }}</a>
+                    <a href="#"  class="item" v-for="(weather,idx) in filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ weather }}</a>
                 </div>
             </transition>
         </div>
@@ -90,7 +88,7 @@ function searchBtnHandler(){
             <div class="btn" @click="menuOpenHandler(3)"><span>솔직함</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content"  v-show="menuOpen==3" data-menuname = "honesty">
-                    <a href="#" class="item" v-for="(f,idx) in filter.diary.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
+                    <a href="#" class="item" v-for="(f,idx) in filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
                 </div>
             </transition>
         </div> -->
@@ -114,20 +112,20 @@ function searchBtnHandler(){
 
         <!-- sort -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(5)"><span>{{ filter.diary.sort.menu[filter.diary.sort.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(5)"><span>{{ filter.sort.menu[filter.sort.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler"   v-show="menuOpen==5" data-menuname = "sort">
-                    <a href="#"  class="item" v-for="(sort,idx) in filter.diary.sort.menu" :data-idx=idx @click="menuOpenHandler">{{ sort }}</a>
+                    <a href="#"  class="item" v-for="(sort,idx) in filter.sort.menu" :data-idx=idx @click="menuOpenHandler">{{ sort }}</a>
                 </div>
             </transition>
         </div>
 
         <!-- collection-->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(6)"><span>{{ filter.diary.collection.menu[filter.diary.collection.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(6)"><span>{{ filter.collection.menu[filter.collection.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" v-show="menuOpen==6" data-menuname = "collection">
-                    <a href="#"  class="item" v-for="(collection,idx) in filter.diary.collection.menu" :data-idx=idx @click="menuOpenHandler">{{ collection }}</a>
+                    <a href="#"  class="item" v-for="(collection,idx) in filter.collection.menu" :data-idx=idx @click="menuOpenHandler">{{ collection }}</a>
                 </div>
             </transition>
         </div>
@@ -187,7 +185,24 @@ box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 z-index: 1;
 text-align: center;
 top: 20px;
+height: 120px;
+overflow-y:scroll;
 }
+
+    /* 스크롤바 커스터마이징 */
+    .diary-header .dropdown .content::-webkit-scrollbar {
+    width: 1px;  /* 스크롤바의 너비 */
+    }
+    .diary-header .dropdown .content::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #848484; /* 스크롤바의 색상 */
+    border-radius: 10px;
+    }
+
+    .diary-header .dropdown .content::-webkit-scrollbar-track {
+    /* background: #84848447;  스크롤바 뒷 배경 색상 */
+    background-color: transparent;
+    }
 .diary-header .dropdown .calendar-container {
     position: absolute;
     z-index: 1;

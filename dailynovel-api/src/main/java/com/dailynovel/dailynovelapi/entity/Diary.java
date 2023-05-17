@@ -1,12 +1,12 @@
 package com.dailynovel.dailynovelapi.entity;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-
+@Table(name = "diary")
 public class Diary {
 
     //변겅자 모재영 null 받기위해서 바꿈
@@ -39,3 +39,4 @@ public class Diary {
 //    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
 //    private List<DiaryCollection> collections;
 }
+
