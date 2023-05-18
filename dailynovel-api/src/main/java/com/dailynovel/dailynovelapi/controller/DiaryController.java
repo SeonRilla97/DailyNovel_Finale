@@ -3,6 +3,7 @@ package com.dailynovel.dailynovelapi.controller;
 
 
 import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.service.DiaryService;
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 
+import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -61,28 +63,58 @@ public class DiaryController {
         return list;
     }
 
-    @GetMapping("get")
-    public boolean get(){
+//    @GetMapping("get")
+//    public boolean get(){
+//
+//        boolean qqq = service.isValid("1");
+//
+//        return qqq;
+//    }
 
-        boolean qqq = service.isValid("1");
 
-        return qqq;
+    @GetMapping("{id}")
+    public MbDiary getDiary(
+            @PathVariable("id") int diaryId
+    ){
+        return service.readDiary(diaryId);
     }
 
-    @PostMapping ("write")
-    public  void write(){
+    @GetMapping("list")
+    public List<MbDiary> getDiaryList(
+    ){
+        return service.readListDiary();
+    }
 
-        int id = 25;
-
-        int memberId = 1;
-        String title = "하와이";
-         String content = "가자";
-         String weather = null;
-         String feeling = null;
-         String honesty = null;
-         String tag = null;
-//        Timestamp date = Timestamp.valueOf("2023-05-17 17:02:25");
-        Timestamp date = null;
+    @PostMapping
+    public  void write(
+            @RequestBody MbDiary diary
+    ){
+//        Integer id = null;
+//
+//        int memberId = 1;
+//        String title = "하와이2";
+//        String content = "가자2";
+//        String weather = null;
+//        String feeling = null;
+//        String honesty = null;
+//        String tag = null;
+////        Timestamp date = Timestamp.valueOf("2023-05-17 17:02:25");
+//        LocalDateTime date = null;
+//        Double lat = 38.0;
+//        Double lon = 128.0;
+//
+//        MbDiary diray = new MbDiary
+//                (id,
+//                        memberId,
+//                        title,
+//                        content,
+//                        weather,
+//                        feeling,
+//                        honesty,
+//                        tag,
+//                        date
+//                        , lat
+//                        , lon);
 
 //        LocalDateTime
         //ISO 8601 날짜형식으로 인코딩 된거 Decoder를 통해 LocalDate형식으로 변환
@@ -96,12 +128,24 @@ public class DiaryController {
 //        Timestamp time = Timestamp.valueOf(date);
 //        Timestamp time = new Timestamp(date);
 
-
-        Diary diary = new Diary(id, memberId,title,content,weather,feeling,honesty,tag,date);
-        service.writeDiary(diary);
-
         System.out.println(diary.toString());
-
+        System.out.println(diary.getClass().getName());
+        service.writeDiary(diary);
     }
 
+    @PutMapping
+    public void edit(
+            @RequestBody MbDiary diary
+    ){
+
+        System.out.println(diary.toString());
+        int c = service.editDiary(diary);
+    }
+
+    @DeleteMapping("{id}")
+    public void remove(
+            @PathVariable("id") int diaryId
+    ){
+        service.removeDiary(diaryId);
+    }
 }

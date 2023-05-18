@@ -1,7 +1,5 @@
 package com.dailynovel.dailynovelapi.controller;
 
-
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,7 +18,7 @@ import com.dailynovel.dailynovelapi.service.EmailVerificationService;
 import com.dailynovel.dailynovelapi.service.MailCheckService;
 
 import com.dailynovel.dailynovelapi.service.UserService;
-import com.nimbusds.oauth2.sdk.ParseException;
+//import com.nimbusds.oauth2.sdk.ParseException;
 
 import ch.qos.logback.core.util.SystemInfo;
 
