@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
+import com.dailynovel.dailynovelapi.entity.MemberFollow;
 
 public interface DisplayService {
     List<DisplayView> getByList(); // 최신리스트 용
@@ -16,4 +17,8 @@ public interface DisplayService {
     void deleteLike(int mId, int dId);
 
     List<DiaryLike> getByLikeList(int memberId);
+
+    int updateFollow(int followedId, int followId);
+
+    List<MemberFollow> getFollowedList(int followId); // 테스트만 하고 바로 삭제
 }

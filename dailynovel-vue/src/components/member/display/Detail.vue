@@ -1,7 +1,7 @@
 <template lang="">
     <main class=" center-grid">
         <div class="subscribeBtn nodouble-drag" v-show="subscribe">
-            <div @click="subscribeHandler">구독하기</div>
+            <div @click="subscribeHandler(writerId)">구독하기</div>
             <router-link to="/member/room/collection/main" v-show="">구경가기</router-link>
                 <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
                 <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
@@ -61,6 +61,8 @@ let like = ref();//게시글의 총 좋아요 수
 let image = ref('');//이미지
 let nickname = ref('');//닉네임
 let subscribe = ref(false);
+let writerId = ref();// 게시글 작성자 아이디
+
 let likeStatus = ref();
 
 let memberId = 1; // 멤버 아이디 받아오는 걱 수정해야 함
@@ -77,6 +79,7 @@ function load() {
         like.value = data.like;
         image.value = data.image;
         nickname.value = data.nickname;
+        writerId.value = data.memberId;
 
         likeStatus = props.likeInfo
 
@@ -114,7 +117,6 @@ async function likeSwitchHandler(diaryId) {
         console.error(error); // 에러 처리
     }
     setTimeout(load, 50);
-
 }
 
 function openSubscribeBoxHandler() {
@@ -122,11 +124,40 @@ function openSubscribeBoxHandler() {
     console.log(subscribe.value)
 }
 
-function subscribeHandler(){
+async function subscribeHandler(writerId){
     console.log("구독했습니다.")
+    // console.log("구독 " + (likeStatus? "delete" : "insert"));
+    if(memberId==writerId)
+        alert("5252, 본인은 구독할 수 없다구~")
+    else{
+        alert("배달의 민족 주문")
+        console.log(memberId)
+        console.log(writerId)
+
+        try {
+            const response = await fetch('http://localhost:8080/display/subscribeStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    followedId: writerId,         // 멤버 정보 가지고 오기
+                    followId: memberId,
+                }),
+            });
+
+        if (!response.ok) {
+            throw new Error('요청에 실패했습니다.');
+        }
+        const data = response;
+        console.log(data); // 응답 데이터 처리
+        
+        } catch (error) {
+            console.error(error); // 에러 처리
+        }
+        setTimeout(load, 50);
+    }
 }
-
-
 
 </script>
 
