@@ -36,7 +36,7 @@ function filterClickHandler(selected){
             diaryFilter.feeling.idx = selected.menuvalue;
             break;
         case "weather":
-            backupMenu.name = "feeling";
+            backupMenu.name = "weather";
             backupMenu.value=diaryFilter.weather.idx;
             diaryFilter.weather.idx = selected.menuvalue;
             break;

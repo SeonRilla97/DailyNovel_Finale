@@ -65,7 +65,10 @@ watch(() => attributes.dates, (newDates, oldDates) => {
     console.log("선택된 Date" + selectedMenu.menuvalue);
     emit('filterClickedHandler',selectedMenu);
 });
-
+console.log(props.filter)
+function feelingTitle(){
+    return props.filter.feeling.name[props.filter.feeling.idx];
+}
 </script>
 
 
@@ -76,20 +79,21 @@ watch(() => attributes.dates, (newDates, oldDates) => {
 
         <!-- feeling -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(1)"><span>{{ filter.feeling.menu[filter.feeling.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(1)"><span>{{ props.filter.feeling.menu[props.filter.feeling.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" data-menuname = "feeling" v-show="menuOpen==1">
-                    <a href="#"  class="item" v-for="(feeling,idx) in filter.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ feeling }}</a>
+                    <a href="#"  class="item" v-for="(feeling,idx) in props.filter.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ feeling }}</a>
                 </div>
             </transition>
         </div>
 
+        
         <!-- weather -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(2)"><span>{{ filter.weather.menu[filter.weather.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(2)"><span>{{ props.filter.weather.menu[props.filter.weather.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" data-menuname = "weather" v-show="menuOpen==2">
-                    <a href="#"  class="item" v-for="(weather,idx) in filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ weather }}</a>
+                    <a href="#"  class="item" v-for="(weather,idx) in props.filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ weather }}</a>
                 </div>
             </transition>
         </div>
@@ -101,7 +105,7 @@ watch(() => attributes.dates, (newDates, oldDates) => {
             <div class="btn" @click="menuOpenHandler(3)"><span>솔직함</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content"  v-show="menuOpen==3" data-menuname = "honesty">
-                    <a href="#" class="item" v-for="(f,idx) in filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
+                    <a href="#" class="item" v-for="(f,idx) in props.filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
                 </div>
             </transition>
         </div> -->
@@ -125,20 +129,20 @@ watch(() => attributes.dates, (newDates, oldDates) => {
 
         <!-- sort -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(5)"><span>{{ filter.sort.menu[filter.sort.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(5)"><span>{{ props.filter.sort.menu[props.filter.sort.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler"   v-show="menuOpen==5" data-menuname = "sort">
-                    <a href="#"  class="item" v-for="(sort,idx) in filter.sort.menu" :data-idx=idx @click="menuOpenHandler">{{ sort }}</a>
+                    <a href="#"  class="item" v-for="(sort,idx) in props.filter.sort.menu" :data-idx=idx @click="menuOpenHandler">{{ sort }}</a>
                 </div>
             </transition>
         </div>
 
         <!-- collection-->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(6)"><span>{{ filter.collection.menu[filter.collection.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(6)"><span>{{ props.filter.collection.menu[props.filter.collection.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" v-show="menuOpen==6" data-menuname = "collection">
-                    <a href="#"  class="item" v-for="(collection,idx) in filter.collection.menu" :data-idx=idx @click="menuOpenHandler">{{ collection }}</a>
+                    <a href="#"  class="item" v-for="(collection,idx) in props.filter.collection.menu" :data-idx=idx @click="menuOpenHandler">{{ collection }}</a>
                 </div>
             </transition>
         </div>
@@ -150,7 +154,6 @@ watch(() => attributes.dates, (newDates, oldDates) => {
                 <div class="btn-search" @click="searchBtnHandler">검색</div>
             </form>
         </div>
-
     </header>
         
 </template>
