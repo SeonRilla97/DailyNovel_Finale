@@ -45,7 +45,7 @@ const day = ["일","월","화","수","목","금","토"]
     <section class="list">
         <!-- list의 Header(menu box) -->
         <header class="header" style="position:relative">
-            <div class="editor-menu" style="font-size:24px; font-weight: bold; position:absolute; right: 3%;" @click="diaryAddBtnClickHandler">+</div>
+            <div class="editor-menu add-btn" style="" @click="diaryAddBtnClickHandler">+</div>
         </header>
         
         <!-- 달별 일기 -->
@@ -111,6 +111,22 @@ const day = ["일","월","화","수","목","금","토"]
     width:100%;
     height:32px;
     background-color: #F9F4F4;
+}
+
+.list .header .add-btn{
+    font-size:24px;
+    font-weight: bold; 
+    position:absolute; 
+    right: 3%;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;  
+    top:50%;
+    transform: translateY(-50%);
+}
+.list .header .add-btn:hover{
+    cursor:pointer;
 }
 .diary-main .list .content{
     width:100%;
