@@ -5,11 +5,15 @@ import Login from '../components/user/Login.vue';
 import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
 
+import signupSocial from '../components/user/SignupSocial.vue';
+import Achievement from '../components/member/Insights/Achievements.vue';
+import Chart from '../components/member/Insights/Chart.vue';
+
+
 import DiaryLayout from '../components/member/diary/Layout.vue'
 import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 
-import Achievement from '../components/member/Insights/Achievements.vue';
-import Chart from '../components/member/Insights/Chart.vue';
+
 
 import guestbook  from './guestbook.js';
 import collection  from './collection.js';
@@ -23,6 +27,7 @@ const routes =  [
   {
     path: '/', component: LoginLayout, children: [
       {path: 'signup', component:Signup} , 
+      {path: 'signupsocial', component:signupSocial} , 
         { path: 'login', component: Login },
         {
             path: 'error', children: [
