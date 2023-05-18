@@ -48,4 +48,30 @@ public class MemberController {
         return test.get();
     }
 
+    @PostMapping("loginAuth")
+    public ResponseEntity<Map<String,Object>> isValid(String email){
+        System.out.println(email);
+        Map<String,Object> dto = new HashMap<>();
+        dto.put("result",false);
+        if(service.isValidLoginAuth(email)){
+            Member member = service.getByEmail(email);
+            dto.put("result", member);
+            if(email =="newlec@gmail.com")
+            dto.put("roles", new String[]{"ADMIN","MEMBER"});
+            else
+            dto.put("roles", new String[]{"MEMBER"});
+        }
+
+        System.out.println(dto);
+        return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
+    }
+
+
+    @GetMapping("test")
+    public String test(String test){
+
+        System.out.println("asdfasdf");
+        return "test"; 
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.dailynovel.dailynovelapi.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.dailynovel.dailynovelapi.entity.GuestBook;
 import com.dailynovel.dailynovelapi.entity.GuestBookComment;
+import com.dailynovel.dailynovelapi.mbentity.MbGuestBookAll;
 
 public interface GuestBookService {
 
@@ -14,6 +16,8 @@ public interface GuestBookService {
   public GuestBookComment writeGuestBookComment();
 
   // 방명록 쓰기 (방문자)
-  public GuestBook writeGuestBook();
+  public void writeGuestBook(Map<String, Object> guestbook);
+
+  public List<MbGuestBookAll> viewGuestBookAll();
 
 }

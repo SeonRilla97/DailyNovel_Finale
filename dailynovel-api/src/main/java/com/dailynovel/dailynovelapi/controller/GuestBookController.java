@@ -1,16 +1,19 @@
 package com.dailynovel.dailynovelapi.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dailynovel.dailynovelapi.entity.GuestBook;
-import com.dailynovel.dailynovelapi.entity.GuestBookComment;
+import com.dailynovel.dailynovelapi.mbentity.MbGuestBookAll;
 import com.dailynovel.dailynovelapi.service.GuestBookCommentService;
 import com.dailynovel.dailynovelapi.service.GuestBookService;
 
@@ -24,17 +27,31 @@ public class GuestBookController {
   @Autowired
   private GuestBookCommentService commentService;
 
-  @PostMapping("all")
-  public ResponseEntity<List<GuestBook>> viewGuestbooks() {
-    List<GuestBook> list = service.viewGuestBooks();
-
-    return new ResponseEntity<List<GuestBook>>(list, HttpStatus.OK);
+  @PostMapping("list")
+  public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll() {
+    List<MbGuestBookAll> list = service.viewGuestBookAll();
+    // System.out.println(list);
+    return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
   }
 
-  @PostMapping("comment")
-  public ResponseEntity<GuestBookComment> viewGuestbookComment() {
-    GuestBookComment comment = commentService.viewGuestBookComment();
+  @PostMapping("save")
+  public int writeGuestBook(@RequestBody Map<String, Object> guestbook) {
 
-    return new ResponseEntity<GuestBookComment>(comment, HttpStatus.OK);
+    service.writeGuestBook(guestbook);
+    return 1;
   }
+
+  // @PostMapping("all")
+  // public ResponseEntity<List<GuestBook>> viewGuestbooks() {
+  // List<GuestBook> list = service.viewGuestBooks();
+
+  // return new ResponseEntity<List<GuestBook>>(list, HttpStatus.OK);
+  // }
+
+  // @PostMapping("comment")
+  // public ResponseEntity<GuestBookComment> viewGuestbookComment() {
+  // GuestBookComment comment = commentService.viewGuestBookComment();
+
+  // return new ResponseEntity<GuestBookComment>(comment, HttpStatus.OK);
+  // }
 }
