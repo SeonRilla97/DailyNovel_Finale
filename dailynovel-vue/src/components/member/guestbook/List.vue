@@ -1,8 +1,10 @@
 <script setup>
 import { onBeforeMount, onMounted, onUpdated, reactive, ref } from 'vue';
+import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
 
+let userDetails = useUserDetailsStore();
 // 방명록 주인 ID
-let hostId = 1;
+let hostId = userDetails.id;
 let guestId = 2;
 
 // 방명록 리스트 불러오기
@@ -33,20 +35,33 @@ function writeGuestBookHandler() {
     .catch(error => console.log(error));
 }
 
-
 // onUpdated(() => {
 //   console.log(guestbooktxt);
 // })
 
 onMounted(() => {
+  console.log(hostId);
   getGuestbookList();
 })
 
 
+// function getGuestbookList() {
+//   fetch("http://localhost:8080/members/guestbooks/list",
+//     {
+//       method: "POST",
+//       headers: {
+//         "Accept": "application/json",
+//         "Content-type": "application/x-www-form-urlencoded"
+//       },
+//     })
+//     .then(response => response.json())
+//     .then((data) => guestbooks.list = data);
+// }
+
 function getGuestbookList() {
-  fetch("http://localhost:8080/members/guestbooks/list",
+  fetch(`http://localhost:8080/members/guestbooks?id=${hostId}`,
     {
-      method: "POST",
+      method: "GET",
       headers: {
         "Accept": "application/json",
         "Content-type": "application/x-www-form-urlencoded"
@@ -54,7 +69,6 @@ function getGuestbookList() {
     })
     .then(response => response.json())
     .then((data) => guestbooks.list = data);
-
 }
 
 // function saveGuestbook(){

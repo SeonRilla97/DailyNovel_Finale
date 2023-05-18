@@ -6,15 +6,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dailynovel.dailynovelapi.mbentity.MbGuestBookAll;
-import com.dailynovel.dailynovelapi.service.GuestBookCommentService;
 import com.dailynovel.dailynovelapi.service.GuestBookService;
 
 @RestController
@@ -24,12 +24,16 @@ public class GuestBookController {
   @Autowired
   private GuestBookService service;
 
-  @Autowired
-  private GuestBookCommentService commentService;
+  // @PostMapping("list")
+  // public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll() {
+  // List<MbGuestBookAll> list = service.viewGuestBookAll();
+  // // System.out.println(list);
+  // return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
+  // }
 
-  @PostMapping("list")
-  public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll() {
-    List<MbGuestBookAll> list = service.viewGuestBookAll();
+  @GetMapping
+  public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll(@RequestParam("id") int id) {
+    List<MbGuestBookAll> list = service.viewGuestBookAll(id);
     // System.out.println(list);
     return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
   }
