@@ -3,8 +3,8 @@
   <main class="screen">
 
     <div class="select-box">
-      <router-link to="/member/achievement" @click="modalOpenHandler"><p class="Move">업적</p></router-link>
-      <router-link to="/member/chart" @click="modalOpenHandler"><p class="Move">차트</p></router-link>
+      <router-link to="/member/room/achievement"><p class="Move">업적</p></router-link>
+      <router-link to="/member/room/chart"><p class="Move">차트</p></router-link>
     </div>
 
 
@@ -27,9 +27,9 @@
 
     <div class="chart">
       <div>
-        <canvas id="Template"></canvas>
+        <canvas id="Tag" height="300px"></canvas>
       </div>
-      <div>템플릿</div>
+      <div>태그</div>
 
     </div>
 
@@ -43,7 +43,6 @@
   
 
 <script>
-import Achievement from '../Achievements/Achievements.vue'
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
@@ -55,47 +54,48 @@ export default {
 
   data() {
     return {
-      TopPercent: '',
-      Percent: [], // 소문자로 변경
-      extractedData: [],
-      Value: [],
+
     };
   },
   methods: {
 
-    moveController(){
-
-    },
 
     Tload() {
       Chart.register(ChartDataLabels);
-      var myHeaders = new Headers();
-      myHeaders.append("Cookie", "JSESSIONID=01C4810D9CC26D4924510C7E51C16F69");
 
 
       var TrequestOptions = {
         method: 'GET',
-        headers: myHeaders,
         redirect: 'follow'
       };
 
-      fetch("http://localhost:8080/analysis/how?count", TrequestOptions)
+      fetch("http://localhost:8080/insights/Tag?tag", TrequestOptions)
         .then(response => response.json())
         .then(data => {
-          const proxyArray = data;
-          console.log(data);
-          const name = proxyArray.map(item => item.name);
-          const count = proxyArray.map(item => item.count);
+          
+          let tags = [];
+          let counts = [];
 
-          this.TcreateChart(name, count);
+          for(const key in data){
+            tags.push(key)
+            counts.push(data[key]);
+
+          }
+
+          const map = {
+            tags,
+            counts
+          }
+
+          this.TcreateChart(map);
         });
     },
 
-    TcreateChart(name, count) {
+    TcreateChart(map) {
       const data = {
-        labels: name,
+        labels: map.tags,
         datasets: [{
-          data: count,
+          data: map.counts,
           fill: true,
           backgroundColor: 'rgba(54, 162, 235, 0.2)',
           borderColor: 'rgb(54, 162, 235)',
@@ -106,7 +106,7 @@ export default {
         }]
       };
       const Tconfig = {
-        type: 'radar',
+        type: 'bar',
         data,
         options: {
           maintainAspectRatio: false,
@@ -122,63 +122,50 @@ export default {
 
       // render init block
       const myChart = new Chart(
-        document.getElementById('Template'),
+        document.getElementById('Tag'),
         Tconfig,
       );
     },
 
-    Hload() {
-      Chart.register(ChartDataLabels);
-      var myHeaders = new Headers();
-      myHeaders.append("Cookie", "JSESSIONID=00FBFDB24A1BDD060C55F8F3B78E8B1F");
-
-      var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-      };
-
-      fetch("http://localhost:8080/analysis/honesty?honestyRange=&count", requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          const proxyArray = data;
-          const range = proxyArray.map(item => item.honestyRange);
-          const count = proxyArray.map(item => item.count);
-
-
-          this.HcreateChart(range, count);
-        });
-    },
+    
 
 
     Fload() {
       Chart.register(ChartDataLabels);
-      var myHeaders = new Headers();
-      myHeaders.append("Cookie", "JSESSIONID=045AC4FE93F9AA0C9B08C0ECEAA1986F");
+
 
       var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/insights/Feeling?feellng", requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      let feelings = [];
+      let counts = [];
+      for (const key in data) {
+        feelings.push(key);
+        counts.push(data[key]);
+
+      }
+  
+
+      const map = {
+        feelings,
+        counts
       };
 
-      fetch("http://localhost:8080/analysis/feeling-chart?name&frequency", requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          const proxyArray = data;
-          const name = proxyArray.map(item => item.name);
-          const frequency = proxyArray.map(item => item.frequency);
+      this.FcreateChart(map);
+    });
+  },
 
-          this.FcreateChart(name, frequency);
-        });
-    },
-
-    FcreateChart(name, frequency) {
+    FcreateChart(map) {
       // setup
       const data = {
-        labels: name,
+        labels: map.feelings,
         datasets: [{
-          data: frequency,
+          data: map.counts,
           backgroundColor: [
             '#fecd50', //(Navy blue)
             '#a0d4cd', //(Medium purple)
@@ -232,12 +219,45 @@ export default {
       );
     },
 
-    HcreateChart(range, count) {
+
+    Hload() {
+      Chart.register(ChartDataLabels);
+  
+
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/insights/Honesty?honestyRange", requestOptions)
+        .then(response => response.json())
+        .then(data => {
+              let honestyRanges = [];
+              let counts = [];
+              
+              for (const key in data) {
+                honestyRanges.push(key);
+                counts.push(data[key]);
+              }
+          
+
+              const map = {
+                honestyRanges,
+                counts
+              };
+
+
+          this.HcreateChart(map);
+        });
+    },
+
+
+    HcreateChart(map) {
       // setup
       const data = {
-        labels: range,
+        labels: map.honestyRanges,
         datasets: [{
-          data: count,
+          data: map.counts,
           backgroundColor: [
             'rgb(255, 99, 132)', // 0 ~ 20
             'rgb(75, 192, 192)', // 20 ~ 40%
@@ -335,6 +355,7 @@ export default {
   gap: 15px;
   width: 100%;
   height: 100%;
+  overflow: scroll;
 
   
 }
@@ -360,7 +381,7 @@ export default {
 
 .chart-box .chart #feeling,
 .chart-box .chart #honesty,
-.chart-box .chart #Template {
+.chart-box .chart #Tag {
 
 
   max-width: 100%;

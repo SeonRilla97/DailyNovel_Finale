@@ -1,3 +1,37 @@
+
+<script setup>
+//Diary 불러오기
+import { ref,watch } from 'vue';
+const props = defineProps({
+    diary: {
+        type: Object,
+        required:true
+    }
+})
+
+// watch(props.diary,()=>{
+    // console.log("와치 동작!");
+    // console.log(Object.keys(props.diary.list));
+    // console.log(props.diary.list);
+// })
+
+
+function formatDateToCustomString(date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const period = hours >= 12 ? '오후' : '오전';
+  let formattedHours = hours % 12 || 12;
+  formattedHours = formattedHours < 10 ?  `0${formattedHours}` : formattedHours;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  return `${period} ${formattedHours}시 ${formattedMinutes}분`;
+}
+
+
+const day = ["일","월","화","수","목","금","토"]
+</script>
+
+
+
 <template>
     <section class="list">
         <!-- list의 Header(menu box) -->
@@ -11,100 +45,36 @@
             
             <div class="date-list">
                 <!-- 년 월 타이틀-->
-                <div class="monthly-header">2023년 7월</div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div> 
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share"><span>공유중</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share active"><span>공유 완료</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    
-                </div>
-            </div>
-
-            <div class="date-list">
-                <!-- 년 월 타이틀-->
-                <div class="monthly-header">2023년 7월</div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div> 
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share"><span>공유중</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share active"><span>공유 완료</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    
+                <div class="item-container" v-for="(value, key) in diary.list">
+                    <div class="monthly-header">{{key}}</div>
+                        <!-- 일 박스 -->
+                        <div class="date-container" v-for ="content in value" v-bind:data-id="content.diaryId">
+                            <div class="date">
+                                <span>{{day[content.regDate.getDay()]}}</span>
+                                <span>{{content.regDate.getDate()}}</span>
+                            </div> 
+                            <div class="title">
+                                <span>{{ content.title }}</span>
+                                <span>{{formatDateToCustomString(content.regDate)}}</span>
+                            </div>
+                            <div class="share" v-if="content.isShared!= null" :class="{ active: content.isShared }">
+                                <span>{{content.isShared?"공유중":"공유완료"}}</span>
+                            </div>
+                        </div>
+                        <!-- 일 박스 -->
+                        <!-- <div class="date-container">
+                            <div class="date"><span>화</span><span>10</span></div>
+                            <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
+                            <div class="share active"><span>공유 완료</span></div>
+                        </div> -->
+                        <!-- 일 박스 -->
+                        <!-- <div class="date-container">
+                            <div class="date"><span>화</span><span>10</span></div>
+                            <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
+                        </div> -->
                 </div>
             </div>
 
-            <div class="date-list">
-                <!-- 년 월 타이틀-->
-                <div class="monthly-header">2023년 7월</div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div> 
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share"><span>공유중</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share active"><span>공유 완료</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    
-                </div>
-            </div>
-
-            <div class="date-list">
-                <!-- 년 월 타이틀-->
-                <div class="monthly-header">2023년 7월</div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div> 
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share"><span>공유중</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    <div class="share active"><span>공유 완료</span></div>
-                </div>
-                <!-- 일 박스 -->
-                <div class="date-container">
-                    <div class="date"><span>화</span><span>10</span></div>
-                    <div class="title"><span>자연에서 즐기는 커피</span><span>오후 02:01</span></div>
-                    
-                </div>
-            </div>
-
-            
-
-
-      
         </div>
 
     </section>
@@ -123,6 +93,8 @@
     border-right: solid 1px #c4c4c4;
     /* display:grid; 
     grid-template-rows:2% 98%; */
+    /* overflow:scroll; */
+    box-sizing: border-box;
     
 }
     
@@ -156,7 +128,9 @@
     height: 84px;
     display:grid;
     grid-template-columns : 1fr 3fr 1fr;
-    border-bottom:1px solid #c4c4c4
+    border-bottom:1px solid #c4c4c4;
+    box-sizing: border-box;
+    
 }
 .diary-main .list .content .date-list :last-child{
     border-bottom: 0px;
@@ -196,7 +170,7 @@
             font-weight: bold;
         }
         .diary-main .list .content .date-container .title span:nth-child(2){
-            font-size:12px;
+            font-size:8px;
         }
     .diary-main .list .content .date-container .share{
         justify-self: center;
@@ -211,6 +185,7 @@
         font-size:12px;
         border-radius: 5px;
         background-color: #191F78;
+        margin-right:10px;
     }
     .diary-main .list .content .date-container .share.active{
         background-color: transparent;
@@ -225,7 +200,7 @@
     
 /* 스크롤바 커스터마이징 */
 .diary-main .list .content::-webkit-scrollbar {
-width: 10px;  /* 스크롤바의 너비 */
+width: 1px;  /* 스크롤바의 너비 */
 }
 .diary-main .list .content::-webkit-scrollbar-thumb {
 height: 30%; /* 스크롤바의 길이 */
@@ -234,6 +209,7 @@ border-radius: 10px;
 }
 
 .diary-main .list .content::-webkit-scrollbar-track {
-background: #84848447;  /*스크롤바 뒷 배경 색상*/
+/* background: #84848447;  스크롤바 뒷 배경 색상 */
+background-color: transparent;
 }
 </style>

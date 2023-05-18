@@ -15,7 +15,7 @@ function showDetailHandler() {
         <span class="font-bold h2 ">방명록</span>
       </div>
     </div>
-    <div class="m-guestbook-main">
+    <!-- <div class="m-guestbook-main">
       <ul class="m-guestbook-content-list">
         <li class="lc-center" v-for="n in 20" @click="showDetailHandler">
           <div class="m-guestbook-content-item shadow-1">
@@ -28,9 +28,13 @@ function showDetailHandler() {
           </div>
         </li>
       </ul>
+    </div> -->
 
-    </div>
+    <!-- <main class="m-guestbook-main">
+      <router-view class="m-guestbook-main"></router-view>
+    </main> -->
 
+    <router-view class="m-guestbook-main"></router-view>
   </section>
 </template>
 <style scoped>

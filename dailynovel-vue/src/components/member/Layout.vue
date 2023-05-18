@@ -49,16 +49,15 @@ function onCalendarClickHandler() {
     <Canvas v-on:modalOpenHandler="modalOpenHandler" />
   </section>
   <section class="member-room-temp-linkes">
-    <router-link to="/member/room/diary" @click="modalOpenHandler"><button>컬렉션</button></router-link>
-    <router-link to="/member/room/Test" @click="modalOpenHandler"><button>테스트</button></router-link>
+    <router-link to="/member/room/collection/main" @click="modalOpenHandler"><button>컬렉션</button></router-link>
     <router-link to="/member/room/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
-    <router-link to="/member/room/chart" @click="modalOpenHandler"><button>차트</button></router-link>
     <router-link to="/member/room/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
     <router-link to="/member/room/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
-    <router-link to="/member/room/guestbook" @click="modalOpenHandler"><button>방명록</button></router-link>
+    <router-link to="/member/room/guestbook/list" @click="modalOpenHandler"><button>방명록</button></router-link>
     <router-link to="/member/room/profile" @click="modalOpenHandler"><button>내 정보</button></router-link>
     <router-link to="/member/room/follow" @click="modalOpenHandler"><button>구독페이지</button></router-link>
     <router-link to="/member/room"><button>메인</button></router-link>
+    <router-link to="/member/room/InfinityScroll" @click="modalOpenHandler"><button>인피니티</button></router-link>
   </section>
   <Footer />
 
@@ -130,12 +129,14 @@ function onCalendarClickHandler() {
   background-color: #FAFFF9;
 
   position: fixed;
-  /* max-width:1920px; */
+  max-width: 1920px;
   max-width: 1280px;
   max-height: 720px;
   width: 90%;
   height: 80%;
 
+  border-radius: 8px;
+  overflow: hidden;
   animation: show-effect 0.5s ease-in-out;
   /* animation-fill-mode: forwards; */
 }
@@ -152,6 +153,9 @@ function onCalendarClickHandler() {
   flex-direction: column;
   width: 100%;
   height: 100%;
+
+
+
 }
 
 .modal-container .header {

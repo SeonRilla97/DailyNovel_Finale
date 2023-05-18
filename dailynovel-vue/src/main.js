@@ -6,6 +6,12 @@ import router from './router'
 import vue3GoogleLogin from 'vue3-google-login'
 import VueKakaoSdk from 'vue-kakao-sdk'
 import 'v-calendar/style.css';
+import InfiniteLoading from "v3-infinite-loading"; // 무한 스크롤 용 api
+import "v3-infinite-loading/lib/style.css";  // 무한 스크롤 용 css
+
+//모재영 추가
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 // import './assets/main.css'
 
@@ -22,6 +28,7 @@ app.component('VDatePicker', DatePicker)
 
 const pinia = createPinia();
 
+
 const apiKey = '3e9086e14099149701e6a89e10372e30'
 app.use(pinia)
 app.use(vue3GoogleLogin,{
@@ -29,5 +36,12 @@ app.use(vue3GoogleLogin,{
 })
 
 app.use(VueKakaoSdk, { apiKey })
+
+// 모재영 에디터 관련
+app.component('QuillEditor', QuillEditor)
+
+app.use(createPinia())
+
+
 app.use(router)
 app.mount('#app')

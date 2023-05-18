@@ -1,15 +1,36 @@
-// export default guestbook;
 import Layout from '../components/member/display/Layout.vue';
-import DetailLayout from '../components/member/guestbook/Detail.vue';
+import Detail from '../components/member/display/Detail.vue';
+import DetailInterface from '../components/member/display/DetailInterface.vue';
+import InfinityScroll from '../components/member/display/InfinityScroll.vue';
 
-// const guestbook = {
-//   path: 'guestbook', component:Layout};
 
-const route = 
+// export default [
+//   {path : 'community', component:Layout, children:[
+//     {path: ':id', component:DetailLayout  },
+//   ]},
+// ]
+export default [
   {
-    path: 'community', component:Layout, children:[
-      {path: 'detail', component:DetailLayout  }
+    path: 'community', 
+    component:Layout, 
+    children:[
     ]
-  }
+  },
+  {
+    path: 'community/:id',
+    name: 'detailInterface',
+    component:DetailInterface
+  },
+  {
+    path: 'InfinityScroll',
+    component:InfinityScroll
+  },
+  // {
+  //   path: 'community/:id', 
+  //   // path: '',
+  //   name: 'detail',
+  //   component:Detail 
+  // },
 
-export default route;
+
+];
