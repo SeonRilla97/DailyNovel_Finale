@@ -11,7 +11,7 @@
                 <h1 class="d-none">디테일</h1>
                     <article> 
                         <div class="sticky">
-                            <h1 class="title nodouble-drag">{{title}}</h1>
+                            <h1 class="title nodouble-drag">{{title}}{{pageRefresh}}</h1>
                             <hr>
                             <div class="userInfo">
                                 <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" @click="likeSwitchHandler(diaryId)"></div>
@@ -39,6 +39,7 @@
 
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
+import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
 
 const props = defineProps({
     detailPage: {
@@ -50,7 +51,13 @@ const props = defineProps({
     // segnal:{
     //     type: Function
     // }
+    pageRefresh: {
+        type : Number
+    },
 })
+
+
+let userDetails = useUserDetailsStore();
 
 // console.log(props)
 let data = ref();
@@ -65,7 +72,7 @@ let writerId = ref();// 게시글 작성자 아이디
 
 let likeStatus = ref();
 
-let memberId = 1; // 멤버 아이디 받아오는 걱 수정해야 함
+let memberId = userDetails.id; // 멤버 아이디 받아오는 걱 수정해야 함
 
 function load() {
     
@@ -102,7 +109,7 @@ async function likeSwitchHandler(diaryId) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                memberId: 1,         // 멤버 정보 가지고 오기
+                memberId: memberId,         // 멤버 정보 가지고 오기
                 diaryId: diaryId,
             }),
         });
@@ -117,6 +124,7 @@ async function likeSwitchHandler(diaryId) {
         console.error(error); // 에러 처리
     }
     setTimeout(load, 50);
+    
 }
 
 function openSubscribeBoxHandler() {
