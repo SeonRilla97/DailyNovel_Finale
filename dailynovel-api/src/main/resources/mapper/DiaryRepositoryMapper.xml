@@ -58,9 +58,9 @@
     <insert id="insertNew" parameterType="MbDiary">
         insert into
         diary
-            (member_id, title, content, weather, feeling,honesty,latitude,longitude)
+            (member_id, title, content, weather, feeling,honesty, tag,latitude,longitude)
         values
-            (#{member_id}, #{title}, #{content}, #{weather}, #{feeling}, #{honesty}, #{latitude}, #{longitude})
+            (#{member_id}, #{title}, #{content}, #{weather}, #{feeling}, #{honesty},#{tag}, #{latitude}, #{longitude})
     </insert>
 
     <update id="update" parameterType="MbDiary">
