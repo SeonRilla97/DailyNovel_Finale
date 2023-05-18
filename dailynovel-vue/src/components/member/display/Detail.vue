@@ -142,12 +142,11 @@ async function subscribeHandler(writerId){
     if(memberId==writerId)
         alert("5252, 본인은 구독할 수 없다구~")
     else{
-        alert("배달의 민족 주문")
         console.log(memberId)
         console.log(writerId)
 
         try {
-            const response = await fetch('http://localhost:8080/display/subscribeStatus', {
+            const response = await fetch('http://localhost:8080/display/subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -168,6 +167,7 @@ async function subscribeHandler(writerId){
             console.error(error); // 에러 처리
         }
         setTimeout(load, 50);
+        alert("배달의 민족 주문")
     }
 }
 
