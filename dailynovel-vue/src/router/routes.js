@@ -6,15 +6,13 @@ import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
 
 import signupSocial from '../components/user/SignupSocial.vue';
-import Achievement from '../components/member/Achievements/Achievements.vue';
-import Chart from '../components/member/chart/Chart.vue';
+import Achievement from '../components/member/Insights/Achievements.vue';
+import Chart from '../components/member/Insights/Chart.vue';
 
 
 import DiaryLayout from '../components/member/diary/Layout.vue'
 import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
 
-import Achievement from '../components/member/Insights/Achievements.vue';
-import Chart from '../components/member/Insights/Chart.vue';
 
 
 import guestbook  from './guestbook.js';
