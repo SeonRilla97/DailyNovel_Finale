@@ -167,7 +167,7 @@ function getCollectionList() {
     redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/collection/all", requestOptions)
+    fetch("http://localhost:8080/collection", requestOptions)
     .then(response => response.json())
     .then(collections => {
         //배열 생성

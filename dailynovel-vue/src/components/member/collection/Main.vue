@@ -59,10 +59,10 @@ console.log(props.collection.List[3]);
                 </div>
             </router-link>
             
-            <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List">
-                <div class="box">
+            <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List"  >
+                <div class="box" v-bind:data-id="colList.id">
                     <div class="header"></div>
-                    <h1 class="title">{{colList}}</h1>
+                    <h1 class="title">{{colList.name}}</h1>
                     <div class="icon-tack"></div>
                 </div>
             </router-link>

@@ -2,11 +2,36 @@
 import { reactive } from 'vue';
 
 const collection = reactive({
-    List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에"]
+    List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에","123"]
 })
+getCollectionList();
 
+// 컬렉션 리스트 받아오기
+function getCollectionList(){
+fetch("http://localhost:8080/collection")
+    .then(response => response.json())
+    .then(collections => {
+        // 받은 데이터 일단 볼까
+        // console.log(collections);
+        collection.List = collections;
+        console.log(collection.List);
+    })
+    .catch(error => console.log('error', error));
+}
 defineProps()
 
+// Collection 데이터 쑤셔넣기
+function PostCollection(){
+fetch("http://localhost:8080/collection")
+    .then(response => response.json())
+    .then(collections => {
+        // 받은 데이터 일단 볼까
+        // console.log(collections);
+        collection.List = collections;
+        console.log(collection.List);
+    })
+    .catch(error => console.log('error', error));
+}
 </script>
 
 
