@@ -21,10 +21,13 @@
         from collection
         where member_id = #{memberId}
         and name = #{name}
-        
-        
 	</select>
 
+    <select id="findAllByMemberId" resultMap="CollectionResultMap">
+		select * 
+        from collection
+        where member_id = #{memberId}
+	</select>
 
 
 </mapper>

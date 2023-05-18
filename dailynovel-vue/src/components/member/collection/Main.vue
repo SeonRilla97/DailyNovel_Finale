@@ -1,27 +1,59 @@
 <script setup>
-import{ref} from 'vue'
+import{ref,toRefs,watchEffect} from 'vue'
 let registerMenuController = ref(false);
 
 // 컬렉션 추가 Form 변경 함수
 function registerFromHandler(){
+    if(registerMenuController.value){
+        regCollectionName.value =null;
+        errHandler.value = false;
+    }
     registerMenuController.value = !registerMenuController.value
 }
 
 
-
-
-const props = defineProps({
+const props  = defineProps({
     collection: {
         type: Object,
         required:true
-    }
+    },
+    isDuplicated: null
 })
 
 
+
+let emit = defineEmits(["registerCollection"])
 function menuClickHandler(e){
     console.log(e.target);
 }
-console.log(props.collection.List[3]);
+
+// 컬렉션 생성 폼 에러 메세지 출력
+const errMsg = ref();
+
+// 
+let regCollectionName = ref("")
+// 컬렉션 폼의 생성 버튼 누를 때 동작
+function regBtnClickHandler(){
+    // 입력을 안했을 때
+    if(regCollectionName.value==null ||regCollectionName.value.length == 0 ){
+        errMsg.value = "컬렉션 이름을 입력해주세요!";
+        errHandler.value=true;
+        return
+    }
+    // 입력 길이가 길 때
+    if(regCollectionName.value.length > 12){
+        errMsg.value = "이름이 너무 길어요!";
+        errHandler.value=true;
+        return
+    }
+    // 컬렉션 이름을 매개변수로 전달, 컬렉션 생성
+    // 컬렉션 중복시, 오류 발생해야함
+    emit("registerCollection",regCollectionName.value)
+}
+// errMsg
+let errHandler = ref(false);
+// 컬렉션 이름은 중복할 수 없어요
+
 </script>
 
 
@@ -34,10 +66,10 @@ console.log(props.collection.List[3]);
                 <div class="create box" v-if="registerMenuController">
                     
                     <div class="title">컬렉션의 제목은<br/>무엇인가요?</div>
-                        <input class="input" type="text">
-                        <div class="err">컬렉션 이름은 중복할 수 없어요</div>
+                        <input class="input" type="text" v-model="regCollectionName">
+                        <div class="err" v-show="errHandler">{{errMsg}}</div>
                     <div class="submit">
-                        <span class="btn-reg ib">생성</span>
+                        <span class="btn-reg ib" @click = "regBtnClickHandler">생성</span>
                         <span class="btn-cancel ib mgl-5" @click="registerFromHandler">취소</span>
                     </div>
                 </div>

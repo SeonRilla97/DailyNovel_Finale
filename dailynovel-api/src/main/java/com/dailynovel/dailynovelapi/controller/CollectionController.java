@@ -21,10 +21,10 @@ public class CollectionController {
     private CollectionService service;
 
     @GetMapping("")
-    public List<Collection> listAll(
+    public List<MbCollection> listAll(
         @RequestParam(required = true) int memberId
     ){
-        List<Collection> list = service.listAll(memberId);
+        List<MbCollection> list = service.listAll(memberId);
         return list;
     }
 

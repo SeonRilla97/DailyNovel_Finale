@@ -5,8 +5,11 @@ import com.dailynovel.dailynovelapi.mbentity.MbCollection;
 import com.dailynovel.dailynovelapi.mbrepository.MbCollectionRepository;
 import com.dailynovel.dailynovelapi.repository.CollectionRepository;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,13 +22,15 @@ public class DefaultCollectionService implements CollectionService{
     @Autowired
     private MbCollectionRepository mbRepository;
     @Override
-    public List<Collection> listAll(int memberId) {
-    List<Collection> list = repository.findAllByMemberId(memberId);
+    public List<MbCollection> listAll(int memberId) {
+    List<MbCollection> list = mbRepository.findAllByMemberId(memberId);
 //        System.out.println(list);
-        for(Collection a : list)
+        for(MbCollection a : list)
             System.out.println(a);
         return list;
     }
+
+    @Transactional
     @Override
     public Boolean add(MbCollection collection) {
         // 1.중복검사

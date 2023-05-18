@@ -36,7 +36,7 @@ public class DiaryController {
     // 리스트 필터링 (월별로 Diary 불러옴)
     @GetMapping("filter")
     public  Map<String,List<MbDiaryCollectionView>> getListGroupingMonthly(
-        @RequestParam(required = true ,defaultValue = "1") int memberId,
+        @RequestParam(required = true) int memberId,
         @RequestParam(required = false) String feeling,
         @RequestParam(required = false) String weather,
         @RequestParam(required = false) String date,
@@ -44,7 +44,7 @@ public class DiaryController {
         @RequestParam(required = false) String collection,
         @RequestParam(required = false) String query
     ) throws UnsupportedEncodingException {
-
+        // System.out.println("메에에에에에에에엠버 아이디" + memberId);
 //        Map<String,List<Diary>> list = service.getListGroupingMonthly(
 //            feeling,weather,date,order,collection,query
 //        );
