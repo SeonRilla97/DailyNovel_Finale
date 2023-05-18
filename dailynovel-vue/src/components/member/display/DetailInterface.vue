@@ -1,6 +1,7 @@
 <template lang="">
     <!-- <detail :detailPage="model[id]" :likeInfo="likeStatus" :segnal="load(memberId)"></detail> -->
-    <detail :detailPage="model[id]" :likeInfo="likeStatus" :pageStatus="pageRefresh"></detail>
+    <!-- <detail :detailPage="model[id]" :likeInfo="likeStatus" :pageStatus="pageRefresh" @updatePage="updatePage"></detail> -->
+    <detail :detailPage="model[id]" :likeInfo="likeStatus" @updatePage="updatePage"></detail>
      
 </template>
 
@@ -27,7 +28,6 @@ async function load() {
     const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
     myFavorites.splice(0, myFavorites.length, ...data);
-    console.log("인디라이크리스트"+myFavorites)
     
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
@@ -44,7 +44,8 @@ onMounted(()=>{
 })
 
 function updatePage(){
-    pageRefresh++;
+    console.log("업데이트 완료")
+    load()
 }
 
 </script>

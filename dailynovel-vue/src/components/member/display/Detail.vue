@@ -11,7 +11,7 @@
                 <h1 class="d-none">디테일</h1>
                     <article> 
                         <div class="sticky">
-                            <h1 class="title nodouble-drag">{{title}}{{pageRefresh}}</h1>
+                            <h1 class="title nodouble-drag">{{title}}</h1>
                             <hr>
                             <div class="userInfo">
                                 <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" @click="likeSwitchHandler(diaryId)"></div>
@@ -38,8 +38,15 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue';
+
+
+import { reactive, ref, onMounted, defineProps, defineEmits, } from 'vue';
 import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+
+const emit = defineEmits([
+    'updatePage'
+]);
+
 
 const props = defineProps({
     detailPage: {
@@ -47,12 +54,6 @@ const props = defineProps({
     },
     likeInfo: {
         type : Boolean
-    },
-    // segnal:{
-    //     type: Function
-    // }
-    pageRefresh: {
-        type : Number
     },
 })
 
@@ -74,10 +75,12 @@ let likeStatus = ref();
 
 let memberId = userDetails.id; // 멤버 아이디 받아오는 걱 수정해야 함
 
+let test = ref();
 function load() {
     
     setTimeout(() => {
-        
+    
+        // console.log(props)
         data = props.detailPage
 
         diaryId.value = data.id;
@@ -90,9 +93,9 @@ function load() {
 
         likeStatus = props.likeInfo
 
-        console.log(likeStatus)
-        console.log(props.memberId)
-    }, 100);
+        // console.log(likeStatus)
+        // console.log(props.memberId)
+    }, 150);
 }
 
 onMounted(() => {
@@ -123,6 +126,7 @@ async function likeSwitchHandler(diaryId) {
     } catch (error) {
         console.error(error); // 에러 처리
     }
+    emit('updatePage');
     setTimeout(load, 50);
     
 }
