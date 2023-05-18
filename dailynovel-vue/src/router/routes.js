@@ -25,7 +25,7 @@ import profile from './profile.js';
 
 const routes =  [
   {
-    path: '/', component: LoginLayout, children: [
+    path: '/', redirect:"login" ,component: LoginLayout, children: [
       {path: 'signup', component:Signup} , 
       {path: 'signupsocial', component:signupSocial} , 
         { path: 'login', component: Login },
