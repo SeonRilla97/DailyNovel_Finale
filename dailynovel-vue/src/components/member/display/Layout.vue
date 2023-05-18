@@ -30,12 +30,14 @@
                             </div>
                         </router-link>
                         <div class="content-like-count">
-                            <div class="inline" :class="isDiaryIdMatched(l.id)?'like-active':'like-deactive'"></div><span>{{l.like}}</span>
+                            <div @click="likeSwitchHandler(l.id)">
+                                <div class="inline" :class="isDiaryIdMatched(l.id)?'like-active':'like-deactive'"></div><span>{{l.like}}</span>
+                            </div>
                         </div>
                     </div>
                 </li>
             </ul>
-            <div class="center-grid"><div class="more-btn">더보기 + 99</div></div>
+            <div class="center-grid "><div class="more-btn nodouble-drag" @click="goToNextPage()">더보기 + 99</div></div>
         </section>
     </section>
     </main>
@@ -56,12 +58,12 @@ let indeLikeLikst = reactive([])
 async function load() {
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
-    model.splice(0, model.length, ...list); //이게 핵심인 거 같다.
-    console.log(model)
+    model.splice(0, model.length, ...list);
+    console.log(list)
 
     const likeList = await fetch('http://localhost:8080/display/likeScan')
     const data = await likeList.json()
-    indeLikeLikst.splice(0, indeLikeLikst.length, ...data); //이게 핵심인 거 같다.
+    indeLikeLikst.splice(0, indeLikeLikst.length, ...data);
 }
 
 
@@ -71,13 +73,52 @@ onMounted(() => {
 
 function categoryClick(page) {
     currentCategory.value = page;
+    load()
 }
 
 function isDiaryIdMatched(id){// 좋아요 클릭했는지 확인하는 함수
     return this.indeLikeLikst.some(item => item.diaryId === id);
 }
 
+
+// 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
+async function likeSwitchHandler(diaryId) {
+    console.log("좋아요 " + (this.indeLikeLikst.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
+
+    try {
+        const response = await fetch(`http://localhost:8080/display/${this.indeLikeLikst.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                memberId: 1,
+                diaryId: diaryId,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('요청에 실패했습니다.');
+        }
+
+        const data = response;
+        console.log(data); // 응답 데이터 처리
+    } catch (error) {
+        console.error(error); // 에러 처리
+    }
+
+    setTimeout(load, 50);
+}
+
+function goToNextPage(){
+    console.log("추가페이지")
+}
+
 </script>
+
+
+
+
 <style scoped>
 .container {
     width: 80rem;
@@ -252,5 +293,10 @@ li {
     outline: none;
     cursor: pointer;
     /*  */
+}
+
+.nodouble-drag {
+    user-select: none;
+    cursor: pointer;
 }
 </style>

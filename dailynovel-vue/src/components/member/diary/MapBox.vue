@@ -1,14 +1,14 @@
 <template>
     <div>
 
-        <div class="controll">
+        <div class="controll" >
             <input  v-show="selectedAddr" type="text" id="myPlace" @click="showMap()">
-            <button @click="zoom(-1)">
+            <button @click="zoom(-1)" v-show="ZOOM">
                 <span class="material-symbols-outlined">
                     zoom_in
                 </span>
             </button>
-            <button @click="zoom(1)"><span class="material-symbols-outlined">
+            <button @click="zoom(1)" v-show="ZOOM"><span class="material-symbols-outlined">
                     zoom_out
                 </span>
             </button>
@@ -68,10 +68,10 @@ export default {
         return {
             mapOption: {
                 center: {
-                    lat: 33.450901,
-                    lng: 126.570667,
+                    lat: 37.552383,
+                    lng: 126.937759,
                 },
-                level: 8,
+                level: 3,
             },
             myplaces: [],
             markers: null,
@@ -87,6 +87,7 @@ export default {
             draggable: true,
             isSearchBoxHidden: true,
             selectedAddr: false,
+            ZOOM:true,
             MAP: true,
 
         };
@@ -172,6 +173,7 @@ export default {
 
         register() {
             const vueKakaoMap = this.$refs.kmap;
+            console.log(vueKakaoMap.options.center.lat, vueKakaoMap.options.center.lng, "마커클릭시좌표");
             this.draggable = false;
             // this.isSearchBoxHidden = true;
             this.isSearchBoxHidden = false;
@@ -179,12 +181,17 @@ export default {
             vueKakaoMap.mapInstance.setDraggable(this.draggable);
             this.selectedAddr = true;
             this.MAP = false;
+            this.ZOOM = false;
         },
 
         showMap(){
             this.MAP = true;
             this.selectedAddr = false;
+            this.ZOOM = true;
         },
+
+        
+
 
 
 

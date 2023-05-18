@@ -32,7 +32,7 @@ export default {
     // this.mapInstance에 카카오 맵이 들어감.
   },
   methods: {
-    
+   
   },
   watch: {
     'options.level'(cur, prev) {

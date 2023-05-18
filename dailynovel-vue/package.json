@@ -13,6 +13,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.7",
     "@vueup/vue-quill": "^1.2.0",
+    "@vueuse/core": "^10.1.2",
     "chart.js": "^4.3.0",
     "highlight.js": "^11.8.0",
     "pinia": "^2.0.32",
@@ -21,6 +22,7 @@
     "v3-infinite-loading": "^1.2.2",
     "vue": "^3.2.47",
     "vue-chartjs": "^5.2.0",
+    "vue-geolocation-api": "^0.1.21",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^4.1.6"
   },
