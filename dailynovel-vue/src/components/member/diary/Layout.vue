@@ -2,7 +2,7 @@
 import Header from './Header.vue'
 import List from './List.vue'
 import Editor from './editor.vue'
-import { reactive, onBeforeMount } from 'vue';
+import { reactive, onBeforeMount, ref } from 'vue';
 
 import Filter from './filter.js'
 
@@ -186,13 +186,27 @@ function getCollectionList() {
     })
     .catch(error => console.log('error', error));
 }
+
+// 현재 클릭된 다이어리의 DiaryId값(DB에서 Diary Table의 Id 값)
+let curDiaryId = ref(null);
+function diaryClickHandler(diaryId){
+    curDiaryId.value= diaryId
+    // console.log("Layout에서 다이어리 클릭을 알립니다!")
+    console.log(`이건 DiaryId ${curDiaryId.value}`)
+}
+// 다이어리 추가 버튼을 눌렀는지 감지
+let isClickDiaryAdd= ref(false);
+function diaryAddbtnClickHandler(){
+    isClickDiaryAdd.value=true;
+    console.log(`다이어리 만들라고? ${isClickDiaryAdd.value}`)
+}
 </script>
 <template>
     <div class="diary-container">
         <Header class="no-scroll"  :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
 
         <section class="diary-main">
-            <List :diary = "diary"/>
+            <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
             <Editor />
         </section>
