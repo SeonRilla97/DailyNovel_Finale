@@ -53,23 +53,10 @@ public class DiaryController {
         LocalDate localDate = null;
         if(date !=null)
              localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-             System.out.println(localDate);
+            //  System.out.println(localDate);
         Map<String,List<MbDiaryCollectionView>> list = service.getListGroupingMonthly(
             memberId,feeling,weather,localDate,order,collection,query
         );
-        System.out.println("어서오세요 컨트롤러 입니다 " +list);
-
-        // URL 디코딩
-        Date realdate = new Date(date);
-
-
-        System.out.println("====================");
-
-        System.out.println(feeling);
-        System.out.println(weather);
-        System.out.println(date);
-        System.out.println(query);
-        System.out.println(order);
 
         return list;
     }

@@ -1,27 +1,29 @@
 <script setup>
-import { ref,watch } from 'vue';
+import { ref,watch,reactive } from 'vue';
+import filter from './filter';
 const props = defineProps({
     filter: {
         type: Object,
         required:true
     }
 })
+// 부모의 함수를 호출하기 위한 Emit
 let emit = defineEmits('filterClickedHandler')
+// 어떤 필터메뉴의 어느 버튼을 눌렀는지 저장을 위한 객체
 const selectedMenu=  {
         menuname:null,
         menuvalue:null
     }
+    // 필터의 메뉴를 클릭했을때 동작하는 이벤트핸들러
 function optionClickHandler(e){
-
-//    console.log(e.target.innerText);  //value값 뽑기
-//    console.log(e.target.dataset.fidx);  // dataset 뽑기
-//    console.log(e.target.parentNode.dataset.menuname); //부모의 dataset 뽑기
     selectedMenu.menuname = e.target.parentNode.dataset.menuname;
     selectedMenu.menuvalue = e.target.dataset.idx;
     emit('filterClickedHandler',selectedMenu);
 }
-
+// 어느 메뉴의 드롭박스가 실행돼야 하는지 결정하는 변수
 let menuOpen = ref(null);
+
+//필터 메뉴 클릭하면 해당 드롭박스 실행시키는 함수
 function menuOpenHandler(clickedMenu){
     
     if(menuOpen.value == clickedMenu && menuOpen.value != null){
@@ -30,27 +32,43 @@ function menuOpenHandler(clickedMenu){
         return;
     }
     menuOpen.value = clickedMenu;
+    console.log(clickedMenu)
 }
+// 날짜 필터메뉴 선택 날짜 초기화버튼 클릭 핸들러
 function dateInitialize(){
-    date.value = null;
+    attributes.dates=null;
 }
 
-const date = ref(new Date());
-watch(date,()=>{
-    // console.log("와치 동작!",date.value);
-    selectedMenu.menuname = "date"
-    selectedMenu.menuvalue= date.value;
-    emit('filterClickedHandler',selectedMenu);
-})
-
-
+// 검색어 입력 바인딩 변수
 let searchKeywork = ref("");
+// 검색어 입력 버튼 누를시 동작하는 함수
 function searchBtnHandler(){
-    // console.log("클클릭")
-    // console.log(searchKeywork.value)
     selectedMenu.menuname = "keyword"
     selectedMenu.menuvalue= searchKeywork.value;
     emit('filterClickedHandler',selectedMenu);
+}
+
+
+// VCalendar의 상태를 결정하는 변수들
+let date = ref(null);
+const attributes = reactive(
+  {
+    highlight: true,
+    dates:props.filter.date
+  }
+);
+
+// attributes의 dates 변화시 동작하는 함수
+watch(() => attributes.dates, (newDates, oldDates) => {
+  console.log("와치 동작!");
+    selectedMenu.menuname = "date"
+    selectedMenu.menuvalue= attributes.dates;
+    console.log("선택된 Date" + selectedMenu.menuvalue);
+    emit('filterClickedHandler',selectedMenu);
+});
+console.log(props.filter)
+function feelingTitle(){
+    return props.filter.feeling.name[props.filter.feeling.idx];
 }
 </script>
 
@@ -58,25 +76,25 @@ function searchBtnHandler(){
 <template>
     <header class="diary-header">
         <h1>나의일기</h1>
-
         <!-- 드롭다운 메뉴 -->
 
         <!-- feeling -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(1)"><span>{{ filter.feeling.menu[filter.feeling.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(1)"><span>{{ props.filter.feeling.menu[props.filter.feeling.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" data-menuname = "feeling" v-show="menuOpen==1">
-                    <a href="#"  class="item" v-for="(feeling,idx) in filter.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ feeling }}</a>
+                    <a href="#"  class="item" v-for="(feeling,idx) in props.filter.feeling.menu" :data-idx=idx @click="menuOpenHandler">{{ feeling }}</a>
                 </div>
             </transition>
         </div>
 
+        
         <!-- weather -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(2)"><span>{{ filter.weather.menu[filter.weather.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(2)"><span>{{ props.filter.weather.menu[props.filter.weather.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" data-menuname = "weather" v-show="menuOpen==2">
-                    <a href="#"  class="item" v-for="(weather,idx) in filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ weather }}</a>
+                    <a href="#"  class="item" v-for="(weather,idx) in props.filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ weather }}</a>
                 </div>
             </transition>
         </div>
@@ -88,7 +106,7 @@ function searchBtnHandler(){
             <div class="btn" @click="menuOpenHandler(3)"><span>솔직함</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content"  v-show="menuOpen==3" data-menuname = "honesty">
-                    <a href="#" class="item" v-for="(f,idx) in filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
+                    <a href="#" class="item" v-for="(f,idx) in props.filter.weather.menu" :data-idx=idx @click="menuOpenHandler">{{ w }}</a>
                 </div>
             </transition>
         </div> -->
@@ -98,13 +116,13 @@ function searchBtnHandler(){
             <div class="btn" @click.stop="menuOpenHandler(4)"><span>날짜</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="calendar-container" v-show="menuOpen==4" data-menuname = "date">
-                    <VDatePicker class="calendar" v-model="date" mode="date" @dayclick="menuOpenHandler">
+                    <VDatePicker class="calendar" v-model="attributes.dates" :attributes="attributes" mode="date" @dayclick="menuOpenHandler">
                         <template #footer>
                             <div class="lc-center pdb-4" style="box-sizing=border-box">
                                 <button  class="btn-init" @click="dateInitialize">초기화</button>
                             </div>
                         </template>   
-            </VDatePicker> 
+                    </VDatePicker> 
                     <!-- <div class="btn initialize lc-center" @click.stop="dateInitialize"><span>초기화</span><span class="icon-clamp"></span></div> -->
                 </div>
             </transition>
@@ -112,20 +130,20 @@ function searchBtnHandler(){
 
         <!-- sort -->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(5)"><span>{{ filter.sort.menu[filter.sort.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(5)"><span>{{ props.filter.sort.menu[props.filter.sort.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler"   v-show="menuOpen==5" data-menuname = "sort">
-                    <a href="#"  class="item" v-for="(sort,idx) in filter.sort.menu" :data-idx=idx @click="menuOpenHandler">{{ sort }}</a>
+                    <a href="#"  class="item" v-for="(sort,idx) in props.filter.sort.menu" :data-idx=idx @click="menuOpenHandler">{{ sort }}</a>
                 </div>
             </transition>
         </div>
 
         <!-- collection-->
         <div class="dropdown">
-            <div class="btn" @click="menuOpenHandler(6)"><span>{{ filter.collection.menu[filter.collection.idx] }}</span><span class="icon-clamp"></span></div>
+            <div class="btn" @click="menuOpenHandler(6)"><span>{{ props.filter.collection.menu[props.filter.collection.idx] }}</span><span class="icon-clamp"></span></div>
             <transition name="bounce">
                 <div class="content" @click="optionClickHandler" v-show="menuOpen==6" data-menuname = "collection">
-                    <a href="#"  class="item" v-for="(collection,idx) in filter.collection.menu" :data-idx=idx @click="menuOpenHandler">{{ collection }}</a>
+                    <a href="#"  class="item" v-for="(collection,idx) in props.filter.collection.menu" :data-idx=idx @click="menuOpenHandler">{{ collection }}</a>
                 </div>
             </transition>
         </div>
@@ -137,7 +155,6 @@ function searchBtnHandler(){
                 <div class="btn-search" @click="searchBtnHandler">검색</div>
             </form>
         </div>
-
     </header>
         
 </template>

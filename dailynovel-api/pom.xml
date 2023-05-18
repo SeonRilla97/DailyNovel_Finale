@@ -8,6 +8,7 @@
 		<version>3.0.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	
 	<groupId>com.dailynovel</groupId>
 	<artifactId>dailynovel-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -67,6 +68,17 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
 		<!-- 선유진 - QueryDSL(동적쿼리,자바처럼 SQL쓰기,IDE 자동완성 등)API -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
@@ -96,6 +108,8 @@
 			<version>3.0.1</version>
 			<scope>test</scope>
 		</dependency>
+
+
 
 	</dependencies>
 

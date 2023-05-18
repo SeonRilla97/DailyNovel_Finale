@@ -56,6 +56,7 @@ let name = "선릴라424";
 .m-follow-header {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  min-height: 72px;
   /* display: flex;
   align-items: center;
   gap: 1rem;

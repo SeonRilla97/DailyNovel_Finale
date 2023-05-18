@@ -8,7 +8,7 @@ const props = defineProps({
         required:true
     }
 })
-
+let emit = defineEmits(["diaryClickinList", "addBtnClick"]);
 // watch(props.diary,()=>{
     // console.log("와치 동작!");
     // console.log(Object.keys(props.diary.list));
@@ -26,9 +26,15 @@ function formatDateToCustomString(date) {
   return `${period} ${formattedHours}시 ${formattedMinutes}분`;
 }
 
-function sharedValue(isShared){
-    if(isShared)
-        return
+// 현재 다이어리 누른거 Layout에게 알려주는놈 
+function diaryClickHandler(e){
+    //다이어리 Id를 받아와
+    let diaryId=e.currentTarget.dataset.id;
+    emit("diaryClickinList",diaryId)
+}
+// 다이어리 추가 버튼 누른거 Layout에게 알려주는놈
+function diaryAddBtnClickHandler(){
+    emit("addBtnClick")
 }
 const day = ["일","월","화","수","목","금","토"]
 </script>
@@ -39,7 +45,7 @@ const day = ["일","월","화","수","목","금","토"]
     <section class="list">
         <!-- list의 Header(menu box) -->
         <header class="header" style="position:relative">
-            <div class="editor-menu" style="font-size:24px; font-weight: bold; position:absolute; right: 3%;">+</div>
+            <div class="editor-menu add-btn" style="" @click="diaryAddBtnClickHandler">+</div>
         </header>
         
         <!-- 달별 일기 -->
@@ -51,7 +57,7 @@ const day = ["일","월","화","수","목","금","토"]
                 <div class="item-container" v-for="(value, key) in diary.list">
                     <div class="monthly-header">{{key}}</div>
                         <!-- 일 박스 -->
-                        <div class="date-container" v-for ="content in value" v-bind:data-id="content.diaryId">
+                        <div class="date-container" v-for ="content in value" v-bind:data-id="content.diaryId" @click="diaryClickHandler" >
                             <div class="date">
                                 <span>{{day[content.regDate.getDay()]}}</span>
                                 <span>{{content.regDate.getDate()}}</span>
@@ -105,6 +111,22 @@ const day = ["일","월","화","수","목","금","토"]
     width:100%;
     height:32px;
     background-color: #F9F4F4;
+}
+
+.list .header .add-btn{
+    font-size:24px;
+    font-weight: bold; 
+    position:absolute; 
+    right: 3%;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;  
+    top:50%;
+    transform: translateY(-50%);
+}
+.list .header .add-btn:hover{
+    cursor:pointer;
 }
 .diary-main .list .content{
     width:100%;
