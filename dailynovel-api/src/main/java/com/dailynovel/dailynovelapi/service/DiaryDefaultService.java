@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.repository.DiaryRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DiaryDefaultService implements DiaryService{
@@ -139,12 +140,20 @@ public class DiaryDefaultService implements DiaryService{
 
     
     @Override
+    @Transactional
     public int writeDiary(Diary diary) {
 
-        Diary diary1 = repository.save(diary);
-        System.out.println(diary1.toString());
+        repository.save(diary);
+        return 0;
+//        Diary diary1 = repository.save(diary);
+//        if (diary1 != null) {
+//            System.out.println(diary1.toString());
+//            return 1;
+//        } else {
+//            // 저장 실패 처리를 수행하거나 예외를 던질 수 있습니다.
+//            return 0;
+//        }
 
-        return 1;
     }
 }
 
