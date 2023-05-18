@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
 
-public interface DiaryRepository extends JpaRepository<Diary, Integer>, DiaryRepositoryCustom {
+public interface DiaryRepository extends JpaRepository<Diary, Integer> {
 
 
     @Query("SELECT d.feeling, COUNT(d.feeling) FROM Diary d where d.memberId = 1 and d.feeling IS NOT NULL GROUP BY d.feeling ORDER BY d.feeling ASC" )
