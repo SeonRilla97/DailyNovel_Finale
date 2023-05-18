@@ -13,14 +13,7 @@ import com.dailynovel.dailynovelapi.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member,Integer> {
     @Query("SELECT m FROM Member m WHERE m.email = :email")
-
-public interface MemberRepository extends JpaRepository<Member, Integer> {
-    @Query("from Member where email = :email")
-
     Member findByEmail(String email);
-    // email만 들고오는지
-
-
 
     @Query("SELECT m FROM Member m WHERE m.nickname = :nickname")
     Member findByNickName(String nickname);
