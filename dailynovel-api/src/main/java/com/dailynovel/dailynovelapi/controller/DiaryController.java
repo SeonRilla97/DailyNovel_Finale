@@ -56,7 +56,7 @@ public class DiaryController {
         LocalDate localDate = null;
         if(date !=null)
              localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-             System.out.println(localDate);
+            //  System.out.println(localDate);
         Map<String,List<MbDiaryCollectionView>> list = service.getListGroupingMonthly(
             memberId,feeling,weather,localDate,order,collection,query
         );

@@ -96,7 +96,7 @@ public class DiaryDefaultService implements DiaryService{
                 // ================ 공유 상태 설정======null : 공유안함 true : 공유중 false: 공유완료
                 diary.setIsShared();
 
-                System.out.println(diary);
+                // System.out.println(diary);
 
                 //년 추출
                 String year = String.valueOf(diary.getRegDate().getYear());

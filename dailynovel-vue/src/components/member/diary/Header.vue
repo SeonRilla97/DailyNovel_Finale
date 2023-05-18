@@ -32,10 +32,11 @@ function menuOpenHandler(clickedMenu){
         return;
     }
     menuOpen.value = clickedMenu;
+    console.log(clickedMenu)
 }
 // 날짜 필터메뉴 선택 날짜 초기화버튼 클릭 핸들러
 function dateInitialize(){
-    date.value = null;
+    attributes.dates=null;
 }
 
 // 검색어 입력 바인딩 변수
