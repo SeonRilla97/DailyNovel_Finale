@@ -163,7 +163,7 @@ async function kakaoLogin() {
   });
 }
 
-async function kakaoLogin2() {
+async function kakaoLoginMakeshift() {
   return new Promise((resolve, reject) => {
     Kakao.Auth.login({
       scope: 'account_email',
