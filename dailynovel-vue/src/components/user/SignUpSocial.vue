@@ -1,7 +1,10 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watchEffect , reactive} from "vue";
 import Modal from "./LoginModal.vue";
 import { useRoute, useRouter } from "vue-router";
+
+let router = useRouter();
+let route =  reactive(useRoute()); //라우팅의 정보를 가져다 주는애
 let email = ref("");
 let emailBtn = ref(false);
 let password = ref("");
@@ -33,7 +36,32 @@ let passwordVerificationStrongResult = ref(false);
 let passwordVerificationMiddleResult = ref(false);
 let passwordVerifyResult = ref(false);
 let phoneNumberVerificationResult = ref(false);
-let router = useRouter();
+
+
+//받아온 값 활용해보기
+
+watchEffect(() => {
+  if (route) {
+    email.value = route.query.AuthEmail || "";
+    console.log(email.value);
+    emailVerificationResult.value =true;
+
+  }
+});
+
+async function updateInput(event) {
+  if (event === "이메일") {
+    if (email.value.match(emailVerification)) {
+      emailVerificationResult.value = true;
+      emailBtn.value = false;
+    } else {
+      content.value = "올바른 이메일을 입력해주세요";
+      emailVerificationResult.value = false;
+      emailBtn.value = false;
+    }
+  }
+}
+
 async function showHandler(event) {
   if (event == "닉네임") {
     let response = await fetch(
@@ -51,41 +79,7 @@ async function showHandler(event) {
       // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
       content.value = "응답을 처리할 수 없습니다.";
     }
-  } else if (event == "이메일") {
-    let response = await fetch(
-      "http://localhost:8080/users/emailCheck?email=" + email.value
-    );
-    let data = await response.text();
-
-    if (data === "true") {
-      content.value = "발송된 인증번호를 확인해주세요";
-      emailBtn.value = true;
-    } else if (data === "false") {
-      content.value = "이미 가입된 이메일입니다.";
-    } else {
-      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-      content.value = "이메일을 다시 확인해주세요";
-    }
-  } else if (event == "이메일인증번호확인") {
-    let response = await fetch(
-      "http://localhost:8080/users/emailCheckNum?email=" +
-        email.value +
-        "&emailCheckNum=" +
-        emailcheck.value
-    );
-    let data = await response.text();
-
-    if (data === "true") {
-      content.value = "인증에 성공했습니다.";
-      mailcheckBtn.value = true;
-    } else if (data === "false") {
-      content.value = "인증에 실패했습니다.";
-      emailBtn.value = true;
-    } else {
-      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-      content.value = "응답을 처리할 수 없습니다.";
-    }
-  } else if(event == "회원가입") {
+  }  else if(event == "회원가입") {
     let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value + 1);
     let dateString = date.toISOString().split("T")[0];
     await fetch("http://localhost:8080/users/signup", {
@@ -107,7 +101,7 @@ async function showHandler(event) {
       .then((data) => {
         // 응답 처리
         content.value = "회원가입에 성공했습니다.";
-        router.path("/member/room");
+        router.push("./login");
       })
       .catch((error) => {
         // 에러 처리
@@ -157,18 +151,6 @@ function phoneNumberInput() {
   phoneNumber.value = formattedPhoneNumber;
 }
 
-async function updateInput(event) {
-  if (event === "이메일") {
-    if (email.value.match(emailVerification)) {
-      emailVerificationResult.value = true;
-      emailBtn.value = false;
-    } else {
-      content.value = "올바른 이메일을 입력해주세요";
-      emailVerificationResult.value = false;
-      emailBtn.value = false;
-    }
-  }
-}
 </script>
 <template>
   <div class="container-1-nmg container-s1">
@@ -210,16 +192,6 @@ async function updateInput(event) {
                 v-model="email"
               />
             </div>
-            <div class="mgl-3">
-              <button
-                type="button"
-                :class="[emailBtn ? 'btn-1-off' : 'btn-1']"
-                @click="showHandler('이메일')"
-                :disabled="emailBtn == true"
-              >
-                인증번호 받기
-              </button>
-            </div>
           </div>
           <div
             class="mgt-2"
@@ -229,39 +201,6 @@ async function updateInput(event) {
           >
             이메일 형식을 지켜주세요
           </div>
-
-          <!--이메일 확인 -->
-          <div class="mgt-3 display-flex" :class="[!emailBtn ? 'd-none' : '']">
-            <div class="div-label">
-              <label for="email">
-                이메일 인증하기
-                <span class="essential-color">*</span>
-              </label>
-            </div>
-            <div class="div-input">
-              <input
-                id="email"
-                class="input-1"
-                type="text"
-                tabindex="0"
-                placeholder="이메일을 입력해주세요"
-                required
-                @change="updateInput(이메일인증번호)"
-                v-model="emailcheck"
-              />
-            </div>
-            <div class="mgl-3">
-              <button
-                type="button"
-                :class="[!mailcheckBtn ? 'btn-1' : 'btn-1-off']"
-                @click="showHandler('이메일인증번호확인')"
-                :disabled="mailcheckBtn == true"
-              >
-                인증번호 확인
-              </button>
-            </div>
-          </div>
-
           <!--비밀번호-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
