@@ -7,22 +7,23 @@ const props = defineProps({
         required:true
     }
 })
+// 부모의 함수를 호출하기 위한 Emit
 let emit = defineEmits('filterClickedHandler')
+// 어떤 필터메뉴의 어느 버튼을 눌렀는지 저장을 위한 객체
 const selectedMenu=  {
         menuname:null,
         menuvalue:null
     }
+    // 필터의 메뉴를 클릭했을때 동작하는 이벤트핸들러
 function optionClickHandler(e){
-
-//    console.log(e.target.innerText);  //value값 뽑기
-//    console.log(e.target.dataset.fidx);  // dataset 뽑기
-//    console.log(e.target.parentNode.dataset.menuname); //부모의 dataset 뽑기
     selectedMenu.menuname = e.target.parentNode.dataset.menuname;
     selectedMenu.menuvalue = e.target.dataset.idx;
     emit('filterClickedHandler',selectedMenu);
 }
-
+// 어느 메뉴의 드롭박스가 실행돼야 하는지 결정하는 변수
 let menuOpen = ref(null);
+
+//필터 메뉴 클릭하면 해당 드롭박스 실행시키는 함수
 function menuOpenHandler(clickedMenu){
     
     if(menuOpen.value == clickedMenu && menuOpen.value != null){
@@ -32,20 +33,22 @@ function menuOpenHandler(clickedMenu){
     }
     menuOpen.value = clickedMenu;
 }
+// 날짜 필터메뉴 선택 날짜 초기화버튼 클릭 핸들러
 function dateInitialize(){
     date.value = null;
 }
-console.log(props.filter.date);
 
+// 검색어 입력 바인딩 변수
 let searchKeywork = ref("");
+// 검색어 입력 버튼 누를시 동작하는 함수
 function searchBtnHandler(){
-    // console.log("클클릭")
-    // console.log(searchKeywork.value)
     selectedMenu.menuname = "keyword"
     selectedMenu.menuvalue= searchKeywork.value;
     emit('filterClickedHandler',selectedMenu);
 }
 
+
+// VCalendar의 상태를 결정하는 변수들
 let date = ref(null);
 const attributes = reactive(
   {
@@ -53,15 +56,8 @@ const attributes = reactive(
     dates:props.filter.date
   }
 );
-console.log(attributes.dates)
-// watch(attributes.dates,()=>{
-//     console.log("와치 동작!");
-//     selectedMenu.menuname = "date"
-//     selectedMenu.menuvalue= props.filter.date;
-//     console.log("선택된 Date" + selectedMenu.menuvalue);
-//     emit('filterClickedHandler',selectedMenu);
-// })
 
+// attributes의 dates 변화시 동작하는 함수
 watch(() => attributes.dates, (newDates, oldDates) => {
   console.log("와치 동작!");
     selectedMenu.menuname = "date"
@@ -69,9 +65,7 @@ watch(() => attributes.dates, (newDates, oldDates) => {
     console.log("선택된 Date" + selectedMenu.menuvalue);
     emit('filterClickedHandler',selectedMenu);
 });
-// watch(() => props.filter.date, (newDates, oldDates) => {
-//   console.log("와아치 동작!");
-// });
+
 </script>
 
 

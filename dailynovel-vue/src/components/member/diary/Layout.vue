@@ -5,7 +5,6 @@ import Editor from './editor.vue'
 import { reactive, onBeforeMount } from 'vue';
 
 import Filter from './filter.js'
-import filter from './filter.js';
 
 
 //메뉴 관리
@@ -116,7 +115,7 @@ function getListwithFiltering(backup) {
             if(Object.keys(result).length == 0){
                 prompt("데이터 으으으읍따");
                 
-                if(backup){
+                if(backup && backup.name != null){
                     switch(backup.name){
                     case "feeling":
                         diaryFilter.feeling.idx = backup.value;
@@ -140,8 +139,8 @@ function getListwithFiltering(backup) {
                         diaryFilter.keyword = "";
                         break;
                     }
+                    return;
                 }
-                return;
             }
             //받아온 데이터가 있다면
             console.log(result);
