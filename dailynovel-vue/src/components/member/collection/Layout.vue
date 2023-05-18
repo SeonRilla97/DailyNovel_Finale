@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
 // import Main from "./Main.vue"
 // import Main from './Main.vue';
@@ -47,23 +47,29 @@ fetch("http://localhost:8080/collection", requestOptions)
   .then(response => response.text())
   .then(isSuccess => {
     // 컬렉션 등록 성공
-    console.log(isSuccess)
-    if(isSuccess=="false"){ //중복이면
-            console.log("중복")
+    if(isSuccess=="false"){ //중복이면 (false라면)
             // 중복이라면 중복입니다를 알리고 아무 기능도 작동하지 않는다.
-            return
+            // 하위 컴포넌트에 중복임을 알림(isDuplicated의 watchEffect로 동작)
+            isColNameDuplicated.value =true; //중복됨
+            return;
         }
-        // 창은 원래대로 돌아가고 리스트는 추가된다
+        // 창(입력폼에서 입력버튼으로돌아가고 리스트는 추가된다
         getCollectionList()
+        regSuccess.value = true;
 })
   .catch(error => console.log('error', error));
 }
 // 이름 중복 유무 확인
 let isColNameDuplicated =ref(false);
+// 등록 성공 여부 확인
+let regSuccess = ref(false);
 function regBtnClickHandler(CollectionName) {
     // 컬렉션 등록 (true = 성공 / false = 중복)
     PostCollection(CollectionName);
     
+}
+function successInit(){
+    regSuccess.value = false;
 }
 </script>
 
@@ -74,7 +80,14 @@ function regBtnClickHandler(CollectionName) {
             <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
         </header>
         <transition name="fade">
-            <router-view :collection="collection" :isDuplicated ="isColNameDuplicated" @registerCollection = "regBtnClickHandler"></router-view>
+            <router-view
+                :collection="collection" 
+                :isDuplicated ="isColNameDuplicated" 
+                :successAddMenu = "regSuccess"
+                @registerCollection = "regBtnClickHandler"
+                @initSuccesAddMenu = "successInit"
+            >
+            </router-view>
         </transition>
     </section>
 </template>
