@@ -53,17 +53,19 @@ let count = ref();
 let category = reactive([]);
 let currentCategory = ref('1');
 
-let indeLikeLikst = reactive([])
+let indeLikeList = reactive([])
+
+let memberId = 1; // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
 
 async function load() {
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
     model.splice(0, model.length, ...list);
-    console.log(list)
+    // console.log(list)
 
-    const likeList = await fetch('http://localhost:8080/display/likeScan')
+    const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
-    indeLikeLikst.splice(0, indeLikeLikst.length, ...data);
+    indeLikeList.splice(0, indeLikeList.length, ...data);
 }
 
 
@@ -76,23 +78,23 @@ function categoryClick(page) {
     load()
 }
 
-function isDiaryIdMatched(id){// 좋아요 클릭했는지 확인하는 함수
-    return this.indeLikeLikst.some(item => item.diaryId === id);
+function isDiaryIdMatched(diaryId){// 좋아요 클릭했는지 확인하는 함수
+    return this.indeLikeList.some(item => item.diaryId === diaryId);
 }
 
 
 // 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
 async function likeSwitchHandler(diaryId) {
-    console.log("좋아요 " + (this.indeLikeLikst.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
+    console.log("좋아요 " + (this.indeLikeList.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
 
     try {
-        const response = await fetch(`http://localhost:8080/display/${this.indeLikeLikst.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
+        const response = await fetch(`http://localhost:8080/display/${this.indeLikeList.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                memberId: 1,
+                memberId: 1,         // 멤버 정보 가지고 오기
                 diaryId: diaryId,
             }),
         });
@@ -110,7 +112,7 @@ async function likeSwitchHandler(diaryId) {
     setTimeout(load, 50);
 }
 
-function goToNextPage(){
+function goToNextPage(){ //스크롤 페이징
     console.log("추가페이지")
 }
 

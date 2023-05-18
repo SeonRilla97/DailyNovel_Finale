@@ -1,5 +1,6 @@
 package com.dailynovel.dailynovelapi.mbentity;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MbDiary {
-  private int id;
+  private Integer id;
   private int member_id;
 
   private String title;
@@ -22,4 +23,10 @@ public class MbDiary {
   private String honesty;
   private String tag;
   private LocalDateTime regDate;
+
+
+  //모재영 위도경도 추가
+  private double latitude;
+  private double longitude;
+
 }

@@ -8,10 +8,7 @@ import com.dailynovel.dailynovelapi.service.DiaryService;
 import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 
@@ -56,7 +53,7 @@ public class DiaryController {
         LocalDate localDate = null;
         if(date !=null)
              localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-             System.out.println(localDate);
+            //  System.out.println(localDate);
         Map<String,List<MbDiaryCollectionView>> list = service.getListGroupingMonthly(
             memberId,feeling,weather,localDate,order,collection,query
         );
@@ -72,34 +69,38 @@ public class DiaryController {
         return qqq;
     }
 
-    @GetMapping("write")
+    @PostMapping ("write")
     public  void write(){
 
-        Integer id = null;
+        int id = 25;
 
         int memberId = 1;
         String title = "하와이";
          String content = "가자";
-         String weather = "맑음";
-         String feeling = "사랑";
-         String honesty = "100";
-         String tag = "영화";
-         String date = "2023-05-17 17:02:25";
+         String weather = null;
+         String feeling = null;
+         String honesty = null;
+         String tag = null;
+//        Timestamp date = Timestamp.valueOf("2023-05-17 17:02:25");
+        Timestamp date = null;
 
 //        LocalDateTime
         //ISO 8601 날짜형식으로 인코딩 된거 Decoder를 통해 LocalDate형식으로 변환
-        LocalDateTime localDateTime = null;
-        if(date  != null)
-            localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-        System.out.println(localDateTime);
+//        LocalDateTime localDateTime = null;
+//        if(date  != null)
+//            localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME);
+//        System.out.println(localDateTime);
+//
+//        Timestamp time = Timestamp.valueOf(localDateTime);
 
-        Timestamp time = Timestamp.valueOf(localDateTime);
+//        Timestamp time = Timestamp.valueOf(date);
+//        Timestamp time = new Timestamp(date);
 
 
+        Diary diary = new Diary(id, memberId,title,content,weather,feeling,honesty,tag,date);
+        service.writeDiary(diary);
 
-        Diary diary = new Diary(null, memberId,title,content,weather,feeling,honesty,tag,time);
-
-        int tmp = service.writeDiary(diary);
+        System.out.println(diary.toString());
 
     }
 
