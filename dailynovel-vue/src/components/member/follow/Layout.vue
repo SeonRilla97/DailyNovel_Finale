@@ -113,7 +113,7 @@ let name = "선릴라424";
 }
 
 .m-follow-main {
-  /* overflow: scroll; */
+  overflow: scroll;
   box-sizing: border-box;
 
 }

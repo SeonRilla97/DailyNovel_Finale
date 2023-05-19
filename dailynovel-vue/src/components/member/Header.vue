@@ -1,8 +1,13 @@
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-let router = useRouter();
+import { useUserDetailsStore } from '../store/useUserDetailsStore.js';
 
-let nickname = "동동이107"
+
+let router = useRouter();
+let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
+// let nickname = "동동이107"
+let nickname = userDetails.nickname;
 
 let alramCount = 15;
 
@@ -130,9 +135,6 @@ function openPageHandler() {
 
   display: grid;
   grid-template-columns: 1fr 2fr;
-
-
-
 }
 
 .member-header-profile-img {
@@ -155,6 +157,8 @@ function openPageHandler() {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+
 
   font-size: 18px;
   font-weight: 600;

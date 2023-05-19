@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeUnmount  , onMounted , reactive, ref } from "vue";
+import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUserDetailsStore } from "../store/useUserDetailsStore.js";
 import { decodeCredential } from "vue3-google-login";
@@ -52,7 +52,7 @@ async function loginoAuthHandler(event) {
 
   //새롭게 데이터를 받아보자
   userDetails.id = json.result.id;
-  userDetails.nickname = json.result.usernickname;
+  userDetails.nickname = json.result.nickName;
   //userDetails.password= json.result.pwd;
   userDetails.email = json.result.email;
   userDetails.roles = json.roles;
@@ -120,7 +120,7 @@ async function fetchUserInfo(accessToken) {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
       },
     });
-    
+
     if (response.ok) {
       const userInfo = await response.json();
       return userInfo;
@@ -163,7 +163,7 @@ async function kakaoLogin() {
   });
 }
 
-async function kakaoLogin2() {
+async function kakaoLoginMakeshift() {
   return new Promise((resolve, reject) => {
     Kakao.Auth.login({
       scope: 'account_email',
