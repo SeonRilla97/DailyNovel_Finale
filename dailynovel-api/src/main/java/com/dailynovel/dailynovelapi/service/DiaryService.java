@@ -13,6 +13,7 @@ public interface DiaryService {
     public TreeMap<String, Integer> getByFeeling();
     public TreeMap<String, Integer>  getByTag();
     public TreeMap<String, Integer>  getByHonesty();
+    public List<Diary> getAllByMId();
     public Map<String, List<MbDiaryCollectionView>> getListGroupingMonthly(int memberId, String feeling, String weather,
             LocalDate localDate, String order, String collection, String query);
 

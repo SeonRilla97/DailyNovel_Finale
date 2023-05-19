@@ -35,7 +35,7 @@
                     <div class="overlay-box" v-if="overlayMyplace">
                         <h3 class="overlay-head">{{ overlayMyplace.place_name }}</h3>
                         <div class="addr">{{ overlayMyplace.address_name }}
-                            <a class="register" href="#" @click.prevent="register()">
+                            <a class="register" href="#" @click.prevent="register()" >
                                 <span class="material-symbols-outlined">
                                     check_circle
                                 </span>
@@ -173,7 +173,12 @@ export default {
 
         register() {
             const vueKakaoMap = this.$refs.kmap;
-            console.log(vueKakaoMap.options.center.lat, vueKakaoMap.options.center.lng, "마커클릭시좌표");
+            const lat = vueKakaoMap.options.center.lat;
+            const lng = vueKakaoMap.options.center.lng;
+            const coor = {lat, lng};
+            this.$emit('coor', coor)
+            // emit한것은 파라미터로 들어간다. 직접전인값이아님.
+
             this.draggable = false;
             // this.isSearchBoxHidden = true;
             this.isSearchBoxHidden = false;
@@ -224,7 +229,7 @@ button:hover {
     height: 600px;
     z-index: 10000;
     background-color: #ffffffaa;
-    width: 200px;
+    width: 150px;
     overflow-x: auto;
     overflow-y: auto;
 

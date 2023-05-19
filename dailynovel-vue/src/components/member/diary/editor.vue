@@ -1,10 +1,10 @@
 <script setup>
 import quill from './quill.vue';
 import quill2 from './quill2.vue';
-import MapBox from './MapBox.vue'
 import quillCopy from './quill copy.vue';
 
 import { ref,onMounted, onUpdated } from 'vue';
+import MapBox from './MapBox.vue';
 
 
 onMounted(() => {
@@ -50,6 +50,13 @@ onMounted(() => {
   };
 
  //현재 위치 받아오기 API
+
+// 지도 설정한 좌표값 얻어오기
+function coor(coor) {
+
+  console.log(coor)
+}
+
  function geoFindMe() {
 
     function success(position) {
@@ -167,21 +174,22 @@ onMounted(() => {
       </button>
 
       </div>
-      <div>
-      <div
-        v-if="imageToggle"
-        class="editor-image editor-sub">
-        이미지를 넣어넣어 놀자놀자
-      </div>
+
+      <div class="img-map-container">
+        <div
+          v-if="imageToggle"
+          class="editor-image editor-sub">
+          이미지를 넣어넣어 놀자놀자
+        </div>
 
 
-      <!-- 맵 삽입칸 -->
-      <div
-        v-if="mapToggle"
-        class="mapToggle-map editor-sub">
-        <MapBox/>
+        <!-- 맵 삽입칸 -->
+        <div
+          v-if="mapToggle"
+          class="mapToggle-map editor-sub">
+          <MapBox @coor="coor"/>
+        </div>
       </div>
-    </div>
 
     </div>  
   </div>
@@ -215,7 +223,7 @@ onMounted(() => {
 
   width: 100%;
   height: 95%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 
   /* height: auto; */
 
@@ -224,7 +232,6 @@ onMounted(() => {
   grid-column: 1/2;
 
   margin: 10px 10px 0 0;
-  
 }
 
 .editor-sub{
@@ -245,8 +252,6 @@ onMounted(() => {
 
   border: none;
 }
-
-
 
   .editor-sub-button button{
     /* border: 1px solid black; */
@@ -407,6 +412,11 @@ onMounted(() => {
 
   background-color: black;
   height: 1px;
+}
+
+
+.img-map-container{
+  overflow-y: scroll;
 }
 
 </style>

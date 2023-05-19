@@ -22,4 +22,6 @@ public class MbDiary {
   private String honesty;
   private String tag;
   private LocalDateTime regDate;
+  private Double latitude;
+  private Double longitude;
 }

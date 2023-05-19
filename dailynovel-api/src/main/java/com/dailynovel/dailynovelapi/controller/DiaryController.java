@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -97,10 +99,31 @@ public class DiaryController {
 
 
 
-        Diary diary = new Diary(null, memberId,title,content,weather,feeling,honesty,tag,time);
+        // Diary diary = new Diary(null, memberId,title,content,weather,feeling,honesty,tag,time);
 
-        int tmp = service.writeDiary(diary);
+        // int tmp = service.writeDiary(diary);
 
     }
 
-}
+
+    @GetMapping("coor")
+    public List<Diary> coor(
+        @RequestParam(name = "latitude", required = false) String latitude,
+        @RequestParam(name = "longitude", required =  false) String longitutde
+    ){
+        List<Diary> list = service.getAllByMId();
+        System.out.println("ok");
+        return list;
+    }
+
+    // @PostMapping("latlng")
+    // public List<Diary> latlng(@RequestBody Diary diary){
+        
+    //     return list;
+    // }
+
+
+
+    }
+
+
