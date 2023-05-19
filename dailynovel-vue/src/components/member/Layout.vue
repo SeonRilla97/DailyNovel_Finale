@@ -18,7 +18,6 @@ function modalOpenHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
   closeEffect.value = true; //모달창 키기
   isModalOpen.value = true; //올라오기
-
 }
 
 function modalCloseHandler() {
