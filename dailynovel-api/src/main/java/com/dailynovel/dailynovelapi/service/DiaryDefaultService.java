@@ -202,7 +202,20 @@ public class DiaryDefaultService implements DiaryService{
         List<MbDiaryDisplayed> list = mbRepository.findDisplayedById(memberId, collectionId);
         return list;
     }
+    @Override
+    public List<Diary> getAllByMId() {
+        List<Diary> list = repository.findAllByMId(null);
+        return list;
+    }
 
-    ;
+
+
+
+
+	@Override
+	public List<Object[]> getById() {
+		List<Object[]> list = repository.findByCoorList(null);
+        return list;
+	}
 }
 
