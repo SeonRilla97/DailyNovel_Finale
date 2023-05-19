@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
+import com.dailynovel.dailynovelapi.entity.MemberFollow;
 import com.dailynovel.dailynovelapi.repository.DiaryLikeRepository;
 import com.dailynovel.dailynovelapi.repository.DisplayRepository;
+import com.dailynovel.dailynovelapi.repository.MemberFollowRepository;
 
 @Service
 public class DefaultDisplayService implements DisplayService {
@@ -18,6 +20,9 @@ public class DefaultDisplayService implements DisplayService {
 
     @Autowired
     private DiaryLikeRepository diaryLikeRepository;
+
+    @Autowired
+    private MemberFollowRepository followRepository;
 
     @Override
     public List<DisplayView> getByList() {
@@ -53,11 +58,41 @@ public class DefaultDisplayService implements DisplayService {
 
     @Override
     public List<DiaryLike> getByLikeList(int memberId) { // 로그인 한 회원이 자신이 좋아요 누른 글을 표시하기 위해 있는 것
-        List<DiaryLike> aa = diaryLikeRepository.findByMemberId(memberId);
-        return aa;
+        List<DiaryLike> myFavorites = diaryLikeRepository.findByMemberId(memberId);
+        return myFavorites;
+    }
+
+    @Override
+    public int updateFollow(int followedId, int followId) {
+        MemberFollow mf = new MemberFollow();
+        mf.setFollowedId(followedId);
+        mf.setFollowId(followId);
+
+        List<MemberFollow> subscribeList = followRepository.findByFollowId(followId);
+        
+        boolean isDuplicate = subscribeList.stream().anyMatch(item -> item.getFollowedId() == followedId);
+
+        if(!isDuplicate){ // 구독이 안 돼 있으면 추가하기
+            followRepository.save(mf);
+
+            return 1;  // 구독insert
+        }
+        else // 이미 구독 돼 있으면 구독 delete
+            followRepository.delete(mf);
+            return 0;  // 구독delete
     }
 
 
+
+    @Override // 확인 후 바로 삭제
+    public List<MemberFollow> getFollowedList(int followId) {
+        List<MemberFollow> followedList = followRepository.findByFollowId(followId);
+        return followedList;
+    }
+
+
+
+    
 
 
 

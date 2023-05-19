@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
+import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 
 public interface DiaryService {
@@ -20,7 +21,13 @@ public interface DiaryService {
     //모재영 : 테스트 용
     public boolean isValid(String id);
 
+    public MbDiary readDiary(int id);
+    public List<MbDiary> readListDiary();
     public int writeDiary(Diary diary);
+    public int writeDiary(MbDiary diary);
 
+    public int editDiary(MbDiary diary);
+
+    public int removeDiary(int id);
 }
  

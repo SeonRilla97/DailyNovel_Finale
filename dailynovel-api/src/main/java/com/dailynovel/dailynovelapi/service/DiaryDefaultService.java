@@ -2,9 +2,11 @@ package com.dailynovel.dailynovelapi.service;
 
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
+import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbrepository.MbDiaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.repository.DiaryRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DiaryDefaultService implements DiaryService{
@@ -96,7 +99,7 @@ public class DiaryDefaultService implements DiaryService{
                 // ================ 공유 상태 설정======null : 공유안함 true : 공유중 false: 공유완료
                 diary.setIsShared();
 
-                System.out.println(diary);
+                // System.out.println(diary);
 
                 //년 추출
                 String year = String.valueOf(diary.getRegDate().getYear());
@@ -136,15 +139,56 @@ public class DiaryDefaultService implements DiaryService{
         return false;
     }
 
+    @Override
+    public MbDiary readDiary(int id) {
+        return mbRepository.findById(id);
+    }
 
-    
+    @Override
+    public List<MbDiary> readListDiary() {
+        return mbRepository.findAll();
+    }
+
     @Override
     public int writeDiary(Diary diary) {
+        return 0;
+    }
 
-        Diary diary1 = repository.save(diary);
-        System.out.println(diary1.toString());
 
-        return 1;
+    @Override
+    public int writeDiary(MbDiary diary) {
+//        System.out.println(diary.get);
+
+        int a = mbRepository.insertNew(diary);
+        System.out.println(a);
+
+//        repository.save(diary);
+//        return 0;
+//        Diary diary1 = repository.save(diary);
+//        if (diary1 != null) {
+//            System.out.println(diary1.toString());
+//            return 1;
+//        } else {
+//            // 저장 실패 처리를 수행하거나 예외를 던질 수 있습니다.
+//            return 0;
+//        }
+        return a;
+    }
+
+    @Override
+    public int editDiary(MbDiary diary) {
+
+        mbRepository.update(diary);
+
+        return 0;
+    }
+
+    @Override
+    public int removeDiary(int id) {
+
+        int result = mbRepository.delete(id);
+
+        return result;
     }
 
 

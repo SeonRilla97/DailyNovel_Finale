@@ -187,7 +187,7 @@ function coor(coor) {
         <div
           v-if="mapToggle"
           class="mapToggle-map editor-sub">
-          <MapBox @coor="coor"/>
+          <MapBox :coor="coor" @coor="coor"/>
         </div>
       </div>
 

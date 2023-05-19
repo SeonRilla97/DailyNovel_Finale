@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useUserDetailsStore = defineStore("userDetails", {
     state: () => ({
-        id: 0,
+        id: 1,
         nickname: null,
         email: null,
         roles: []

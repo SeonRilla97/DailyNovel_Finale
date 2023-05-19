@@ -57,7 +57,7 @@
 
 
 <script>
-import KakaoMap from '../Diary/map/KakaoMap.vue';
+import KakaoMap from './map/KakaoMap.vue';
 import MarkerHandler from '../Diary/map/marker-handler.js';
 import KakaoOverlay from '../Diary/map/overlay';
 export default {

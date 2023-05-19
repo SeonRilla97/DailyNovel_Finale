@@ -23,7 +23,8 @@ public class Diary {
 
     //변겅자 모재영 null 받기위해서 바꿈
     @Id
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     @Column(name="member_id")
     private int memberId;
 

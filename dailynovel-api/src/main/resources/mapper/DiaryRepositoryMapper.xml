@@ -3,28 +3,110 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbDiaryRepository">
+
+
+<!--    모재영
+문제점 1 : member_id 관련
+문제점 2  : reg_id 관련
+
+-->
+    <resultMap id="MbDiaryResultMap" type="MbDiary">
+        <result property="id" column="id" />
+        <result property="member_id" column="member_id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="weather" column="weather" />
+        <result property="feeling" column="feeling" />
+        <result property="honesty" column="honesty" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+    </resultMap>
+
 	<resultMap id="DiaryCollectionResultMap" type="MbDiaryCollectionView">
       <result property="memberId" column="member_id" />
       <result property="diaryId" column="id" />
-      <result property="collectionName" column="collection_name" />
+      <result property="collectionId" column="collection_id" />
       <result property="regDate" column="reg_date" />
-      <result property="sharedEndDate" column="display_end_date" />
+      <result property="sharedinitDate" column="display_init_date" />
 	</resultMap>
-	
+
+
+
+<!--모재영 기본 CRUD 세팅-->
+    <select id="findAll" resultMap="MbDiaryResultMap">
+        select *
+        from diary
+    </select>
+
+    <select id="findById" resultMap="MbDiaryResultMap">
+        select *
+        from diary
+        where id =
+        #{id}
+    </select>
+
+<!--    <result property="id" column="id" />-->
+<!--    <result property="member_id" column="member_id" />-->
+<!--    <result property="title" column="title" />-->
+<!--    <result property="content" column="content" />-->
+<!--    <result property="weather" column="weather" />-->
+<!--    <result property="feeling" column="feeling" />-->
+<!--    <result property="honesty" column="honesty" />-->
+<!--    <result property="latitude" column="latitude" />-->
+<!--    <result property="longitude" column="longitude" />-->
+
+    <insert id="insertNew" parameterType="MbDiary">
+        insert into
+        diary
+            (member_id, title, content, weather, feeling,honesty, tag,latitude,longitude)
+        values
+            (#{member_id}, #{title}, #{content}, #{weather}, #{feeling}, #{honesty},#{tag}, #{latitude}, #{longitude})
+    </insert>
+
+    <update id="update" parameterType="MbDiary">
+        update diary
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="feeling != null">feeling = #{feeling},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+        </set>
+        where id= #{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from diary
+        where id = #{id}
+    </delete>
+
+
+
+
 
   
   	<select id="getListByFiltering" resultMap="DiaryCollectionResultMap">
-		select *
-		FROM diary_filter
-		where member_id = #{memberId}
+		select f.*
+            <if test="collection != null">
+                ,dc.collection_id
+            </if> 
+		FROM diary_filter f
+		
+            <if test="collection != null">
+                left outer join collection_items dc
+                on f.id = dc.diary_id
+            </if>
+            where member_id = #{memberId} 
+            <if test="collection != null">
+				  and collection_id = #{collection}</if>   
+
 			<if test="feeling != null">
 				and feeling = #{feeling}</if> 
             <if test="weather != null">
 				and weather = #{weather}</if>
             <if test="localDate != null">
 				and Date(reg_date) = #{localDate}</if>
-            <if test="collection != null">
-				and collection_id = #{collection}</if>
             <if test="query != null">
                 AND (title LIKE CONCAT('%', #{query}, '%')
                 OR content LIKE CONCAT('%', #{query}, '%'))
@@ -38,13 +120,8 @@
             <otherwise>
                 reg_date DESC
             </otherwise>
-        </choose>
-
-            
+        </choose>    
 	</select>
       
 
-
-
-  
 </mapper>

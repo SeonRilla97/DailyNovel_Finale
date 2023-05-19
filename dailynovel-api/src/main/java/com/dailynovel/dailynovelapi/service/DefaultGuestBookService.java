@@ -26,8 +26,14 @@ public class DefaultGuestBookService implements GuestBookService {
 
   // 방명록 조회 서비스
   @Override
-  public List<GuestBook> viewGuestBooks() {
-    List<GuestBook> list = repository.findByMemberId(1);
+  public List<MbGuestBookAll> viewGuestBookAll() {
+    List<MbGuestBookAll> list = mbRepository.findAllbyId(1);
+    return list;
+  }
+
+  @Override
+  public List<MbGuestBookAll> viewGuestBookAll(int id) {
+    List<MbGuestBookAll> list = mbRepository.findAllbyId(id);
     return list;
   }
 
@@ -50,12 +56,6 @@ public class DefaultGuestBookService implements GuestBookService {
   public GuestBookComment writeGuestBookComment() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'writeGuestBookComment'");
-  }
-
-  @Override
-  public List<MbGuestBookAll> viewGuestBookAll() {
-    List<MbGuestBookAll> list = mbRepository.findAllbyId(1);
-    return list;
   }
 
 }
