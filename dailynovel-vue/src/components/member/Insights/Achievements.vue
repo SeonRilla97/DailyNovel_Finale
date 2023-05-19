@@ -28,14 +28,14 @@
 
       <div class="achievement">
         <div class="achievement-img3"></div>
-        <div class="achievement-data">3/25</div>
-        <div class="achievement-data">내가 바로 작성왕</div>
+        <div class="achievement-data">3/10</div>
+        <div class="achievement-data">역마살 on</div>
       </div>
 
       <div class="achievement">
         <div class="achievement-img4"></div>
-        <div class="achievement-data">3/25</div>
-        <div class="achievement-data">내가 바로 작성왕</div>
+        <div class="achievement-data">3/24</div>
+        <div class="achievement-data">이동진씨의 친구</div>
       </div>
 
       <div class="achievement">

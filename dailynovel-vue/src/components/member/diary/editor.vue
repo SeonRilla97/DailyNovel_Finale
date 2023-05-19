@@ -4,6 +4,7 @@ import quill2 from './quill2.vue';
 import quillCopy from './quill copy.vue';
 
 import { ref,onMounted, onUpdated } from 'vue';
+import MapBox from './MapBox.vue';
 
 
 onMounted(() => {
@@ -49,6 +50,13 @@ onMounted(() => {
   };
 
  //현재 위치 받아오기 API
+
+// 지도 설정한 좌표값 얻어오기
+function coor(coor) {
+
+  console.log(coor)
+}
+
  function geoFindMe() {
 
     function success(position) {
@@ -167,20 +175,21 @@ onMounted(() => {
 
       </div>
 
-      <div
-        v-if="imageToggle"
-        class="editor-image editor-sub">
-        이미지를 넣어넣어 놀자놀자
+      <div class="img-map-container">
+        <div
+          v-if="imageToggle"
+          class="editor-image editor-sub">
+          이미지를 넣어넣어 놀자놀자
+        </div>
+
+
+        <!-- 맵 삽입칸 -->
+        <div
+          v-if="mapToggle"
+          class="mapToggle-map editor-sub">
+          <MapBox :coor="coor" @coor="coor"/>
+        </div>
       </div>
-
-
-      <!-- 맵 삽입칸 -->
-      <div
-        v-if="mapToggle"
-        class="mapToggle-map editor-sub">
-        맵을 넣어 놀자 놀자
-      </div>
-
 
     </div>  
   </div>
@@ -403,6 +412,11 @@ onMounted(() => {
 
   background-color: black;
   height: 1px;
+}
+
+
+.img-map-container{
+  overflow-y: scroll;
 }
 
 </style>

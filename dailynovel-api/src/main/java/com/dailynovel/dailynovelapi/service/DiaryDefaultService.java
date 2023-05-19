@@ -191,6 +191,24 @@ public class DiaryDefaultService implements DiaryService{
         return result;
     }
 
-    ;
+
+
+
+
+    @Override
+    public List<Diary> getAllByMId() {
+        List<Diary> list = repository.findAllByMId(null);
+        return list;
+    }
+
+
+
+
+
+	@Override
+	public List<Object[]> getById() {
+		List<Object[]> list = repository.findByCoorList(null);
+        return list;
+	}
 }
 

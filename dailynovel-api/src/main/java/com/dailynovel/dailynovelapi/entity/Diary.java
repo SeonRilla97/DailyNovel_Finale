@@ -36,6 +36,8 @@ public class Diary {
     private String tag;
     @Column(name="reg_date")
     private Timestamp date;
+    private Double lat;
+    private Double lng;
 
 //    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY)
 //    private List<DiaryCollection> collections;

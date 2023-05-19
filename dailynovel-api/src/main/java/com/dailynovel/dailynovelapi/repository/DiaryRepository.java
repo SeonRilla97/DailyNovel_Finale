@@ -18,7 +18,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>{
     @Query("SELECT d.feeling, COUNT(d.feeling) FROM Diary d where d.memberId = 1 and d.feeling IS NOT NULL GROUP BY d.feeling ORDER BY d.feeling ASC" )
     List<Object[]> findByFeeling(@Param("memberId") Integer memberId);
     
-
+    @Query(value = "SELECT * FROM Diary d WHERE d.memberId = :memberId", nativeQuery = true)
+    List<Diary> findAllByMId(@Param("memberId") Integer memberId);
 
 
     @Query("SELECT CASE "
@@ -37,4 +38,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>{
 
     @Query("select d.tag, count(d.tag) from Diary d where d.memberId = 1  group by d.tag")
     List<Object[]> findByTag(@Param("memberId") Integer memberId);
+
+
+    @Query("select d.lat, d.lng from Diary d where d.id =1")
+    List<Object[]> findByCoorList(@Param("id") Integer id);
 }
