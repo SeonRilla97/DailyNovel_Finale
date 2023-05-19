@@ -1,5 +1,6 @@
 <script setup>
 import{ref,toRefs,watchEffect} from 'vue'
+import { useRouter,useRoute } from 'vue-router'
 let registerMenuController = ref(false);
 
 // 컬렉션 추가 Form 변경 함수
@@ -77,7 +78,23 @@ function regBtnClickHandler(){
 }
 
 // 컬렉션 이름은 중복할 수 없어요
-
+function modifyHandler(){
+    console.log("수정!")
+}
+function delHandler(){
+    console.log("삭제!")
+}
+const router = useRouter()
+function colClickHandler(collectionId){
+    console.log("컬렉션 눌렀네?" +collectionId)
+    
+    // console.log(router);
+    // router.push(`./detail`)
+    router.push({
+         name: 'user', 
+         params: { "collectionId": collectionId } 
+    })
+}
 </script>
 
 
@@ -115,13 +132,25 @@ function regBtnClickHandler(){
                 </div>
             </router-link>
             
-            <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List"  >
-                <div class="box" v-bind:data-id="colList.id">
-                    <div class="header"></div>
+            <!-- <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List"  > -->
+                <div class="box mgl-5" v-bind:data-id="colList.id"  v-for="colList in collection.List" @click="colClickHandler(colList.id)">
+                    <div class="header">
+                        <!-- <div class="icon-tack">\
+                        </div> -->
+                        <div class="dropdown">
+                            <div class="icon-tack"></div>
+                            <transition name="bounce">
+                                <div class="content">
+                                    <a href="#"  class="item" @click="modifyHandler">수정</a>
+                                    <a href="#"  class="item" @click="delHandler">삭제</a>
+                                </div>
+                            </transition>
+                        </div>
+                    </div>
                     <h1 class="title">{{colList.name}}</h1>
-                    <div class="icon-tack"></div>
+                    
                 </div>
-            </router-link>
+            <!-- </router-link> -->
 
         </div>
 </template>
@@ -158,6 +187,11 @@ function regBtnClickHandler(){
 .collection-container .box .title{
     font-size:20px;
     font-weight: bolder;
+}
+.collection-container .box .header{
+    position:relative;
+    width:100%;
+    height:100%;
 }
 
 /* 컬렉션 등록 박스 */
@@ -208,6 +242,49 @@ function regBtnClickHandler(){
         cursor: pointer;
     }
 
+/* dropDown(필터 메뉴) */
+.collection-container .dropdown .btn {
+font-size: 16px;
+border: none;
+cursor: pointer;
+box-sizing: border-box;
+}
+.collection-container .dropdown:hover .content {
+  display: block;
+}
+.collection-container .dropdown {
+position: absolute;
+display: inline-block;
+right:0
+}
+
+.collection-container .dropdown .content {
+display: none; 
+position: absolute;
+background-color: #f9f9f9;
+min-width: 60px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+text-align: center;
+top: -45px;
+/* left:-30px; */
+transform:translateX(-70%);
+font-size: 12px;
+border-radius: 5px;
+/* height: 120px; */
+}
+.collection-container .dropdown .content .item {
+color: black;
+padding: 6px 10px;
+text-decoration: none;
+display: block;
+}
+
+.collection-container .dropdown .content a:hover {background-color: #f1f1f1}
+
+
+
+
 /* 컬렉션 등록 버튼 */
 .box.reg-btn{
     position:absolute;
@@ -233,6 +310,13 @@ function regBtnClickHandler(){
     background-repeat: no-repeat;
     background-size: 16px 16px;
     background-position: center center;
+    width:16px;
+    height:16px;
+    position:absolute;
+    right: 10px;
+    top: 3px;
+    display: inline-block;
+    
 }
 .icon-chat{
     background-image: url("../../../assets/img/chat.svg");
@@ -241,6 +325,8 @@ function regBtnClickHandler(){
     background-position: center center;
     width:16px;
     height: 16px;
+    grid-column-end: 1;
+    grid-column-end: 2;
 }
 
 

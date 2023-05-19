@@ -1,9 +1,22 @@
 <script setup>
 import { ref } from 'vue';
+import { useRoute } from 'vue-router'
+import { useUserDetailsStore } from '../../../store/useUserDetailsStore';
 
+let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 let pageIndex = ref(1)
 
+const route = useRoute()
+// url정보의 id값 추출
+const collectionId = route.params.collectionId;
+// 사용자의 ID값 추출
+const memberId = userDetails.id;
 
+console.log(collectionId,memberId)
+
+
+
+// 댓글불러와야함
 </script>
 
 
@@ -11,8 +24,8 @@ let pageIndex = ref(1)
     <div class="detail-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <router-link to="/member/room/collection/detail/diary"><div class="ib active">일기</div></router-link>
-                <router-link class="mgl-2" to="/member/room/collection/detail/comment"><div class="ib">댓글</div></router-link>
+                <router-link to="/member/room/collection/detail/s/diary"><div class="ib active">일기</div></router-link>
+                <router-link class="mgl-2" to="/member/room/collection/detail/s/comment"><div class="ib">댓글</div></router-link>
             </div>
             <div class="icon-back"></div>
         </header>
