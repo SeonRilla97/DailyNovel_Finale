@@ -5,6 +5,7 @@ package com.dailynovel.dailynovelapi.controller;
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 import com.dailynovel.dailynovelapi.service.DiaryService;
 import jakarta.persistence.Column;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,24 +45,27 @@ public class DiaryController {
         @RequestParam(required = false) String collection,
         @RequestParam(required = false) String query
     ) throws UnsupportedEncodingException {
-        // System.out.println("메에에에에에에에엠버 아이디" + memberId);
-//        Map<String,List<Diary>> list = service.getListGroupingMonthly(
-//            feeling,weather,date,order,collection,query
-//        );
-
-
-//        LocalDateTime
         //ISO 8601 날짜형식으로 인코딩 된거 Decoder를 통해 LocalDate형식으로 변환
         LocalDate localDate = null;
         if(date !=null)
              localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE_TIME);
-            //  System.out.println(localDate);
+        // list 담아오기
         Map<String,List<MbDiaryCollectionView>> list = service.getListGroupingMonthly(
             memberId,feeling,weather,localDate,order,collection,query
         );
 
         return list;
     }
+    //공유가 한번이라도 된 적 있는 일기를 불러온다(join 4번)
+    @GetMapping("displayed")
+    public List<MbDiaryDisplayed> getDisplayedDiary(
+        @RequestParam(required = true) int memberId,
+        @RequestParam(required = false) Integer collectionId
+    ){
+        List<MbDiaryDisplayed> list=service.getSharedDiary(memberId,collectionId);
+        return list;
+    }
+    // 멤버아이디 , 컬렉션 아이디
 
 //    @GetMapping("get")
 //    public boolean get(){
