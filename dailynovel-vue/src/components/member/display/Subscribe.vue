@@ -1,8 +1,14 @@
 <template lang="">
-    <span @click="subscribeHandler(writerId)">{{ ssibal=='true' ? '구독취소' : '구독하기' }}</span>
-    <router-link to="/member/room/collection/main" v-show="">구경가기</router-link>
-            <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
-            <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
+    <section class="grid columns">
+        <h1 class="d-none">프로필 안내 창</h1>
+        <div class="profile">프로필 이미지</div> 
+        <div class="grid row">
+            <span class="btn" @click="subscribeHandler(writerId)">{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
+            <router-link to="/member/room/collection/main" class="btn"  v-show="isSubscribed=='true'">구경가기</router-link>
+                    <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
+                    <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
+        </div>
+    </section>
 </template>
 
 <script setup>
@@ -17,25 +23,24 @@ const props = defineProps({
     },
 })
 
-let ssibal = ref();
+let isSubscribed = ref();
 let memberId = ref();
 let writerId = ref();
 
 function load() {
-    ssibal.value = props['ssibal'];
-    memberId.value=props['memberId'];
-    writerId.value=props['writerId'];
+    isSubscribed.value = props['isSubscribed'];
+    memberId.value = props['memberId'];
+    writerId.value = props['writerId'];
 
-    console.log(memberId.value);
-    console.log(writerId.value);
+    // console.log(memberId.value);
+    // console.log(writerId.value);
 
-    fetchSubscriptionStatus();
+    SubscriptionStatus();
 }
 
-async function fetchSubscriptionStatus() {
+async function SubscriptionStatus() {
     const response = await fetch(`http://localhost:8080/display/subscribeScan?mId=${memberId.value}&fId=${writerId.value}`);
-    ssibal.value = await response.text()
-    // console.log(ssibal.value);
+    isSubscribed.value = await response.text()
 }
 
 async function subscribeHandler(writerId) {
@@ -69,7 +74,7 @@ async function subscribeHandler(writerId) {
             console.error(error); // 에러 처리
         }
         setTimeout(load, 50);
-        alert("배달의 민족 주문")
+        // alert("구독했습니다.")
     }
 }
 
@@ -80,4 +85,32 @@ onMounted(() => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.grid {
+    display: grid;
+}
+.columns{
+    grid-template-columns: 1fr 1fr;
+}
+.row{
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+}
+
+.profile {
+    width: 200px;
+    height: 150px;
+}
+
+.btn {
+    /* background-color: blue; */
+    border: 1px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.btn:hover{
+    background-color: #f0a59e;
+    transition: 1s;
+}
+</style>

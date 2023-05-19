@@ -309,12 +309,16 @@ li {
 
 .subscribeBtn {
     text-align: center;
-    background-color: #989797;
-    width: 10rem;
-    height: 5rem;
+    background-color: #FAFFF9;
+    /* #F2C6C2; */
+    border: 3px solid black;
+    border-radius: 0.5rem;
+    width: 20rem;
+    height: 9.375rem;
     position: absolute;
-    top: 120px;
-    left: 960px;
+    top: 170px;
+    left: 615px;
+    z-index: 1;
 }
 
 .content-center {
