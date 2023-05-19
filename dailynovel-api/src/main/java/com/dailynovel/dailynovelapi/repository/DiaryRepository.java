@@ -38,4 +38,8 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>{
 
     @Query("select d.tag, count(d.tag) from Diary d where d.memberId = 1  group by d.tag")
     List<Object[]> findByTag(@Param("memberId") Integer memberId);
+
+
+    @Query("select d.lat, d.lng from Diary d where d.id =1")
+    List<Object[]> findByCoorList(@Param("id") Integer id);
 }
