@@ -24,11 +24,9 @@ public class GuestBookController {
   @Autowired
   private GuestBookService service;
 
-  // @PostMapping("list")
-  // public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll() {
-  // List<MbGuestBookAll> list = service.viewGuestBookAll();
-  // // System.out.println(list);
-  // return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
+  // @PostMapping("comment")
+  // public int writeGuestBookComment(@RequestBody){
+  // retu
   // }
 
   @GetMapping
@@ -44,6 +42,13 @@ public class GuestBookController {
     service.writeGuestBook(guestbook);
     return 1;
   }
+
+  // @PostMapping("list")
+  // public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll() {
+  // List<MbGuestBookAll> list = service.viewGuestBookAll();
+  // // System.out.println(list);
+  // return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
+  // }
 
   // @PostMapping("all")
   // public ResponseEntity<List<GuestBook>> viewGuestbooks() {
