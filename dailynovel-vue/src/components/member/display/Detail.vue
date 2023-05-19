@@ -1,10 +1,11 @@
 <template lang="">
     <main class=" center-grid">
         <div class="subscribeBtn nodouble-drag" v-show="subscribe">
-            <div @click="subscribeHandler(writerId)">구독하기</div>
+            <!-- <span @click="subscribeHandler(writerId)" >{{SubscriptionStatusChecker()?'구독하기':'구독취소하기'}}</span> -->
+            <span @click="subscribeHandler(writerId)">{{ ssibal=='true' ? '구독취소' : '구독하기' }}</span>
             <router-link to="/member/room/collection/main" v-show="">구경가기</router-link>
-                <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
-                <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
+            <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
+            <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
         </div>
         <div class="content-center">
             <section class=" center-grid article-box scroll">
@@ -38,7 +39,15 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue';
+
+
+import { reactive, ref, onMounted, defineProps, defineEmits,} from 'vue';
+import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+
+const emit = defineEmits([
+    'updatePage'
+]);
+
 
 const props = defineProps({
     detailPage: {
@@ -47,10 +56,10 @@ const props = defineProps({
     likeInfo: {
         type : Boolean
     },
-    // segnal:{
-    //     type: Function
-    // }
 })
+
+
+let userDetails = useUserDetailsStore();
 
 // console.log(props)
 let data = ref();
@@ -65,12 +74,17 @@ let writerId = ref();// 게시글 작성자 아이디
 
 let likeStatus = ref();
 
-let memberId = 1; // 멤버 아이디 받아오는 걱 수정해야 함
+let memberId = userDetails.id; // 멤버 아이디 받아오는 걱 수정해야 함
 
-function load() {
+let SubscriptionStatus = ref();
+
+let ssibal = ref();
+
+async function load() {
     
     setTimeout(() => {
-        
+    
+        // console.log(props)
         data = props.detailPage
 
         diaryId.value = data.id;
@@ -81,16 +95,33 @@ function load() {
         nickname.value = data.nickname;
         writerId.value = data.memberId;
 
+        
         likeStatus = props.likeInfo
 
-        console.log(likeStatus)
-        console.log(props.memberId)
-    }, 100);
+        // console.log(likeStatus)
+        // console.log(props.memberId)
+
+            // const response1 =  fetch(`http://localhost:8080/display/subscribeScan?mId=${memberId}&fId=${writerId.value}`);
+
+            // console.log(response1);
+
+            async function fetchSubscriptionStatus() {
+
+                    const response = await fetch(`http://localhost:8080/display/subscribeScan?mId=${memberId}&fId=${writerId.value}`);
+                    ssibal.value = await response.text()
+                    console.log(ssibal.value);
+
+            }
+
+            fetchSubscriptionStatus();
+
+    }, 150);
 }
 
-onMounted(() => {
+onMounted( () => {
     load();
 })
+
 
 async function likeSwitchHandler(diaryId) {
     console.log("좋아요 " + (likeStatus? "delete" : "insert"));
@@ -102,7 +133,7 @@ async function likeSwitchHandler(diaryId) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                memberId: 1,         // 멤버 정보 가지고 오기
+                memberId: memberId,         // 멤버 정보 가지고 오기
                 diaryId: diaryId,
             }),
         });
@@ -116,7 +147,9 @@ async function likeSwitchHandler(diaryId) {
     } catch (error) {
         console.error(error); // 에러 처리
     }
+    emit('updatePage');
     setTimeout(load, 50);
+    
 }
 
 function openSubscribeBoxHandler() {
@@ -130,12 +163,11 @@ async function subscribeHandler(writerId){
     if(memberId==writerId)
         alert("5252, 본인은 구독할 수 없다구~")
     else{
-        alert("배달의 민족 주문")
         console.log(memberId)
         console.log(writerId)
 
         try {
-            const response = await fetch('http://localhost:8080/display/subscribeStatus', {
+            const response = await fetch('http://localhost:8080/display/subscribeRequest', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -156,6 +188,7 @@ async function subscribeHandler(writerId){
             console.error(error); // 에러 처리
         }
         setTimeout(load, 50);
+        alert("배달의 민족 주문")
     }
 }
 

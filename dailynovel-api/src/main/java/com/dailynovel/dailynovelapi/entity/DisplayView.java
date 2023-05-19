@@ -29,10 +29,11 @@ public class DisplayView {
     private String honesty;
     private String tag;
     @Column(name="reg_date")
-    private Date date;
+    private Date regDate;
     @Column(name="like_count")
     private int like;
     private String image;
     private String nickname;
+    private Date date;
 
 }
