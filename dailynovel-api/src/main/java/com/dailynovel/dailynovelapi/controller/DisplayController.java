@@ -77,7 +77,7 @@ public class DisplayController {
         return  likeList;
     }
 
-    @PostMapping("subscribe")  // 구독 요청
+    @PostMapping("subscribeRequest")  // 구독 요청
     public String subscribe(
                     @RequestBody MemberFollow mf
                     // @RequestBody Map<String,Object> dl                      
@@ -94,7 +94,8 @@ public class DisplayController {
 
 
     @GetMapping("subscribeScan")  // 테스트용 내용 삭제해도 된다.
-    public List<MemberFollow> subscribeScan(
+    // public List<MemberFollow> subscribeScan(
+    public boolean subscribeScan(
                                 @RequestParam(name = "mId") int memberId,
                                 @RequestParam(name = "fId") int followedId
                             ){
@@ -104,7 +105,8 @@ public class DisplayController {
         boolean isDuplicate = subscribeList.stream().anyMatch(item -> item.getFollowedId() == followedId);
         System.out.println(isDuplicate);
 
-        return  subscribeList;
+        // return  subscribeList;
+        return  isDuplicate;
     }
 
 
