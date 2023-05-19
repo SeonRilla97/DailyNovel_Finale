@@ -1,12 +1,49 @@
 <script setup>
 import {ref} from 'vue'
 
-
-let menuOpen = ref(true);
+// 추가버튼 팝업메뉴 Open
+let menuOpen = ref(null);
+// 다이어리가 속한 컬렉션
+let curDiaryInCollection = ref([1,2,3]);
 // 컬렉션 리스트 오픈 핸들러
-function mOpenHandler(){
-    menuOpen.value = !menuOpen.value;
+console.log("포함 확인!!" +curDiaryInCollection.value.includes(3));
+
+function mOpenHandler(diaryId){
+    if(menuOpen.value == diaryId){
+        menuOpen.value=null;
+        return;
+    }
+    // 현재 추가버튼 드롭다운 활성화
+    menuOpen.value = diaryId;
+    
+    //선택된 다이어리가 포함된 컬렉션 목록
+    let containList=[];
+    console.log(containList)
+    // console.log(props.displayedDiary)
+    // 공유된 다이어리 중에 diaryId에 해당하는 collectionId 추출
+    for(let diary of props.displayedDiary.list)
+        if(diaryId == diary.diaryId)
+            containList.push(diary.collectionId);
+
+    // Reactive한 객체에 삽입
+    curDiaryInCollection.value = containList;
+    console.log(containList);
+    // diaryId 로 해당 다이어리 데이터의 
+    
 }
+console.log(props.collection)
+let props = defineProps({
+    displayedDiary: {
+        type: Object,
+        required:true
+    },
+    collection: {
+        type: Object,
+        required:true
+    }
+})
+console.log("=============공유된 일기들 구경하자!==========")
+console.log(props.displayedDiary)
 </script>
 <template>
     <div class="shared-container">
@@ -19,77 +56,24 @@ function mOpenHandler(){
         </header>
         <section class="main">
             <div class="slide-container" >
-
-
-                    <section class="box" >
-                            <div class="title">날씨가 유난히도 맑은 날</div>
-                            <div class="main">
-                                <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                            </div>
-                            <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-                            <!-- <div class="reg-btn">추가</div>
-                            <ul class=".collection-list dropdown">
-                                <li class="item">가장 행복했던 순간들</li>
-                                <li class="item">나의 영화일지</li>
-                                <li class="item">여행 가볼까요</li>
-                            </ul> -->
-                            <div class="dropdown collection-list">
-                                <div class="btn" @click="mOpenHandler"><span>추가</span><span class="icon-clamp"></span></div>
-                                <transition name="bounce">
-                                    <div class="content" @click="optionClickHandler" v-show="menuOpen">
-                                        <a href="#"  class="item shared">가장 행복했던 순간들</a>
-                                        <a href="#"  class="item">나의 영화일지</a>
-                                        <a href="#"  class="item">여행 가볼까요</a>
-                                        <a href="#"  class="item">여행 가볼까요</a>
-                                        <a href="#"  class="item">여행 가볼까요</a>
-                                    </div>
-                                </transition>
-                            </div>
-                    </section>
-
-
-                <section class="box" >
-                        <div class="title">날씨가 유난히도 맑은 날</div>
+              <section class="box" v-for="(value, key) in displayedDiary.list" v-bind:data-id="value.diaryId">
+                        <div class="title">{{value.title}}</div>
                         <div class="main">
-                            <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
+                            <div class="title-err mgt-4">{{value.content}}</div>
                         </div>
-                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-                </section>
-                <section class="box" >
-                        <div class="title">날씨가 유난히도 맑은 날</div>
-                        <div class="main">
-                            <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
+                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{value.likes}}</span></div>   
+                        <div class="dropdown collection-list">
+                            <div class="btn" @click="mOpenHandler(value.diaryId)"><span>추가</span><span class="icon-clamp"></span></div>
+                           <TransitionGroup>
+                            <Transition name="bounce">
+                                <div class="content" @click="optionClickHandler" v-show="menuOpen== value.diaryId">
+                                    <a href="#"  class="item"  v-for="(collection, key) in collection.List" :class="{shared: curDiaryInCollection.includes(collection.id) }">{{collection.name}}</a>
+                                </div>
+                            </Transition>
+                            </TransitionGroup>
                         </div>
-                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
                 </section>
-                <section class="box" >
-                        <div class="title">날씨가 유난히도 맑은 날</div>
-                        <div class="main">
-                            <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                        </div>
-                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-                </section>
-
-                <section class="box" >
-                        <div class="title">날씨가 유난히도 맑은 날</div>
-                        <div class="main">
-                            <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                        </div>
-                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-                </section>
-                <section class="box" >
-                        <div class="title">날씨가 유난히도 맑은 날</div>
-                        <div class="main">
-                            <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                        </div>
-                        <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-                </section>
-
-                
-
-
             </div>
-
         </section>
     </div>
 </template>
@@ -248,7 +232,7 @@ display: block;
 }
 
 .collection-list.dropdown .content .item.shared {
-color: #00000040;
+color: #00000060;
 }
 
 .collection-list.dropdown .content a:hover {

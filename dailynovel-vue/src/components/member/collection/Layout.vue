@@ -20,8 +20,6 @@ fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`)
     .then(response => response.json())
     .then(collections => {
         // 받은 데이터 일단 볼까
-        // console.log(collections);
-        collection.List = null;
         collection.List = collections;
         console.log(collection.List);
     })
@@ -78,6 +76,7 @@ function successInit(){
 
 
 getSharedDiary();
+
 // 데이터 불러오기 -> 유저가 공유한적있는 모든 다이어리 불러오기
 function getSharedDiary() {
 let requestOptions = {
@@ -86,13 +85,14 @@ redirect: 'follow'
 };
 
 fetch(`http://localhost:8080/diary/displayed?memberId=${userDetails.id}`, requestOptions)
-.then(response => response.text())
+.then(response => response.json())
 .then(result => {
     diaryDisplayed.list = result;
 
 })
 .catch(error => console.log('error', error));
 }
+console.log(diaryDisplayed.list);
 </script>
 
 
@@ -106,6 +106,7 @@ fetch(`http://localhost:8080/diary/displayed?memberId=${userDetails.id}`, reques
                 :collection="collection" 
                 :isDuplicated ="isColNameDuplicated" 
                 :successAddMenu = "regSuccess"
+                :displayedDiary = "diaryDisplayed"
                 @registerCollection = "regBtnClickHandler"
                 @initSuccesAddMenu = "successInit"
             >
