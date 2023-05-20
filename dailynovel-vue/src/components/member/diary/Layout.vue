@@ -145,9 +145,10 @@ function getListwithFiltering(backup) {
                 }
             }
             //받아온 데이터가 있다면
-            console.log(result);
             //diary reactive 객체의 list 속성에 넣고
             diary.list=result
+            // console.log(diary.list["2021년 5월"][0].diaryId);
+
             // 모든 데이터의 Date형식을 Javascript의 Date 객체로 변경
             for(let key in diary.list){
                 for(let value in diary.list[key]){
@@ -210,7 +211,8 @@ function diaryAddbtnClickHandler(){
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor :isAdd = isClickDiaryAdd />
+            <Editor :isAdd = "isClickDiaryAdd" :isLoad = "curDiaryId" />
+            <!-- :current ="diary.value"  -->
         </section>
     </div>
 </template>

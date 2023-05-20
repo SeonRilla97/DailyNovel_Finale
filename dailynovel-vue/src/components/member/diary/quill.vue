@@ -1,7 +1,7 @@
 
 <script setup>
 
-import { ref,onMounted, onUpdated } from 'vue';
+import { ref,onMounted, onUpdated,defineProps } from 'vue';
 import { Quill, QuillEditor } from '@vueup/vue-quill';
 // import BlotFormatter from 'quill-blot-formatter'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
@@ -11,6 +11,10 @@ import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 
 const quill = ref(null);
 console.log(quill.value);
+const props = defineProps({
+    'content' : ''
+
+});
 
 //툴바 옵션들
 const toolbarOptions = 
@@ -43,8 +47,10 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-
-})
+    console.log(props.content);
+    quill.value.setText(props.content);
+    console.log(quill.value);
+});
 
 function editortrigger (delta, oldDelta, source) {
     if (source == 'api') {
@@ -71,8 +77,8 @@ function editortrigger (delta, oldDelta, source) {
             class="editor-quill"
             placeholder="나의 마음을 찬찬히 넣어주세요"
             :toolbar="['bold', 'italic', 'underline', 'image']"
-            :modules="modules"
             />
+            <!-- :modules="modules" -->
 
 
 
