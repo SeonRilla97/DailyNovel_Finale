@@ -27,6 +27,16 @@
     #{content});
   </insert>
   
+  <insert id="insertGuestbookComment" parameterType="MbGuestBookComment">
+    insert into guestbook_comment 
+    (guestbook_id,
+    member_id,     
+    content) 
+    values 
+    (#{guestbookId},
+    #{memberId},
+    #{content});
+  </insert>
   
   
   

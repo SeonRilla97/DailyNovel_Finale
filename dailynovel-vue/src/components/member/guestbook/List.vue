@@ -1,10 +1,11 @@
 <script setup>
 import { onBeforeMount, onMounted, onUpdated, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
 
 let userDetails = useUserDetailsStore();
 let route = useRoute();
+let router = useRouter();
 
 // 방명록 주인 ID
 const hostId = userDetails.id;
@@ -44,6 +45,7 @@ onMounted(() => {
     console.log(i);
   }
 
+  // 현재 들고온 주소에 따라서 모드 확인
   if (route.fullPath.match("profile"))
     mode = "profile";
   else
@@ -52,24 +54,44 @@ onMounted(() => {
   console.log(mode);
 })
 
-function cmtModifyHandler(isModify) {
-  isModify = !isModify;
+let isModify = ref(false);
+
+function cmtModifyHandler() {
+  isModify.value = !isModify.value;
   console.log(isModify);
 }
 
-function writeGuestBookCommentHandler() {
-  fetch("http://localhost:8080/members/guestbooks/save",
+function deleteGuestBookCommentHandler(){
+
+}
+
+function rewriteGuestBookCommentHandler(){
+
+}
+
+function initComment(){
+  guestbookComment.guestbookId = null;
+  guestbookComment.content = null;
+}
+
+async function writeGuestBookCommentHandler(guestbookId) {
+
+  guestbookComment.guestbookId = guestbookId;
+
+  await fetch("http://localhost:8080/members/guestbooks/comment",
     {
       method: "POST",
       headers: {
         // "Accept": "application/json",
         "Content-type": "application/json"
       },
-      body: JSON.stringify(guestbook)
+      body: JSON.stringify(guestbookComment)
     })
     .then(response => response.json())
     .then((data) => { if (data == 1) console.log("완료") })
     .catch(error => console.log(error));
+
+  initComment();
 }
 
 function writeGuestBookHandler() {
@@ -85,6 +107,8 @@ function writeGuestBookHandler() {
     .then(response => response.json())
     .then((data) => { if (data == 1) console.log("완료") })
     .catch(error => console.log(error));
+  
+  // getGuestbookList();
 
 }
 
@@ -98,10 +122,7 @@ function getGuestbookList() {
       },
     })
     .then(response => response.json())
-    .then((data) => guestbooks.list = data);
-
-
-
+    .then((data) => guestbooks.list = data)   
 }
 
 </script>
@@ -113,45 +134,46 @@ function getGuestbookList() {
         <button @click.prevent="writeGuestBookHandler" type="submit" value="">작성</button>
       </div>
     </li>
-    <li class="lc-center" v-for="item in guestbooks.list">
+    <li class="lc-center" v-for="item in guestbooks.list" :key="item.id">
+
       <div class="m-guestbook-content-item">
         <div class="m-guestbook-item-header">
           <span>From.</span>
           <div class="m-guestbook-content-writer"><span>{{ item.writerName }}</span></div>
         </div>
+
         <div class="m-guestbook-content-text"><span>{{ item.content }}</span></div>
-        <!-- <div class="m-guestbook-content-comment"><span>{{ item.comment }}</span></div> -->
+        
 
         <!-- 기능 구현 우선으로 할거라 일단 마구잡이로 적고 추후 리팩토링 필수. -->
 
         <!-- 답글이 존재할 때 -->
-        <form class="m-guestbook-comment-form" v-if="mode == 'profile'">
-          <textarea class="m-guestbook-comment-text-host" cols="30" rows="10" :value="item.comment"></textarea>
-          <div @click="cmtModifyHandler(item.isModify)">수정</div>
-          <div>삭제</div>
+        <form class="m-guestbook-comment-form" v-if="mode == 'profile' && item.comment">
+            
+              <textarea class="m-guestbook-comment-text-host" readonly cols="30" rows="10" :value="item.comment"></textarea>
+              <div style="width:fit-content">
+                <div class="m-guestbook-icon-box pencil-icon" @click="rewriteGuestBookCommentHandler"></div>
+                <div class="m-guestbook-icon-box trash-icon" @click="deleteGuestBookCommentHandler" ></div>
+              </div>
         </form>
-        <!-- 수정을 눌렀을 때 -->
+        
+        <!-- <div v-show = isModify>
+              <textarea class="m-guestbook-comment-text-host" cols="30" rows="10" :value="item.comment"></textarea>
+              <div @click="cmtModifyHandler">수정</div>
+            </div>  
+        // 수정을 눌렀을 때
         <form class="m-guestbook-comment-form" v-if="mode == 'profile'">
-          <textarea class="m-guestbook-comment-text-host" cols="30" rows="10" :value="item.comment"></textarea>
-          <div>수정</div>
-        </form>
+          
+        </form> -->
 
         <!-- 답글이 존재하지 않을 때 -->
-        <form class="m-guestbook-comment-form" v-if="mode == 'profile'">
-          <textarea class="m-guestbook-comment-text-host" cols="30" rows="10" placeholder="답글을 적어보세요."
+        <form class="m-guestbook-comment-form" v-if="mode == 'profile' && !item.comment">
+          <textarea class="m-guestbook-comment-text-host" cols="30" rows="10" placeholder="답글을 보내보세요."
             v-model="guestbookComment.content"></textarea>
-          <button type="submit" @click.prevent="writeGuestBookCommentHandler">전송</button>
+          <button type="submit" @click.prevent="writeGuestBookCommentHandler(item.id)">저장</button>
         </form>
 
-        <!-- <form class="m-guestbook-comment-form" v-if="mode == 'profile'">
-          <textarea class="m-guestbook-comment-text-host" v-if="!item.comment" cols="30" rows="10"
-            placeholder="답글을 적어보세요." v-model="guestbookComment.content"></textarea>
 
-          <textarea class="m-guestbook-comment-text-host" v-if="item.comment" cols="30" rows="10"
-            :value="item.comment"></textarea>
-
-          <button type="submit" @click.prevent="writeGuestBookCommentHandler" v-if="!item.comment">전송</button>
-        </form> -->
         <!-- 방문자 모드 -->
         <form class="m-guestbook-comment-form" v-if="mode == 'guest'">
           <textarea class="m-guestbook-comment-text-guest" @click.prevent="" readonly name="" id="" cols="30" rows="10"
@@ -166,13 +188,24 @@ function getGuestbookList() {
 </template>
 
 <style scoped>
+.m-guestbook-icon-box{
+  width:24px;
+  height:24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.m-guestbook-icon-box:hover{
+  background-color: rgba(0,0,0,0.2);
+}
 .m-guestbook-comment-text-host {
   font-family: 'Nanum Gothic', sans-serif;
   resize: none;
   width: 80%;
   height: 80%;
   border: none;
-
+  /* readonly : "readonly"; */
   background-color: #fafafa;
 }
 
@@ -222,7 +255,8 @@ function getGuestbookList() {
   /* overflow: scroll; */
 
   padding: 1rem;
-
+  
+  /* overflow:scroll; */
 }
 
 @media (max-width: 768px) {
@@ -307,4 +341,6 @@ function getGuestbookList() {
   width: 100%;
   padding: 1rem;
 }
+
+
 </style>
