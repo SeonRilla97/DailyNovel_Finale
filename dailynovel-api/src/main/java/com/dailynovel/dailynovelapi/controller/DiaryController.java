@@ -86,7 +86,7 @@ public class DiaryController {
     }
 
     @PostMapping
-    public  void write(
+    public void write(
             @RequestBody MbDiary diary
     ){
 //        Integer id = null;
