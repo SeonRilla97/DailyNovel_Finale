@@ -51,7 +51,7 @@ const day = ["일","월","화","수","목","금","토"]
         <!-- 달별 일기 -->
         <div class="content">
             
-            
+         
             <div class="date-list">
                 <!-- 년 월 타이틀-->
                 <div class="item-container" v-for="(value, key) in diary.list">

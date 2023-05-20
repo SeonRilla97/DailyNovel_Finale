@@ -16,14 +16,8 @@ function mOpenHandler(diaryId){
     // 현재 추가버튼 드롭다운 활성화
     menuOpen.value = diaryId;
     
-    //선택된 다이어리가 포함된 컬렉션 목록
-    let containList=[];
-    console.log(containList)
-    // console.log(props.displayedDiary)
-    // 공유된 다이어리 중에 diaryId에 해당하는 collectionId 추출
-    for(let diary of props.displayedDiary.list)
-        if(diaryId == diary.diaryId)
-            containList.push(diary.collectionId);
+    // Colletion과 Diary 연관 관계 테이블로부터 Collection ID들 추출
+    
 
     // Reactive한 객체에 삽입
     curDiaryInCollection.value = containList;
