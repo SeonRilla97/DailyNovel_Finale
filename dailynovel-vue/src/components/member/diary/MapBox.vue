@@ -2,7 +2,9 @@
     <div>
 
         <div class="controll" >
-            <input  v-show="selectedAddr" type="text" id="myPlace" @click="showMap()">
+            <div class="addr-box">
+                <button v-show="selectedAddr">장소 : <input type="text" id="myPlace" @click="showMap()"></button>
+            </div>
             <button @click="zoom(-1)" v-show="ZOOM">
                 <span class="material-symbols-outlined">
                     zoom_in
@@ -208,6 +210,12 @@ export default {
 <style >
 .controll {
     position: relative;
+}
+
+#myPlace {
+    border: none;
+    text-align: center;
+    
 }
 
 button {
