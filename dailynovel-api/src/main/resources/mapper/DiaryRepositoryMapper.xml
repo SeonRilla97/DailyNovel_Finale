@@ -18,6 +18,7 @@
         <result property="weather" column="weather" />
         <result property="feeling" column="feeling" />
         <result property="honesty" column="honesty" />
+        <result property="regDate" column="reg_date" />
         <result property="latitude" column="latitude" />
         <result property="longitude" column="longitude" />
     </resultMap>

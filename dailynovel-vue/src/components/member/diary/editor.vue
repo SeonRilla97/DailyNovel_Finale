@@ -7,8 +7,10 @@ import { ref,onMounted, onUpdated, defineProps } from 'vue';
 import MapBox from './MapBox.vue';
 
 const props = defineProps({
-    'isAdd' : ''
-})
+    'isAdd' : '',
+    'isLoad' : '',
+    // 'current' : ''
+});
 
 
 
@@ -20,10 +22,15 @@ onMounted(() => {
 
 });
 
+
+// loadDiary() 무한 반복 막기위한 선언
+let previousLoad = -1;
+
 onUpdated(() => {
+  // console.log(current);
 
   ControllerAdd = props.isAdd
-  console.log(ControllerAdd);
+  // console.log(ControllerAdd);
 
     //update 이중 방지용
   if( ControllerAdd == true && weatherDone == false){
@@ -35,9 +42,15 @@ onUpdated(() => {
     .then(success => console.log(success));
   }
 
+  // console.log(previousLoad, props.isLoad);
+  if(previousLoad != props.isLoad){
+    loadDiary(props.isLoad);
+    previousLoad = props.isLoad
+  }
+
 })
 
-function getDate(){
+function getDate(gotdate){
 
   //프로토 타입
   Date.prototype.amPm = function() {
@@ -49,10 +62,12 @@ function getDate(){
       return h;
   }
 
-  let date = new Date();
+  console.log(gotdate);
+  // let date = new Date();
+  let date = gotdate;
+  console.log(date.getFullYear());
   titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
   return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
-
 }
 
   let titleDate = "";
@@ -61,7 +76,8 @@ function getDate(){
 
 
 //현재시간 받아오기
-  const time = getDate();
+  const time = getDate(new Date);
+  
 
 //날씨관련 객체
   const weatherData = ref("");
@@ -72,8 +88,7 @@ function getDate(){
       'weatherDes': '날씨'
   };
 
-
-    // 일기 추가 버튼 관련 부분
+const diaryRef = ref("");
 
 let diaryObj = {
   "id": null,
@@ -84,10 +99,12 @@ let diaryObj = {
   "feeling": "",
   "honesty": "",
   "tag": "",
-  "regDate": null,
+  "regDate": getDate(new Date),
   "lat": 38,
   "lng": 128
 };
+diaryRef.value = diaryObj;
+console.log(diaryRef.value);
 
  //현재 위치 받아오기 API
 
@@ -135,7 +152,7 @@ function coor(coor) {
           weatherData.value.city = result.city.name;
           weatherData.value.weatherCode = result.list[1].weather[0].id;
 
-          console.log( result.list[1].weather[0].id);
+          // console.log( result.list[1].weather[0].id);
           weatherDone = true;
           return result.list[1].weather[0].id;
           // weatherCodeToDes(result.list[1].weather[0].id);
@@ -197,6 +214,24 @@ const addDiary = function(isAdd){
     resolve("seucess");
 })};
 
+const loadDiary = function(diaryId){
+  return new Promise(function(resolve){
+
+  let requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+  fetch(`http://localhost:8080/diary/${diaryId}`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      diaryRef.value = result;
+      diaryRef.value.regDate = getDate(new Date(result.regDate));
+    })
+    .catch(error => console.log('error', error));
+  })
+}
+
 
 
 </script>
@@ -209,10 +244,10 @@ const addDiary = function(isAdd){
 
     <div class="editor-attribue-box">
       <!-- <div class="editor-data">2023년 4월 10일 오후 02시 01분 </div> -->
-      <div class="editor-data">{{time}}</div>
-      <div class="editor-attribue">{{weatherData.weatherDes}}</div>
-      <div class="editor-attribue">#여행</div>
-      <div class="editor-attribue">화남</div>
+      <div class="editor-data">{{diaryRef.regDate}}</div>
+      <div class="editor-attribue">{{diaryRef.weather}}</div>
+      <div class="editor-attribue">{{'#'+diaryRef.tag}}</div>
+      <div class="editor-attribue">{{diaryRef.feeling}}</div>
     </div>
 
     <div class="editor-title"> 
@@ -220,7 +255,8 @@ const addDiary = function(isAdd){
                 class="editor-title-content editor-header"
                 @click="editHandler"
                 >
-          {{titleDate+'의 일기'}}
+          <!-- {{titleDate+'의 일기'}} -->
+          {{ diaryRef.title }}
         </header>
         <div class="editor-share">공유 중</div>
     </div>
@@ -235,7 +271,7 @@ const addDiary = function(isAdd){
         <!-- <quill2/> -->
         <quill
           class="editor-quill"
-        
+          :content = "diaryRef.content"
         />
           <!-- <quillCopy/> -->
 
