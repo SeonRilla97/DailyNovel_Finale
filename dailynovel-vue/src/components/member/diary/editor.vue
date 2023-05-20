@@ -90,6 +90,7 @@ function coor(coor) {
           weatherData.value.city = result.city.name;
           weatherData.value.weatherCode = result.list[1].weather[0].id;
 
+          console.log( result.list[1].weather[0].id);
           weatherCodeToDes(result.list[1].weather[0].id);
       })
       .catch(error => console.log('error', error));
@@ -97,23 +98,29 @@ function coor(coor) {
 
   //날씨 코드에서 명칭으로 변경 7가지 경우의 수
     function weatherCodeToDes(weatherCode){
+      console.log(weatherCode);
+      let weatherCodeConvert = parseInt(weatherCode /= 100);
+      console.log(weatherCodeConvert);
+      
 
-      if(weatherCode / 100 == 2)
+      if(weatherCodeConvert == 2)
         weatherData.value.weatherDes = "천둥번개";
-      else if(weatherCode / 100 == 3)
+      else if(weatherCodeConvert == 3)
         weatherData.value.weatherDes = "천둥번개";
-      else if(weatherCode / 100 == 5)
+      else if(weatherCodeConvert == 5)
       weatherData.value.weatherDes = "비";
-      else if(weatherCode / 100 == 6)
+      else if(weatherCodeConvert == 6)
       weatherData.value.weatherDes = "눈";
-      else if(weatherCode / 100 == 7)
+      else if(weatherCodeConvert == 7)
       weatherData.value.weatherDes = "미세먼지";
-      else if(weatherCode / 100 == 8){
+      else if(weatherCodeConvert == 8){
         if(weatherCode / 800 == 1)
           weatherData.value.weatherDes = "맑음";
         else 
           weatherData.value.weatherDes = "흐림";
       }
+
+      console.log(weatherData.value.weatherDes);
     }
 
 </script>
