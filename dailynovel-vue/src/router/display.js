@@ -20,6 +20,7 @@ export default [
   {
     path: 'community/:id',
     name: 'detailInterface',
+    props: true,
     component:DetailInterface
   },
   {
