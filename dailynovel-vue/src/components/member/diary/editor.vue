@@ -3,34 +3,57 @@ import quill from './quill.vue';
 import quill2 from './quill2.vue';
 import quillCopy from './quill copy.vue';
 
-import { ref,onMounted, onUpdated } from 'vue';
+import { ref,onMounted, onUpdated, defineProps } from 'vue';
 import MapBox from './MapBox.vue';
 
+const props = defineProps({
+    'isAdd' : ''
+})
+
+
+
+let weatherDone = false;
+let ControllerAdd = props.isAdd;
 
 onMounted(() => {
 
-  
-  geoFindMe();
 
 });
 
-  function getDate(){
+onUpdated(() => {
 
-    //프로토 타입
-    Date.prototype.amPm = function() {
-        let h = this.getHours() < 12 ? "오전" : "오후";
-        return h;
-    }
-    Date.prototype.getHoursAmPm = function() {
-        let h = this.getHours() < 12 ? this.getHours() : this.getHours() - 12;
-        return h;
-    }
+  ControllerAdd = props.isAdd
+  console.log(ControllerAdd);
 
-    let date = new Date();
-    titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
+    //update 이중 방지용
+  if( ControllerAdd == true && weatherDone == false){
+    let promise = geoFindMe();
 
+    promise
+    .then(response => weather(response[0],response[1]))
+    .then(result => addDiary(result))
+    .then(success => console.log(success));
   }
+
+})
+
+function getDate(){
+
+  //프로토 타입
+  Date.prototype.amPm = function() {
+      let h = this.getHours() < 12 ? "오전" : "오후";
+      return h;
+  }
+  Date.prototype.getHoursAmPm = function() {
+      let h = this.getHours() < 12 ? this.getHours() : this.getHours() - 12;
+      return h;
+  }
+
+  let date = new Date();
+  titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
+  return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
+
+}
 
   let titleDate = "";
   const mapToggle = ref(false);
@@ -49,6 +72,23 @@ onMounted(() => {
       'weatherDes': '날씨'
   };
 
+
+    // 일기 추가 버튼 관련 부분
+
+let diaryObj = {
+  "id": null,
+  "member_id": 4,
+  "title": titleDate+'의 일기',
+  "content": "",
+  "weather": weatherData.value.weatherDes,
+  "feeling": "",
+  "honesty": "",
+  "tag": "",
+  "regDate": null,
+  "lat": 38,
+  "lng": 128
+};
+
  //현재 위치 받아오기 API
 
 // 지도 설정한 좌표값 얻어오기
@@ -59,25 +99,30 @@ function coor(coor) {
 
  function geoFindMe() {
 
+  return new Promise(function (resolve){
     function success(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         //날씨 호출
-        weather(latitude, longitude);
+        // weather(latitude, longitude);
+        resolve([latitude,longitude]);
     }
     function error() {
-        console.log("Unable to retrieve your location");
+      console.log("Unable to retrieve your location");
     }
-
+    
     if (!navigator.geolocation) {
-        console.log("Geolocation is not supported by your browser");
+      console.log("Geolocation is not supported by your browser");
     } else {
-        console.log("Locating…");
-        navigator.geolocation.getCurrentPosition(success, error);
+      console.log("Locating…");
+      navigator.geolocation.getCurrentPosition(success, error);
     }
-    }
+  });
+  }
 
   function weather(latitude, longitude){
+
+    return new Promise(function (resolve){
 
     let requestOptions = {
       method: 'GET',
@@ -90,31 +135,69 @@ function coor(coor) {
           weatherData.value.city = result.city.name;
           weatherData.value.weatherCode = result.list[1].weather[0].id;
 
-          weatherCodeToDes(result.list[1].weather[0].id);
+          console.log( result.list[1].weather[0].id);
+          weatherDone = true;
+          return result.list[1].weather[0].id;
+          // weatherCodeToDes(result.list[1].weather[0].id);
+      })
+
+        //날씨 코드에서 명칭으로 변경 7가지 경우의 수
+      .then(code =>{
+        let weatherCodeConvert = parseInt(code /= 100);
+
+        if(weatherCodeConvert == 2)
+          weatherData.value.weatherDes = "천둥번개";
+        else if(weatherCodeConvert == 3)
+          weatherData.value.weatherDes = "천둥번개";
+        else if(weatherCodeConvert == 5)
+        weatherData.value.weatherDes = "비";
+        else if(weatherCodeConvert == 6)
+        weatherData.value.weatherDes = "눈";
+        else if(weatherCodeConvert == 7)
+        weatherData.value.weatherDes = "미세먼지";
+        else if(weatherCodeConvert == 8){
+          if(code / 800 == 1)
+            weatherData.value.weatherDes = "맑음";
+          else 
+            weatherData.value.weatherDes = "흐림";
+        }
+        resolve(weatherData.value.weatherDes);
+        return true;
       })
       .catch(error => console.log('error', error));
-  }
+    })
+  };
 
-  //날씨 코드에서 명칭으로 변경 7가지 경우의 수
-    function weatherCodeToDes(weatherCode){
 
-      if(weatherCode / 100 == 2)
-        weatherData.value.weatherDes = "천둥번개";
-      else if(weatherCode / 100 == 3)
-        weatherData.value.weatherDes = "천둥번개";
-      else if(weatherCode / 100 == 5)
-      weatherData.value.weatherDes = "비";
-      else if(weatherCode / 100 == 6)
-      weatherData.value.weatherDes = "눈";
-      else if(weatherCode / 100 == 7)
-      weatherData.value.weatherDes = "미세먼지";
-      else if(weatherCode / 100 == 8){
-        if(weatherCode / 800 == 1)
-          weatherData.value.weatherDes = "맑음";
-        else 
-          weatherData.value.weatherDes = "흐림";
-      }
-    }
+console.log(diaryObj);
+
+const addDiary = function(isAdd){
+  return new Promise(function(resolve, reject){
+
+  // if(isAdd == true){
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    diaryObj.weather = weatherData.value.weatherDes;
+    let raw = JSON.stringify(diaryObj);
+
+    let requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/diary", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+    console.log("완료");
+  // }
+    resolve("seucess");
+})};
+
+
 
 </script>
 

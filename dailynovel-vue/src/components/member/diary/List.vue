@@ -36,6 +36,7 @@ function diaryClickHandler(e){
 function diaryAddBtnClickHandler(){
     emit("addBtnClick")
 }
+
 const day = ["일","월","화","수","목","금","토"]
 </script>
 

@@ -26,7 +26,7 @@ public class MbDiary {
 
 
   //모재영 위도경도 추가
-  private double latitude;
-  private double longitude;
+  private double lat;
+  private double lng;
 
 }

@@ -16,6 +16,8 @@ public interface DiaryService {
     public TreeMap<String, Integer> getByFeeling();
     public TreeMap<String, Integer>  getByTag();
     public TreeMap<String, Integer>  getByHonesty();
+    public List<Object> getBypino();
+    public List<Object> getByNpino();
     public List<Object[]> getById();
 
     public List<Diary> getAllByMId();

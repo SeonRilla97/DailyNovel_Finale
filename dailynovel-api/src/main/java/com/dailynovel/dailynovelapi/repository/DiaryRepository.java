@@ -36,7 +36,14 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>{
     + "ORDER BY honestyRange DESC")
     List<Object[]> findByHonesty(@Param("memberId") Integer memberId);
 
-    @Query("select d.tag, count(d.tag) from Diary d where d.memberId = 1  group by d.tag")
+    @Query("SELECT d.honesty, count(d.honesty) from Diary d where d.memberId = 1 and d.honesty = 0 ")
+    List<Object[]> findBypino(@Param("memberId") Integer memberId);
+
+    @Query("SELECT d.honesty, count(d.honesty) from Diary d where d.memberId = 1 and d.honesty = 100 ")
+    List<Object[]> findByNpino(@Param("memberId") Integer memberId);
+
+
+    @Query("select d.tag, count(d.tag) from Diary d where d.memberId = 1 and tag IS NOT NULL group by d.tag")
     List<Object[]> findByTag(@Param("memberId") Integer memberId);
 
 

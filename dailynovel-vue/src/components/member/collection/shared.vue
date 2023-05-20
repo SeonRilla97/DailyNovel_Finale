@@ -9,19 +9,34 @@ let curDiaryInCollection = ref([1,2,3]);
 console.log("포함 확인!!" +curDiaryInCollection.value.includes(3));
 
 function mOpenHandler(diaryId){
+    // 메뉴 버튼 한번 더 클릭시 닫힘 기능
     if(menuOpen.value == diaryId){
         menuOpen.value=null;
         return;
     }
-    // 현재 추가버튼 드롭다운 활성화
-    menuOpen.value = diaryId;
+    // 해당 다이어리가 담긴 컬렉션 목록
+    let containCollection=[];
     
+    // Diary가 담긴 Colletion Id로 찾기
+    fetch(`http://localhost:8080/collection/items?diaryId=${diaryId}`)
+    .then(response => response.json())
+    .then(result => {
+    //1.해당 다이어리가 속한 컬렉션 목록을 들고온다.(result)
+        //2.collection_items(DB Table)에서 collectionId 값만 추출 하여 배열에 저장
+        let modifiedArr = result.map(function(result){
+            return result.collectionId;
+        });
+        //3.배열을 reactive한 변수에 저장
+        curDiaryInCollection.value = modifiedArr
+    })
+    .catch(error => console.log('error', error));
+    // 현재 누른 추가버튼 드롭다운 활성화
+    menuOpen.value = diaryId;
     // Colletion과 Diary 연관 관계 테이블로부터 Collection ID들 추출
     
 
     // Reactive한 객체에 삽입
-    curDiaryInCollection.value = containList;
-    console.log(containList);
+    // console.log(containList);
     // diaryId 로 해당 다이어리 데이터의 
     
 }

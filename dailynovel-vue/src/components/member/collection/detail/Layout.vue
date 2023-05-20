@@ -15,7 +15,6 @@ const memberId = userDetails.id;
 console.log(collectionId,memberId)
 
 
-
 // 댓글불러와야함
 </script>
 
