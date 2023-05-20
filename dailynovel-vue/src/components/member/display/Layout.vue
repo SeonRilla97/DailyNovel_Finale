@@ -46,6 +46,7 @@
 <script setup>
 
 import { onMounted, reactive, ref, } from 'vue'
+import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
 
 // 되는 gpt코드 -> 비교해보기
 let model = reactive([]);
@@ -55,7 +56,9 @@ let currentCategory = ref('1');
 
 let indeLikeList = reactive([])
 
-let memberId = 1; // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
+let userDetails = useUserDetailsStore();
+
+let memberId = userDetails.id; // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
 
 async function load() {
     const resList = await fetch('http://localhost:8080/display/listall')
@@ -86,6 +89,7 @@ function isDiaryIdMatched(diaryId){// 좋아요 클릭했는지 확인하는 함
 // 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
 async function likeSwitchHandler(diaryId) {
     console.log("좋아요 " + (this.indeLikeList.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
+    console.log("멤버아이디: "+memberId);
 
     try {
         const response = await fetch(`http://localhost:8080/display/${this.indeLikeList.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
@@ -94,7 +98,7 @@ async function likeSwitchHandler(diaryId) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                memberId: 1,         // 멤버 정보 가지고 오기
+                memberId: memberId,         // 멤버 정보 가지고 오기
                 diaryId: diaryId,
             }),
         });
