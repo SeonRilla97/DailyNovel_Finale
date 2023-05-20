@@ -191,6 +191,56 @@ public class DiaryDefaultService implements DiaryService{
         return result;
     }
 
-    ;
+
+
+
+
+    @Override
+    public List<Diary> getAllByMId() {
+        List<Diary> list = repository.findAllByMId(null);
+        return list;
+    }
+
+
+
+
+
+	@Override
+	public List<Object[]> getById() {
+		List<Object[]> list = repository.findByCoorList(null);
+        return list;
+	}
+
+
+
+
+
+    @Override
+    public List<Object> getBypino() {
+        List<Object[]> list = repository.findBypino(null);
+    
+        // 리스트를 다시 가공하여 원하는 형태로 변환
+        List<Object> resultList = new ArrayList<>();
+        for (Object[] objArray : list) {
+            resultList.add(objArray[0]);
+            resultList.add(objArray[1]);
+        }
+    
+        return resultList;
+    }
+
+    @Override
+    public List<Object> getByNpino() {
+        List<Object[]> list = repository.findByNpino(null);
+    
+        // 리스트를 다시 가공하여 원하는 형태로 변환
+        List<Object> resultList = new ArrayList<>();
+        for (Object[] objArray : list) {
+            resultList.add(objArray[0]);
+            resultList.add(objArray[1]);
+        }
+    
+        return resultList;
+    }
 }
 

@@ -1,10 +1,7 @@
 <template lang="">
     <main class=" center-grid">
-        <div class="subscribeBtn nodouble-drag" v-show="subscribe">
-            <div @click="subscribeHandler(writerId)">구독하기</div>
-            <router-link to="/member/room/collection/main" v-show="">구경가기</router-link>
-                <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
-                <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
+        <div class="subscribeBtn nodouble-drag" v-show="subscribeBox">
+            <Subscribe :memberId="memberId" :writerId="writerId" v-if="writerId!=''"></Subscribe>
         </div>
         <div class="content-center">
             <section class=" center-grid article-box scroll">
@@ -24,9 +21,15 @@
                         <p class="detail-width nodouble-drag">
                             {{content}}<br>
                             도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득                            득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득
+                            <br>
+                            도
+                            <br>
+                            완
+                            <br>
+                            득
                         </p>
                     </article>
-                    <div class="center-grid padding-bottom">
+                    <div class="center-grid padding-bottom sticky">
                         <div style="display:inline-block">
                             <div class="more-btn nodouble-drag d-inline">좋아요</div>
                             <div class="more-btn nodouble-drag d-inline">신고하기</div>
@@ -38,7 +41,15 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue';
+
+import Subscribe from './Subscribe.vue'
+import { reactive, ref, onMounted, defineProps, defineEmits, onBeforeMount, } from 'vue';
+import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+
+const emit = defineEmits([
+    'updatePage'
+]);
+
 
 const props = defineProps({
     detailPage: {
@@ -47,12 +58,10 @@ const props = defineProps({
     likeInfo: {
         type : Boolean
     },
-    // segnal:{
-    //     type: Function
-    // }
 })
 
-// console.log(props)
+let userDetails = useUserDetailsStore();
+
 let data = ref();
 let diaryId = ref();
 let title = ref('');
@@ -60,17 +69,26 @@ let content = ref('');
 let like = ref();//게시글의 총 좋아요 수
 let image = ref('');//이미지
 let nickname = ref('');//닉네임
-let subscribe = ref(false);
-let writerId = ref();// 게시글 작성자 아이디
+let subscribeBox = ref(false);
+let writerId = ref('');// 게시글 작성자 아이디
 
-let likeStatus = ref();
+let likeStatus = ref('');
 
-let memberId = 1; // 멤버 아이디 받아오는 걱 수정해야 함
+let memberId = userDetails.id; // 멤버 아이디 받아오는 걱 수정해야 함
 
-function load() {
+let SubscriptionStatus = ref();
+
+
+onBeforeMount(async () => {
+    await load();
+});
+
+
+async function load() {
     
     setTimeout(() => {
-        
+    // await zz(()=>{
+        // console.log(props)
         data = props.detailPage
 
         diaryId.value = data.id;
@@ -79,18 +97,18 @@ function load() {
         like.value = data.like;
         image.value = data.image;
         nickname.value = data.nickname;
-        writerId.value = data.memberId;
+        writerId.value = props.detailPage['memberId'];
 
         likeStatus = props.likeInfo
 
-        console.log(likeStatus)
-        console.log(props.memberId)
-    }, 100);
+    }, 150);
+    // })
 }
 
-onMounted(() => {
-    load();
+onMounted(async() => {
+    await load();
 })
+
 
 async function likeSwitchHandler(diaryId) {
     console.log("좋아요 " + (likeStatus? "delete" : "insert"));
@@ -102,7 +120,7 @@ async function likeSwitchHandler(diaryId) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                memberId: 1,         // 멤버 정보 가지고 오기
+                memberId: memberId,         // 멤버 정보 가지고 오기
                 diaryId: diaryId,
             }),
         });
@@ -116,47 +134,14 @@ async function likeSwitchHandler(diaryId) {
     } catch (error) {
         console.error(error); // 에러 처리
     }
+    emit('updatePage');
     setTimeout(load, 50);
+    
 }
 
 function openSubscribeBoxHandler() {
-    subscribe.value = !subscribe.value;
-    console.log(subscribe.value)
-}
-
-async function subscribeHandler(writerId){
-    console.log("구독했습니다.")
-    // console.log("구독 " + (likeStatus? "delete" : "insert"));
-    if(memberId==writerId)
-        alert("5252, 본인은 구독할 수 없다구~")
-    else{
-        alert("배달의 민족 주문")
-        console.log(memberId)
-        console.log(writerId)
-
-        try {
-            const response = await fetch('http://localhost:8080/display/subscribeStatus', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    followedId: writerId,         // 멤버 정보 가지고 오기
-                    followId: memberId,
-                }),
-            });
-
-        if (!response.ok) {
-            throw new Error('요청에 실패했습니다.');
-        }
-        const data = response;
-        console.log(data); // 응답 데이터 처리
-        
-        } catch (error) {
-            console.error(error); // 에러 처리
-        }
-        setTimeout(load, 50);
-    }
+    subscribeBox.value = !subscribeBox.value;
+    console.log(subscribeBox.value)
 }
 
 </script>
@@ -330,12 +315,16 @@ li {
 
 .subscribeBtn {
     text-align: center;
-    background-color: #989797;
-    width: 10rem;
-    height: 5rem;
+    background-color: #FAFFF9;
+    /* #F2C6C2; */
+    border: 3px solid black;
+    border-radius: 0.5rem;
+    width: 20rem;
+    height: 9.375rem;
     position: absolute;
-    top: 120px;
-    left: 960px;
+    top: 170px;
+    left: 615px;
+    z-index: 1;
 }
 
 .content-center {
@@ -362,8 +351,8 @@ li {
     background-color: #FAFFF9;
 }
 .padding-bottom{
-    padding-top: 2rem;
-    padding-bottom: 5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 </style>

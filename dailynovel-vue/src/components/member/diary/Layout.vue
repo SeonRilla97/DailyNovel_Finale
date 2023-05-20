@@ -3,9 +3,10 @@ import Header from './Header.vue'
 import List from './List.vue'
 import Editor from './editor.vue'
 import { reactive, onBeforeMount, ref } from 'vue';
-
+import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
 import Filter from './filter.js'
-
+let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
+console.log(userDetails.id)
 
 //메뉴 관리
 const diaryFilter = reactive({
@@ -80,7 +81,8 @@ function getListwithFiltering(backup) {
 
     // 필터링을 위한 쿼리 생성구문
     let query = "?";
-    
+    // 유저 정보 (필수)
+    query += `memberId=${userDetails.id}`;
     if(feeling.idx != 0){
         query += `&feeling=${feeling.menu[feeling.idx]}`;
     }
@@ -167,7 +169,7 @@ function getCollectionList() {
     redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/collection/all", requestOptions)
+    fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`, requestOptions)
     .then(response => response.json())
     .then(collections => {
         //배열 생성
@@ -208,7 +210,7 @@ function diaryAddbtnClickHandler(){
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor />
+            <Editor :isAdd = isClickDiaryAdd />
         </section>
     </div>
 </template>
