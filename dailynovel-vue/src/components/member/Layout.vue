@@ -7,10 +7,11 @@ import Canvas from './Canvas.vue';
 import ModalHeader from './ModalHeader.vue'
 
 import Footer from './Footer.vue';
-import { ref } from 'vue';
+import { ref  } from 'vue';
 
 
 //=============모달 관련 속성들===================
+const canvasRef = ref(null);
 let closeEffect = ref(false); //애니메이션 동작 유무
 let isModalOpen = ref(false); //모달창 제어
 
@@ -26,6 +27,12 @@ function modalCloseHandler() {
   // console.log("click!")
   isModalOpen.value = true;  //모달창 키기(상태유지)
   closeEffect.value = false; //내려오기 (애니메이션 작동)
+
+  
+  const canvasElement = canvasRef.value;
+    if (canvasElement instanceof HTMLElement) {
+      canvasElement.focus();
+    }
 }
 function animationedHandler() {
   //모달창의 애니메이션이 발생 했는지 안했는지 감지하는 이벤트
@@ -33,11 +40,8 @@ function animationedHandler() {
   // console.log(isModalOpen)
   if (closeEffect.value == false) {
     isModalOpen.value = false;
+    
   }
-}
-
-function onCalendarClickHandler() {
-  console.log("클릭");
 }
 
 //==============모달 기본 동작 정의 =====================
@@ -46,7 +50,7 @@ function onCalendarClickHandler() {
 <template>
   <Header />
   <section class="member-room-canvas mgt-2">
-    <Canvas v-on:modalOpenHandler="modalOpenHandler" />
+    <Canvas id="canvas" v-on:modalOpenHandler="modalOpenHandler" tabindex="0" ref="canvasRef" />
   </section>
   <section class="member-room-temp-linkes">
     <router-link to="/member/room/collection/main" @click="modalOpenHandler"><button>컬렉션</button></router-link>

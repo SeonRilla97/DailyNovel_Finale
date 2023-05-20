@@ -6,7 +6,7 @@ import Background from '../item/background.js';
 
 export default function MainCanvas() {
   this.dom = this.$refs.canvas;
-    this.slime = new Slime(100, 100); // 수정된 부분
+    this.slime = new Slime(1200, 1200); // 수정된 부분
     this.background = new Background();
     this.ctx = this.dom.getContext("2d");
     this.dom.addEventListener("click", this.clickHandler);
