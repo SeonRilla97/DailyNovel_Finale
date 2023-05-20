@@ -57,4 +57,25 @@ public class InsightController {
         return list;
     }
 
+
+    @GetMapping("pino")
+    public List<Object> pino(
+        @RequestParam(name = "pino", required = false) String pino,
+        @RequestParam(name = "count", required = false) Integer count
+    ){
+        List<Object> list = service.getBypino();
+        return list;
+
+    }
+
+    @GetMapping("Npino")
+    public List<Object> Npino(
+        @RequestParam(name = "Npino", required = false) String Npino,
+        @RequestParam(name = "count", required = false) Integer count
+    ){
+        List<Object> list = service.getByNpino();
+        return list;
+
+    }
+
  }

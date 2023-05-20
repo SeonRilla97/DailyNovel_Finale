@@ -111,6 +111,10 @@ public class DiaryController {
         return list;
     }
 
+   
+
+    
+
     // @PostMapping("latlng")
     // public List<Diary> latlng(@RequestBody Diary diary){
         
