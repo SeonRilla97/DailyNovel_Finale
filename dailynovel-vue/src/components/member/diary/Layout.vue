@@ -210,7 +210,7 @@ function diaryAddbtnClickHandler(){
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor />
+            <Editor :isAdd = isClickDiaryAdd />
         </section>
     </div>
 </template>
