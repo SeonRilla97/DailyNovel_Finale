@@ -1,8 +1,10 @@
 <template lang="">
     <main class=" center-grid">
-        <div class="subscribeBtn nodouble-drag" v-show="subscribeBox">
-            <Subscribe :memberId="memberId" :writerId="writerId" v-if="writerId!=''"></Subscribe>
-        </div>
+        <transition name="bounce">
+            <div class="subscribeBtn nodouble-drag" v-show="subscribeBox">
+                <Subscribe :memberId="memberId" :writerId="writerId" :image="image" v-if="writerId!=''"></Subscribe>
+            </div>
+        </transition>
         <div class="content-center">
             <section class=" center-grid article-box scroll">
                 <h1 class="d-none">디테일</h1>
@@ -317,7 +319,7 @@ li {
     text-align: center;
     background-color: #FAFFF9;
     /* #F2C6C2; */
-    border: 3px solid black;
+    border: 3px dashed black;
     border-radius: 0.5rem;
     width: 20rem;
     height: 9.375rem;
@@ -355,5 +357,21 @@ li {
     padding-bottom: 1rem;
 }
 
+
+/* vue 트렌지션 */
+.bounce-enter-active {
+  animation: bounce-in .2s;
+}
+.bounce-leave-active {
+  animation: bounce-in .2s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 </style>
 

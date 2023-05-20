@@ -13,6 +13,7 @@ export default [
   {
     path: 'community', 
     component:Layout, 
+    props: true,
     children:[
     ]
   },
