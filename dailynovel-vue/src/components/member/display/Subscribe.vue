@@ -1,11 +1,8 @@
 <template lang="">
     <section class="grid columns">
         <h1 class="d-none">프로필 안내 창</h1>
-        <!-- <div class="profile" :style="`background-image: url(../../../assets/img/ProfileImage/${image});`"> -->
-            <div class="profile" :style="`background-image: url(/public/Profile/${image});`">
-            <!-- <img src="@/src/assets/img/ProfileImage/png1.jpg" alt="프로필 이미지"></img> -->
+            <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`">
             프로필 이미지{{image}}
-            <!-- <img src="../../../assets/img/ProfileImage/png1.jpg" alt="프로필 이미지"></img> -->
         </div> 
         <div class="grid row">
             <span class="btn" @click="subscribeHandler(writerId)">{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
@@ -107,7 +104,7 @@ onMounted(() => {
     align-items: center;
 }
 
-.profile {
+.profileImage {
     width: 52px;
     height: 52px;
 
@@ -115,7 +112,7 @@ onMounted(() => {
     /* border: 1px solid #f0a59e; */
     width: 150px;
     height: 150px;
-    background-image: url(../../../assets/img/ProfileImage/png1.jpg);
+    /* background-image: url(../../../assets/img/ProfileImage/png1.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
