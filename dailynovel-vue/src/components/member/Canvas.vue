@@ -1,23 +1,28 @@
 <template>
-  <img src="../../assets/img/background.png" id="background" style="display: none" />
-  <img src="../../assets/img/slime.png" id="slime" style="display: none" />
-  <canvas
-    id="canvas"
-    class="canvas"
-    width="1280"
-    height="720"
-    ref="canvas"
-    @click="canvasClickHandler"
-    @keydown="keyDownHandler"
-    @keyup="keyUpHandler"
-    :tabindex="0"
-  ></canvas>
+  <div class="canvas-container">
+    <img src="../../assets/img/background.png" id="background" style="display: none" />
+    <img src="../../assets/img/slime.png" id="slime" style="display: none" />
+    <img src="../../assets/img/dialog.png" id="dialog" style="display: none" />
+    <canvas
+      id="canvas"
+      class="canvas"
+      width="1280"
+      height="720"
+      ref="canvas"
+      @click="canvasClickHandler"
+      @keydown="keyDownHandler"
+      @keyup="keyUpHandler"
+      :tabindex="0"
+    ></canvas>
+  </div>
 </template>
 
 <script>
 import Slime from "./Canvas/item/slime.js";
 import Background from "./Canvas/item/background.js";
-import Obstacle from "./Canvas/item/obstacle .js";
+import Obstacle from "./Canvas/item/obstacle.js";
+import Dialog from "./Canvas/item/dialog.js";
+
 export default {
   data() {
     return {
@@ -25,18 +30,21 @@ export default {
       ctx: null,
       slime: null,
       background: null,
+      dialog: null,
       obstacles: [],
       canvasOffsetX: 0,
       canvasOffsetY: 0,
+      showDialogBox: false,
+      dialogText: "",
     };
   },
 
   mounted() {
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
-
     this.slime = new Slime(700, 600);
     this.background = new Background();
+    this.dialog = new Dialog();
     this.createObstacles();
     this.run();
 
@@ -60,24 +68,24 @@ export default {
   methods: {
     createObstacles() {
       // 여러 개의 장애물 생성
-      //책상
-      this.obstacles.push(new Obstacle(70, 260, 130, 150, "green"));
-      //책장
-      this.obstacles.push(new Obstacle(435, 205, 250, 50, "red"));
-      //컴퓨터
-      this.obstacles.push(new Obstacle(958, 203, 300, 60, "blue"));
-      //상단벽
-      this.obstacles.push(new Obstacle(0, 0, 1280, 180, "blue"));
+      // 책상
+      this.obstacles.push(new Obstacle(70, 260, 130, 150, "table"));
+      // 책장
+      this.obstacles.push(new Obstacle(435, 205, 250, 50, "shelf"));
+      // 컴퓨터
+      this.obstacles.push(new Obstacle(958, 203, 300, 60, "computer"));
+      // 상단벽
+      this.obstacles.push(new Obstacle(0, 0, 1280, 180,"wall"));
 
-      this.obstacles.push(new Obstacle(0, 0, 5, 720, "blue"));
-      this.obstacles.push(new Obstacle(0, 720, 1280, 5, "blue"));
-      this.obstacles.push(new Obstacle(1275, 0, 5, 720, "blue"));
-      //업적
-      this.obstacles.push(new Obstacle(1100, 350, 200, 150, "red"));
-      this.obstacles.push(new Obstacle(67.25, 508, 60, 130, "blue"));
-      this.obstacles.push(new Obstacle(362.25, 516, 120.25, 110, "blue"));
-      this.obstacles.push(new Obstacle( 1080.25, 604, 120.25, 70, "blue"));
-  
+      this.obstacles.push(new Obstacle(0, 0, 5, 720,));
+      this.obstacles.push(new Obstacle(0, 720, 1280, 5));
+      this.obstacles.push(new Obstacle(1275, 0, 5, 720));
+      // 업적
+      this.obstacles.push(new Obstacle(1100, 350, 200, 150,"trophy"));
+      this.obstacles.push(new Obstacle(67.25, 508, 60, 130));
+      this.obstacles.push(new Obstacle(362.25, 516, 120.25, 110));
+      this.obstacles.push(new Obstacle(1080.25, 604, 120.25, 70));
+
       // 추가적인 장애물들 생성 가능
     },
     run() {
@@ -85,56 +93,152 @@ export default {
       this.draw();
       window.requestAnimationFrame(this.run);
     },
-
-    update() {
-      const prevX = this.slime.x;
-      const prevY = this.slime.y;
-      this.slime.update();
-// 충돌 감지 로직
-let collisionDetected = false;
-  
-  for (const obstacle of this.obstacles) {
-    if (this.isCollision(this.slime, obstacle)) {
-      // 충돌이 발생하면 슬라임의 위치를 이전 위치로 복원
-      this.slime.x = prevX;
-      this.slime.y = prevY;
-      console.log("충돌했다!" +this.slime.sh+this.slime.y);
-      collisionDetected = true;
-    }
-  }
-  
-  if (!collisionDetected) {
-  }
-    },
-
-    isCollision(object1, object2) {
-  const rect1 = {
-    x: object1.x - object1.sw / 2,
-    y: object1.y - object1.sh/2,
-    width: object1.sw,
-    height: object1.sh,
-  };
-  const rect2 = {
-    x: object2.x,
-    y: object2.y,
-    width: object2.width,
-    height: object2.height,
-  };
-
-  return (
-    rect1.x < rect2.x + rect2.width &&
-    rect1.x + rect1.width > rect2.x &&
-    rect1.y < rect2.y + rect2.height &&
-    rect1.y + rect1.height > rect2.y
-  );
-},
     draw() {
-      // draw logic
+      // 그리기 로직
       this.background.draw(this.ctx);
       for (const obstacle of this.obstacles) {
         obstacle.draw(this.ctx);
       }
       this.slime.draw(this.ctx);
+
+      // 대화 상자 그리기
+      if (this.showDialogBox) {
+        this.dialog.draw(this.ctx);
+      }
+    },
+
+    update() {
+      const prevX = this.slime.x;
+      const prevY = this.slime.y;
+      this.slime.update();
+
+      let collisionDetected = false;
+
+      for (const obstacle of this.obstacles) {
+        if (this.isWithinDistance(this.slime, obstacle)) {
+          this.showDialogBox = true;
+          collisionDetected = true;
+          // 대화 상자를 표시할 좌표 계산
+          const dialogX = this.slime.x;
+          const dialogY = this.slime.y - this.slime.sh / 2 - 100;
+          // 충돌하는 객체에 따라 대화 상자 표시
+          if (obstacle.type === "table") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("일기를 쓰러\n가볼까요?\n(y)");
+            this.dialog.show();
+          } else if (obstacle.type === "shelf") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("일기장을 보려\n가볼까요?\n(y)");
+            this.dialog.show();
+          } else if (obstacle.type === "computer") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("다른 사람의 일기를 보러\n가볼까요?\n(y)");
+            this.dialog.show();
+          } 
+          else if (obstacle.type === "wall") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("구독 페이지를\n 보러 가볼까요?\n(y)");
+            this.dialog.show();
+          } 
+          else if (obstacle.type === "trophy") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("내 업적을 확인하러\n가볼까요?\n(y)");
+            this.dialog.show();
+          } 
+          else {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText(`벽과\n 충돌했습니다.`);
+            this.dialog.show();
+          }
+        }
+        if (!collisionDetected) {
+          // 충돌이 없을 때의 대화 상자 숨기기
+          this.dialog.hide();
+        }
+
+        if (this.isCollision(this.slime, obstacle)) {
+          this.showDialogBox = true;
+          this.slime.x = prevX;
+          this.slime.y = prevY;
+          collisionDetected = true;
+
+          // 대화 상자를 표시할 좌표 계산
+          const dialogX = this.slime.x;
+          const dialogY = this.slime.y - this.slime.sh / 2 - 100;
+
+          // 충돌하는 객체에 따라 대화 상자 표시
+          if (obstacle.type === "table") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("책상과 충돌했습니다.");
+            this.dialog.show();
+          } else if (obstacle.type === "shelf") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("책장과 충돌했습니다.");
+            this.dialog.show();
+          } else if (obstacle.type === "computer") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("컴퓨터와 충돌했습니다.");
+            this.dialog.show();
+          } else {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText(`벽이랑\n 충돌했습니다.`);
+            this.dialog.show();
+          }
+        }
+        if (!collisionDetected) {
+          // 충돌이 없을 때의 대화 상자 숨기기
+          this.dialog.hide();
+        }
+      }
+    },
+
+    isWithinDistance(object1, object2) {
+      let rect1 = {
+        x: object1.x - object1.sw / 2 ,
+        y: object1.y - object1.sh / 2 ,
+        width: object1.sw,
+        height: object1.sh,
+      };
+      let rect2 = {
+        x: object2.x,
+        y: object2.y,
+        width: object2.width,
+        height: object2.height,
+      };
+
+      return (
+        rect1.x < rect2.x + rect2.width + 20 &&
+    rect1.x + rect1.width > rect2.x &&
+    rect1.y < rect2.y + rect2.height + 20 &&
+    rect1.y + rect1.height > rect2.y
+      );
+    },
+    isCollision(object1, object2) {
+      let rect1 = {
+        x: object1.x - object1.sw / 2,
+        y: object1.y - object1.sh / 2,
+        width: object1.sw,
+        height: object1.sh,
+      };
+      let rect2 = {
+        x: object2.x,
+        y: object2.y,
+        width: object2.width,
+        height: object2.height,
+      };
+
+      return (
+        rect1.x < rect2.x + rect2.width &&
+        rect1.x + rect1.width > rect2.x &&
+        rect1.y < rect2.y + rect2.height &&
+        rect1.y + rect1.height > rect2.y
+      );
+    },
+
+    drawDialogBox() {
+      this.dialog.setPosition(this.slime.x - 200, this.slime.y + 100);
+      this.dialog.setText(this.dialogText);
+      this.dialog.show();
     },
 
     canvasClickHandler(e) {
@@ -142,54 +246,95 @@ let collisionDetected = false;
       let canvasY = e.y - this.canvasOffsetY;
       console.log(canvasX, canvasY);
       // this.slime.moveTo(canvasX, canvasY);
-      //책상->일기작성
-      if((70<=canvasX&260<=canvasY)&(canvasX<=200&canvasY<410) ){
-        this.$router.push('/member/room/diary');
-        this.$emit('modalOpenHandler');
+      // 책상 -> 일기 작성
+      if (70 <= canvasX && 260 <= canvasY && canvasX <= 200 && canvasY < 410) {
+        this.$router.push("/member/room/diary");
+        this.$emit("modalOpenHandler");
       }
-      //책장->컬렉션
-      else if((435<=canvasX&205<=canvasY)&(canvasX<=680&canvasY<=255)){
-        this.$router.push('/member/room/follow');
-        this.$emit('modalOpenHandler');
+      // 책장 -> 컬렉션
+      else if (435 <= canvasX && 0 <= canvasY && canvasX <= 680 && canvasY <= 255) {
+        this.$router.push("/member/room/follow");
+        this.$emit("modalOpenHandler");
       }
-      //컴퓨터->커뮤니티
-      else if((958<=canvasX&50<=canvasY)&(canvasX<=1258&canvasY<=260)){
-        this.$router.push('/member/room/community');
-        this.$emit('modalOpenHandler');
+      // 컴퓨터 -> 커뮤니티
+      else if (958 <= canvasX && 50 <= canvasY && canvasX <= 1258 && canvasY <= 260) {
+        this.$router.push("/member/room/community");
+        this.$emit("modalOpenHandler");
       }
-      //업적->트로피
-      else if((1100 <=canvasX&350<=canvasY)&(canvasX<=1300&canvasY<=500)){
-        this.$router.push('/member/room/achievement');
-        this.$emit('modalOpenHandler');
+      // 업적 -> 트로피
+      else if (1100 <= canvasX && 350 <= canvasY && canvasX <= 1300 && canvasY <= 500) {
+        this.$router.push("/member/room/achievement");
+        this.$emit("modalOpenHandler");
       }
-      //상단벽->구독페이지
-      else if((0<=canvasX&0<=canvasY)&(canvasX<=300&canvasY<=180)){
-        this.$router.push('/member/room/guestbook/list');
-        this.$emit('modalOpenHandler');
-      }
-
-      //침대-> 로그아웃
-      else if((435<=canvasX&205<=canvasY)&(canvasX<=680&canvasY<255)){
-        this.$router.push('/member/room/collection/main');
-        this.$emit('modalOpenHandler');
+      // 상단벽 -> 구독 페이지
+      else if (0 <= canvasX && 0 <= canvasY && canvasX <= 300 && canvasY <= 180) {
+        this.$router.push("/member/room/guestbook/list");
+        this.$emit("modalOpenHandler");
       }
 
-    },
+      // 침대 -> 로그아웃
+      else if (435 <= canvasX && 205 <= canvasY && canvasX <= 680 && canvasY < 255) {
+        // 로그아웃 로직 추가
+        console.log("로그아웃");
+      }
+      // 추가적인 클릭 이벤트 처리 가능
 
-    keyDownHandler(e) {
-      if (e.key === "x") {
+      // 대화창 클릭 이벤트 처리
+      if (this.showDialogBox) {
         if (
-          this.slime.x >= 100 &&
-          this.slime.x <= 300 &&
-          this.slime.y >= 100 &&
-          this.slime.y <= 300
+          this.slime.x - 100 <= canvasX &&
+          this.slime.x + 100 >= canvasX &&
+          this.slime.y - 70 <= canvasY &&
+          this.slime.y - 20 >= canvasY
         ) {
-          console.log("상단 좌측 구간에서 x 키를 눌렀습니다.");
+          // 대화창 닫기
+          this.showDialogBox = false;
         }
       }
-      this.slime.move(e.key);
-      console.log(e.key);
     },
+    keyDownHandler(e) {
+  if (e.key === "y") {
+    const obstacle = this.obstacles.find(obstacle => this.isWithinDistance(this.slime, obstacle));
+
+    if (obstacle) {
+      console.log("충돌이 감지되었습니다.");
+      
+      if (obstacle.type === "table") {
+        console.log("책상과 충돌했습니다.");
+        this.$router.push("/member/room/diary");
+        this.$emit("modalOpenHandler");
+      }
+       else if (obstacle.type === "shelf") {
+        console.log("책장과 충돌했습니다.");
+        this.$router.push("/member/room/follow");
+        this.$emit("modalOpenHandler");
+      }
+       else if (obstacle.type === "computer") {
+        console.log("컴퓨터와 충돌했습니다.");
+        this.$router.push("/member/room/community");
+        this.$emit("modalOpenHandler");
+      }
+      else if (obstacle.type === "trophy") {
+        console.log("트로피와 충돌했습니다.");
+        this.$router.push("/member/room/achievement");
+        this.$emit("modalOpenHandler");
+      }
+      else if (obstacle.type === "wall") {
+        console.log("트로피와 충돌했습니다.");
+        this.$router.push("/member/room/guestbook/list");
+        this.$emit("modalOpenHandler");
+      }
+
+      else {
+        console.log("알 수 없는 객체와 충돌했습니다.");
+        this.$router.push("/default-route"); // 기본적인 충돌 시의 라우터 경로로 변경
+      }
+    }
+  }
+
+  this.slime.move(e.key);
+  console.log(e.key);
+},
     keyUpHandler(e) {
       // this.boy.kreset();
       this.slime.stop(e.key);
@@ -197,9 +342,3 @@ let collisionDetected = false;
   },
 };
 </script>
-
-<style scoped>
-.canvas {
-  border: 1px solid #5a4d4d;
-}
-</style>
