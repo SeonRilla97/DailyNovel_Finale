@@ -6,9 +6,9 @@
             </div>
         </transition>
         <div class="content-center">
-            <section class=" center-grid article-box scroll">
+            <section class=" content-grid article-box ">
                 <h1 class="d-none">디테일</h1>
-                    <article> 
+                    <article class="scroll"> 
                         <div class="sticky">
                             <h1 class="title nodouble-drag">{{title}}</h1>
                             <hr>
@@ -24,7 +24,7 @@
                         <br>
                         <p class="detail-width nodouble-drag">
                             {{content}}<br>
-                            <!-- 도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득                            득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득 -->
+                            도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득                            득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득
                             <br>
                             도
                             <br>
@@ -32,17 +32,17 @@
                             <br>
                             득
                         </p>
-                    </article>
-                    <div class="center-grid padding-bottom sticky">
-                        <div style="display:inline-block">
-                            <div class="more-btn nodouble-drag d-inline" @click="likeSwitchHandler(diaryId)">
-                                <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" > </div>
-                                {{like}}좋아요
+                        <div class="center-grid padding-bottom sticky">
+                            <div style="display:inline-block">
+                                <div class="more-btn nodouble-drag d-inline" @click="likeSwitchHandler(diaryId)">
+                                    <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" > </div>
+                                    {{like}}좋아요
+                                </div>
+                                <div class="more-btn nodouble-drag d-inline">신고하기</div>
                             </div>
-                            <div class="more-btn nodouble-drag d-inline">신고하기</div>
                         </div>
-                    </div>
-            </section>
+                    </article>
+                </section>
         </div>
     </main>
 </template>
@@ -51,7 +51,7 @@
 
 import Subscribe from './Subscribe.vue'
 import { reactive, ref, onMounted, defineProps, defineEmits, onBeforeMount, } from 'vue';
-import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+import { useUserDetailsStore } from '../../store/useUserDetailsStore.js'
 
 const emit = defineEmits([
     'updatePage'
@@ -63,7 +63,7 @@ const props = defineProps({
         type: Object
     },
     likeInfo: {
-        type : Boolean
+        type: Boolean
     },
 })
 
@@ -92,9 +92,9 @@ onBeforeMount(async () => {
 
 
 async function load() {
-    
+
     setTimeout(() => {
-    // await zz(()=>{
+        // await zz(()=>{
         // console.log(props)
         data = props.detailPage
 
@@ -112,16 +112,16 @@ async function load() {
     // })
 }
 
-onMounted(async() => {
+onMounted(async () => {
     await load();
 })
 
 
 async function likeSwitchHandler(diaryId) {
-    console.log("좋아요 " + (likeStatus? "delete" : "insert"));
+    console.log("좋아요 " + (likeStatus ? "delete" : "insert"));
 
     try {
-        const response = await fetch(`http://localhost:8080/display/${likeStatus? "deletelike" : "addlike"}`, {
+        const response = await fetch(`http://localhost:8080/display/${likeStatus ? "deletelike" : "addlike"}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -137,13 +137,13 @@ async function likeSwitchHandler(diaryId) {
         }
         const data = response;
         console.log(data); // 응답 데이터 처리
-        
+
     } catch (error) {
         console.error(error); // 에러 처리
     }
     emit('updatePage');
     setTimeout(load, 50);
-    
+
 }
 
 function openSubscribeBoxHandler() {
@@ -156,7 +156,7 @@ function openSubscribeBoxHandler() {
 <style scoped>
 .article-box {
     width: 39rem;
-    height: minmax(1rem, auto);
+    height: minmax(500px, auto);
 }
 
 .article-box .title {
@@ -164,114 +164,15 @@ function openSubscribeBoxHandler() {
     text-align: center;
 }
 
+/* text-align: right; */
 .article-box .userInfo {
-    /* text-align: right; */
     display: grid;
     justify-content: end;
     grid-auto-flow: column;
-    align-items: center; 
-
+    align-items: center;
 }
 
-.d-inline {
-    display: inline-block;
-}
-
-.header-band {
-    background-color: #F2C6C2;
-    display: grid;
-    justify-content: space-between;
-    grid-auto-flow: column;
-}
-
-.header-band .content {
-    display: grid;
-    justify-content: space-between;
-}
-
-.center-grid {
-    display: grid;
-    justify-content: center;
-}
-
-li {
-    display: inline-block;
-    list-style: none;
-    padding-left: 2.5rem;
-}
-
-.active-commu-category {
-    /* 선택된 커뮤니티 카테고리 */
-    color: rgb(255, 208, 0);
-    text-decoration: underline;
-}
-
-.commu-content-grid {
-    /* 콘텐츠박스의 부모 그리드*/
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    max-width: 1280px;
-    grid-gap: 20px;
-
-}
-
-.content-box {
-    /* 게시판 콘탠츠박스 디자인 */
-    /* border: 1px solid fff8f3; */
-    border-radius: 1rem;
-    background-color: #fff8f3;
-    width: 18.5rem;
-    height: 28.375rem;
-    display: grid;
-    grid-template-rows: 3rem 1rem 20rem 1fr;
-    align-content: space-between;
-
-}
-
-/* 콘탠츠박스 내용의 배치에 대한 그리드*/
-.content-box .content-title {
-    /* 콘텐츠박스 제목의 중앙*/
-    justify-self: center;
-    align-self: center;
-
-}
-
-.content-title p {
-    /* 콘텐츠박스 제목의 중앙*/
-    font-size: 1.5rem;
-    width: 10em;
-    /* 최대 5글자까지만 보이도록 요소의 너비를 지정 */
-    white-space: nowrap;
-    /* 텍스트를 한 줄로 표시 */
-    overflow: hidden;
-    /*요소의 영역을 벗어나는 내용은 잘리고 표시되지 않음 */
-    text-overflow: ellipsis;
-    /* 잘린 텍스트를 ...으로 표시 */
-}
-
-.content-box .content-underline {
-    grid-auto-flow: row;
-}
-
-/*https://webdir.tistory.com/483*/
-.content-box .content-subject {
-    padding: 1rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    line-height: 1.2;
-    height: 17rem;
-    text-align: left;
-    word-wrap: break-word;
-    display: -webkit-box;
-    -webkit-line-clamp: 15;
-    -webkit-box-orient: vertical;
-}
-
-.content-box .content-like-count {
-    text-align: center;
-}
-
+/* btn */
 .more-btn {
     /* 더보기 버튼 */
 
@@ -317,14 +218,6 @@ li {
     /*  */
 }
 
-.detail-width {
-    width: 100%;
-    min-width: 500px;
-    max-width: 1100px;
-    /* width: minmax(500px, 1280px); */
-    text-align: left;
-}
-
 .subscribeBtn {
     text-align: center;
     background-color: #FAFFF9;
@@ -339,6 +232,34 @@ li {
     z-index: 1;
 }
 
+
+
+
+
+/* layout */
+
+.d-inline {
+    display: inline-block;
+}
+
+.center-grid {
+    display: grid;
+    justify-content: center;
+}
+
+.content-grid {
+    display: grid;
+    /* grid-template-rows: 540px 100px; */
+    justify-content: center;
+}
+
+.detail-width {
+    width: 100%;
+    min-width: 500px;
+    max-width: 1100px;
+    text-align: left;
+}
+
 .content-center {
     position: absolute;
     top: 74px;
@@ -346,54 +267,65 @@ li {
     transform: translateX(-50%);
 }
 
-.nodouble-drag {
-    user-select: none;
-}
-
 .scroll {
     overflow: auto;
     height: 648px;
 }
 
-.sticky{
+.sticky {
     position: sticky;
     padding-top: 1rem;
     padding-bottom: 1rem;
     top: 0px;
     background-color: #FAFFF9;
 }
-.padding-bottom{
+
+.fixed {
+    position: fixed;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    top: 0px;
+    background-color: #FAFFF9;
+}
+
+
+/* util*/
+.nodouble-drag {
+    user-select: none;
+}
+
+.padding-bottom {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
 
-
-/* vue 트렌지션 */
-.bounce-enter-active {
-  animation: bounce-in .2s;
-}
-.bounce-leave-active {
-  animation: bounce-in .2s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .profileImage {
-
     border-radius: 30px;
-    /* border: 1px solid #f0a59e; */
     width: 30px;
     height: 30px;
-    /* background-image: url(../../../assets/img/ProfileImage/png1.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
-</style>
+
+
+
+/* vue 트렌지션 */
+.bounce-enter-active {
+    animation: bounce-in .2s;
+}
+
+.bounce-leave-active {
+    animation: bounce-in .2s reverse;
+}
+
+@keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}</style>
 
