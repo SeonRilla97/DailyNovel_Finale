@@ -14,6 +14,9 @@ onMounted(() => {
 
 });
 
+
+  let myLocation = { lat: null, lng: null };
+
   function getDate(){
 
     //프로토 타입
@@ -64,7 +67,6 @@ function coor(coor) {
         const longitude = position.coords.longitude;
         //날씨 호출
         weather(latitude, longitude);
-
         myLocate(latitude, longitude);
     }
     function error() {
