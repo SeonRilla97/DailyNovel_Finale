@@ -16,6 +16,7 @@ import diary  from './diary.js';
 import follow from './follow.js';
 import profile from './profile.js';
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserDetailsStore } from "../components/store/useUserDetailsStore.js";
 
 const routes =  [
   {
@@ -56,22 +57,6 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
-router.beforeEach((to, from, next) => {
-  // 현재 라우트가 '/member/room'인 경우에만 캔버스 요소에 포커스 설정
-  if (to.path === '/member/room') {
-    setTimeout(() => {
-      const canvasElement = document.getElementById('canvas');
-      if (canvasElement) {
-        canvasElement.focus();
-      }
-      next();
-    }, 0);
-  } else {
-    next();
-  }
-});
-
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
   // { path: '/member', children:[
