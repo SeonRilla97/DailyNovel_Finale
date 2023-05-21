@@ -9,19 +9,13 @@ import signupSocial from '../components/user/SignupSocial.vue';
 import Achievement from '../components/member/Insights/Achievements.vue';
 import Chart from '../components/member/Insights/Chart.vue';
 
-
-import DiaryLayout from '../components/member/diary/Layout.vue'
-import memberGuestBookLayout from '../components/member/guestbook/Layout.vue';
-
-
-
 import guestbook  from './guestbook.js';
 import collection  from './collection.js';
 import display  from './display.js';
 import diary  from './diary.js';
 import follow from './follow.js';
 import profile from './profile.js';
-
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes =  [
   {
@@ -51,10 +45,32 @@ const routes =  [
       ...display,
       profile,
       follow,
-  ]}      
+  ]
+}      
 ]}
-]
+];
 
+
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // 현재 라우트가 '/member/room'인 경우에만 캔버스 요소에 포커스 설정
+  if (to.path === '/member/room') {
+    setTimeout(() => {
+      const canvasElement = document.getElementById('canvas');
+      if (canvasElement) {
+        canvasElement.focus();
+      }
+      next();
+    }, 0);
+  } else {
+    next();
+  }
+});
 
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)

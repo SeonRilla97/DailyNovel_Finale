@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbCollectionItemsRepository">
+  <resultMap id="CollectionItemsResultMap" type="MbCollectionItems">
+    <result property="diaryId" column="diary_id" />
+    <result property="collectionId" column="collection_id" />
+  </resultMap>
+
+  <select id="findAllbyId" resultMap="CollectionItemsResultMap">
+    select *
+    from collection_items
+    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+        <if test="diaryId != null">
+            AND diary_id = #{diaryId}
+        </if>
+        <if test="collectionId != null">
+            AND collection_id = #{collectionId}
+        </if>
+    </trim>
+  </select>
+
+
+  
+  
+</mapper>

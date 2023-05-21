@@ -2,7 +2,7 @@
 import Header from './Header.vue'
 import List from './List.vue'
 import Editor from './editor.vue'
-import { reactive, onBeforeMount, ref } from 'vue';
+import { reactive, onBeforeMount, ref, watchEffect } from 'vue';
 import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
 import Filter from './filter.js'
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
@@ -145,9 +145,10 @@ function getListwithFiltering(backup) {
                 }
             }
             //받아온 데이터가 있다면
-            console.log(result);
             //diary reactive 객체의 list 속성에 넣고
             diary.list=result
+            // console.log(diary.list["2021년 5월"][0].diaryId);
+
             // 모든 데이터의 Date형식을 Javascript의 Date 객체로 변경
             for(let key in diary.list){
                 for(let value in diary.list[key]){
@@ -159,9 +160,13 @@ function getListwithFiltering(backup) {
                 }
             }
             console.log(result);
+            console.log(diary.list)
+            console.log(diary.list[(Object.keys(diary.list)[0])][0].diaryId)
+            newestDiaryId.value = diary.list[(Object.keys(diary.list)[0])][0].diaryId;
         })
         .catch(error => console.log('error', error));
     }
+    let newestDiaryId = ref()
 // 컬렉션 데이터 불러와서 데이터 삽입
 function getCollectionList() {
     let requestOptions = {
@@ -202,15 +207,21 @@ function diaryAddbtnClickHandler(){
     isClickDiaryAdd.value=true;
     console.log(`다이어리 만들라고? ${isClickDiaryAdd.value}`)
 }
+function getNewestDiary(){
+    console.log(diary)
+}
+getNewestDiary();
 </script>
 <template>
     <div class="diary-container">
+        <span>{{ newestDiaryId }}</span>
         <Header class="no-scroll"  :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
-
+        
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor />
+            <Editor :isAdd = "isClickDiaryAdd" :isLoad = "curDiaryId" />
+            <!-- :current ="diary.value"  -->
         </section>
     </div>
 </template>

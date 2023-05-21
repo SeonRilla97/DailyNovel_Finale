@@ -10,11 +10,14 @@ import java.util.TreeMap;
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 
 public interface DiaryService {
     public TreeMap<String, Integer> getByFeeling();
     public TreeMap<String, Integer>  getByTag();
     public TreeMap<String, Integer>  getByHonesty();
+    public List<Object> getBypino();
+    public List<Object> getByNpino();
     public List<Object[]> getById();
 
     public List<Diary> getAllByMId();
@@ -32,5 +35,6 @@ public interface DiaryService {
     public int editDiary(MbDiary diary);
 
     public int removeDiary(int id);
+    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId);
 }
  

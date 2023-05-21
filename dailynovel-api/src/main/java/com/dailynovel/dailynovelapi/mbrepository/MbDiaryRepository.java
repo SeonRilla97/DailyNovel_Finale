@@ -8,6 +8,7 @@ import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 
 @Mapper
 public interface MbDiaryRepository {
@@ -40,4 +41,5 @@ public interface MbDiaryRepository {
     String collection, 
     String query
     );
+List<MbDiaryDisplayed> findDisplayedById(int memberId, Integer collectionId);
 }

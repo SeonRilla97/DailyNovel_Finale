@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 import com.dailynovel.dailynovelapi.repository.DiaryRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -196,6 +197,12 @@ public class DiaryDefaultService implements DiaryService{
 
 
     @Override
+    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId) {
+        // TODO Auto-generated method stub
+        List<MbDiaryDisplayed> list = mbRepository.findDisplayedById(memberId, collectionId);
+        return list;
+    }
+    @Override
     public List<Diary> getAllByMId() {
         List<Diary> list = repository.findAllByMId(null);
         return list;
@@ -210,5 +217,37 @@ public class DiaryDefaultService implements DiaryService{
 		List<Object[]> list = repository.findByCoorList(null);
         return list;
 	}
+
+
+
+
+
+    @Override
+    public List<Object> getBypino() {
+        List<Object[]> list = repository.findBypino(null);
+    
+        // 리스트를 다시 가공하여 원하는 형태로 변환
+        List<Object> resultList = new ArrayList<>();
+        for (Object[] objArray : list) {
+            resultList.add(objArray[0]);
+            resultList.add(objArray[1]);
+        }
+    
+        return resultList;
+    }
+
+    @Override
+    public List<Object> getByNpino() {
+        List<Object[]> list = repository.findByNpino(null);
+    
+        // 리스트를 다시 가공하여 원하는 형태로 변환
+        List<Object> resultList = new ArrayList<>();
+        for (Object[] objArray : list) {
+            resultList.add(objArray[0]);
+            resultList.add(objArray[1]);
+        }
+    
+        return resultList;
+    }
 }
 

@@ -18,6 +18,7 @@
         <result property="weather" column="weather" />
         <result property="feeling" column="feeling" />
         <result property="honesty" column="honesty" />
+        <result property="regDate" column="reg_date" />
         <result property="latitude" column="latitude" />
         <result property="longitude" column="longitude" />
     </resultMap>
@@ -28,6 +29,14 @@
       <result property="collectionId" column="collection_id" />
       <result property="regDate" column="reg_date" />
       <result property="sharedinitDate" column="display_init_date" />
+	</resultMap>
+
+    <resultMap id="DiaryDisplayedResultMap" type="MbDiaryDisplayed">
+      <result property="memberId" column="member_id" />
+      <result property="diaryId" column="diary_id" />
+      <result property="collectionId" column="collection_id" />
+      <result property="diaryRegDate" column="diary_reg_date" />
+      <result property="collectionName" column="collection_name" />
 	</resultMap>
 
 
@@ -58,9 +67,9 @@
     <insert id="insertNew" parameterType="MbDiary">
         insert into
         diary
-            (member_id, title, content, weather, feeling,honesty, tag,latitude,longitude)
+            (member_id, title, content, weather, feeling,honesty, tag,lat,lng)
         values
-            (#{member_id}, #{title}, #{content}, #{weather}, #{feeling}, #{honesty},#{tag}, #{latitude}, #{longitude})
+            (#{member_id}, #{title}, #{content}, #{weather}, #{feeling}, #{honesty},#{tag}, #{lat}, #{lng})
     </insert>
 
     <update id="update" parameterType="MbDiary">
@@ -69,8 +78,8 @@
             <if test="title != null">title = #{title},</if>
             <if test="content != null">content = #{content},</if>
             <if test="feeling != null">feeling = #{feeling},</if>
-            <if test="latitude != null">latitude = #{latitude},</if>
-            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="lat != null">lat = #{lat},</if>
+            <if test="lat != null">lng = #{lng},</if>
         </set>
         where id= #{id}
     </update>
@@ -121,6 +130,17 @@
                 reg_date DESC
             </otherwise>
         </choose>    
+	</select>
+
+
+    <select id="findDisplayedById" resultMap="DiaryDisplayedResultMap">
+		select *
+		FROM diary_displayed
+		where member_id = #{memberId}
+        <if test="collectionId != null">
+                and collection_id = #{collectionId}
+        </if>
+
 	</select>
       
 
