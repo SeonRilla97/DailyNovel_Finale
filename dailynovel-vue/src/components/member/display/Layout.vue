@@ -47,12 +47,13 @@
 
 import { onMounted, reactive, ref, } from 'vue'
 import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+import {useDisplayCategoryStore} from '../../store/useDisplayCategoryStore.js'
 
 // 되는 gpt코드 -> 비교해보기
 let model = reactive([]);
 let count = ref();
 let category = reactive([]);
-let currentCategory = ref('1');
+let currentCategory = useDisplayCategoryStore().category;
 
 let indeLikeList = reactive([])
 
@@ -77,7 +78,7 @@ onMounted(() => {
 })
 
 function categoryClick(page) {
-    currentCategory.value = page;
+    currentCategory = page;
     load()
 }
 
