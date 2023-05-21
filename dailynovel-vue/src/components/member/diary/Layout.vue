@@ -220,7 +220,7 @@ getNewestDiary();
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor :isAdd = "isClickDiaryAdd" :isLoad = "curDiaryId" />
+            <Editor :newestDiaryId = "newestDiaryId" :isAdd = "isClickDiaryAdd" :loadDiaryId = "curDiaryId" />
             <!-- :current ="diary.value"  -->
         </section>
     </div>

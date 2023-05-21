@@ -8,26 +8,49 @@ import MapBox from './MapBox.vue';
 
 const props = defineProps({
     'isAdd' : '',
-    'isLoad' : '',
-    // 'current' : ''
+    'loadDiaryId' : '',
+    'newestDiaryId' : ''
 });
 
+let isInit = ref(false);
+const initHander = function (firstValue){
+    if(firstValue != null) {
+      console.log(isInit.value);
+      isInit.value = true;
+    }
+};
 
 
 let weatherDone = false;
 let ControllerAdd = props.isAdd;
 
 onMounted(() => {
-
+  console.log(props.newestDiaryId);
 
 });
 
 
 // loadDiary() 무한 반복 막기위한 선언
 let previousLoad = -1;
+let newest = false;
+
+//id 값 비동기 처리를 위한 promise 선언
+function newestPromise(diaryId){
+  return new Promise(function (resolve){
+    resolve(diaryId);
+  })
+}
 
 onUpdated(() => {
-  // console.log(current);
+  initHander(props.newestDiaryId);
+  //최초 데이터 받을 때
+  if(!newest){
+    let promise = newestPromise(props.newestDiaryId);
+    promise
+    .then( result => loadDiary(result))
+    .then( sucess => newest = sucess);
+    // newest = true;
+  }
 
   ControllerAdd = props.isAdd
   // console.log(ControllerAdd);
@@ -42,10 +65,10 @@ onUpdated(() => {
     .then(success => console.log(success));
   }
 
-  // console.log(previousLoad, props.isLoad);
-  if(previousLoad != props.isLoad){
-    loadDiary(props.isLoad);
-    previousLoad = props.isLoad
+  // console.log(previousLoad, props.loadDiaryId);
+  if(previousLoad != props.loadDiaryId){
+    loadDiary(props.loadDiaryId);
+    previousLoad = props.loadDiaryId
   }
 
 })
@@ -62,10 +85,10 @@ function getDate(gotdate){
       return h;
   }
 
-  console.log(gotdate);
+  // console.log(gotdate);
   // let date = new Date();
   let date = gotdate;
-  console.log(date.getFullYear());
+  // console.log(date.getFullYear());
   titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
   return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
 }
@@ -76,7 +99,7 @@ function getDate(gotdate){
 
 
 //현재시간 받아오기
-  const time = getDate(new Date);
+//   const time = getDate(new Date);
   
 
 //날씨관련 객체
@@ -88,23 +111,6 @@ function getDate(gotdate){
       'weatherDes': '날씨'
   };
 
-const diaryRef = ref("");
-
-let diaryObj = {
-  "id": null,
-  "member_id": 4,
-  "title": titleDate+'의 일기',
-  "content": "",
-  "weather": weatherData.value.weatherDes,
-  "feeling": "",
-  "honesty": "",
-  "tag": "",
-  "regDate": getDate(new Date),
-  "lat": 38,
-  "lng": 128
-};
-diaryRef.value = diaryObj;
-console.log(diaryRef.value);
 
  //현재 위치 받아오기 API
 
@@ -186,6 +192,46 @@ function coor(coor) {
   };
 
 
+const diaryRef = ref("");
+
+let diaryObj = {
+  "id": null ,
+  "member_id": null,
+  "title": null,
+  "content": "",
+  "weather": null,
+  "feeling": "",
+  "honesty": "",
+  "tag": "",
+  "regDate": getDate(new Date),
+  "lat": 38,
+  "lng": 128
+};
+// console.log(diaryObj);
+diaryRef.value = diaryObj;
+// console.log(diaryRef.value);
+
+
+//값 기본 입력해주기
+function objRef
+(Did, Mid, DTitle ,DContent,
+ DWeather,DFeeling,DHonesy, DTag,
+ DDate , DLat, Dlng){
+
+  diaryRef.value.id = Did;
+  diaryRef.value.member_id = Mid;
+  diaryRef.value.title = titleDate+'의 일기';
+  diaryRef.value.content = DContent;
+  diaryRef.value.weather = weatherData.value.weatherDes;
+  diaryRef.value.feeling = DFeeling;
+  diaryRef.value.honesy = DHonesy;
+  diaryRef.value.tag = DTag;
+  diaryRef.value.regDate = getDate(new Date);
+  diaryRef.value.lat = DLat;
+  diaryRef.value.lng = Dlng;
+
+}
+
 console.log(diaryObj);
 
 const addDiary = function(isAdd){
@@ -195,7 +241,15 @@ const addDiary = function(isAdd){
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    diaryObj.weather = weatherData.value.weatherDes;
+
+    //ref 기본값 담기
+    objRef(null,1,null,"당신마음입력"
+    ,null,100,100,"자유",null,38,128);
+
+    // console.log(diaryRef.value);
+    diaryObj = diaryRef.value;
+    diaryObj.regDate = null;
+    // console.log(diaryObj);
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
@@ -207,7 +261,11 @@ const addDiary = function(isAdd){
 
     fetch("http://localhost:8080/diary", requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => {
+        diaryObj.regDate = diaryRef.value.regDate;
+        console.log(diaryObj.regDate);
+        console.log(diaryRef.value.regDate);
+      })
       .catch(error => console.log('error', error));
     console.log("완료");
   // }
@@ -227,8 +285,12 @@ const loadDiary = function(diaryId){
     .then(result => {
       diaryRef.value = result;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
+      resolve(true);
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+      console.log('error', error);
+      loadDiary(diaryId);
+    });
   })
 }
 
@@ -238,7 +300,9 @@ const loadDiary = function(diaryId){
 
 <template>
 
-  <div class="editor-wrap"
+  <div
+      v-if="isInit"
+      class="editor-wrap"
       @click="onclickedHandler"
       >
 
