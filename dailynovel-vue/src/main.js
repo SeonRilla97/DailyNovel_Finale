@@ -8,6 +8,7 @@ import VueKakaoSdk from 'vue-kakao-sdk'
 import 'v-calendar/style.css';
 import InfiniteLoading from "v3-infinite-loading"; // 무한 스크롤 용 api
 import "v3-infinite-loading/lib/style.css";  // 무한 스크롤 용 css
+import piniaPersist from 'pinia-plugin-persist' //로그인 유지
 
 
 
@@ -28,7 +29,10 @@ app.use(setupCalendar, {})
 app.component('VCalendar', Calendar)
 app.component('VDatePicker', DatePicker)
 
+
+
 const pinia = createPinia();
+pinia.use(piniaPersist)
 
 
 const apiKey = '3e9086e14099149701e6a89e10372e30'
@@ -41,9 +45,5 @@ app.use(VueKakaoSdk, { apiKey })
 
 // 모재영 에디터 관련
 app.component('QuillEditor', QuillEditor)
-
-app.use(createPinia())
-
-
 app.use(router)
 app.mount('#app')
