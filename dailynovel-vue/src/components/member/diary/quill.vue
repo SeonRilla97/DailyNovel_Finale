@@ -61,6 +61,8 @@ function editortrigger (delta, oldDelta, source) {
     }
 }
 
+
+
 </script>
 
 <template>

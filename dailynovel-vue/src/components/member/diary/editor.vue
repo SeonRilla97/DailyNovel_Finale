@@ -6,6 +6,9 @@ import quillCopy from './quill copy.vue';
 import { ref,onMounted, onUpdated,  defineProps , defineEmits} from 'vue';
 import MapBox from './MapBox.vue';
 
+// "기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"
+// "자유"
+
 const props = defineProps({
     'isAdd' : '',
     'loadDiaryId' : '',
@@ -15,10 +18,16 @@ const props = defineProps({
 const emit = defineEmits(
     ["DoneAddDiary"]);
 
-let defineRef = ref({
+const defineRef = ref({
   'loading' : '',
-  'isInit' : ''
+  'isInit' : '',
+  // 'isShared' : 'false'
 });
+
+const isSharedref = ref();
+isSharedref.value = false
+
+
 // defineRef.value.isInit = false;
 
 const initHander = function (firstValue){
@@ -251,10 +260,12 @@ function objRef
   diaryRef.value.member_id = Mid;
   diaryRef.value.title = titleDate+'의 일기';
   diaryRef.value.content = DContent;
+
   diaryRef.value.weather = weatherData.value.weatherDes;
   diaryRef.value.feeling = DFeeling;
   diaryRef.value.honesy = DHonesy;
   diaryRef.value.tag = DTag;
+
   diaryRef.value.regDate = DDate;
   diaryRef.value.lat = DLat;
   diaryRef.value.lng = Dlng;
@@ -273,7 +284,8 @@ const addDiary = function(isAdd){
 
     //ref 기본값 담기
     objRef(null,1,null,"당신마음입력"
-    ,null,100,100,"자유",null,38,128);
+    ,null,"기분",100,"태그"
+    ,null,38,128);
 
     // console.log(diaryRef.value);
     diaryObj = diaryRef.value;
@@ -324,6 +336,32 @@ const loadDiary = function(diaryId){
   })
 }
 
+const EditDiary = function(diaryId){
+
+  
+
+
+}
+
+
+const toggleClickHandler = (e) =>{
+  isSharedref.value = (isSharedref.value == true) ? (false) : (true);
+  // console.log(isSharedref.value);
+};
+
+// let previousValueFeeling = diaryRef.value.feeling;
+// let previousValueTag = diaryRef.value.tag;
+const feelingDropdownHandler = (e) =>{
+
+  console.log(e.target);
+  console.log(e.target.className == "feel");
+
+  if(e.target.className == "feel")
+    diaryRef.value.feeling = e.target.innerText;
+  else if(e.target.className == "tag")
+    diaryRef.value.tag = e.target.innerText;
+
+};
 
 
 </script>
@@ -345,8 +383,42 @@ const loadDiary = function(diaryId){
       <!-- <div class="editor-data">2023년 4월 10일 오후 02시 01분 </div> -->
       <div class="editor-data">{{diaryRef.regDate}}</div>
       <div class="editor-attribue">{{diaryRef.weather}}</div>
-      <div class="editor-attribue">{{'#'+diaryRef.tag}}</div>
-      <div class="editor-attribue">{{diaryRef.feeling}}</div>
+      <!-- <div class="editor-attribue">{{'#'+diaryRef.tag}}</div> -->
+      <div class="editor-attribue dropdown">
+        <button class="dropbtn">{{'#'+diaryRef.tag}}</button>
+        <div 
+          :checkTag ="diaryTag"
+          @click="feelingDropdownHandler"          
+          class="dropdown-content">
+
+          <div class="tag" href="#">자유</div>
+          <div class="tag" href="#">여행</div>
+          <div class="tag" href="#">영화</div>
+        </div>
+      </div>
+
+
+      <!-- <div class="editor-attribue">{{diaryRef.feeling}}</div> -->
+      <div class="editor-attribue dropdown">
+        <button class="dropbtn">{{diaryRef.feeling}}</button>
+        <div 
+          :checkTag ="diaryFeel"
+          @click="feelingDropdownHandler"          
+          class="dropdown-content">
+
+          <div class="feel" href="#">화남</div>
+          <div class="feel" href="#">불편</div>
+          <div class="feel" href="#">평온</div>
+          <div class="feel" href="#">실망</div>
+          <div class="feel" href="#">불안</div>
+          <div class="feel" href="#">행복</div>
+          <div class="feel" href="#">슬픔</div>
+          <div class="feel" href="#">감동</div>
+          <div class="feel" href="#">신남</div>
+        </div>
+      </div>
+      
+      <div class="add-btn">-</div>
     </div>
 
     <div class="editor-title">
@@ -357,7 +429,22 @@ const loadDiary = function(diaryId){
           <!-- {{titleDate+'의 일기'}} -->
           {{ diaryRef.title }}
         </header>
-        <div class="editor-share">공유 중</div>
+        <div
+            v-if="isSharedref"
+            class="editor-share">공유 중</div>
+        <div
+            v-if="!isSharedref"
+            class="editor-share .active">공유 여부</div>
+
+        <input type="checkbox" id="toggle" class="toggle2" hidden>
+        <label 
+          @click="toggleClickHandler"
+          for="toggle" 
+          class="toggleSwitch">
+          
+          <span class="toggleButton"></span>
+        </label>
+
     </div>
 
     <hr class="editor-title-hr">
@@ -381,14 +468,14 @@ const loadDiary = function(diaryId){
 
         <!-- @click.prevent="mapToggleHandler"> -->
         <button
-        @click="imageToggle = !imageToggle"
-        >
-        사진추가
-      </button>
+          @click="imageToggle = !imageToggle"
+          >
+          사진추가
+        </button>
       <button
           @click="mapToggle = !mapToggle"
           >
-        지도추가
+          지도추가
       </button>
 
       </div>
@@ -407,6 +494,7 @@ const loadDiary = function(diaryId){
           class="mapToggle-map editor-sub">
           <MapBox :coor="coor" @coor="coor"/>
         </div>
+
       </div>
 
     </div>
@@ -690,6 +778,141 @@ const loadDiary = function(diaryId){
     transform: rotateZ(360deg);
   }
 }
+
+
+/*
+  toggle
+*/
+
+.toggleSwitch {
+  width: 60px;
+  height: 30px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.toggleSwitch .toggleButton {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #191F78;
+}
+
+#toggle:checked ~ .toggleSwitch {
+  background: #191F78;
+}
+
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 26.4px);
+  background: #fff;
+}
+
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
+
+.add-btn{
+    font-size: 40px;
+    font-weight: bold; 
+    /* position:fixed; */
+    margin-left: auto;
+    margin-right: 10px;
+
+    /* border: 3px solid; */
+    /* border-radius: 50%; */
+    
+    /* right: 3%; */
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;  
+    /* top:50%; */
+    /* transform: translateY(-50%); */
+
+}
+.add-btn:hover{
+    cursor:pointer;
+}
+
+
+/* 드롭다운 관련 */
+.dropbtn {
+  /* background-color: #ea2129;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none; */
+
+  border: none;
+  padding: 0px;
+  background-color: #F9F4F4;
+  
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 130px;
+  height: 250px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+
+  left: -3%;
+
+  overflow-y: scroll;
+}
+
+.dropdown-content {
+
+}
+
+.feel {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .feel:hover {
+  background-color: #ddd;
+}
+
+.tag {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .tag:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* .dropdown-content div :focus {display: none;} */
+
+.dropdown:hover .dropbtn{
+  /* background-color: #3e8e41; */
+}
+
 
 
 </style>
