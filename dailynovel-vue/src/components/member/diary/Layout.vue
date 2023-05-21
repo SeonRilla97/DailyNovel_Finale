@@ -166,6 +166,7 @@ function getListwithFiltering(backup) {
         })
         .catch(error => console.log('error', error));
     }
+    // 리스트 재요청시 가장 최신 일기 꺼내기(코드 개판이니 조심하시기 바랍니다. (165번째줄에서 넣어주는중)
     let newestDiaryId = ref()
 // 컬렉션 데이터 불러와서 데이터 삽입
 function getCollectionList() {
@@ -214,7 +215,6 @@ getNewestDiary();
 </script>
 <template>
     <div class="diary-container">
-        <span>{{ newestDiaryId }}</span>
         <Header class="no-scroll"  :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
         
         <section class="diary-main">

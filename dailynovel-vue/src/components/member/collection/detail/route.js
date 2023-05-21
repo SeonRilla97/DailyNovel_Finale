@@ -4,8 +4,8 @@ import Layout from './Layout.vue';
 
 const route = 
   {
-    path: 'detail/:id', component:Layout, children:[
-      { path: 'diary', component:Diary},
+    path: 'detail/:collectionId',name:"detail", component:Layout, children:[
+      { path: 'diary',name:"detailDiary", component:Diary},
       { path: 'Comment', component:Comment}
     ]
   }

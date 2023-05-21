@@ -1,5 +1,5 @@
 <script setup>
-import{ref,toRefs,watchEffect} from 'vue'
+import{ref,toRefs,watchEffect,toRef} from 'vue'
 import { useRouter,useRoute } from 'vue-router'
 let registerMenuController = ref(false);
 
@@ -40,7 +40,7 @@ watchEffect(()=>{
         console.log("에이 중복 아니잖아")
         return
     }
-    console.log("와 이게 진짜 바로 즉각 실행된다고? " + props.isDuplicated)
+    // console.log("와 이게 진짜 바로 즉각 실행된다고? " + props.isDuplicated)
     errMsg.value = "똑같은 컬렉션은 만들 수 없어요!";
     errHandler.value=true;
     
@@ -86,12 +86,12 @@ function delHandler(){
 }
 const router = useRouter()
 function colClickHandler(collectionId){
-    console.log("컬렉션 눌렀네?" +collectionId)
+    // console.log("컬렉션 눌렀네?" +collectionId)
     
     // console.log(router);
     // router.push(`./detail`)
     router.push({
-         name: 'user', 
+         name: 'detail', 
          params: { "collectionId": collectionId } 
     })
 }
@@ -180,6 +180,9 @@ function colClickHandler(collectionId){
     font-size: 20px;
     align-items: center;
     /* justify-content: center; */
+}
+.collection-container> .box:last-child{
+    margin-right:2.5rem;
 }
 .collection-container > a:last-child{
     margin-right:3rem;

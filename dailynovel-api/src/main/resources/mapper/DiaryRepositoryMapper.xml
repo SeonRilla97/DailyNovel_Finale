@@ -34,9 +34,7 @@
     <resultMap id="DiaryDisplayedResultMap" type="MbDiaryDisplayed">
       <result property="memberId" column="member_id" />
       <result property="diaryId" column="diary_id" />
-      <result property="collectionId" column="collection_id" />
       <result property="diaryRegDate" column="diary_reg_date" />
-      <result property="collectionName" column="collection_name" />
 	</resultMap>
 
 
@@ -141,7 +139,20 @@
                 and collection_id = #{collectionId}
         </if>
 
+        <if test="sortStandard == 'newest'">
+            ORDER BY diary_reg_date DESC
+        </if>
+        <if test="sortStandard == 'likes'">
+            ORDER BY likes DESC
+        </if>
+        
 	</select>
       
-
+    <select id="getListByColId" resultMap="DiaryDisplayedResultMap">
+        select d.* from collection_items ci
+        join diary_displayed d
+            on ci.diary_id = d.diary_id
+        where member_id = #{memberId}
+        and ci.collection_id = #{collectionId}
+    </select>
 </mapper>

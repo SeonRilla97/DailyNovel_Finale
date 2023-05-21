@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dailynovel.dailynovelapi.mbentity.MbCollectionItems;
 import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.service.DiaryService;
@@ -160,15 +161,25 @@ public class DiaryController {
        @GetMapping("displayed")
        public List<MbDiaryDisplayed> getDisplayedDiary(
            @RequestParam(required = true) int memberId,
-           @RequestParam(required = false) Integer collectionId
+           @RequestParam(required = false) Integer collectionId,
+           @RequestParam(required = false, name = "sortStandard") String sortStandard
        ){
-           List<MbDiaryDisplayed> list=service.getSharedDiary(memberId,collectionId);
+        System.out.println(sortStandard);
+           List<MbDiaryDisplayed> list=service.getSharedDiary(memberId,collectionId,sortStandard);
            return list;
        }
        // 멤버아이디 , 컬렉션 아이디
 
-    
-
+    //컬렉션에 속한 다이어리 추출
+    @GetMapping("incollection")
+       public List<MbDiaryDisplayed> getListInCollection(
+        @RequestParam(required = true) int memberId,
+        @RequestParam(required = true) int collectionId
+       ){
+        System.out.println("컬렉션 안에 다이어리들 뽑는 놈! " + memberId + collectionId);
+        List<MbDiaryDisplayed> list = service.getListInCollection(memberId, collectionId);
+        return list;
+       }
     // @PostMapping("latlng")
     // public List<Diary> latlng(@RequestBody Diary diary){
         

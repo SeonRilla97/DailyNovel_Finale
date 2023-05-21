@@ -21,5 +21,20 @@ public class DefaultCollectionItemsService  implements CollectionItemsService {
 
         return list;        
     }
-    
+
+    @Override
+    public List<MbCollectionItems> register(MbCollectionItems item) {
+    //    1.있는지 확인
+        MbCollectionItems curItem =  repository.findByIds(item);
+        System.out.println(curItem);
+        if(curItem !=null)
+            repository.delete(item); // 1-1 있다 -> 삭제
+        else
+            repository.register(item); // 1-2 없다 -> 추가
+        // 2.리스트 불러오기
+        List<MbCollectionItems> list = repository.findAllbyId(item.getDiaryId(),null);
+        System.out.println(list);
+        return list;
+
+    }
 }
