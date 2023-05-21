@@ -3,7 +3,7 @@ import quill from './quill.vue';
 import quill2 from './quill2.vue';
 import quillCopy from './quill copy.vue';
 
-import { ref,onMounted, onUpdated, defineProps } from 'vue';
+import { ref,onMounted, onUpdated,  defineProps , defineEmits} from 'vue';
 import MapBox from './MapBox.vue';
 
 const props = defineProps({
@@ -12,11 +12,19 @@ const props = defineProps({
     'newestDiaryId' : ''
 });
 
-let isInit = ref(false);
+const emit = defineEmits(
+    ["DoneAddDiary"]);
+
+let defineRef = ref({
+  'loading' : '',
+  'isInit' : ''
+});
+// defineRef.value.isInit = false;
+
 const initHander = function (firstValue){
     if(firstValue != null) {
-      console.log(isInit.value);
-      isInit.value = true;
+      // console.log(defineRef.value.isInit);
+      defineRef.value.isInit = false;
     }
 };
 
@@ -40,30 +48,51 @@ function newestPromise(diaryId){
     resolve(diaryId);
   })
 }
-
+let isOn = false;
 onUpdated(() => {
   initHander(props.newestDiaryId);
   //최초 데이터 받을 때
   if(!newest){
+    // defineRef.value.isInit = false; //배경화면 끄기
+    // defineRef.value.loading = true; //로딩창 소환
     let promise = newestPromise(props.newestDiaryId);
     promise
     .then( result => loadDiary(result))
-    .then( sucess => newest = sucess);
+    .then( sucess => {
+      // defineRef.value.isInit = true;
+      // defineRef.value.loading = false;
+      newest = sucess;
+    });
     // newest = true;
   }
 
   ControllerAdd = props.isAdd
   // console.log(ControllerAdd);
-
     //update 이중 방지용
-  if( ControllerAdd == true && weatherDone == false){
+  // console.log(defineRef.value.loading , defineRef.value.isInit);
+  if( ControllerAdd == true && weatherDone == false
+    && isOn == false){
     let promise = geoFindMe();
+    isOn = true;
+
+    defineRef.value.loading = true; //로딩창 소환
+    defineRef.value.isInit = true; //배경화면 끄기
 
     promise
     .then(response => weather(response[0],response[1]))
-    .then(result => addDiary(result))
-    .then(success => console.log(success));
+    .then(result => {
+
+      // console.log(defineRef.value.loading , defineRef.value.isInit);
+      addDiary(result)
+    })
+    .then(success => {
+      defineRef.value.loading = false;
+      defineRef.value.isInit = false;
+      // console.log(defineRef.value.loading , defineRef.value.isInit);
+      console.log(success)
+    });
   }
+  // console.log("load: "+defineRef.value.loading ,"init: "+ defineRef.value.isInit);
 
   // console.log(previousLoad, props.loadDiaryId);
   if(previousLoad != props.loadDiaryId){
@@ -100,7 +129,7 @@ function getDate(gotdate){
 
 //현재시간 받아오기
 //   const time = getDate(new Date);
-  
+
 
 //날씨관련 객체
   const weatherData = ref("");
@@ -133,7 +162,7 @@ function coor(coor) {
     function error() {
       console.log("Unable to retrieve your location");
     }
-    
+
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by your browser");
     } else {
@@ -181,7 +210,7 @@ function coor(coor) {
         else if(weatherCodeConvert == 8){
           if(code / 800 == 1)
             weatherData.value.weatherDes = "맑음";
-          else 
+          else
             weatherData.value.weatherDes = "흐림";
         }
         resolve(weatherData.value.weatherDes);
@@ -226,7 +255,7 @@ function objRef
   diaryRef.value.feeling = DFeeling;
   diaryRef.value.honesy = DHonesy;
   diaryRef.value.tag = DTag;
-  diaryRef.value.regDate = getDate(new Date);
+  diaryRef.value.regDate = DDate;
   diaryRef.value.lat = DLat;
   diaryRef.value.lng = Dlng;
 
@@ -248,7 +277,7 @@ const addDiary = function(isAdd){
 
     // console.log(diaryRef.value);
     diaryObj = diaryRef.value;
-    diaryObj.regDate = null;
+    // diaryObj.regDate = null;
     // console.log(diaryObj);
     let raw = JSON.stringify(diaryObj);
 
@@ -259,17 +288,18 @@ const addDiary = function(isAdd){
       redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/diary", requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        diaryObj.regDate = diaryRef.value.regDate;
-        console.log(diaryObj.regDate);
-        console.log(diaryRef.value.regDate);
-      })
-      .catch(error => console.log('error', error));
+    // fetch("http://localhost:8080/diary", requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => {
+    //     emit("DoneAddDiary", true)
+    //     diaryRef.value.regDate = getDate(new Date);
+    //     // console.log(diaryObj.regDate);
+    //     // console.log(diaryRef.value.regDate);
+    //   })
+    //   .catch(error => console.log('error', error));
     console.log("완료");
   // }
-    resolve("seucess");
+    resolve("success");
 })};
 
 const loadDiary = function(diaryId){
@@ -301,10 +331,15 @@ const loadDiary = function(diaryId){
 <template>
 
   <div
-      v-if="isInit"
+      v-if="defineRef.loading"
+      class="dot-overtaking"></div>
+
+  <div
+      v-if="!defineRef.isInit"
       class="editor-wrap"
       @click="onclickedHandler"
       >
+
 
     <div class="editor-attribue-box">
       <!-- <div class="editor-data">2023년 4월 10일 오후 02시 01분 </div> -->
@@ -314,8 +349,8 @@ const loadDiary = function(diaryId){
       <div class="editor-attribue">{{diaryRef.feeling}}</div>
     </div>
 
-    <div class="editor-title"> 
-        <header contenteditable="true"  
+    <div class="editor-title">
+        <header contenteditable="true"
                 class="editor-title-content editor-header"
                 @click="editHandler"
                 >
@@ -328,9 +363,9 @@ const loadDiary = function(diaryId){
     <hr class="editor-title-hr">
 
     <div class="editor-main-quill">
-      <main 
+      <main
       class="editor-main"
-      @click="editHandler"  
+      @click="editHandler"
       >
         <!-- <quill2/> -->
         <quill
@@ -341,9 +376,9 @@ const loadDiary = function(diaryId){
 
       </main>
 
-      <div 
+      <div
         class="editor-sub-button editor-sub">
-        
+
         <!-- @click.prevent="mapToggleHandler"> -->
         <button
         @click="imageToggle = !imageToggle"
@@ -374,7 +409,7 @@ const loadDiary = function(diaryId){
         </div>
       </div>
 
-    </div>  
+    </div>
   </div>
 
 
@@ -601,5 +636,60 @@ const loadDiary = function(diaryId){
 .img-map-container{
   overflow-y: scroll;
 }
+
+
+/**
+ * ==============================================
+ * Experimental: Gooey Effect
+ * Dot Overtaking
+ * ==============================================
+ */
+.dot-overtaking {
+  position: absolute;
+  top : 50%;
+  left : 50%;
+
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: hsl(0deg, 100%, 0%);
+  margin: -1px 0;
+  box-shadow: 0 -20px 0 0;
+  filter: blur(2px);
+  animation: dot-overtaking 2s infinite cubic-bezier(0.2, 0.6, 0.8, 0.2);
+}
+.dot-overtaking::before, .dot-overtaking::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: hsl(0deg, 100%, 0%);
+  box-shadow: 0 -20px 0 0;
+  filter: blur(2px);
+}
+.dot-overtaking::before {
+  animation: dot-overtaking 2s infinite cubic-bezier(0.2, 0.6, 0.8, 0.2);
+  animation-delay: 0.3s;
+}
+.dot-overtaking::after {
+  animation: dot-overtaking 1.5s infinite cubic-bezier(0.2, 0.6, 0.8, 0.2);
+  animation-delay: 0.6s;
+}
+
+@keyframes dot-overtaking {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
 
 </style>
