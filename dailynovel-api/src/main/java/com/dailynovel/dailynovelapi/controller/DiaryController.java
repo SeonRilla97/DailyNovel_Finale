@@ -2,26 +2,27 @@ package com.dailynovel.dailynovelapi.controller;
 
 
 
-import com.dailynovel.dailynovelapi.entity.Diary;
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.dailynovel.dailynovelapi.mbentity.MbDiary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.service.DiaryService;
-import jakarta.persistence.Column;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.UnsupportedEncodingException;
-
-import java.lang.reflect.Type;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 
 
 @RestController
@@ -63,15 +64,11 @@ public class DiaryController {
         return list;
     }
 
-//    @GetMapping("get")
-//    public boolean get(){
-//
-//        boolean qqq = service.isValid("1");
-//
-//        return qqq;
-//    }
+    // @GetMapping("get")
+    // public boolean get(){
 
-
+    //     boolean qqq = service.isValid("1");
+    // }
     @GetMapping("{id}")
     public MbDiary getDiary(
             @PathVariable("id") int diaryId
@@ -159,7 +156,16 @@ public class DiaryController {
         return list;
     }
 
-   
+       //공유가 한번이라도 된 적 있는 일기를 불러온다(join 4번)
+       @GetMapping("displayed")
+       public List<MbDiaryDisplayed> getDisplayedDiary(
+           @RequestParam(required = true) int memberId,
+           @RequestParam(required = false) Integer collectionId
+       ){
+           List<MbDiaryDisplayed> list=service.getSharedDiary(memberId,collectionId);
+           return list;
+       }
+       // 멤버아이디 , 컬렉션 아이디
 
     
 
@@ -171,7 +177,19 @@ public class DiaryController {
 
 
 
-    }
+
+    
+
+
+}
 
 
 
+
+
+    // @DeleteMapping("{id}")
+    // public void remove(
+    //         @PathVariable("id") int diaryId
+    // ){
+    //     service.removeDiary(diaryId);
+    // }

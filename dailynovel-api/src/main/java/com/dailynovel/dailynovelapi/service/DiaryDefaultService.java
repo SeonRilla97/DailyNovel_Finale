@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
+import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 import com.dailynovel.dailynovelapi.repository.DiaryRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -195,6 +196,12 @@ public class DiaryDefaultService implements DiaryService{
 
 
 
+    @Override
+    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId) {
+        // TODO Auto-generated method stub
+        List<MbDiaryDisplayed> list = mbRepository.findDisplayedById(memberId, collectionId);
+        return list;
+    }
     @Override
     public List<Diary> getAllByMId() {
         List<Diary> list = repository.findAllByMId(null);

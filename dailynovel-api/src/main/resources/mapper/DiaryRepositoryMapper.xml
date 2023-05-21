@@ -18,6 +18,7 @@
         <result property="weather" column="weather" />
         <result property="feeling" column="feeling" />
         <result property="honesty" column="honesty" />
+        <result property="regDate" column="reg_date" />
         <result property="latitude" column="latitude" />
         <result property="longitude" column="longitude" />
     </resultMap>
@@ -28,6 +29,14 @@
       <result property="collectionId" column="collection_id" />
       <result property="regDate" column="reg_date" />
       <result property="sharedinitDate" column="display_init_date" />
+	</resultMap>
+
+    <resultMap id="DiaryDisplayedResultMap" type="MbDiaryDisplayed">
+      <result property="memberId" column="member_id" />
+      <result property="diaryId" column="diary_id" />
+      <result property="collectionId" column="collection_id" />
+      <result property="diaryRegDate" column="diary_reg_date" />
+      <result property="collectionName" column="collection_name" />
 	</resultMap>
 
 
@@ -121,6 +130,17 @@
                 reg_date DESC
             </otherwise>
         </choose>    
+	</select>
+
+
+    <select id="findDisplayedById" resultMap="DiaryDisplayedResultMap">
+		select *
+		FROM diary_displayed
+		where member_id = #{memberId}
+        <if test="collectionId != null">
+                and collection_id = #{collectionId}
+        </if>
+
 	</select>
       
 

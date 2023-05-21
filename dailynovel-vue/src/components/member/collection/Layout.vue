@@ -5,8 +5,12 @@ import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
 // import Main from './Main.vue';
 
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
+// 사용자의 컬렉션 리스트
 const collection = reactive({
     List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에","123"]
+})
+const diaryDisplayed= reactive({
+    list : null
 })
 getCollectionList();
 
@@ -16,8 +20,6 @@ fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`)
     .then(response => response.json())
     .then(collections => {
         // 받은 데이터 일단 볼까
-        // console.log(collections);
-        collection.List = null;
         collection.List = collections;
         console.log(collection.List);
     })
@@ -71,6 +73,26 @@ function regBtnClickHandler(CollectionName) {
 function successInit(){
     regSuccess.value = false;
 }
+
+
+getSharedDiary();
+
+// 데이터 불러오기 -> 유저가 공유한적있는 모든 다이어리 불러오기
+function getSharedDiary() {
+let requestOptions = {
+method: 'GET',
+redirect: 'follow'
+};
+
+fetch(`http://localhost:8080/diary/displayed?memberId=${userDetails.id}`, requestOptions)
+.then(response => response.json())
+.then(result => {
+    diaryDisplayed.list = result;
+
+})
+.catch(error => console.log('error', error));
+}
+console.log(diaryDisplayed.list);
 </script>
 
 
@@ -84,6 +106,7 @@ function successInit(){
                 :collection="collection" 
                 :isDuplicated ="isColNameDuplicated" 
                 :successAddMenu = "regSuccess"
+                :displayedDiary = "diaryDisplayed"
                 @registerCollection = "regBtnClickHandler"
                 @initSuccesAddMenu = "successInit"
             >

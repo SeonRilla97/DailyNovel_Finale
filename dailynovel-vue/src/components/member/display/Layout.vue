@@ -8,6 +8,11 @@
             <li class="point" :class="'자유'==currentCategory?'active-commu-category':''" @click="categoryClick('자유')"><h1>자유</h1></li> 
             <li class="point" :class="'영화'==currentCategory?'active-commu-category':''" @click="categoryClick('영화')"><h1>영화</h1></li>
             <li class="point" :class="'여행'==currentCategory?'active-commu-category':''" @click="categoryClick('여행')"><h1>여행</h1></li>
+            <!-- <li class="point" :class="'1'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('1')"><h1>인기</h1></li>
+            <li class="point" :class="'2'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('2')"><h1>최신</h1></li>
+            <li class="point" :class="'자유'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('자유')"><h1>자유</h1></li> 
+            <li class="point" :class="'영화'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('영화')"><h1>영화</h1></li>
+            <li class="point" :class="'여행'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('여행')"><h1>여행</h1></li> -->
         </ul>
         <br>
         <br>
@@ -47,12 +52,16 @@
 
 import { onMounted, reactive, ref, } from 'vue'
 import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+import {useDisplayCategoryStore} from '../../store/useDisplayCategoryStore.js'
 
 // 되는 gpt코드 -> 비교해보기
 let model = reactive([]);
 let count = ref();
 let category = reactive([]);
-let currentCategory = ref('1');
+
+let DisplayCategory = useDisplayCategoryStore()
+
+let currentCategory = DisplayCategory.category;
 
 let indeLikeList = reactive([])
 
@@ -77,7 +86,8 @@ onMounted(() => {
 })
 
 function categoryClick(page) {
-    currentCategory.value = page;
+    DisplayCategory.saveCategory(page)
+    currentCategory=page
     load()
 }
 

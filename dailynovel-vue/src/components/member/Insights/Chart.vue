@@ -87,6 +87,7 @@ export default {
             counts
           }
 
+          console.log("tags[0]:",tags[0]);
           this.TcreateChart(map);
         });
     },

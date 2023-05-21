@@ -1,7 +1,9 @@
 <template lang="">
     <section class="grid columns">
         <h1 class="d-none">프로필 안내 창</h1>
-        <div class="profile">프로필 이미지</div> 
+            <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`">
+            프로필 이미지{{image}}
+        </div> 
         <div class="grid row">
             <span class="btn" @click="subscribeHandler(writerId)">{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
             <router-link to="/member/room/collection/main" class="btn"  v-show="isSubscribed=='true'">구경가기</router-link>
@@ -21,16 +23,21 @@ const props = defineProps({
     writerId: {
         type: Number
     },
+    image:{
+        type: String
+    }
 })
 
 let isSubscribed = ref();
 let memberId = ref();
 let writerId = ref();
+let image = ref();
 
 function load() {
     isSubscribed.value = props['isSubscribed'];
     memberId.value = props['memberId'];
     writerId.value = props['writerId'];
+    image.value = props['image'];
 
     // console.log(memberId.value);
     // console.log(writerId.value);
@@ -97,9 +104,18 @@ onMounted(() => {
     align-items: center;
 }
 
-.profile {
-    width: 200px;
+.profileImage {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 100px;
+    /* border: 1px solid #f0a59e; */
+    width: 150px;
     height: 150px;
+    /* background-image: url(../../../assets/img/ProfileImage/png1.jpg); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .btn {
