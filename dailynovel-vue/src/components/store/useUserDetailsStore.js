@@ -21,7 +21,7 @@ export const useUserDetailsStore = defineStore("userDetails", {
             localStorage.removeItem('email');
             localStorage.removeItem('nickname');
             // 로컬 저장소에서 roles 값 제거 (선택적으로 필요한 경우에만 사용)
-            // localStorage.removeItem('roles');
+            localStorage.removeItem('roles');
         },
 
         hasRole(role) {

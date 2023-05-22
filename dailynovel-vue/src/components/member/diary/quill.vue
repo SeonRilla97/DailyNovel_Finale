@@ -12,7 +12,7 @@ import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 const quill = ref(null);
 console.log(quill.value);
 const props = defineProps({
-    'content' : ''
+    'content' : '',
 
 });
 
@@ -47,9 +47,10 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-    console.log(props.content);
-    quill.value.setText(props.content);
-    console.log(quill.value);
+
+    if(props.content != null)
+      quill.value.setText(props.content);
+    // console.log(quill.value);
 });
 
 function editortrigger (delta, oldDelta, source) {
@@ -59,6 +60,8 @@ function editortrigger (delta, oldDelta, source) {
         console.log("A user action triggered this change.");
     }
 }
+
+
 
 </script>
 

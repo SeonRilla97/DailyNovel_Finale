@@ -2,6 +2,8 @@ package com.dailynovel.dailynovelapi.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
 import com.dailynovel.dailynovelapi.entity.MemberFollow;
@@ -9,9 +11,7 @@ import com.dailynovel.dailynovelapi.entity.MemberFollow;
 public interface DisplayService {
     List<DisplayView> getByList(); // 최신리스트 용
 
-    /* 실험실 삭제할 가능성 농후함 11~*/
-    // List<DisplayView> getByListWithPagination(int limit);
-    /* 실험실 삭제할 가능성 농후함 11~*/
+    Page<DisplayView> getByList(int limit, int page);
 
     void insertLike(int mId, int dId);
     void deleteLike(int mId, int dId);

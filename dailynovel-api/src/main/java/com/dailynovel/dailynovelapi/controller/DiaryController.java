@@ -83,7 +83,7 @@ public class DiaryController {
     }
 
     @PostMapping
-    public void write(
+    public int write(
             @RequestBody MbDiary diary
     ){
 //        Integer id = null;
@@ -124,10 +124,13 @@ public class DiaryController {
 
 //        Timestamp time = Timestamp.valueOf(date);
 //        Timestamp time = new Timestamp(date);
+        int diaryId = 0;
 
         System.out.println(diary.toString());
         System.out.println(diary.getClass().getName());
         service.writeDiary(diary);
+
+        return diaryId;
     }
 
     @PutMapping

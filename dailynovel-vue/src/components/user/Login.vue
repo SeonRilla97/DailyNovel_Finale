@@ -273,17 +273,18 @@ async function FindSignupUser(event) {
       <div class="main-svg" />
       <div class="form">
         <form method="post" enctype="application/x-www-form-urlencoded">
-          <div class="mgt-4" v-if="loginFalse">
-            <span>이메일과 비밀번호를 확인해주세요</span>
+          <div class="mgt-1 mgl-5" v-if="loginFalse">
+            <span style="color: rgb(220, 0, 0);">계정 및 암호를 확인해주세요</span>
+
           </div>
           <div class="input3 mgt-4">
             <div class="div-placeholder">
-              <input id="email" class="text04" type="text" tabindex="0" placeholder="이메일" required v-model="user.email" />
+              <input id="email" class="text04 mgl-2" type="text" tabindex="0" placeholder="이메일" required v-model="user.email" />
             </div>
           </div>
-          <div class="input3">
+          <div class="input3 mgt-2">
             <div class="div-placeholder mgt-1">
-              <input id="password" class="text04" type="password" placeholder="비밀번호" required v-model="user.password" />
+              <input id="password" class="text04 mgl-2" type="password" placeholder="비밀번호" required v-model="user.password" />
             </div>
           </div>
           <button class="button1 mgt-3" @click.prevent="loginHandler">
@@ -296,7 +297,7 @@ async function FindSignupUser(event) {
           </div>
         </div>
       </div>
-      <div class="mgt-5">
+      <div class="mgt-6">
         <router-link to="./login" class="text09 mgt-4">SNS계정으로 간편 로그인/회원가입</router-link>
       </div>
       <div class="lc-horizontal-alignment mgt-3">
