@@ -1,10 +1,16 @@
 <script setup>
 import { ref } from 'vue';
+import { useRoute, useRouter } from "vue-router";
+let router = useRouter();
 let props = defineProps({
     content: "",
     show: false,
     type: "conform"
 });
+
+function navigateToMemberRoom(){
+    router.push('/login');
+}
 </script>
 
 <template>
@@ -13,7 +19,10 @@ let props = defineProps({
             <div class="content">
                 {{ content }}
             </div>
-            <button >OK</button>
+            <button v-if="content === '회원가입에 성공했습니다.'" @click="navigateToMemberRoom">로그인 하러가기</button>
+            <button v-else @click="navigateToDefaultRoute">
+        ok
+      </button>
         </section>
     </div>
 </template>
