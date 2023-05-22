@@ -9,4 +9,6 @@ import com.dailynovel.dailynovelapi.mbentity.MbCollectionItems;
 public interface CollectionItemsService {
 
     public List<MbCollectionItems> getListById(Integer diaryId, Integer collectionId);
+
+    public List<MbCollectionItems> register(MbCollectionItems item);
 }

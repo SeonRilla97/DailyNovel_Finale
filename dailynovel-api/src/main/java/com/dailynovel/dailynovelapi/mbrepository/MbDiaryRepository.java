@@ -41,5 +41,6 @@ public interface MbDiaryRepository {
     String collection, 
     String query
     );
-List<MbDiaryDisplayed> findDisplayedById(int memberId, Integer collectionId);
+List<MbDiaryDisplayed> findDisplayedById(int memberId, Integer collectionId,String sortStandard);
+List<MbDiaryDisplayed> getListByColId(int memberId, int collectionId);
 }

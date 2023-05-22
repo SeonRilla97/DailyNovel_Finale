@@ -6,6 +6,7 @@ import com.dailynovel.dailynovelapi.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,13 +36,20 @@ public class CollectionController {
     ){
         LocalDateTime curDateTime = LocalDateTime.now();
         collection.setCreateDate(curDateTime);
-
-        System.out.println(curDateTime);
-        System.out.println(collection);
-        System.out.println("컬렉션의 포스트 함수입니다.");
         Boolean isCuccess=service.add(collection);
         return isCuccess;
     }
-
+    @PutMapping("")
+    public Boolean update(
+        @RequestBody(required = true) MbCollection collection
+        // @RequestBody(required = true) String alterName
+    ){
+        System.out.println("요청은 해!");
+        System.out.println(collection);
+        // System.out.println(collection);
+        Boolean isCuccess=service.update(collection);
+        // return isCuccess;
+        return isCuccess;
+    }
 
 }

@@ -35,6 +35,7 @@ public interface DiaryService {
     public int editDiary(MbDiary diary);
 
     public int removeDiary(int id);
-    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId);
+    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId,String sortStandard);
+    public List<MbDiaryDisplayed> getListInCollection(int memberId, int collectionId);
 }
  

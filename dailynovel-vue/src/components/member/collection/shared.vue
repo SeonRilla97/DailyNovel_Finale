@@ -1,13 +1,12 @@
 <script setup>
-import {ref} from 'vue'
+import {ref, watchEffect,toRef} from 'vue'
 
 // 추가버튼 팝업메뉴 Open
 let menuOpen = ref(null);
 // 다이어리가 속한 컬렉션
 let curDiaryInCollection = ref([1,2,3]);
-// 컬렉션 리스트 오픈 핸들러
-console.log("포함 확인!!" +curDiaryInCollection.value.includes(3));
 
+// 추가 버튼 누를시 동작하는 이벤트 핸들러
 function mOpenHandler(diaryId){
     // 메뉴 버튼 한번 더 클릭시 닫힘 기능
     if(menuOpen.value == diaryId){
@@ -32,15 +31,43 @@ function mOpenHandler(diaryId){
     .catch(error => console.log('error', error));
     // 현재 누른 추가버튼 드롭다운 활성화
     menuOpen.value = diaryId;
-    // Colletion과 Diary 연관 관계 테이블로부터 Collection ID들 추출
-    
-
-    // Reactive한 객체에 삽입
-    // console.log(containList);
-    // diaryId 로 해당 다이어리 데이터의 
-    
 }
-console.log(props.collection)
+
+// 컬렉션에 일기를 등록하는 핸들러
+function collectionAddHandler(diaryId, collectionId) {
+    // 1. diaryId, collection id를 서버로 넘겨서 등록 or 삭제 한다.
+    //   세부사항 : Fetch
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify({
+    "diaryId": diaryId,
+    "collectionId": collectionId
+    });
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+    };
+    fetch("http://localhost:8080/collection/items", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        // DIaryId CollectionId 들어있는 객체 배열 받아서 
+        // CollectionId만 들어있는 배열로 Mapping
+        let modifiedArr = result.map(function(result){
+            return result.collectionId;
+        });
+        curDiaryInCollection.value = modifiedArr
+
+    })
+    .catch(error => console.log('error', error));
+    // 2. 하나의 일기가 어느 컬렉션에 속해 있는지 데이터를 받아서, 화면단에 동기화 시킨다.
+
+}
+
+// Collection Layout으로부터 불러온 데이터들
 let props = defineProps({
     displayedDiary: {
         type: Object,
@@ -51,17 +78,26 @@ let props = defineProps({
         required:true
     }
 })
-console.log("=============공유된 일기들 구경하자!==========")
 console.log(props.displayedDiary)
+
+const emit=defineEmits(["callDisplayed"]);
+let clickMenu = ref(1)
+function sortMenuClickHandler(menu,curClick) {
+    // console.log(`${menu} 찍었다!`)
+    // 누른거 색깔 바꾸고
+    clickMenu.value = curClick;
+    // 정렬 기준 알려주고
+    emit("callDisplayed",menu)
+}
 </script>
 <template>
     <div class="shared-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <div class="ib active">인기</div>
-                <div class="ib mgl-2">최신</div>
+                <div class="ib standard" @click="sortMenuClickHandler('newest',1)" :class="{active : clickMenu==1}">최신</div>
+                <div class="ib standard mgl-3" @click="sortMenuClickHandler('likes',2)" :class="{active : clickMenu==2}">인기</div>
             </div>
-            <div class="icon-back"></div>
+            <!-- <div class="icon-back"></div> -->
         </header>
         <section class="main">
             <div class="slide-container" >
@@ -76,7 +112,7 @@ console.log(props.displayedDiary)
                            <TransitionGroup>
                             <Transition name="bounce">
                                 <div class="content" @click="optionClickHandler" v-show="menuOpen== value.diaryId">
-                                    <a href="#"  class="item"  v-for="(collection, key) in collection.List" :class="{shared: curDiaryInCollection.includes(collection.id) }">{{collection.name}}</a>
+                                    <a href="#"  class="item"  v-for="(collection, key) in collection.List" :class="{shared: curDiaryInCollection.includes(collection.id) }" @click="collectionAddHandler(value.diaryId,collection.id)">{{collection.name}}</a>
                                 </div>
                             </Transition>
                             </TransitionGroup>
@@ -110,6 +146,9 @@ console.log(props.displayedDiary)
     align-items: center;
     position:relative;
 }
+    .header .standard{
+        cursor:pointer;
+    }
 .shared-container > .main{
     display:flex;
     align-items: center;
@@ -120,7 +159,7 @@ console.log(props.displayedDiary)
     display:flex;
     align-items: center;
     transform: translateY(-10%);
-    padding:0 58px ;
+    padding-right:2.5rem
     /* box-sizing: border-box; */
 } 
 
@@ -238,10 +277,11 @@ color: black;
 padding: 12px 16px;
 text-decoration: none;
 display: block;
+transition: 0.5s all linear;
 }
 
 .collection-list.dropdown .content .item.shared {
-color: #00000060;
+color: #00000040;
 }
 
 .collection-list.dropdown .content a:hover {
