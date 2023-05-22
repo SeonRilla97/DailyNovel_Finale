@@ -36,8 +36,10 @@
                                         좋아요 {{like}}
                                     </div>
                                 <div class="mgl-3 more-btn nodouble-drag btn-box btn-grid cursor" @click="unimplemented">
-                                    <span class="alert-btn"></span>
-                                    <span>신고하기</span>
+                                    <router-link :to="'/member/room/community/report/'+diaryId">
+                                        <span class="alert-btn"></span>
+                                        <span>신고하기</span>
+                                    </router-link>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +154,7 @@ function openSubscribeBoxHandler() {
 }
 
 function unimplemented(){
-    alert("이거 보여주려고 어그로 끌었다.");
+    console.log("신고하는 중")
 };
 
 </script>

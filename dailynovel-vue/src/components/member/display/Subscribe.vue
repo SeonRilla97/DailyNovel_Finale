@@ -4,7 +4,7 @@
             <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`">
         </div> 
         <div class="grid row">
-            <div class="btn cursor" @click="subscribeHandler(writerId)" >
+            <div class="btn cursor btn-box" @click="subscribeHandler(writerId)" >
                     <span :class="isSubscribed=='true' ? 'subscribe-inactive' : 'subscribe-active'"></span>
                     <span>{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
             </div>
