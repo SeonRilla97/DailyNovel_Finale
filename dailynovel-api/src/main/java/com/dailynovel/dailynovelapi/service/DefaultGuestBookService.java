@@ -10,6 +10,7 @@ import com.dailynovel.dailynovelapi.entity.GuestBook;
 import com.dailynovel.dailynovelapi.entity.GuestBookComment;
 import com.dailynovel.dailynovelapi.mbentity.MbGuestBook;
 import com.dailynovel.dailynovelapi.mbentity.MbGuestBookAll;
+import com.dailynovel.dailynovelapi.mbentity.MbGuestBookComment;
 import com.dailynovel.dailynovelapi.mbrepository.MbGuestBookRepository;
 import com.dailynovel.dailynovelapi.repository.GuestBookRepository;
 
@@ -53,9 +54,44 @@ public class DefaultGuestBookService implements GuestBookService {
   }
 
   @Override
-  public GuestBookComment writeGuestBookComment() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'writeGuestBookComment'");
+  public int writeGuestBookComment(Map<String, Object> comment) {
+    Integer guestbookId = (Integer) comment.get("guestbookId");
+    Integer memberId = (Integer) comment.get("memberId");
+    String content = comment.get("comment").toString();
+
+    MbGuestBookComment temp = MbGuestBookComment.builder()
+        .content(content)
+        .guestbookId(guestbookId)
+        .memberId(memberId)
+        .build();
+    
+    mbRepository.insertGuestbookComment(temp);
+
+    return 1;
+  }
+
+  @Override
+  public int rewriteGuestBookComment(Map<String, Object> comment) {
+    Integer guestbookId = (Integer) comment.get("guestbookId");
+    Integer memberId = (Integer) comment.get("memberId");
+    String content = comment.get("comment").toString();
+
+    MbGuestBookComment temp = MbGuestBookComment.builder()
+        .content(content)
+        .guestbookId(guestbookId)
+        .memberId(memberId)
+        .build();
+    
+    mbRepository.updateGuestbookComment(temp);
+
+    return 1;
+  }
+
+  // 방명록 답글 삭제 서비스
+  @Override
+  public void deleteGuestBookComment(Map<String, Object> guestbookId) {
+    int id = (int) guestbookId.get("guestbookId");
+    mbRepository.deleteGuestbookComment(id);
   }
 
 }
