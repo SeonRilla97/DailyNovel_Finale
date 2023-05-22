@@ -12,7 +12,7 @@ let router = useRouter();
 const hostId = userDetails.id;
 let guestId = 2;
 
-let mode = null;
+let mode = ref("");
 
 // 방명록 리스트 불러오기
 let guestbooks = reactive({
@@ -42,9 +42,9 @@ onMounted(() => {
 
   // 현재 들고온 주소에 따라서 모드 확인
   if (route.fullPath.match("profile"))
-    mode = "profile";
+    mode.value = "profile";
   else
-    mode = "guest";
+    mode.value = "guest";
 
   console.log(mode);
 })
@@ -113,16 +113,43 @@ function getGuestbookList() {
     .then((data) => guestbooks.list = data)   
 }
 
+function getFollowGuestbookList() {
+  fetch(`http://localhost:8080/members/guestbooks?id=${FollowId}`,
+    {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+    })
+    .then(response => response.json())
+    .then((data) => guestbooks.list = data)   
+}
+
 </script>
 <template>
   <ul class="m-guestbook-content-list">
     <li class="lc-center" v-if="mode == 'guest'">
       <div class="m-guestbook-content-writeForm">
         <textarea class="m-guestbook-content-writeBox" v-model="guestbook.content"></textarea>
-        <button @click.prevent="writeGuestBookHandler" type="submit" value="">작성</button>
+        <button @click.prevent="writeGuestBookHandler" class="m-gb-writeBtn" type="submit" value="">작성</button>
       </div>
     </li>
-    <gbCard v-for="item in guestbooks.list"  :guestbook = "item"></gbCard>
+    <li class="m-gb-list" v-if="mode == 'guest'" v-for="item in 10">
+      <div class="m-gb-header lc-center">
+        <div><span>From.</span></div>
+        <div>{{ "글쓴이" }}</div>
+      </div>
+      <div class="m-gb-main">
+        <textarea class="txta-rsnone" readonly></textarea>
+        <div class="m-gb-cmt">
+          <div><span>답글</span></div>
+          <textarea class="txta-rsnone" readonly></textarea>
+        </div>
+      </div>
+
+    </li>
+    <gbCard v-if="mode == 'profile'" v-for="item in guestbooks.list"  :guestbook = "item"></gbCard>
   
     <!-- <li v-show=false>
       <span>아직 방명록이 남겨져 있지 않아요. 좋은 일기를 공유해보면서 소통해보면 어떨까요?</span>
@@ -131,50 +158,57 @@ function getGuestbookList() {
 </template>
 
 <style scoped>
-.m-guestbook-icon-box{
-  width:24px;
-  height:24px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
+.m-gb-list{
+  width:80%;
+  height:80%;
 
-.m-guestbook-icon-box:hover{
-  background-color: rgba(0,0,0,0.2);
-}
-.m-guestbook-comment-text-host {
-  font-family: 'Nanum Gothic', sans-serif;
-  resize: none;
-  width: 80%;
-  height: 80%;
-  border: none;
-  /* readonly : "readonly"; */
   background-color: #fafafa;
+  border: 2px solid #FCD602;
+  border-radius: 8px;
+
+  justify-self: center;
+  align-self: center;
+
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+    box-sizing: border-box;
+
+
 }
+.m-gb-main{
+  height:100%;
 
-.m-guestbook-comment-text-guest {
-  font-family: 'Nanum Gothic', sans-serif;
-  font-size: 1rem;
-  resize: none;
-  width: 80%;
-  height: 80%;
-  border: none;
-  text-align: center;
-  background-color: #fafafa;
-
+  display:grid;
+  grid-template-rows: 3fr 1fr;
 }
-
-.m-guestbook-comment-text-guest:focus {
-  outline: none;
-}
-
-.m-guestbook-comment-form {
-  width: 100%;
-  height: 20%;
+.m-gb-header{
   display: flex;
-  justify-content: center;
   align-items: center;
 }
+.m-gb-cmt{
+  display: flex;
+  align-items: center;
+}
+.txta-rsnone{
+  resize: none;
+  border: none;
+}
+
+.txta-rsnone:focus{
+  resize: none;
+  outline: none;
+}
+.m-gb-writeBtn{
+  width:80px;
+  height:40px;
+  border-radius: 8px;;
+  background-color: #FCD602;
+  justify-self: center;
+}
+
+.m-gb-writeBtn:hover{
+  opacity: 0.5;
+} 
 
 .m-guestbook-content-list {
   width: 100%;
@@ -252,7 +286,7 @@ function getGuestbookList() {
 
 .m-guestbook-content-writeForm {
   width: 240px;
-  height: 346px;
+  height: 80%;
 
   background-color: #fafafa;
   border: 2px solid #FCD602;
@@ -262,7 +296,8 @@ function getGuestbookList() {
 
   display: grid;
   grid-template-rows: 8fr 1fr;
-
+  padding:1rem;
+  
 
 }
 
