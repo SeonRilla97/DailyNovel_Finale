@@ -16,18 +16,23 @@
  	</insert>
 
 
-    <select id="findByName" resultMap="CollectionResultMap" parameterType="MbCollection">
+  <select id="findByName" resultMap="CollectionResultMap" parameterType="MbCollection">
 		select * 
         from collection
         where member_id = #{memberId}
         and name = #{name}
 	</select>
 
-    <select id="findAllByMemberId" resultMap="CollectionResultMap">
-		select * 
-        from collection
-        where member_id = #{memberId}
-	</select>
+  <select id="findAllByMemberId" resultMap="CollectionResultMap">
+  select * 
+      from collection
+      where member_id = #{memberId}
+  </select>
 
 
+  <update id="update" parameterType="MbCollection">
+    UPDATE collection
+    SET name = #{name}
+    WHERE id = #{id}
+  </update>
 </mapper>

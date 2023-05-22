@@ -25,7 +25,7 @@ const props  = defineProps({
 
 
 
-let emit = defineEmits(["registerCollection","initSuccesAddMenu"])
+let emit = defineEmits(["registerCollection","initSuccesAddMenu","callgetCollectionList"])
 function menuClickHandler(e){
     console.log(e.target);
 }
@@ -76,10 +76,89 @@ function regBtnClickHandler(){
     // 컬렉션 중복시, 오류 발생해야함
     emit("registerCollection",regCollectionName.value)
 }
+// 팝업창 오픈
+let updateModalOpen=ref(false)
+// 어떤 컬렉션의 이름을 수정할지 선택하는 변수
+let updateData = ref();
+// 컬렉션 수정 창 여는친구
+function modifyHandler(colList){
+    if(updateModalOpen.value == true)
+        return;
+    updateModalOpen.value = true;
+    updateData.value = colList;
+}
+// 수정창의 취소버튼을 누를 때
+function modifyCancel(){
+    updateData.value =null;
+    updateModalOpen.value =false;
+    updateColName.value = null;
+    updateErr.value= null;
+    updateErrControl.value = false;
+}
+// 수정창의 수정 버튼을 누를 때
+let updateColName = ref("");
+// 에러 메세지 출력
+let updateErr = ref("");
+// 에러 떴다고 알리는 변수
+let updateErrControl = ref(false);
 
-// 컬렉션 이름은 중복할 수 없어요
-function modifyHandler(){
+function modifyReg(){
     console.log("수정!")
+    // console.log(updateColName.value)
+    // console.log(updateData.value.memberId)
+    console.log(updateData.value.memberId)
+    // console.log(updateData.value.)
+    console.log(updateColName.value)
+
+    // console.log(updateData.value.memberId,updateColName.value, updateData.value.id )
+    // 입력을 안했을 때
+    if(updateColName.value==null ||updateColName.value.length == 0 ){
+        console.log("이건 실행되고?")
+        updateErr.value = "컬렉션 이름을 입력해주세요!";
+        updateErrControl.value=true;
+        return
+    }
+    // 입력 길이가 길 때
+    if(updateColName.value.length > 12){
+        updateErr.value = "이름이 너무 길어요!";
+        updateErrControl.value=true;
+        return
+    }
+    
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify({
+    "memberId": updateData.value.memberId,
+    "name": updateColName.value,
+    "id": updateData.value.id
+    });
+
+    let requestOptions = {
+    method: 'PUT',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/collection", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        // 1.true(수정완료) => 창닫기
+        if(result ==true){
+            modifyCancel();
+            // 컬렉션 불러와달라고 Layout에 명령해야함
+            emit('callgetCollectionList')
+        }else{
+        // 2.false(컬렉션명 중복) => 에러메세지
+        updateErr.value = "중복된 이름은 만들 수 없어요!";
+        updateErrControl.value=true;
+
+        }
+    })
+    .catch(error => console.log('error', error));
+
 }
 function delHandler(){
     console.log("삭제!")
@@ -133,26 +212,36 @@ function colClickHandler(collectionId){
             </router-link>
             
             <!-- <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List"  > -->
-                <div class="box mgl-5" v-bind:data-id="colList.id"  v-for="colList in collection.List" @click="colClickHandler(colList.id)">
+                <div class="box mgl-5" v-bind:data-id="colList.id"  v-for="colList in collection.List" @click.stop="colClickHandler(colList.id)">
                     <div class="header">
                         <!-- <div class="icon-tack">\
                         </div> -->
                         <div class="dropdown">
                             <div class="icon-tack"></div>
                             <transition name="bounce">
-                                <div class="content">
-                                    <a href="#"  class="item" @click="modifyHandler">수정</a>
-                                    <a href="#"  class="item" @click="delHandler">삭제</a>
+                                <div class="content" @click.stop>
+                                    <a href="#"  class="item" @click.stop="modifyHandler(colList)">수정</a>
+                                    <a href="#"  class="item" @click.stop="delHandler">삭제</a>
                                 </div>
                             </transition>
                         </div>
                     </div>
                     <h1 class="title">{{colList.name}}</h1>
-                    
                 </div>
             <!-- </router-link> -->
-
         </div>
+        <transition name="slide">
+            <form class="container-update" v-if=updateModalOpen>
+                <div class="title"><span>새로운 이름을 적어주세요</span></div>
+                <div class="cur-name"><span>현재 이름 : </span><span>{{ updateData.name }}</span></div>
+                <input type="text" class="input" v-model="updateColName">
+                <div class="btn">
+                    <div class="reg" @click="modifyReg">수정</div>
+                    <div class="cancel" @click="modifyCancel">취소</div>
+                </div>
+                <div class="err" v-show="updateErrControl">{{updateErr}}</div>
+            </form>
+        </transition>
 </template>
 <style scoped>
 .collection-container{
@@ -331,7 +420,78 @@ display: block;
     grid-column-end: 1;
     grid-column-end: 2;
 }
+/* 컬렉션 수정 버튼 */
+.container-update{
+    width:400px;
+    height:200px;
+    background-color: rgb(246, 246 , 246);
+    display:flex;
+    flex-direction:column;
+    padding: 10px;
+    box-sizing: border-box;
+    position:absolute;
+    justify-self: center;
+    align-self: center;
+    
+    
+}
+    .container-update .title{
+        font-size:20px;
+        align-self: center;
+    }
+    .container-update .cur-name{
+        font-size:12px;
+        color: #00000080;
+        margin: 20px 0 0 10% ;
+    }
+    .container-update .input{
+        width:80%;
+        height:20%;
+        align-self: center;
+        border-radius: 5px;
+        border: none;
+        font-size: large;
+        text-indent: 3%;
+        margin-top:5px
 
+    }
+    .container-update .input:focus{
+        outline:none;
+    }
+    .container-update .err{
+        color:red;
+        margin:auto;
+    }
+    .container-update .btn {
+        margin-top:10px;
+        margin-left:10%;
+        user-select: none;
+    }
+    .container-update .btn > div{
+        display:inline-block;
+        width:60px;
+        height:30px;
+        /* background-color: #4560f8; */
+        text-align: center;
+        line-height: 30px;
+        border-radius: 4px;
+    }
+    .container-update .reg{
+        color:#fcfcfc;
+        background-color: rgb(20, 134, 207);
+    }
+    .container-update .reg:hover{
+        cursor:pointer;
+    }
+    .container-update .cancel{
+        color:#00000080;
+        background-color: #fcfcfc;
+        margin-left: 5px;
+    }
+    .container-update .cancel:hover{
+        /* color:red; */
+        cursor:pointer;
+    }
 
 /* vue Transition */
 
@@ -343,5 +503,24 @@ display: block;
 .fade-enter-from
  {
     opacity: 0;
+}
+
+
+.slide-enter-active {
+  animation: slide 0.5s;
+}
+.slide-leave-active {
+  animation: slide 0.5s reverse;
+}
+@keyframes slide {
+  0% {
+    transform: translateY(200%);
+  }
+  50% {
+    transform: translateY(-20%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 </style>

@@ -115,6 +115,7 @@ console.log(diaryDisplayed.list);
                 @registerCollection = "regBtnClickHandler"
                 @initSuccesAddMenu = "successInit"
                 @callDisplayed="getSharedDiary"
+                @callgetCollectionList = "getCollectionList"
             >
             </router-view>
         </transition>

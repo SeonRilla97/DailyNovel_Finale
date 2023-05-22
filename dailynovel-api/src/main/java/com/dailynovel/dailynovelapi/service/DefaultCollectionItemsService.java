@@ -18,7 +18,7 @@ public class DefaultCollectionItemsService  implements CollectionItemsService {
     @Override
     public List<MbCollectionItems> getListById(Integer diaryId, Integer collectionId) {
         List<MbCollectionItems> list = repository.findAllbyId(diaryId,collectionId);
-
+        
         return list;        
     }
 
