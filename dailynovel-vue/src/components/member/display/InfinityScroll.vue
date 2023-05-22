@@ -1,9 +1,11 @@
 <template>
-  <div class="result" v-for="comment in comments" :key="comment.id">
-    <div>{{ comment.email }}</div>
-    <div>{{ comment.id }}</div>
+  <div class="scroll">
+    <div class="result" v-for="comment in comments" :key="comment.id">
+      <div>{{ comment.id }}</div>
+    </div>
+
+    <InfiniteLoading @infinite="load" />
   </div>
-  <InfiniteLoading @infinite="load" />
 </template>
 
 <script setup>
@@ -12,28 +14,35 @@ import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
 let comments = ref([]);
-let page = 1;
+let page = 0;
 const load = async $state => {
-console.log("loading...");
+  console.log("loading...");
 
-try {
-  const response = await fetch(
-    "https://jsonplaceholder.typicode.com/comments?_limit=10&_page=" + page
-  );
-  const json = await response.json();
-  if (json.length < 10) $state.complete();
-  else {
-    comments.value.push(...json);
-    $state.loaded();
+  try {
+    const response = await fetch(
+      "http://localhost:8080/display/listall1?_limit=4&_page=" + page
+      // "https://jsonplaceholder.typicode.com/comments?_limit=10&_page=" + page
+      
+    );
+    const json = await response.json();
+    console.log(json);
+    if (json.length < 4) $state.complete();
+    else {
+      comments.value.push(...json);
+      $state.loaded();
+    }
+    page++;
+  } catch (error) {
+    $state.error();
   }
-  page++;
-} catch (error) {
-  $state.error();
-}
 };
 </script>
 
 <style scoped>
+.scroll {
+    overflow: auto;
+    height: 648px;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
