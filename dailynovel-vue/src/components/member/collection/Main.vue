@@ -54,7 +54,7 @@ watchEffect(()=>{
         console.log("등록이 아닌데?")
         return
     }
-    // 창 전환
+    //폼 입력창 창 전환
     registerFromHandler();
     emit("initSuccesAddMenu")
 })

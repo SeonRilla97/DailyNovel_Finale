@@ -104,7 +104,7 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
         <header>
             <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
         </header>
-        <!-- <transition name="fade"> -->
+        <transition name="fade">
             <router-view
                 :collection="collection" 
                 :isDuplicated ="isColNameDuplicated" 
@@ -116,7 +116,7 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
                 @callgetCollectionList = "getCollectionList"
             >
             </router-view>
-        <!-- </transition> -->
+        </transition>
     </section>
 </template>
 
