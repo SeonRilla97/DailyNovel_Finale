@@ -4,11 +4,11 @@
             <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`">
         </div> 
         <div class="grid row">
-            <div class="btn cursor" @click="subscribeHandler(writerId)" style="grid-auto-flow:column ; justify-content:center ; grid-gap:1rem">
+            <div class="btn cursor" @click="subscribeHandler(writerId)" >
                     <span :class="isSubscribed=='true' ? 'subscribe-inactive' : 'subscribe-active'"></span>
                     <span>{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
             </div>
-            <router-link to="/member/room/collection/main" class="btn cursor"  v-show="isSubscribed=='true'" style="grid-auto-flow:column ; justify-content:center ; grid-gap:1rem">
+            <router-link to="/member/room/follow/index" class="btn cursor btn-box"  v-show="isSubscribed=='true'">
                 <span class="go-to-page"></span>
                 <span>구경가기</span> 
             </router-link>
@@ -181,5 +181,10 @@ onMounted(() => {
     outline: none;
     cursor: pointer;
     /*  */
+}
+.btn-box{
+    grid-auto-flow:column ; 
+    justify-content:center ; 
+    grid-gap:1rem
 }
 </style>

@@ -1,7 +1,7 @@
 import Layout from '../components/member/display/Layout.vue';
 import Detail from '../components/member/display/Detail.vue';
 import DetailInterface from '../components/member/display/DetailInterface.vue';
-import InfinityScroll from '../components/member/display/InfinityScroll.vue';
+// import Alert from '../components/member/display/Alert.vue';
 
 
 // export default [
@@ -23,11 +23,13 @@ export default [
     props: true,
     component:DetailInterface
   },
-  {
-    path: 'InfinityScroll',
-    component:InfinityScroll
-  },
 
+  // {
+  //   path: 'community/:id/alert',
+  //   name: 'alert',
+  //   props: true,
+  //   component:Alert
+  // },
 
 
 ];

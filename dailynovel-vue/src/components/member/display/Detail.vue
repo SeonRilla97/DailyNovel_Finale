@@ -25,20 +25,17 @@
                         <br>
                         <p class="detail-width nodouble-drag">
                             {{content}}<br>
-                            <br>
-                            도
-                            <br>
-                            완
-                            <br>
-                            득
+                            <br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>끝<br>도<br>완<br>득탬할 수 있는 기회가 바로 여기에 있습니다.
+                            
+
                         </p>
                         <div class="center-grid padding-bottom sticky">
-                            <div style="display:grid; grid-auto-flow:column">
+                            <div class="btn-box">
                                 <div class="more-btn nodouble-drag cursor" @click="likeSwitchHandler(diaryId)">
                                     <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" > </div>
                                         좋아요 {{like}}
                                     </div>
-                                <div class="mgl-3 more-btn nodouble-drag" style="display:grid; grid-auto-flow:column; justify-content:center; align-items:center ; grid-gap:0.2rem">
+                                <div class="mgl-3 more-btn nodouble-drag btn-box btn-grid cursor" @click="unimplemented">
                                     <span class="alert-btn"></span>
                                     <span>신고하기</span>
                                 </div>
@@ -153,6 +150,10 @@ function openSubscribeBoxHandler() {
     subscribeBox.value = !subscribeBox.value;
     console.log(subscribeBox.value)
 }
+
+function unimplemented(){
+    alert("이거 보여주려고 어그로 끌었다.");
+};
 
 </script>
 
@@ -347,6 +348,15 @@ function openSubscribeBoxHandler() {
     cursor: pointer;
 }
 
+.btn-box{
+    display:grid; 
+    grid-auto-flow:column;
+}
 
+.btn-grid{
+    justify-content:center; 
+    align-items:center ; 
+    grid-gap:0.2rem;
+}
 </style>
 
