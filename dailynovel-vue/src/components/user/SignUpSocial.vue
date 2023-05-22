@@ -8,12 +8,9 @@ let route =  reactive(useRoute()); //라우팅의 정보를 가져다 주는애
 let email = ref("");
 let emailBtn = ref(false);
 let password = ref("");
-let passwordBtn = ref(false);
-let passwordCheck = ref("");
+
 let phoneNumber = ref("");
-let phoneNumberBtn = ref(false);
-let emailcheck = ref("");
-let mailcheckBtn = ref(false);
+
 let nickName = ref("");
 let nickNameBtn = ref(false);
 let content = ref("");
@@ -23,20 +20,11 @@ let birthDay = ref();
 //1은남자 2는여자
 let gender = ref();
 let emailVerification = /^[a-zA-Z0-9+-_.]+@[a-zA-Z-]+\.[a-zA-Z-.]+$/;
-let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/;
-let passwordVerificationMiddle = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
 let phoneNumberVerification = /^(\d{3})(\d{3,4})(\d{4})$/;
 let showModal = ref(false);
-let birthYearVerification = /^(\d{4})$/;
-let birthMonthVerification = /^(\d{2})$/;
-let birthDayVerification = /^(\d{2})$/;
+
 
 let emailVerificationResult = ref(false);
-let passwordVerificationStrongResult = ref(false);
-let passwordVerificationMiddleResult = ref(false);
-let passwordVerifyResult = ref(false);
-let phoneNumberVerificationResult = ref(false);
-
 
 //받아온 값 활용해보기
 
@@ -80,8 +68,10 @@ async function showHandler(event) {
       content.value = "응답을 처리할 수 없습니다.";
     }
   }  else if(event == "회원가입") {
-    let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value + 1);
+    let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value);
+    date.setDate(date.getDate() + 1);
     let dateString = date.toISOString().split("T")[0];
+    console.log(dateString);
     await fetch("http://localhost:8080/users/signup", {
       method: "POST",
       headers: {
@@ -98,41 +88,28 @@ async function showHandler(event) {
       }),
     })
       .then((response) => response.text())
+
       .then((data) => {
+        console.log(data)
+        if(data ==="true"){
         // 응답 처리
         content.value = "회원가입에 성공했습니다.";
-        router.push("./login");
-      })
-      .catch((error) => {
-        // 에러 처리
+        }
+        else if(data ==="false")
         content.value = "회원가입에 실패했습니다 빠진 정보를 확인해주세요.";
-      });
+        else
+        content.value = "서버에 문제가 있습니다 잠시후 시도해주세요";
+
+      })
   }
 
   showModal.value = true;
 }
+
 function dlgHandler() {
   showModal.value = false;
 }
 
-//비밀번호 정규식
-function passwordVerification() {
-  if (password.value.match(passwordVerificationStrong)) {
-    passwordVerificationStrongResult.value = true;
-  } else if (password.value.match(passwordVerificationMiddle)) {
-    passwordVerificationMiddleResult.value = true;
-  } else {
-    passwordVerificationMiddleResult.value = false;
-    passwordVerificationStrongResult.value = false;
-  }
-}
-
-//비밀번호 일치
-function passwordverify() {
-  if (password.value === passwordCheck.value) {
-    passwordVerifyResult.value = true;
-  } else passwordVerifyResult.value = false;
-}
 
 function nickNameVerify() {
   nickNameBtn.value = false;
@@ -149,6 +126,13 @@ function phoneNumberChange() {
 function phoneNumberInput() {
   let formattedPhoneNumber = phoneNumberChange();
   phoneNumber.value = formattedPhoneNumber;
+}
+
+function limitInput(inputValue, maxLength) {
+  if (inputValue) {
+    return inputValue.toString().slice(0, maxLength);
+  }
+  return '';
 }
 
 </script>
@@ -201,88 +185,6 @@ function phoneNumberInput() {
           >
             이메일 형식을 지켜주세요
           </div>
-          <!--비밀번호-->
-          <div class="mgt-3 display-flex">
-            <div class="div-label">
-              <label for="password">
-                비밀번호
-                <span class="essential-color">*</span>
-              </label>
-            </div>
-            <div class="div-input">
-              <input
-                id="password"
-                :class="[
-                  password === ''
-                    ? 'input-1'
-                    : (passwordVerificationMiddleResult ||
-                        passwordVerificationStrongResult) == true
-                    ? 'input-1-ok'
-                    : 'input-1-no',
-                ]"
-                type="password"
-                tabindex="0"
-                placeholder="패스워드를 입력해주세요"
-                v-model="password"
-                v-on:input="passwordVerification(), passwordverify()"
-              />
-            </div>
-          </div>
-          <div
-            class="mgt-2"
-            :class="[
-              password === ''
-                ? 'd-none'
-                : passwordVerificationStrongResult
-                ? 'color-green'
-                : passwordVerificationMiddleResult
-                ? 'color-yellow'
-                : 'color-red',
-            ]"
-          >
-            비밀번호 형식(8~25 문자 및 숫자포함)
-          </div>
-
-          <!--비밀번호 확인-->
-          <div class="mgt-3 display-flex">
-            <div class="div-label">
-              <label for="password-check">
-                비밀번호 확인
-                <span class="essential-color">*</span>
-              </label>
-            </div>
-            <div class="div-input">
-              <input
-                id="password-check"
-                :class="[
-                  passwordCheck === ''
-                    ? 'input-1'
-                    : passwordVerifyResult == true
-                    ? 'input-1-ok'
-                    : 'input-1-no',
-                ]"
-                type="password"
-                tabindex="0"
-                placeholder="패스워드를 한번 더 입력해주세요"
-                required
-                v-model="passwordCheck"
-                @input="passwordverify()"
-              />
-            </div>
-          </div>
-          <div
-            class="mgt-2"
-            :class="[
-              passwordCheck === ''
-                ? 'd-none'
-                : passwordVerifyResult == true
-                ? 'd-none'
-                : 'color-red',
-            ]"
-          >
-            비밀번호와 일치하지 않습니다.
-          </div>
-
           <!--닉네임-->
           <div class="mgt-3 display-flex">
             <div class="div-label">
@@ -306,6 +208,7 @@ function phoneNumberInput() {
                 placeholder="닉네임을 입력해주세요"
                 required
                 v-model="nickName"
+                maxlength='8'
                 @input="nickNameVerify()"
               />
             </div>
@@ -340,12 +243,13 @@ function phoneNumberInput() {
                 placeholder="숫자만 입력해주세요"
                 required
                 v-model="phoneNumber"
+                maxlength='13'
               />
             </div>
           </div>
 
-          <!--생년 월일-->
-          <div class="mgt-3 display-flex">
+         <!--생년 월일-->
+         <div class="mgt-3 display-flex">
             <div class="div-label">
               <label for="birth"> 생년월일 </label>
               <span class="essential-color">*</span>
@@ -360,6 +264,7 @@ function phoneNumberInput() {
                 placeholder="YYYY"
                 required
                 v-model="birthYear"
+                @input="birthYear = limitInput(birthYear,4)"
               />
               <span class="birth-deco"> </span>
               <input
@@ -371,6 +276,7 @@ function phoneNumberInput() {
                 placeholder="MM"
                 required
                 v-model="birthMonth"
+                @input="birthMonth = limitInput(birthMonth,2)"
               />
               <span class="birth-deco"> </span>
               <input
@@ -382,6 +288,7 @@ function phoneNumberInput() {
                 placeholder="DD"
                 required
                 v-model="birthDay"
+                @input="birthDay = limitInput(birthDay,2)"
               />
             </div>
           </div>
