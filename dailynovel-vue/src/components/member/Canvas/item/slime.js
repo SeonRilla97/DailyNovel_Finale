@@ -17,7 +17,7 @@ export default class slime{
         this.vx = 0;
         this.vy = 0;
 
-        this.speed = 3;
+        this.speed = 5;
 
         this.walkDelay = 0;
 

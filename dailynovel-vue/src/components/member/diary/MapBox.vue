@@ -66,12 +66,13 @@ export default {
     components: {
         KakaoMap,
     },
+    props:['myLocation'],
     data() {
         return {
             mapOption: {
                 center: {
-                    lat: 37.552383,
-                    lng: 126.937759,
+                    lat: this.myLocation.lat,
+                    lng: this.myLocation.lng,
                 },
                 level: 3,
             },

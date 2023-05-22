@@ -44,6 +44,7 @@ public class UserController {
 	
 	
 		boolean result = service.signup(member);
+	System.out.println(result+"회원가입 결과");
 		return result;
 	}
 
