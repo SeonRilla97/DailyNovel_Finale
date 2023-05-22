@@ -345,9 +345,36 @@ const loadDiary = function(diaryId){
 }
 
 const EditDiary = function(diaryId){
+  return new Promise(function(resolve, reject){
 
-  
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
+    //ref 기본값 담기
+    objRef(diaryId,1,null,"당신마음입력"
+    ,null,"기분",100,"태그"
+    ,null,38,128);
+
+    diaryObj = diaryRef.value;
+    let raw = JSON.stringify(diaryObj);
+
+    let requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/diary", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+
+
+
+
+    resolve();
+  })
 
 }
 

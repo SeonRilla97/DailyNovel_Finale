@@ -58,4 +58,11 @@ public class DefaultCollectionService implements CollectionService{
         Boolean isSuccess=mbRepository.update(collection);
         return isSuccess;
     }
+
+    
+    @Override
+    public Boolean delete(int collectionId) {
+        Boolean isSuccess=mbRepository.delete(collectionId);
+        return isSuccess;
+    }
 }

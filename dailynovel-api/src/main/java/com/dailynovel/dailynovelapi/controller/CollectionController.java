@@ -4,7 +4,9 @@ import com.dailynovel.dailynovelapi.entity.Collection;
 import com.dailynovel.dailynovelapi.mbentity.MbCollection;
 import com.dailynovel.dailynovelapi.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +51,14 @@ public class CollectionController {
         // System.out.println(collection);
         Boolean isCuccess=service.update(collection);
         // return isCuccess;
+        return isCuccess;
+    }
+    @DeleteMapping("{id}")
+    public  Boolean delete(
+        @PathVariable("id") int collectionId
+    ){
+        System.out.println("hi 여기는 delete");
+        Boolean isCuccess=service.delete(collectionId);
         return isCuccess;
     }
 

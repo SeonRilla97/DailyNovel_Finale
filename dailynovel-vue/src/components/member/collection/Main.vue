@@ -102,6 +102,7 @@ let updateErr = ref("");
 // 에러 떴다고 알리는 변수
 let updateErrControl = ref(false);
 
+// 수정폼의 수정버튼 클릭
 function modifyReg(){
     console.log("수정!")
     // console.log(updateColName.value)
@@ -160,8 +161,27 @@ function modifyReg(){
     .catch(error => console.log('error', error));
 
 }
-function delHandler(){
+
+// 삭제 버튼 클릭
+function delHandler(colList){
     console.log("삭제!")
+    console.log(colList)
+    // 컬렉션 ID 추출 (삭제하기위해)
+    console.log(colList.id)
+
+    var requestOptions = {
+        method: 'DELETE',
+        redirect: 'follow'
+    };
+
+    fetch(`http://localhost:8080/collection/${colList.id}`, requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        if(result)
+            emit('callgetCollectionList');
+    })
+    .catch(error => console.log('error', error));
+    
 }
 const router = useRouter()
 function colClickHandler(collectionId){
@@ -221,7 +241,7 @@ function colClickHandler(collectionId){
                             <transition name="bounce">
                                 <div class="content" @click.stop>
                                     <a href="#"  class="item" @click.stop="modifyHandler(colList)">수정</a>
-                                    <a href="#"  class="item" @click.stop="delHandler">삭제</a>
+                                    <a href="#"  class="item" @click.stop="delHandler(colList)">삭제</a>
                                 </div>
                             </transition>
                         </div>

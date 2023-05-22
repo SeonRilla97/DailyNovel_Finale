@@ -18,7 +18,7 @@ import com.dailynovel.dailynovelapi.service.EmailVerificationService;
 import com.dailynovel.dailynovelapi.service.MailCheckService;
 
 import com.dailynovel.dailynovelapi.service.UserService;
-
+import java.util.UUID;
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -32,6 +32,12 @@ public class UserController {
 	
 	@PostMapping("signup")
 	public boolean signup(@RequestBody Member member) {
+
+		if(member.getPassword()==null){
+			String password = UUID.randomUUID().toString().substring(0, 16);
+			member.setPassword(password);
+		}
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		try {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,13 +86,16 @@ public class UserController {
 
 	@RequestMapping("emailCheckAuth")
 	public boolean emailCheckAuth(String email) {
-		System.out.println("이메일체크 컨트롤러 왔니");
-		System.out.println(email);
 		boolean sameemail = service.FindSameEmail(email);
-		System.out.println(sameemail);
+
+
 		return !sameemail;
 
+
+
 	}
+
+
 
 	@RequestMapping("emailCheckNum")
 	public boolean emailCheckNum(String email, String emailCheckNum) {
