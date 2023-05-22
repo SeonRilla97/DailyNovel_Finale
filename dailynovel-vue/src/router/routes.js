@@ -24,10 +24,6 @@ const routes = [
 
   {
     path: '/', redirect: "login", component: LoginLayout, children: [
-      //{
-      //  path: 'InfinityScroll',
-      //  component: InfinityScroll
-      //},
       { path: 'signup', component: Signup },
       { path: 'signupsocial', component: signupSocial },
       { path: 'login', component: Login },

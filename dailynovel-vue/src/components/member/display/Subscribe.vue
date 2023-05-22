@@ -4,9 +4,14 @@
             <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`">
         </div> 
         <div class="grid row">
-            <span class="btn cursor" @click="subscribeHandler(writerId)">{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
-            <router-link to="/member/room/collection/main" class="btn cursor"  v-show="isSubscribed=='true'">구경가기</router-link>
-                    <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
+            <div class="btn cursor" @click="subscribeHandler(writerId)" style="grid-auto-flow:column ; justify-content:center ; grid-gap:1rem">
+                    <span :class="isSubscribed=='true' ? 'subscribe-inactive' : 'subscribe-active'"></span>
+                    <span>{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
+            </div>
+            <router-link to="/member/room/collection/main" class="btn cursor"  v-show="isSubscribed=='true'" style="grid-auto-flow:column ; justify-content:center ; grid-gap:1rem">
+                <span class="go-to-page"></span>
+                <span>구경가기</span> 
+            </router-link>
                     <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
         </div>
     </section>
@@ -118,9 +123,11 @@ onMounted(() => {
 }
 
 .btn {
-    /* background-color: blue; */
-    border: 1px;
-    height: 30px;
+    display: grid;
+    /* grid-column: row; */
+    align-items: center;
+    border: 1px solid black;
+    height: 50px;
     border-radius: 5px;
 }
 
@@ -131,5 +138,48 @@ onMounted(() => {
 
 .cursor{
     cursor: pointer;
+}
+
+
+.subscribe-active {
+    /*좋아요 활성화*/
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('@/assets/img/display/subscribe-active.svg');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /*  */
+}
+
+.subscribe-inactive {
+    /*좋아요 활성화*/
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('@/assets/img/display/subscribe-inactive.svg');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /*  */
+}
+
+.go-to-page {
+    /*좋아요 활성화*/
+    width: 1.5rem;
+    height: 1.5rem;
+    background-image: url('@/assets/img/display/go-to-page.svg');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /*  */
 }
 </style>
