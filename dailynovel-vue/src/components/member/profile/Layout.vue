@@ -35,6 +35,10 @@ let name = userDetails.nickname;
         <router-link to="/member/room/profile/export">
           <span class="font-bold h2">내보내기</span>
         </router-link>
+
+        <router-link to="/member/room/profile/info">
+          <span class="font-bold h2">프로필 수정</span>
+        </router-link>
       </div>
 
     </header>
@@ -118,6 +122,8 @@ let name = userDetails.nickname;
 
 .m-profile-main {
   /* overflow: scroll; */
+  width:100%;
+  height: 100%;
   box-sizing: border-box;
   overflow:auto;
 }
