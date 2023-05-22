@@ -15,4 +15,6 @@ public interface MbCollectionRepository {
     public List<MbCollection> findAllByMemberId(int memberId);
 
     public Boolean update(MbCollection collection);
+
+	public Boolean delete(int collectionId);
 }

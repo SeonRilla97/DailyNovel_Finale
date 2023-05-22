@@ -5,9 +5,10 @@ import Editor from './editor.vue'
 import { reactive, onBeforeMount, ref, watchEffect } from 'vue';
 import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
 import Filter from './filter.js'
+import { useRoute } from 'vue-router'
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-console.log(userDetails.id)
-
+//router 정보
+const route = useRoute();
 //메뉴 관리
 const diaryFilter = reactive({
         feeling:new Filter(0,["기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"]),
@@ -20,9 +21,12 @@ const diaryFilter = reactive({
 const diary = reactive({
     list : null
 })
-getCollectionList();
-getListwithFiltering();
 
+
+onBeforeMount (()=> {
+    getCollectionList();
+    getListwithFiltering();
+})
 // 필터 목록 클릭시 동작 이벤트핸들러
 function filterClickHandler(selected){
     // console.log(selected);
@@ -114,8 +118,15 @@ function getListwithFiltering(backup) {
         .then(response => response.json())
         .then(result => { 
             //받아온 데이터가 아무것도 없다면
+            
+            console.log();
+            
             if(Object.keys(result).length == 0){
-                prompt("데이터 으으으읍따");
+                if(!query.includes("&")){
+                    // 유저의 다이어리가 아무것도 없을 때
+                    return
+                }
+                alert("일기가 없습니다.");
                 
                 if(backup && backup.name != null){
                     switch(backup.name){
