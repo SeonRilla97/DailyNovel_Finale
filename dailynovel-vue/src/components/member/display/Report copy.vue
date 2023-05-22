@@ -1,7 +1,7 @@
 <template lang="">
     <section class="grid">
         <h1 class="d-none">신고페이지</h1>
-        <img src="@/assets/img/display/igotyou.png" alt="img" class="img d-none">
+        <img src="@/assets/img/display/igotyou.png" alt="img" class="img">
         <!-- <img src="../../../assets/img" alt=""></img> -->
         <div>
             <select name="reason" id="" v-model="reason">
@@ -13,30 +13,6 @@
             </select>
             <button @click="transmitReport">전송</button>
         </div>
-
-        <form class="gform pure-form pure-form-stacked" method="POST" data-email="S2dailynovelS2@gmail.com"
-        action="https://script.google.com/macros/s/AKfycbzJhpwG2sb8vN0okuI8i4DRcCILqthRQQJvf5Dy1spmGBQSxs0q_7CRNzxb83Y1j-6i/exec" target = iframe1>
-            <!-- change the form action to your script url -->
-            <textarea name="message" id="" cols="30" rows="10" placeholder="문의사항을 적어주세요" class="box-large input-boder-none mgt-5 feedback-box-size"></textarea>
-            <div class="d-none">
-                <label for="id">id</label>
-                <input type="text" name="id" placeholder="아이디." maxlength='30' :value="memberId" readonly>
-            </div>
-            <div class="l-box-short mgt-5">
-                <fieldset class="name"><h1>문의종류</h1></fieldset>
-                    <div class="content">
-                        <label for="kind" class="mg-2">버그</label>
-                        <input type="radio" name="kind" id="" value="버그">
-                        <label for="kind" class="mg-2">기능</label>
-                        <input type="radio" name="kind" id="" value="기능">
-                        <label for="kind" class="mg-2">그외</label>
-                        <input type="radio" name="kind" id="" value="그외" checked>
-                    </div>
-            </div>
-                <div class="flex-jfy-center mgt-5">
-                    <input class="btn3" type="submit" value="보내기" style="cursor: pointer;">
-                </div>
-        </form>
     </section>
 
 
