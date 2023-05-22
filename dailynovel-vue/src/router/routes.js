@@ -9,6 +9,10 @@ import signupSocial from '../components/user/SignupSocial.vue';
 import Achievement from '../components/member/Insights/Achievements.vue';
 import Chart from '../components/member/Insights/Chart.vue';
 
+import feeling from '../components/member/Insights/Achievement/feeling.vue';
+import honesty from '../components/member/Insights/Achievement/honesty.vue';
+import tag from '../components/member/Insights/Achievement/tag.vue';
+
 import guestbook from './guestbook.js';
 import collection from './collection.js';
 import display from './display.js';
@@ -48,8 +52,11 @@ const routes = [
       {
         path: 'room', component: memberLayout, children: [
           diary,
-          { path: 'achievement', component: Achievement },
+          { path: 'achievement', component: Achievement, },
           { path: 'chart', component: Chart },
+          {path: 'feeling', component: feeling},
+          {path: 'honesty', component: honesty},
+          {path: 'tag', component: tag},
           collection,
           guestbook,
           ...display,
