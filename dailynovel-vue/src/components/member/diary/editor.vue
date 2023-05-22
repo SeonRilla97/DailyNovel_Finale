@@ -3,7 +3,6 @@ import quill from './quill.vue';
 import quill2 from './quill2.vue';
 import quillCopy from './quill copy.vue';
 
-
 import { ref,onMounted, onUpdated,  defineProps , defineEmits} from 'vue';
 import MapBox from './MapBox.vue';
 
@@ -45,9 +44,7 @@ let ControllerAdd = props.isAdd;
 onMounted(() => {
   console.log(props.newestDiaryId);
 
-
 });
-
 
 
 // loadDiary() 무한 반복 막기위한 선언
@@ -114,13 +111,13 @@ onUpdated(() => {
 
 })
 
+function getDate(gotdate){
 
-    let date = new Date();
-    titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
-    return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
-
+  //프로토 타입
+  Date.prototype.amPm = function() {
+      let h = this.getHours() < 12 ? "오전" : "오후";
+      return h;
   }
-
   Date.prototype.getHoursAmPm = function() {
       let h = this.getHours() < 12 ? this.getHours() : this.getHours() - 12;
       return h;
@@ -134,16 +131,13 @@ onUpdated(() => {
   return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
 }
 
-
   let titleDate = "";
   const mapToggle = ref(false);
   const imageToggle = ref(false);
 
 
 //현재시간 받아오기
-
 //   const time = getDate(new Date);
-
 
 
 //날씨관련 객체
@@ -155,6 +149,7 @@ onUpdated(() => {
       'weatherDes': '날씨'
   };
 
+
  //현재 위치 받아오기 API
 
 // 지도 설정한 좌표값 얻어오기
@@ -165,36 +160,30 @@ function coor(coor) {
 
  function geoFindMe() {
 
+  return new Promise(function (resolve){
     function success(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         //날씨 호출
-        weather(latitude, longitude);
-        myLocate(latitude, longitude);
+        // weather(latitude, longitude);
+        resolve([latitude,longitude]);
     }
     function error() {
-        console.log("Unable to retrieve your location");
+      console.log("Unable to retrieve your location");
     }
 
     if (!navigator.geolocation) {
-        console.log("Geolocation is not supported by your browser");
+      console.log("Geolocation is not supported by your browser");
     } else {
-        console.log("Locating…");
-        navigator.geolocation.getCurrentPosition(success, error);
+      console.log("Locating…");
+      navigator.geolocation.getCurrentPosition(success, error);
     }
-    }
-
-
-    function myLocate(latitude,longitude){
-      myLocation.lat = latitude;
-      myLocation.lng = longitude;
-
-      return { lat: myLocation.lat, lng: myLocation.lng };
-
-    }
-
+  });
+  }
 
   function weather(latitude, longitude){
+
+    return new Promise(function (resolve){
 
     let requestOptions = {
       method: 'GET',
@@ -206,7 +195,6 @@ function coor(coor) {
       .then(result => {
           weatherData.value.city = result.city.name;
           weatherData.value.weatherCode = result.list[1].weather[0].id;
-
 
           // console.log( result.list[1].weather[0].id);
           weatherDone = true;
@@ -312,15 +300,15 @@ const addDiary = function(isAdd){
       redirect: 'follow'
     };
 
-    // fetch("http://localhost:8080/diary", requestOptions)
-    //   .then(response => response.text())
-    //   .then(result => {
-    //     emit("DoneAddDiary", true)
-    //     diaryRef.value.regDate = getDate(new Date);
-    //     // console.log(diaryObj.regDate);
-    //     // console.log(diaryRef.value.regDate);
-    //   })
-    //   .catch(error => console.log('error', error));
+    fetch("http://localhost:8080/diary", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        emit("DoneAddDiary", true)
+        diaryRef.value.regDate = getDate(new Date);
+        // console.log(diaryObj.regDate);
+        // console.log(diaryRef.value.regDate);
+      })
+      .catch(error => console.log('error', error));
     console.log("완료");
   // }
     resolve("success");
@@ -376,27 +364,6 @@ const feelingDropdownHandler = (e) =>{
 };
 
 
-  //날씨 코드에서 명칭으로 변경 7가지 경우의 수
-    function weatherCodeToDes(weatherCode){
-
-      if(weatherCode / 100 == 2)
-        weatherData.value.weatherDes = "천둥번개";
-      else if(weatherCode / 100 == 3)
-        weatherData.value.weatherDes = "천둥번개";
-      else if(weatherCode / 100 == 5)
-      weatherData.value.weatherDes = "비";
-      else if(weatherCode / 100 == 6)
-      weatherData.value.weatherDes = "눈";
-      else if(weatherCode / 100 == 7)
-      weatherData.value.weatherDes = "미세먼지";
-      else if(weatherCode / 100 == 8){
-        if(weatherCode / 800 == 1)
-          weatherData.value.weatherDes = "맑음";
-        else 
-          weatherData.value.weatherDes = "흐림";
-      }
-    }
-
 </script>
 
 <template>
@@ -414,7 +381,6 @@ const feelingDropdownHandler = (e) =>{
 
     <div class="editor-attribue-box">
       <!-- <div class="editor-data">2023년 4월 10일 오후 02시 01분 </div> -->
-
       <div class="editor-data">{{diaryRef.regDate}}</div>
       <div class="editor-attribue">{{diaryRef.weather}}</div>
       <!-- <div class="editor-attribue">{{'#'+diaryRef.tag}}</div> -->
@@ -453,7 +419,6 @@ const feelingDropdownHandler = (e) =>{
       </div>
       
       <div class="add-btn">-</div>
-
     </div>
 
     <div class="editor-title">
@@ -461,7 +426,8 @@ const feelingDropdownHandler = (e) =>{
                 class="editor-title-content editor-header"
                 @click="editHandler"
                 >
-          {{titleDate+'의 일기'}}
+          <!-- {{titleDate+'의 일기'}} -->
+          {{ diaryRef.title }}
         </header>
         <div
             v-if="isSharedref"
@@ -491,7 +457,7 @@ const feelingDropdownHandler = (e) =>{
         <!-- <quill2/> -->
         <quill
           class="editor-quill"
-        
+          :content = "diaryRef.content"
         />
           <!-- <quillCopy/> -->
 
@@ -526,7 +492,7 @@ const feelingDropdownHandler = (e) =>{
         <div
           v-if="mapToggle"
           class="mapToggle-map editor-sub">
-          <MapBox :myLocation="myLocation" @coor="coor"/>
+          <MapBox :coor="coor" @coor="coor"/>
         </div>
 
       </div>
