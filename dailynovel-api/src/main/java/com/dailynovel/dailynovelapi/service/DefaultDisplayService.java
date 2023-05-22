@@ -3,6 +3,9 @@ package com.dailynovel.dailynovelapi.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
@@ -27,6 +30,14 @@ public class DefaultDisplayService implements DisplayService {
     @Override
     public List<DisplayView> getByList() {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<DisplayView> getByList(int limit, int page) {
+        Pageable pageable = PageRequest.of(page, limit);
+
+        Page<DisplayView> list = repository.findAll(pageable);
+        return list;
     }
 
     /* 실험실 삭제할 가능성 농후함 27~*/
@@ -89,6 +100,8 @@ public class DefaultDisplayService implements DisplayService {
         List<MemberFollow> followedList = followRepository.findByFollowId(followId);
         return followedList;
     }
+
+
 
 
 

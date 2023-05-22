@@ -27,12 +27,7 @@ export default [
     path: 'InfinityScroll',
     component:InfinityScroll
   },
-  // {
-  //   path: 'community/:id', 
-  //   // path: '',
-  //   name: 'detail',
-  //   component:Detail 
-  // },
+
 
 
 ];

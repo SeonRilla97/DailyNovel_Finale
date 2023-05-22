@@ -3,6 +3,7 @@ package com.dailynovel.dailynovelapi.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,15 @@ public class DisplayController {
     @GetMapping("listall")
     public List<DisplayView> listAll(){
         return service.getByList();
+    }
+
+    @GetMapping("listall1")
+    public Page<DisplayView> listAll(
+        @RequestParam(name="limit")int limit,
+        @RequestParam(name="page")int page
+    ){
+        System.out.println(service.getByList(limit, page));
+        return service.getByList(limit, page);
     }
   
     /* 실험실 삭제할 가능성 농후함 31~ */
