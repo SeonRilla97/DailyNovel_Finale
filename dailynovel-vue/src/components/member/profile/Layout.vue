@@ -117,8 +117,8 @@ let name = userDetails.nickname;
 }
 
 .m-profile-main {
-  overflow: hidden;
+  /* overflow: scroll; */
   box-sizing: border-box;
-
+  overflow:auto;
 }
 </style>

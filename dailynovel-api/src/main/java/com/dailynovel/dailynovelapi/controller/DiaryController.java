@@ -150,15 +150,15 @@ public class DiaryController {
         service.removeDiary(diaryId);
     }
 
-    @GetMapping("coor")
-    public List<Object[]> coor(
-        @RequestParam(name = "latitude", required = false) Double lat,
-        @RequestParam(name = "longitude", required =  false) Double lng
-    ){
-        List<Object[]> list = service.getById();
-        System.out.println("ok");
-        return list;
-    }
+    // @GetMapping("coor")
+    // public List<Object[]> coor(
+    //     @RequestParam(name = "latitude", required = false) Double lat,
+    //     @RequestParam(name = "longitude", required =  false) Double lng
+    // ){
+    //     List<Object[]> list = service.getById();
+    //     System.out.println("ok");
+    //     return list;
+    // }
 
        //공유가 한번이라도 된 적 있는 일기를 불러온다(join 4번)
        @GetMapping("displayed")

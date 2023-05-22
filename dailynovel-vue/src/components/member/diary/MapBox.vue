@@ -188,7 +188,6 @@ export default {
             console.log(this.overlayMyplace,"이거야이거!")
             vueKakaoMap.mapInstance.setDraggable(this.draggable);
             this.selectedAddr = true;
-            this.MAP = false;
             this.ZOOM = false;
         },
 
