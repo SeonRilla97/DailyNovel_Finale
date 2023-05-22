@@ -35,4 +35,9 @@
     SET name = #{name}
     WHERE id = #{id}
   </update>
+  
+  <delete id="delete">
+    DELETE FROM collection
+    WHERE id=#{collectionId}
+  </delete>
 </mapper>

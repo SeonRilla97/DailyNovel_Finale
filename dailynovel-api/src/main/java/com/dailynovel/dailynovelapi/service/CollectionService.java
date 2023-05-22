@@ -8,4 +8,5 @@ public interface CollectionService {
     public List<MbCollection>  listAll(int memberId);
     public Boolean add(MbCollection collection);
     public Boolean update(MbCollection collection);
+    public Boolean delete(int collectionId);
 }
