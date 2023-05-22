@@ -1,10 +1,11 @@
 <template lang="">
     <section class="grid columns">
         <h1 class="d-none">프로필 안내 창</h1>
-        <div class="profile">프로필 이미지</div> 
+            <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`">
+        </div> 
         <div class="grid row">
-            <span class="btn" @click="subscribeHandler(writerId)">{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
-            <router-link to="/member/room/collection/main" class="btn"  v-show="isSubscribed=='true'">구경가기</router-link>
+            <span class="btn cursor" @click="subscribeHandler(writerId)">{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
+            <router-link to="/member/room/collection/main" class="btn cursor"  v-show="isSubscribed=='true'">구경가기</router-link>
                     <!-- 구독을 눌러야 v-show가 될 수 있도록 만든다. -->
                     <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
         </div>
@@ -21,16 +22,21 @@ const props = defineProps({
     writerId: {
         type: Number
     },
+    image:{
+        type: String
+    }
 })
 
 let isSubscribed = ref();
 let memberId = ref();
 let writerId = ref();
+let image = ref();
 
 function load() {
     isSubscribed.value = props['isSubscribed'];
     memberId.value = props['memberId'];
     writerId.value = props['writerId'];
+    image.value = props['image'];
 
     // console.log(memberId.value);
     // console.log(writerId.value);
@@ -97,9 +103,18 @@ onMounted(() => {
     align-items: center;
 }
 
-.profile {
-    width: 200px;
+.profileImage {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 100px;
+    /* border: 1px solid #f0a59e; */
+    width: 150px;
     height: 150px;
+    /* background-image: url(../../../assets/img/ProfileImage/png1.jpg); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .btn {
@@ -112,5 +127,9 @@ onMounted(() => {
 .btn:hover{
     background-color: #f0a59e;
     transition: 1s;
+}
+
+.cursor{
+    cursor: pointer;
 }
 </style>

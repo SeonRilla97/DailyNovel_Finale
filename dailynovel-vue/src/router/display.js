@@ -13,24 +13,21 @@ export default [
   {
     path: 'community', 
     component:Layout, 
+    props: true,
     children:[
     ]
   },
   {
     path: 'community/:id',
     name: 'detailInterface',
+    props: true,
     component:DetailInterface
   },
   {
     path: 'InfinityScroll',
     component:InfinityScroll
   },
-  // {
-  //   path: 'community/:id', 
-  //   // path: '',
-  //   name: 'detail',
-  //   component:Detail 
-  // },
+
 
 
 ];

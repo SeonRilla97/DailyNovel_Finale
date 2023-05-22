@@ -212,6 +212,13 @@ function getNewestDiary(){
     console.log(diary)
 }
 getNewestDiary();
+
+//모재영 추가 완료용 emit 담는 곳
+let listReload = 0;
+function diaryAddHander(){
+  listReload ++;
+}
+
 </script>
 <template>
     <div class="diary-container">
@@ -220,7 +227,12 @@ getNewestDiary();
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor :isAdd = "isClickDiaryAdd" :isLoad = "curDiaryId" />
+            <Editor
+                :newestDiaryId = "newestDiaryId"
+                :isAdd = "isClickDiaryAdd"
+                :loadDiaryId = "curDiaryId"
+                @DoneAddDiary = "diaryAddHander"
+            />
             <!-- :current ="diary.value"  -->
         </section>
     </div>

@@ -3,49 +3,110 @@ import quill from './quill.vue';
 import quill2 from './quill2.vue';
 import quillCopy from './quill copy.vue';
 
-import { ref,onMounted, onUpdated, defineProps } from 'vue';
+import { ref,onMounted, onUpdated,  defineProps , defineEmits} from 'vue';
 import MapBox from './MapBox.vue';
+
+// "기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"
+// "자유"
 
 const props = defineProps({
     'isAdd' : '',
-    'isLoad' : '',
-    // 'current' : ''
+    'loadDiaryId' : '',
+    'newestDiaryId' : ''
 });
 
+const emit = defineEmits(
+    ["DoneAddDiary"]);
+
+const defineRef = ref({
+  'loading' : '',
+  'isInit' : '',
+  // 'isShared' : 'false'
+});
+
+const isSharedref = ref();
+isSharedref.value = false
+
+
+// defineRef.value.isInit = false;
+
+const initHander = function (firstValue){
+    if(firstValue != null) {
+      // console.log(defineRef.value.isInit);
+      defineRef.value.isInit = false;
+    }
+};
 
 
 let weatherDone = false;
 let ControllerAdd = props.isAdd;
 
 onMounted(() => {
-
+  console.log(props.newestDiaryId);
 
 });
 
 
 // loadDiary() 무한 반복 막기위한 선언
 let previousLoad = -1;
+let newest = false;
 
+//id 값 비동기 처리를 위한 promise 선언
+function newestPromise(diaryId){
+  return new Promise(function (resolve){
+    resolve(diaryId);
+  })
+}
+let isOn = false;
 onUpdated(() => {
-  // console.log(current);
+  initHander(props.newestDiaryId);
+  //최초 데이터 받을 때
+  if(!newest){
+    // defineRef.value.isInit = false; //배경화면 끄기
+    // defineRef.value.loading = true; //로딩창 소환
+    let promise = newestPromise(props.newestDiaryId);
+    promise
+    .then( result => loadDiary(result))
+    .then( sucess => {
+      // defineRef.value.isInit = true;
+      // defineRef.value.loading = false;
+      newest = sucess;
+    });
+    // newest = true;
+  }
 
   ControllerAdd = props.isAdd
   // console.log(ControllerAdd);
-
     //update 이중 방지용
-  if( ControllerAdd == true && weatherDone == false){
+  // console.log(defineRef.value.loading , defineRef.value.isInit);
+  if( ControllerAdd == true && weatherDone == false
+    && isOn == false){
     let promise = geoFindMe();
+    isOn = true;
+
+    defineRef.value.loading = true; //로딩창 소환
+    defineRef.value.isInit = true; //배경화면 끄기
 
     promise
     .then(response => weather(response[0],response[1]))
-    .then(result => addDiary(result))
-    .then(success => console.log(success));
-  }
+    .then(result => {
 
-  // console.log(previousLoad, props.isLoad);
-  if(previousLoad != props.isLoad){
-    loadDiary(props.isLoad);
-    previousLoad = props.isLoad
+      // console.log(defineRef.value.loading , defineRef.value.isInit);
+      addDiary(result)
+    })
+    .then(success => {
+      defineRef.value.loading = false;
+      defineRef.value.isInit = false;
+      // console.log(defineRef.value.loading , defineRef.value.isInit);
+      console.log(success)
+    });
+  }
+  // console.log("load: "+defineRef.value.loading ,"init: "+ defineRef.value.isInit);
+
+  // console.log(previousLoad, props.loadDiaryId);
+  if(previousLoad != props.loadDiaryId){
+    loadDiary(props.loadDiaryId);
+    previousLoad = props.loadDiaryId
   }
 
 })
@@ -62,10 +123,10 @@ function getDate(gotdate){
       return h;
   }
 
-  console.log(gotdate);
+  // console.log(gotdate);
   // let date = new Date();
   let date = gotdate;
-  console.log(date.getFullYear());
+  // console.log(date.getFullYear());
   titleDate = `${date.getMonth()+1}월 ${date.getDate()}일`;
   return `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일 ${date.amPm()} ${date.getHoursAmPm()}시 ${date.getMinutes()}분`;
 }
@@ -76,8 +137,8 @@ function getDate(gotdate){
 
 
 //현재시간 받아오기
-  const time = getDate(new Date);
-  
+//   const time = getDate(new Date);
+
 
 //날씨관련 객체
   const weatherData = ref("");
@@ -88,23 +149,6 @@ function getDate(gotdate){
       'weatherDes': '날씨'
   };
 
-const diaryRef = ref("");
-
-let diaryObj = {
-  "id": null,
-  "member_id": 4,
-  "title": titleDate+'의 일기',
-  "content": "",
-  "weather": weatherData.value.weatherDes,
-  "feeling": "",
-  "honesty": "",
-  "tag": "",
-  "regDate": getDate(new Date),
-  "lat": 38,
-  "lng": 128
-};
-diaryRef.value = diaryObj;
-console.log(diaryRef.value);
 
  //현재 위치 받아오기 API
 
@@ -127,7 +171,7 @@ function coor(coor) {
     function error() {
       console.log("Unable to retrieve your location");
     }
-    
+
     if (!navigator.geolocation) {
       console.log("Geolocation is not supported by your browser");
     } else {
@@ -175,7 +219,7 @@ function coor(coor) {
         else if(weatherCodeConvert == 8){
           if(code / 800 == 1)
             weatherData.value.weatherDes = "맑음";
-          else 
+          else
             weatherData.value.weatherDes = "흐림";
         }
         resolve(weatherData.value.weatherDes);
@@ -186,6 +230,48 @@ function coor(coor) {
   };
 
 
+const diaryRef = ref("");
+
+let diaryObj = {
+  "id": null ,
+  "member_id": null,
+  "title": null,
+  "content": "",
+  "weather": null,
+  "feeling": "",
+  "honesty": "",
+  "tag": "",
+  "regDate": getDate(new Date),
+  "lat": 38,
+  "lng": 128
+};
+// console.log(diaryObj);
+diaryRef.value = diaryObj;
+// console.log(diaryRef.value);
+
+
+//값 기본 입력해주기
+function objRef
+(Did, Mid, DTitle ,DContent,
+ DWeather,DFeeling,DHonesy, DTag,
+ DDate , DLat, Dlng){
+
+  diaryRef.value.id = Did;
+  diaryRef.value.member_id = Mid;
+  diaryRef.value.title = titleDate+'의 일기';
+  diaryRef.value.content = DContent;
+
+  diaryRef.value.weather = weatherData.value.weatherDes;
+  diaryRef.value.feeling = DFeeling;
+  diaryRef.value.honesy = DHonesy;
+  diaryRef.value.tag = DTag;
+
+  diaryRef.value.regDate = DDate;
+  diaryRef.value.lat = DLat;
+  diaryRef.value.lng = Dlng;
+
+}
+
 console.log(diaryObj);
 
 const addDiary = function(isAdd){
@@ -195,7 +281,16 @@ const addDiary = function(isAdd){
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    diaryObj.weather = weatherData.value.weatherDes;
+
+    //ref 기본값 담기
+    objRef(null,1,null,"당신마음입력"
+    ,null,"기분",100,"태그"
+    ,null,38,128);
+
+    // console.log(diaryRef.value);
+    diaryObj = diaryRef.value;
+    // diaryObj.regDate = null;
+    // console.log(diaryObj);
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
@@ -207,11 +302,16 @@ const addDiary = function(isAdd){
 
     fetch("http://localhost:8080/diary", requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => {
+        emit("DoneAddDiary", true)
+        diaryRef.value.regDate = getDate(new Date);
+        // console.log(diaryObj.regDate);
+        // console.log(diaryRef.value.regDate);
+      })
       .catch(error => console.log('error', error));
     console.log("완료");
   // }
-    resolve("seucess");
+    resolve("success");
 })};
 
 const loadDiary = function(diaryId){
@@ -227,46 +327,132 @@ const loadDiary = function(diaryId){
     .then(result => {
       diaryRef.value = result;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
+      resolve(true);
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+      console.log('error', error);
+      loadDiary(diaryId);
+    });
   })
 }
 
+const EditDiary = function(diaryId){
+
+  
+
+
+}
+
+
+const toggleClickHandler = (e) =>{
+  isSharedref.value = (isSharedref.value == true) ? (false) : (true);
+  // console.log(isSharedref.value);
+};
+
+// let previousValueFeeling = diaryRef.value.feeling;
+// let previousValueTag = diaryRef.value.tag;
+const feelingDropdownHandler = (e) =>{
+
+  console.log(e.target);
+  console.log(e.target.className == "feel");
+
+  if(e.target.className == "feel")
+    diaryRef.value.feeling = e.target.innerText;
+  else if(e.target.className == "tag")
+    diaryRef.value.tag = e.target.innerText;
+
+};
 
 
 </script>
 
 <template>
 
-  <div class="editor-wrap"
+  <div
+      v-if="defineRef.loading"
+      class="dot-overtaking"></div>
+
+  <div
+      v-if="!defineRef.isInit"
+      class="editor-wrap"
       @click="onclickedHandler"
       >
+
 
     <div class="editor-attribue-box">
       <!-- <div class="editor-data">2023년 4월 10일 오후 02시 01분 </div> -->
       <div class="editor-data">{{diaryRef.regDate}}</div>
       <div class="editor-attribue">{{diaryRef.weather}}</div>
-      <div class="editor-attribue">{{'#'+diaryRef.tag}}</div>
-      <div class="editor-attribue">{{diaryRef.feeling}}</div>
+      <!-- <div class="editor-attribue">{{'#'+diaryRef.tag}}</div> -->
+      <div class="editor-attribue dropdown">
+        <button class="dropbtn">{{'#'+diaryRef.tag}}</button>
+        <div 
+          :checkTag ="diaryTag"
+          @click="feelingDropdownHandler"          
+          class="dropdown-content">
+
+          <div class="tag" href="#">자유</div>
+          <div class="tag" href="#">여행</div>
+          <div class="tag" href="#">영화</div>
+        </div>
+      </div>
+
+
+      <!-- <div class="editor-attribue">{{diaryRef.feeling}}</div> -->
+      <div class="editor-attribue dropdown">
+        <button class="dropbtn">{{diaryRef.feeling}}</button>
+        <div 
+          :checkTag ="diaryFeel"
+          @click="feelingDropdownHandler"          
+          class="dropdown-content">
+
+          <div class="feel" href="#">화남</div>
+          <div class="feel" href="#">불편</div>
+          <div class="feel" href="#">평온</div>
+          <div class="feel" href="#">실망</div>
+          <div class="feel" href="#">불안</div>
+          <div class="feel" href="#">행복</div>
+          <div class="feel" href="#">슬픔</div>
+          <div class="feel" href="#">감동</div>
+          <div class="feel" href="#">신남</div>
+        </div>
+      </div>
+      
+      <div class="add-btn">-</div>
     </div>
 
-    <div class="editor-title"> 
-        <header contenteditable="true"  
+    <div class="editor-title">
+        <header contenteditable="true"
                 class="editor-title-content editor-header"
                 @click="editHandler"
                 >
           <!-- {{titleDate+'의 일기'}} -->
           {{ diaryRef.title }}
         </header>
-        <div class="editor-share">공유 중</div>
+        <div
+            v-if="isSharedref"
+            class="editor-share">공유 중</div>
+        <div
+            v-if="!isSharedref"
+            class="editor-share .active">공유 여부</div>
+
+        <input type="checkbox" id="toggle" class="toggle2" hidden>
+        <label 
+          @click="toggleClickHandler"
+          for="toggle" 
+          class="toggleSwitch">
+          
+          <span class="toggleButton"></span>
+        </label>
+
     </div>
 
     <hr class="editor-title-hr">
 
     <div class="editor-main-quill">
-      <main 
+      <main
       class="editor-main"
-      @click="editHandler"  
+      @click="editHandler"
       >
         <!-- <quill2/> -->
         <quill
@@ -277,19 +463,19 @@ const loadDiary = function(diaryId){
 
       </main>
 
-      <div 
+      <div
         class="editor-sub-button editor-sub">
-        
+
         <!-- @click.prevent="mapToggleHandler"> -->
         <button
-        @click="imageToggle = !imageToggle"
-        >
-        사진추가
-      </button>
+          @click="imageToggle = !imageToggle"
+          >
+          사진추가
+        </button>
       <button
           @click="mapToggle = !mapToggle"
           >
-        지도추가
+          지도추가
       </button>
 
       </div>
@@ -308,9 +494,10 @@ const loadDiary = function(diaryId){
           class="mapToggle-map editor-sub">
           <MapBox :coor="coor" @coor="coor"/>
         </div>
+
       </div>
 
-    </div>  
+    </div>
   </div>
 
 
@@ -537,5 +724,195 @@ const loadDiary = function(diaryId){
 .img-map-container{
   overflow-y: scroll;
 }
+
+
+/**
+ * ==============================================
+ * Experimental: Gooey Effect
+ * Dot Overtaking
+ * ==============================================
+ */
+.dot-overtaking {
+  position: absolute;
+  top : 50%;
+  left : 50%;
+
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: hsl(0deg, 100%, 0%);
+  margin: -1px 0;
+  box-shadow: 0 -20px 0 0;
+  filter: blur(2px);
+  animation: dot-overtaking 2s infinite cubic-bezier(0.2, 0.6, 0.8, 0.2);
+}
+.dot-overtaking::before, .dot-overtaking::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: hsl(0deg, 100%, 0%);
+  box-shadow: 0 -20px 0 0;
+  filter: blur(2px);
+}
+.dot-overtaking::before {
+  animation: dot-overtaking 2s infinite cubic-bezier(0.2, 0.6, 0.8, 0.2);
+  animation-delay: 0.3s;
+}
+.dot-overtaking::after {
+  animation: dot-overtaking 1.5s infinite cubic-bezier(0.2, 0.6, 0.8, 0.2);
+  animation-delay: 0.6s;
+}
+
+@keyframes dot-overtaking {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+
+/*
+  toggle
+*/
+
+.toggleSwitch {
+  width: 60px;
+  height: 30px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 16px 3px rgba(0 0 0 / 15%);
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.toggleSwitch .toggleButton {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #191F78;
+}
+
+#toggle:checked ~ .toggleSwitch {
+  background: #191F78;
+}
+
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 26.4px);
+  background: #fff;
+}
+
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
+
+.add-btn{
+    font-size: 40px;
+    font-weight: bold; 
+    /* position:fixed; */
+    margin-left: auto;
+    margin-right: 10px;
+
+    /* border: 3px solid; */
+    /* border-radius: 50%; */
+    
+    /* right: 3%; */
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;  
+    /* top:50%; */
+    /* transform: translateY(-50%); */
+
+}
+.add-btn:hover{
+    cursor:pointer;
+}
+
+
+/* 드롭다운 관련 */
+.dropbtn {
+  /* background-color: #ea2129;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none; */
+
+  border: none;
+  padding: 0px;
+  background-color: #F9F4F4;
+  
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 130px;
+  height: 250px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+
+  left: -3%;
+
+  overflow-y: scroll;
+}
+
+.dropdown-content {
+
+}
+
+.feel {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .feel:hover {
+  background-color: #ddd;
+}
+
+.tag {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .tag:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* .dropdown-content div :focus {display: none;} */
+
+.dropdown:hover .dropbtn{
+  /* background-color: #3e8e41; */
+}
+
+
 
 </style>
