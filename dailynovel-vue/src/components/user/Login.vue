@@ -27,15 +27,18 @@ async function loginHandler() {
   let json = await response.json();
 
   //새롭게 데이터를 받아보자
-  userDetails.nickname = json.result.usernickname;
-  //userDetails.password= json.result.pwd;
+  userDetails.id = json.result.id;
+  userDetails.nickname = json.result.nickName;
   userDetails.email = json.result.email;
   userDetails.roles = json.roles;
+  console.log(userDetails.id,
+  userDetails.nickname ,
+  userDetails.email,
+  userDetails.roles )
   let returnURL = route.query.returnURL;
-
   if (userDetails.email == null) loginFalse.value = true;
   else if (returnURL) router.push(returnURL);
-  else router.push("./member");
+  else router.push("/member/room");
 }
 
 
@@ -53,11 +56,9 @@ async function loginoAuthHandler(event) {
   //새롭게 데이터를 받아보자
   userDetails.id = json.result.id;
   userDetails.nickname = json.result.nickName;
-  //userDetails.password= json.result.pwd;
   userDetails.email = json.result.email;
   userDetails.roles = json.roles;
   let returnURL = route.query.returnURL;
-  console.log(userDetails.id);
   if (userDetails.email == null) loginFalse.value = true;
   else if (returnURL) router.push(returnURL);
   else router.push("/member/room");
@@ -258,7 +259,7 @@ async function FindSignupUser(event) {
       loginoAuthHandler(event);
       userDetails.email = userEmailData;
       router.push({
-        path: returnURL || "./member/room",
+        path: returnURL || "/member/room",
       });
     }
   }
