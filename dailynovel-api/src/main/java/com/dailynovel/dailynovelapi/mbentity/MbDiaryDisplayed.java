@@ -15,11 +15,9 @@ import lombok.NoArgsConstructor;
 public class MbDiaryDisplayed {
     private Integer diaryId;
     private int memberId;
-    private Integer collectionId;
     private String title;
     private String content;
     private LocalDateTime diaryRegDate;
-    private String collectionName;
     private int likes;
     
 }

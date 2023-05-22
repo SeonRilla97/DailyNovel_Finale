@@ -78,13 +78,18 @@ function successInit(){
 getSharedDiary();
 
 // 데이터 불러오기 -> 유저가 공유한적있는 모든 다이어리 불러오기
-function getSharedDiary() {
+function getSharedDiary(sortMenu) {
 let requestOptions = {
 method: 'GET',
 redirect: 'follow'
 };
-
-fetch(`http://localhost:8080/diary/displayed?memberId=${userDetails.id}`, requestOptions)
+// 쿼리 만들기 => memberId필수 , sortMenu 선택(좋아요순, 최신순)
+let query = `memberId=${userDetails.id}`
+if(sortMenu)
+    query+= `&sortStandard=${sortMenu}`
+    console.log(query);
+    console.log(sortMenu);
+fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
 .then(response => response.json())
 .then(result => {
     diaryDisplayed.list = result;
@@ -109,6 +114,8 @@ console.log(diaryDisplayed.list);
                 :displayedDiary = "diaryDisplayed"
                 @registerCollection = "regBtnClickHandler"
                 @initSuccesAddMenu = "successInit"
+                @callDisplayed="getSharedDiary"
+                @callgetCollectionList = "getCollectionList"
             >
             </router-view>
         </transition>

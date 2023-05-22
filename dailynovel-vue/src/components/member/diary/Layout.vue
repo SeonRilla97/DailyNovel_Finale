@@ -5,9 +5,10 @@ import Editor from './editor.vue'
 import { reactive, onBeforeMount, ref, watchEffect } from 'vue';
 import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
 import Filter from './filter.js'
+import { useRoute } from 'vue-router'
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-console.log(userDetails.id)
-
+//router 정보
+const route = useRoute();
 //메뉴 관리
 const diaryFilter = reactive({
         feeling:new Filter(0,["기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"]),
@@ -20,9 +21,12 @@ const diaryFilter = reactive({
 const diary = reactive({
     list : null
 })
-getCollectionList();
-getListwithFiltering();
 
+
+onBeforeMount (()=> {
+    getCollectionList();
+    getListwithFiltering();
+})
 // 필터 목록 클릭시 동작 이벤트핸들러
 function filterClickHandler(selected){
     // console.log(selected);
@@ -114,8 +118,15 @@ function getListwithFiltering(backup) {
         .then(response => response.json())
         .then(result => { 
             //받아온 데이터가 아무것도 없다면
+            
+            console.log();
+            
             if(Object.keys(result).length == 0){
-                prompt("데이터 으으으읍따");
+                if(!query.includes("&")){
+                    // 유저의 다이어리가 아무것도 없을 때
+                    return
+                }
+                alert("일기가 없습니다.");
                 
                 if(backup && backup.name != null){
                     switch(backup.name){
@@ -166,6 +177,7 @@ function getListwithFiltering(backup) {
         })
         .catch(error => console.log('error', error));
     }
+    // 리스트 재요청시 가장 최신 일기 꺼내기(코드 개판이니 조심하시기 바랍니다. (165번째줄에서 넣어주는중)
     let newestDiaryId = ref()
 // 컬렉션 데이터 불러와서 데이터 삽입
 function getCollectionList() {
@@ -211,16 +223,27 @@ function getNewestDiary(){
     console.log(diary)
 }
 getNewestDiary();
+
+//모재영 추가 완료용 emit 담는 곳
+let listReload = 0;
+function diaryAddHander(){
+  listReload ++;
+}
+
 </script>
 <template>
     <div class="diary-container">
-        <span>{{ newestDiaryId }}</span>
         <Header class="no-scroll"  :filter = "diaryFilter"  @filterClickedHandler="filterClickHandler"/>
         
         <section class="diary-main">
             <List :diary = "diary" @diaryClickinList="diaryClickHandler" @addBtnClick = "diaryAddbtnClickHandler"/>
 
-            <Editor :isAdd = "isClickDiaryAdd" :isLoad = "curDiaryId" />
+            <Editor
+                :newestDiaryId = "newestDiaryId"
+                :isAdd = "isClickDiaryAdd"
+                :loadDiaryId = "curDiaryId"
+                @DoneAddDiary = "diaryAddHander"
+            />
             <!-- :current ="diary.value"  -->
         </section>
     </div>

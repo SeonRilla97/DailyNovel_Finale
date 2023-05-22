@@ -19,7 +19,10 @@ public class CORSConfig {
                 @Override
                 public void addCorsMappings(CorsRegistry registry){
 
-                    registry.addMapping("/**").allowedOrigins("*");
+                    registry
+                        .addMapping("/**")
+                        .allowedMethods("*") // put delete 메소드는 CORS 떠서 미리 수정
+                        .allowedOrigins("*");
                 }
             };
 

@@ -197,9 +197,9 @@ public class DiaryDefaultService implements DiaryService{
 
 
     @Override
-    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId) {
+    public List<MbDiaryDisplayed> getSharedDiary(int memberId, Integer collectionId,String sortStandard) {
         // TODO Auto-generated method stub
-        List<MbDiaryDisplayed> list = mbRepository.findDisplayedById(memberId, collectionId);
+        List<MbDiaryDisplayed> list = mbRepository.findDisplayedById(memberId, collectionId,sortStandard);
         return list;
     }
     @Override
@@ -248,6 +248,16 @@ public class DiaryDefaultService implements DiaryService{
         }
     
         return resultList;
+    }
+
+
+
+
+
+    @Override
+    public List<MbDiaryDisplayed> getListInCollection(int memberId, int collectionId) {
+        List<MbDiaryDisplayed> list =  mbRepository.getListByColId(memberId,collectionId);
+        return list;
     }
 }
 
