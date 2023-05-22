@@ -25,7 +25,6 @@ fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`)
     })
     .catch(error => console.log('error', error));
 }
-defineProps()
 
 // Collection 데이터 쑤셔넣기
 function PostCollection(collectionName){
@@ -87,8 +86,8 @@ redirect: 'follow'
 let query = `memberId=${userDetails.id}`
 if(sortMenu)
     query+= `&sortStandard=${sortMenu}`
-    console.log(query);
-    console.log(sortMenu);
+    // console.log(query);
+    // console.log(sortMenu);
 fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
 .then(response => response.json())
 .then(result => {
@@ -97,7 +96,6 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
 })
 .catch(error => console.log('error', error));
 }
-console.log(diaryDisplayed.list);
 </script>
 
 
@@ -106,7 +104,7 @@ console.log(diaryDisplayed.list);
         <header>
             <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
         </header>
-        <transition name="fade">
+        <!-- <transition name="fade"> -->
             <router-view
                 :collection="collection" 
                 :isDuplicated ="isColNameDuplicated" 
@@ -118,7 +116,7 @@ console.log(diaryDisplayed.list);
                 @callgetCollectionList = "getCollectionList"
             >
             </router-view>
-        </transition>
+        <!-- </transition> -->
     </section>
 </template>
 
@@ -143,11 +141,20 @@ console.log(diaryDisplayed.list);
 
 
 .fade-enter-active {
-  transition: opacity 0.2s ease;
+    animation: fade 0.5s;
+}
+/* .fade-enter-from
+{
+    animation: fade 0.5s reverse;
+} */
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.fade-enter-from
- {
-    opacity: 0;
-}
+
 </style>

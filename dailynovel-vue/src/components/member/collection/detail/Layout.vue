@@ -51,14 +51,21 @@ onBeforeMount (()=> {
 })
 
 // 해당 컬렉션의 댓글 대댓글 모두 불러오기
+
+
+let menuControl= ref(1);
+
+function menuClickHandler(menuIdx){
+    menuControl.value = menuIdx
+}
 </script>
 
 <template>
     <div class="detail-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <router-link to="/member/room/collection/detail/s/diary"><div class="ib active">일기</div></router-link>
-                <router-link class="mgl-2" to="/member/room/collection/detail/s/comment"><div class="ib">댓글</div></router-link>
+                <router-link to="/member/room/collection/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
+                <router-link class="mgl-2" to="/member/room/collection/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
             </div>
             <div class="icon-back"></div>
         </header>

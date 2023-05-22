@@ -228,6 +228,8 @@ getNewestDiary();
 let listReload = 0;
 function diaryAddHander(){
   listReload ++;
+  console.log("이거 안뜸???이거 떠야하지않음?")
+  getListwithFiltering();
 }
 
 </script>

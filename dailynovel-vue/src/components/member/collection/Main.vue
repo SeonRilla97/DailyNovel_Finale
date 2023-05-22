@@ -45,6 +45,7 @@ watchEffect(()=>{
     errHandler.value=true;
     
 })
+
 // 컬렉션 등록 성공시 폼 원래대로 되돌리기
 watchEffect(()=>{
     console.log("실행은 되고?")
@@ -202,7 +203,7 @@ function colClickHandler(collectionId){
         <div class="collection-container" >
             <div class="register-form box mgl-5">
 
-            <transition name="fade">
+            <transition name="fades">
                 <div class="create box" v-if="registerMenuController">
                     
                     <div class="title">컬렉션의 제목은<br/>무엇인가요?</div>
@@ -215,7 +216,7 @@ function colClickHandler(collectionId){
                 </div>
             </transition>
 
-            <transition name="fade">
+            <transition name="fades">
                 <div class="reg-btn box" v-if="!registerMenuController" @click="registerFromHandler">
                     <div class="header"></div>
                     <div class="title">나만의 컬렉션을<br/>추가해보세요</div>
@@ -452,6 +453,7 @@ display: block;
     position:absolute;
     justify-self: center;
     align-self: center;
+    box-shadow: 1px 1px 1px 1px #55555560;
     
     
 }
@@ -516,11 +518,11 @@ display: block;
 /* vue Transition */
 
 
-.fade-enter-active {
-  transition: opacity 2s ease;
+.fades-enter-active {
+  transition: opacity 1s ease;
 }
 
-.fade-enter-from
+.fades-enter-from
  {
     opacity: 0;
 }
