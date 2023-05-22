@@ -54,10 +54,10 @@ public class DefaultGuestBookService implements GuestBookService {
   }
 
   @Override
-  public void writeGuestBookComment(Map<String, Object> comment) {
+  public int writeGuestBookComment(Map<String, Object> comment) {
     Integer guestbookId = (Integer) comment.get("guestbookId");
     Integer memberId = (Integer) comment.get("memberId");
-    String content = comment.get("content").toString();
+    String content = comment.get("comment").toString();
 
     MbGuestBookComment temp = MbGuestBookComment.builder()
         .content(content)
@@ -66,6 +66,32 @@ public class DefaultGuestBookService implements GuestBookService {
         .build();
     
     mbRepository.insertGuestbookComment(temp);
+
+    return 1;
+  }
+
+  @Override
+  public int rewriteGuestBookComment(Map<String, Object> comment) {
+    Integer guestbookId = (Integer) comment.get("guestbookId");
+    Integer memberId = (Integer) comment.get("memberId");
+    String content = comment.get("comment").toString();
+
+    MbGuestBookComment temp = MbGuestBookComment.builder()
+        .content(content)
+        .guestbookId(guestbookId)
+        .memberId(memberId)
+        .build();
+    
+    mbRepository.updateGuestbookComment(temp);
+
+    return 1;
+  }
+
+  // 방명록 답글 삭제 서비스
+  @Override
+  public void deleteGuestBookComment(Map<String, Object> guestbookId) {
+    int id = (int) guestbookId.get("guestbookId");
+    mbRepository.deleteGuestbookComment(id);
   }
 
 }

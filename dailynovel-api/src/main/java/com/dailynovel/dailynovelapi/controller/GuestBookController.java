@@ -42,7 +42,24 @@ public class GuestBookController {
   public int writeGuestBookCommnet(@RequestBody Map<String, Object> comment){
 
     service.writeGuestBookComment(comment);
-    System.out.println("sucess");
+    System.out.println("작성완료");
+    return 1;
+  }
+
+  @PostMapping("comment/update")
+  public int rewriteGuestBookComment(@RequestBody Map<String, Object> comment){
+    service.rewriteGuestBookComment(comment);
+    
+    System.out.println("수정완료");
+    return 1;
+  }
+
+  @PostMapping("comment/delete")
+  public int deleteGuestBookComment(@RequestBody Map<String, Object> guestbookId ){
+    
+    service.deleteGuestBookComment(guestbookId);
+    
+    System.out.println("삭제완료");
     return 1;
   }
 

@@ -38,6 +38,19 @@
     #{content});
   </insert>
   
+  <update id="updateGuestbookComment" parameterType="MbGuestBookComment">
+    update guestbook_comment
+    set
+    content = #{content}
+    where 
+    guestbook_id = #{guestbookId};
+  </update>
   
-  
+  <delete id="deleteGuestbookComment">
+    delete 
+    from guestbook_comment
+    where
+    guestbook_id = #{guestbookId};
+
+  </delete>
 </mapper>

@@ -22,7 +22,11 @@ public interface GuestBookService {
   // 방명록 지우기 (주인, 방문자)
 
   // 방명록 답글 쓰기 (주인)
-  public void writeGuestBookComment(Map<String, Object> comment);
+  public int writeGuestBookComment(Map<String, Object> comment);
+
+  public int rewriteGuestBookComment(Map<String, Object> comment);
+
+  public void deleteGuestBookComment(Map<String, Object> guestbookId);
 
   // 방명록 답글 수정 (주인)
 

@@ -19,5 +19,5 @@ public interface MbGuestBookRepository {
 
   public void updateGuestbookComment(MbGuestBookComment comment);
 
-  public void deleteGuestbookComment(MbGuestBookComment comment);
+  public void deleteGuestbookComment(int guestbookId);
 }
