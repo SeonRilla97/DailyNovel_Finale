@@ -336,8 +336,8 @@ async function FindSignupUser(event) {
 }
 
 .main-svg {
-  width: 11.75rem;
-  height: 5.9375rem;
+  width: 15rem;
+  height:7rem;
   background-image: url("../../assets/img/logo/mainlogo.svg");
   background-size: contain;
   background-repeat: no-repeat;

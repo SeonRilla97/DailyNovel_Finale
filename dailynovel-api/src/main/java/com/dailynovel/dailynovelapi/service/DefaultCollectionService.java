@@ -44,4 +44,25 @@ public class DefaultCollectionService implements CollectionService{
         // 2.등록
         return isSuccess;
     }
+
+    @Override
+    public Boolean update(MbCollection collection) {
+        // 1.중복검사
+        // 새롭게 만들어진 친구가 중복인지 아닌지 확인
+        MbCollection dbCheck =mbRepository.findByName(collection);
+        System.out.println(dbCheck);
+        if(dbCheck != null){
+            System.out.println("중복 중복 중복!!!");
+            return false;
+        }
+        Boolean isSuccess=mbRepository.update(collection);
+        return isSuccess;
+    }
+
+    
+    @Override
+    public Boolean delete(int collectionId) {
+        Boolean isSuccess=mbRepository.delete(collectionId);
+        return isSuccess;
+    }
 }

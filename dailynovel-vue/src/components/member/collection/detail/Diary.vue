@@ -1,50 +1,26 @@
+<script setup>
+// detail Layout으로부터 data 받기
+const props = defineProps({
+    data: {
+        type: Object,
+        required:true
+    }
+})
+
+console.log(props.data.diarys)
+</script>
 <template>
     <div class="container">
         <div class="diary-list" >
 
-            <section class="box" >
-                    <div class="title">날씨가 유난히도 맑은 날</div>
+            <section class="box" v-for="(value, key) in data.diarys">
+                    <div class="title">{{value.title}}</div>
                     <div class="main">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
+                        <div class="title-err mgt-4">{{value.content}}</div>
                     </div>
-                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
+                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{ value.likes }}</span></div>   
             </section>
-            <section class="box" >
-                    <div class="title">날씨가 유난히도 맑은 날</div>
-                    <div class="main">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                    </div>
-                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-            </section>
-            <section class="box" >
-                    <div class="title">날씨가 유난히도 맑은 날</div>
-                    <div class="main">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                    </div>
-                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-            </section>
-            <section class="box" >
-                    <div class="title">날씨가 유난히도 맑은 날</div>
-                    <div class="main">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                    </div>
-                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-            </section>
-
-            <section class="box" >
-                    <div class="title">날씨가 유난히도 맑은 날</div>
-                    <div class="main">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                    </div>
-                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-            </section>
-            <section class="box" >
-                    <div class="title">날씨가 유난히도 맑은 날</div>
-                    <div class="main">
-                        <div class="title-err mgt-4">컬렉션 이름은 중복할 수 없어요</div>
-                    </div>
-                    <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">12</span></div>   
-            </section>
+            
         </div>
     </div>
 </template>

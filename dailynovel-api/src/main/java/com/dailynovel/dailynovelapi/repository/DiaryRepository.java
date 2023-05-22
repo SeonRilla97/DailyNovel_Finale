@@ -1,8 +1,6 @@
 package com.dailynovel.dailynovelapi.repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +13,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>{
 
 
 
-    @Query("SELECT d.feeling, COUNT(d.feeling) FROM Diary d where d.memberId = 1 and d.feeling IS NOT NULL GROUP BY d.feeling ORDER BY d.feeling ASC" )
+    @Query("SELECT d.feeling, COUNT(d.feeling) FROM Diary d where d.memberId = :memberId and d.feeling IS NOT NULL GROUP BY d.feeling ORDER BY d.feeling ASC" )
     List<Object[]> findByFeeling(@Param("memberId") Integer memberId);
     
     @Query(value = "SELECT * FROM Diary d WHERE d.memberId = :memberId", nativeQuery = true)
@@ -31,19 +29,19 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer>{
     + "END AS honestyRange, "
     + "COUNT(*) AS count "
     + "FROM Diary d "
-    + "WHERE d.memberId = 1 AND d.honesty IS NOT NULL "
+    + "WHERE d.memberId = :memberId AND d.honesty IS NOT NULL "
     + "GROUP BY honestyRange "
     + "ORDER BY honestyRange DESC")
     List<Object[]> findByHonesty(@Param("memberId") Integer memberId);
 
-    @Query("SELECT d.honesty, count(d.honesty) from Diary d where d.memberId = 1 and d.honesty = 0 ")
+    @Query("SELECT d.honesty, count(d.honesty) from Diary d where d.memberId = :memberId and d.honesty = 0 ")
     List<Object[]> findBypino(@Param("memberId") Integer memberId);
 
-    @Query("SELECT d.honesty, count(d.honesty) from Diary d where d.memberId = 1 and d.honesty = 100 ")
+    @Query("SELECT d.honesty, count(d.honesty) from Diary d where d.memberId = :memberId and d.honesty = 100 ")
     List<Object[]> findByNpino(@Param("memberId") Integer memberId);
 
 
-    @Query("select d.tag, count(d.tag) from Diary d where d.memberId = 1 and tag IS NOT NULL group by d.tag")
+    @Query("select d.tag, count(d.tag) from Diary d where d.memberId = :memberId and tag IS NOT NULL group by d.tag")
     List<Object[]> findByTag(@Param("memberId") Integer memberId);
 
 
