@@ -51,22 +51,29 @@ async function showHandler(event) {
       // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
       content.value = "응답을 처리할 수 없습니다.";
     }
-  } else if (event == "이메일") {
-    let response = await fetch(
-      "http://localhost:8080/users/emailCheck?email=" + email.value
-    );
+  } else if (event === "이메일") {
+  content.value = "이메일 확인 중..."; // 로딩 표시기 표시
+  showModal.value = true;
+  try {
+    let response = await fetch("http://localhost:8080/users/emailCheck?email=" + email.value);
     let data = await response.text();
 
-    if (data === "true") {
-      content.value = "발송된 인증번호를 확인해주세요";
-      emailBtn.value = true;
-    } else if (data === "false") {
-      content.value = "이미 가입된 이메일입니다.";
-    } else {
-      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-      content.value = "이메일을 다시 확인해주세요";
-    }
-  } else if (event == "이메일인증번호확인") {
+    // 최소한 1초간 로딩 메시지를 표시하기 위해 setTimeout 사용
+    setTimeout(() => {
+      if (data === "true") {
+        content.value = "발송된 인증번호를 확인해주세요";
+        emailBtn.value = true;
+      } else if (data === "false") {
+        content.value = "이미 가입된 이메일입니다.";
+      } else {
+        // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
+        content.value = "이메일을 다시 확인해주세요";
+      }
+    }, 1000); // 1초 (1000ms) 지연
+  } catch (error) {
+    content.value = "요청 중 오류가 발생했습니다.";
+  }
+} else if (event == "이메일인증번호확인") {
     let response = await fetch(
       "http://localhost:8080/users/emailCheckNum?email=" +
         email.value +
@@ -86,8 +93,10 @@ async function showHandler(event) {
       content.value = "응답을 처리할 수 없습니다.";
     }
   } else if(event == "회원가입") {
-    let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value + 1);
+    let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value);
+    date.setDate(date.getDate() + 1);
     let dateString = date.toISOString().split("T")[0];
+    console.log(dateString);
     await fetch("http://localhost:8080/users/signup", {
       method: "POST",
       headers: {
@@ -104,15 +113,19 @@ async function showHandler(event) {
       }),
     })
       .then((response) => response.text())
+
       .then((data) => {
+        console.log(data)
+        if(data ==="true"){
         // 응답 처리
         content.value = "회원가입에 성공했습니다.";
-        router.path("/member/room");
-      })
-      .catch((error) => {
-        // 에러 처리
+        }
+        else if(data ==="false")
         content.value = "회원가입에 실패했습니다 빠진 정보를 확인해주세요.";
-      });
+        else
+        content.value = "서버에 문제가 있습니다 잠시후 시도해주세요";
+
+      })
   }
 
   showModal.value = true;
@@ -168,6 +181,13 @@ async function updateInput(event) {
       emailBtn.value = false;
     }
   }
+}
+
+function limitInput(inputValue, maxLength) {
+  if (inputValue) {
+    return inputValue.toString().slice(0, maxLength);
+  }
+  return '';
 }
 </script>
 <template>
@@ -367,6 +387,7 @@ async function updateInput(event) {
                 placeholder="닉네임을 입력해주세요"
                 required
                 v-model="nickName"
+                maxlength='8'
                 @input="nickNameVerify()"
               />
             </div>
@@ -400,6 +421,7 @@ async function updateInput(event) {
                 tabindex="0"
                 placeholder="숫자만 입력해주세요"
                 required
+                maxlength='13'
                 v-model="phoneNumber"
               />
             </div>
@@ -421,6 +443,7 @@ async function updateInput(event) {
                 placeholder="YYYY"
                 required
                 v-model="birthYear"
+                @input="birthYear = limitInput(birthYear,4)"
               />
               <span class="birth-deco"> </span>
               <input
@@ -432,6 +455,7 @@ async function updateInput(event) {
                 placeholder="MM"
                 required
                 v-model="birthMonth"
+                @input="birthMonth = limitInput(birthMonth,2)"
               />
               <span class="birth-deco"> </span>
               <input
@@ -443,6 +467,7 @@ async function updateInput(event) {
                 placeholder="DD"
                 required
                 v-model="birthDay"
+                @input="birthDay = limitInput(birthDay,2)"
               />
             </div>
           </div>
@@ -661,9 +686,9 @@ async function updateInput(event) {
   background: rgb(235, 155, 56); /* 선택 시 원하는 배경색을 지정하세요 */
 }
 
-.input-1-noborder input[type="radio"]:checked + label {
-  color: rgb(235, 155, 56); /* 선택 시 원하는 텍스트 색상을 지정하세요 */
-}
+/* .input-1-noborder input[type="radio"]:checked + label {
+  color: rgb(235, 155, 56); /* 선택 시 원하는 텍스트 색상을 지정하세요 
+} */
 
 .input-1-ok {
   width: 360px;
@@ -738,10 +763,11 @@ async function updateInput(event) {
 }
 
 .color-green {
-  color: greenyellow;
+  color:rgb(4, 211, 38);
+
 }
 
 .color-yellow {
-  color: yellow;
+  color:rgb(225, 144, 45);
 }
 </style>

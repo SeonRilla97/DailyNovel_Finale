@@ -29,30 +29,33 @@ public class InsightController {
 
      @GetMapping("Feeling")
     public TreeMap<String, Integer> getFList(
+        @RequestParam(required = true) int memberId,
         @RequestParam(name = "feeling", required = false) String feeling,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        TreeMap<String, Integer> list = service.getByFeeling();
+        TreeMap<String, Integer> list = service.getByFeeling(memberId);
         System.out.println(list);
         return list;
     }
 
     @GetMapping("Honesty")
     public TreeMap<String, Integer> getHList(
+        @RequestParam(required = true) int memberId,
         @RequestParam(name = "honestyRange", required = false) String honestyRange,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        TreeMap<String, Integer> list = service.getByHonesty();
+        TreeMap<String, Integer> list = service.getByHonesty(memberId);
         System.out.println(list);
         return list;
     }
 
     @GetMapping("Tag")
     public TreeMap<String, Integer> getTList(
+        @RequestParam(required = true) int memberId,
         @RequestParam(name = "tag", required = false) String tag,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        TreeMap<String, Integer> list = service.getByTag();
+        TreeMap<String, Integer> list = service.getByTag(memberId);
         System.out.println(list);
         return list;
     }
@@ -60,20 +63,22 @@ public class InsightController {
 
     @GetMapping("pino")
     public List<Object> pino(
+        @RequestParam(required = true) int memberId,
         @RequestParam(name = "pino", required = false) String pino,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        List<Object> list = service.getBypino();
+        List<Object> list = service.getBypino(memberId);
         return list;
 
     }
 
     @GetMapping("Npino")
     public List<Object> Npino(
+        @RequestParam(required = true) int memberId,
         @RequestParam(name = "Npino", required = false) String Npino,
         @RequestParam(name = "count", required = false) Integer count
     ){
-        List<Object> list = service.getByNpino();
+        List<Object> list = service.getByNpino(memberId);
         return list;
 
     }

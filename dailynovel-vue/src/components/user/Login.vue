@@ -266,6 +266,8 @@ async function FindSignupUser(event) {
 
   naverService().logout(); // 수정: 전역 변수인 naverLogin을 사용하여 로그아웃 호출
 }
+
+
 </script>
 <template>
   <div class="container-1-nmg">
@@ -273,17 +275,20 @@ async function FindSignupUser(event) {
       <div class="main-svg" />
       <div class="form">
         <form method="post" enctype="application/x-www-form-urlencoded">
-          <div class="mgt-4" v-if="loginFalse">
-            <span>이메일과 비밀번호를 확인해주세요</span>
+          <div class="mgt-1 mgl-5" v-if="loginFalse">
+            <span style="color: rgb(220, 0, 0);">계정 및 암호를 확인해주세요</span>
+
           </div>
-          <div class="input3 mgt-4">
-            <div class="div-placeholder">
-              <input id="email" class="text04" type="text" tabindex="0" placeholder="이메일" required v-model="user.email" />
+          <div class="input3 mgt-3 outBox">
+            <div class="div-placeholder inputBox">
+              <input id="email" class="text04 " type="text" tabindex="0" required v-model="user.email" />
+              <label for="email">이메일</label>
             </div>
           </div>
-          <div class="input3">
-            <div class="div-placeholder mgt-1">
-              <input id="password" class="text04" type="password" placeholder="비밀번호" required v-model="user.password" />
+          <div class="input3 mgt-1 outBox">
+            <div class="div-placeholder inputBox">
+              <input id="password" class="text04 " type="password"  required v-model="user.password"/>
+              <label for="password">비밀번호</label>
             </div>
           </div>
           <button class="button1 mgt-3" @click.prevent="loginHandler">
@@ -296,7 +301,7 @@ async function FindSignupUser(event) {
           </div>
         </div>
       </div>
-      <div class="mgt-5">
+      <div class="mgt-6">
         <router-link to="./login" class="text09 mgt-4">SNS계정으로 간편 로그인/회원가입</router-link>
       </div>
       <div class="lc-horizontal-alignment mgt-3">
@@ -330,13 +335,29 @@ async function FindSignupUser(event) {
 @import url("/css/box.css");
 @import url("/css/button.css");
 
+.outBox {  border-radius:6px;}
+.outBox .inputBox { position:relative;height:50px;}
+.outBox .inputBox input[type="text"] { height:50px; font-size:16px; box-sizing:border-box;  outline:none;}
+.outBox .inputBox input[type="password"] { height:50px; font-size:16px; box-sizing:border-box;  outline:none;}
+.outBox .inputBox label {position:absolute; left:0; bottom:0; padding:0 6px; color:#999; font-size:14px; font-weight:normal; background:#fff; transform:scale(1) translate(4px, -18px); transition:all .15s; pointer-events:none;}
+.outBox .inputBox input[type="text"]:focus,
+.outBox.existence .inputBox input[type="text"] {border:2px solid red;}
+.outBox .inputBox input[type="text"]:focus + label,
+.outBox.existence .inputBox label {color:red; transform:scale(.85) translate(-10px, -48px);}
+
+.outBox .inputBox input[type="password"]:focus,
+.outBox.existence .inputBox input[type="password"] {border:2px solid red;}
+.outBox .inputBox input[type="password"]:focus + label,
+.outBox.existence .inputBox label {color:red; transform:scale(.85) translate(-10px, -48px);}
+
+
 .layout-full-screen {
   background-color: rgba(250, 250, 250, 1);
 }
 
 .main-svg {
-  width: 11.75rem;
-  height: 5.9375rem;
+  width: 15rem;
+  height:7rem;
   background-image: url("../../assets/img/logo/mainlogo.svg");
   background-size: contain;
   background-repeat: no-repeat;
@@ -386,7 +407,7 @@ async function FindSignupUser(event) {
 }
 
 .text04 {
-  width: 16.75rem;
+  width: 18.75rem;
   height: 3.125rem;
   color: rgb(106, 96, 96);
   font-size: 0.9375rem;

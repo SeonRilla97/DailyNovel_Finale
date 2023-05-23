@@ -18,10 +18,13 @@
 </template>
 
 <script>
+import { useUserDetailsStore } from "../store/useUserDetailsStore";
 import Slime from "./Canvas/item/slime.js";
 import Background from "./Canvas/item/background.js";
 import Obstacle from "./Canvas/item/obstacle.js";
 import Dialog from "./Canvas/item/dialog.js";
+import { useRouter } from "vue-router";
+
 
 export default {
   data() {
@@ -75,14 +78,14 @@ export default {
       // 컴퓨터
       this.obstacles.push(new Obstacle(958, 203, 300, 60, "computer"));
       // 상단벽
-      this.obstacles.push(new Obstacle(0, 0, 1280, 180,"wall"));
-
-      this.obstacles.push(new Obstacle(0, 0, 5, 720,));
+      this.obstacles.push(new Obstacle(0, 0, 300, 180,"wall"));
+      this.obstacles.push(new Obstacle(600, 0, 600, 180,"door"));
+      this.obstacles.push(new Obstacle(0, 0, 5, 720));
       this.obstacles.push(new Obstacle(0, 720, 1280, 5));
       this.obstacles.push(new Obstacle(1275, 0, 5, 720));
       // 업적
       this.obstacles.push(new Obstacle(1100, 350, 200, 150,"trophy"));
-      this.obstacles.push(new Obstacle(67.25, 508, 60, 130));
+      this.obstacles.push(new Obstacle(67.25, 508, 60, 130,"bed"));
       this.obstacles.push(new Obstacle(362.25, 516, 120.25, 110));
       this.obstacles.push(new Obstacle(1080.25, 604, 120.25, 70));
 
@@ -124,33 +127,46 @@ export default {
           // 충돌하는 객체에 따라 대화 상자 표시
           if (obstacle.type === "table") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("일기를 쓰러\n가볼까요?\n(y)");
+            this.dialog.setText("일기를 쓰러\n가볼까요?(y)");
             this.dialog.show();
           } else if (obstacle.type === "shelf") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("일기장을 보려\n가볼까요?\n(y)");
+            this.dialog.setText("일기장을 보러\n가볼까요?(y)");
             this.dialog.show();
           } else if (obstacle.type === "computer") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("다른 사람의 일기를 보러\n가볼까요?\n(y)");
+            this.dialog.setText("다른 사람\n일기를 보러\n가볼까요?(y)");
             this.dialog.show();
           } 
           else if (obstacle.type === "wall") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("구독 페이지를\n 보러 가볼까요?\n(y)");
+            this.dialog.setText("구독 페이지를\n 보러 가볼까요?(y)");
             this.dialog.show();
           } 
           else if (obstacle.type === "trophy") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("내 업적을 확인하러\n가볼까요?\n(y)");
+            this.dialog.setText("내 업적을 확인하러\n가볼까요?(y)");
             this.dialog.show();
           } 
-          else {
+          else if (obstacle.type === "bed") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText(`벽과\n 충돌했습니다.`);
+            this.dialog.setText("로그 아웃 할까요?(y)");
+            this.dialog.show();
+          } 
+
+          else if (obstacle.type === "door") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("문으로 나가볼까요?(y)");
+            this.dialog.show();
+          } 
+          else  {
+            
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText(`충돌했습니다.`);
             this.dialog.show();
           }
         }
+
         if (!collisionDetected) {
           // 충돌이 없을 때의 대화 상자 숨기기
           this.dialog.hide();
@@ -167,24 +183,37 @@ export default {
           const dialogY = this.slime.y - this.slime.sh / 2 - 100;
 
           // 충돌하는 객체에 따라 대화 상자 표시
+
           if (obstacle.type === "table") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("책상과 충돌했습니다.");
+            this.dialog.setText("책상과 \n충돌했습니다.");
             this.dialog.show();
           } else if (obstacle.type === "shelf") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("책장과 충돌했습니다.");
+            this.dialog.setText("책장과\n 충돌했습니다.");
             this.dialog.show();
           } else if (obstacle.type === "computer") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("컴퓨터와 충돌했습니다.");
+            this.dialog.setText("컴퓨터 책상과\n 충돌했습니다.");
             this.dialog.show();
-          } else {
+          } 
+          else if (obstacle.type === "wall") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText(`벽이랑\n 충돌했습니다.`);
+            this.dialog.setText("구독 페이지를\n 보러 가볼까요?(y)");
+            this.dialog.show();
+          } 
+          else if (obstacle.type === "trophy") {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText("트로피와 \n부딪혔습니다.");
+            this.dialog.show();
+          } 
+          else {
+            this.dialog.setPosition(dialogX, dialogY);
+            this.dialog.setText(` 충돌했습니다.`);
             this.dialog.show();
           }
         }
+        
         if (!collisionDetected) {
           // 충돌이 없을 때의 대화 상자 숨기기
           this.dialog.hide();
@@ -208,7 +237,7 @@ export default {
 
       return (
         rect1.x < rect2.x + rect2.width + 20 &&
-    rect1.x + rect1.width > rect2.x &&
+    rect1.x + rect1.width > rect2.x -20&&
     rect1.y < rect2.y + rect2.height + 20 &&
     rect1.y + rect1.height > rect2.y
       );
@@ -275,7 +304,9 @@ export default {
       // 침대 -> 로그아웃
       else if (435 <= canvasX && 205 <= canvasY && canvasX <= 680 && canvasY < 255) {
         // 로그아웃 로직 추가
-        console.log("로그아웃");
+        let userDetail = useUserDetailsStore();
+      userDetail.logout();
+      this.$router.push("/login");
       }
       // 추가적인 클릭 이벤트 처리 가능
 
@@ -294,13 +325,15 @@ export default {
     },
     keyDownHandler(e) {
   if (e.key === "y") {
+    if((152<=this.slime.x&& 522<=this.slime.y) &&(this.slime.x<=337&& this.slime.y<=627 ) ){
+      let userDetail = useUserDetailsStore();
+      userDetail.logout();
+      this.$router.push("/login");
+    }
     const obstacle = this.obstacles.find(obstacle => this.isWithinDistance(this.slime, obstacle));
-
     if (obstacle) {
-      console.log("충돌이 감지되었습니다.");
-      
+     
       if (obstacle.type === "table") {
-        console.log("책상과 충돌했습니다.");
         this.$router.push("/member/room/diary");
         this.$emit("modalOpenHandler");
       }
@@ -326,8 +359,7 @@ export default {
       }
 
       else {
-        console.log("알 수 없는 객체와 충돌했습니다.");
-        this.$router.push("/default-route"); // 기본적인 충돌 시의 라우터 경로로 변경
+        console.log("충돌했습니다.");
       }
     }
   }

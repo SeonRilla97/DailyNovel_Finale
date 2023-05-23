@@ -25,7 +25,6 @@ fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`)
     })
     .catch(error => console.log('error', error));
 }
-defineProps()
 
 // Collection 데이터 쑤셔넣기
 function PostCollection(collectionName){
@@ -78,13 +77,18 @@ function successInit(){
 getSharedDiary();
 
 // 데이터 불러오기 -> 유저가 공유한적있는 모든 다이어리 불러오기
-function getSharedDiary() {
+function getSharedDiary(sortMenu) {
 let requestOptions = {
 method: 'GET',
 redirect: 'follow'
 };
-
-fetch(`http://localhost:8080/diary/displayed?memberId=${userDetails.id}`, requestOptions)
+// 쿼리 만들기 => memberId필수 , sortMenu 선택(좋아요순, 최신순)
+let query = `memberId=${userDetails.id}`
+if(sortMenu)
+    query+= `&sortStandard=${sortMenu}`
+    // console.log(query);
+    // console.log(sortMenu);
+fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
 .then(response => response.json())
 .then(result => {
     diaryDisplayed.list = result;
@@ -92,7 +96,6 @@ fetch(`http://localhost:8080/diary/displayed?memberId=${userDetails.id}`, reques
 })
 .catch(error => console.log('error', error));
 }
-console.log(diaryDisplayed.list);
 </script>
 
 
@@ -109,6 +112,8 @@ console.log(diaryDisplayed.list);
                 :displayedDiary = "diaryDisplayed"
                 @registerCollection = "regBtnClickHandler"
                 @initSuccesAddMenu = "successInit"
+                @callDisplayed="getSharedDiary"
+                @callgetCollectionList = "getCollectionList"
             >
             </router-view>
         </transition>
@@ -136,11 +141,20 @@ console.log(diaryDisplayed.list);
 
 
 .fade-enter-active {
-  transition: opacity 0.2s ease;
+    animation: fade 0.5s;
+}
+/* .fade-enter-from
+{
+    animation: fade 0.5s reverse;
+} */
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.fade-enter-from
- {
-    opacity: 0;
-}
+
 </style>

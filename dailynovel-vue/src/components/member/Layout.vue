@@ -49,7 +49,7 @@ function animationedHandler() {
 <template>
   <Header />
   <section class="member-room-canvas mgt-2">
-    <Canvas id="canvas" v-on:modalOpenHandler="modalOpenHandler" tabindex="0" ref="canvasRef" />
+    <Canvas v-on:modalOpenHandler="modalOpenHandler" tabindex="0" ref="canvasRef" />
   </section>
   <section class="member-room-temp-linkes">
     <router-link to="/member/room/collection/main" @click="modalOpenHandler"><button>컬렉션</button></router-link>

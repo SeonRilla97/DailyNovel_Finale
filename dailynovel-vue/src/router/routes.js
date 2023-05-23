@@ -9,6 +9,10 @@ import signupSocial from '../components/user/SignupSocial.vue';
 import Achievement from '../components/member/Insights/Achievements.vue';
 import Chart from '../components/member/Insights/Chart.vue';
 
+import feeling from '../components/member/Insights/Achievement/feeling.vue';
+import honesty from '../components/member/Insights/Achievement/honesty.vue';
+import tag from '../components/member/Insights/Achievement/tag.vue';
+
 import guestbook from './guestbook.js';
 import collection from './collection.js';
 import display from './display.js';
@@ -43,8 +47,11 @@ const routes = [
       {
         path: 'room', component: memberLayout, children: [
           diary,
-          { path: 'achievement', component: Achievement },
+          { path: 'achievement', component: Achievement, },
           { path: 'chart', component: Chart },
+          {path: 'feeling', component: feeling},
+          {path: 'honesty', component: honesty},
+          {path: 'tag', component: tag},
           collection,
           guestbook,
           ...display,
@@ -65,21 +72,6 @@ const router = createRouter({
   routes,
 });
 
-
-router.beforeEach((to, from, next) => {
-  // 현재 라우트가 '/member/room'인 경우에만 캔버스 요소에 포커스 설정
-  if (to.path === '/member/room') {
-    setTimeout(() => {
-      const canvasElement = document.getElementById('canvas');
-      if (canvasElement) {
-        canvasElement.focus();
-      }
-      next();
-    }, 0);
-  } else {
-    next();
-  }
-});
 
   // 이런식으로 해야하지 않을까 싶어요 (05.09 재준)
   // { path: '/member', children:[
