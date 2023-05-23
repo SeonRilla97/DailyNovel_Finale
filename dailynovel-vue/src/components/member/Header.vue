@@ -6,7 +6,7 @@ import { useUserDetailsStore } from '../store/useUserDetailsStore.js';
 
 let router = useRouter();
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-// let nickname = "동동이107"
+
 let nickname = userDetails.nickname;
 
 let alramCount = 15;

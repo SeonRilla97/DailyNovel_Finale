@@ -53,7 +53,7 @@ async function showHandler(event) {
     }
   } else if (event === "이메일") {
   content.value = "이메일 확인 중..."; // 로딩 표시기 표시
-
+  showModal.value = true;
   try {
     let response = await fetch("http://localhost:8080/users/emailCheck?email=" + email.value);
     let data = await response.text();

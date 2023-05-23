@@ -15,7 +15,6 @@ import com.dailynovel.dailynovelapi.entity.Diary;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryCollectionView;
 import com.dailynovel.dailynovelapi.mbentity.MbDiaryDisplayed;
 import com.dailynovel.dailynovelapi.repository.DiaryRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DiaryDefaultService implements DiaryService{
@@ -29,8 +28,8 @@ public class DiaryDefaultService implements DiaryService{
     private MbDiaryRepository mbRepository;
 
     @Override
-    public TreeMap<String, Integer> getByFeeling(){
-        List<Object[]> FeelingCount = repository.findByFeeling(null);
+    public TreeMap<String, Integer> getByFeeling(int memberId){
+        List<Object[]> FeelingCount = repository.findByFeeling(memberId);
         Map<String, Integer> map = new TreeMap<String, Integer>();
 
     // object라 형변환
@@ -48,8 +47,8 @@ public class DiaryDefaultService implements DiaryService{
    
 
     @Override
-    public TreeMap<String, Integer> getByHonesty() {
-        List<Object[]> HonestyCount = repository.findByHonesty(null);
+    public TreeMap<String, Integer> getByHonesty(int memberId) {
+        List<Object[]> HonestyCount = repository.findByHonesty(memberId);
         Map<String, Integer> map = new TreeMap<String, Integer>();
     
         for (Object[] o : HonestyCount) {
@@ -65,8 +64,8 @@ public class DiaryDefaultService implements DiaryService{
 
 
     @Override
-    public TreeMap<String, Integer>  getByTag() {
-        List<Object[]> TagCount = repository.findByTag(null);
+    public TreeMap<String, Integer>  getByTag(int memberId) {
+        List<Object[]> TagCount = repository.findByTag(memberId);
         Map<String, Integer> map = new TreeMap<String, Integer>();
 
         for(Object[] o : TagCount){
@@ -202,18 +201,18 @@ public class DiaryDefaultService implements DiaryService{
         List<MbDiaryDisplayed> list = mbRepository.findDisplayedById(memberId, collectionId,sortStandard);
         return list;
     }
-    @Override
-    public List<Diary> getAllByMId() {
-        List<Diary> list = repository.findAllByMId(null);
-        return list;
-    }
+    // @Override
+    // public List<Diary> getAllByMId() {
+    //     List<Diary> list = repository.findAllByMId(memberId);
+    //     return list;
+    // }
 
 
 
 
 
 	@Override
-	public List<Object[]> getById() {
+	public List<Object[]> getById(int memberId) {
 		List<Object[]> list = repository.findByCoorList(null);
         return list;
 	}
@@ -223,8 +222,8 @@ public class DiaryDefaultService implements DiaryService{
 
 
     @Override
-    public List<Object> getBypino() {
-        List<Object[]> list = repository.findBypino(null);
+    public List<Object> getBypino(int memberId) {
+        List<Object[]> list = repository.findBypino(memberId);
     
         // 리스트를 다시 가공하여 원하는 형태로 변환
         List<Object> resultList = new ArrayList<>();
@@ -237,8 +236,8 @@ public class DiaryDefaultService implements DiaryService{
     }
 
     @Override
-    public List<Object> getByNpino() {
-        List<Object[]> list = repository.findByNpino(null);
+    public List<Object> getByNpino(int memberId) {
+        List<Object[]> list = repository.findByNpino(memberId);
     
         // 리스트를 다시 가공하여 원하는 형태로 변환
         List<Object> resultList = new ArrayList<>();
@@ -258,6 +257,16 @@ public class DiaryDefaultService implements DiaryService{
     public List<MbDiaryDisplayed> getListInCollection(int memberId, int collectionId) {
         List<MbDiaryDisplayed> list =  mbRepository.getListByColId(memberId,collectionId);
         return list;
+    }
+
+
+
+
+
+    @Override
+    public List<Diary> getAllByMId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllByMId'");
     }
 }
 

@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,13 +24,6 @@ public class GuestBookController {
   @Autowired
   private GuestBookService service;
 
-  // @PostMapping("list")
-  // public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll() {
-  // List<MbGuestBookAll> list = service.viewGuestBookAll();
-  // // System.out.println(list);
-  // return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
-  // }
-
   @GetMapping
   public ResponseEntity<List<MbGuestBookAll>> viewGuestBookAll(@RequestParam("id") int id) {
     List<MbGuestBookAll> list = service.viewGuestBookAll(id);
@@ -40,22 +33,34 @@ public class GuestBookController {
 
   @PostMapping("save")
   public int writeGuestBook(@RequestBody Map<String, Object> guestbook) {
-
+    
     service.writeGuestBook(guestbook);
     return 1;
   }
 
-  // @PostMapping("all")
-  // public ResponseEntity<List<GuestBook>> viewGuestbooks() {
-  // List<GuestBook> list = service.viewGuestBooks();
+  @PostMapping("comment")
+  public int writeGuestBookCommnet(@RequestBody Map<String, Object> comment){
 
-  // return new ResponseEntity<List<GuestBook>>(list, HttpStatus.OK);
-  // }
+    service.writeGuestBookComment(comment);
+    System.out.println("작성완료");
+    return 1;
+  }
 
-  // @PostMapping("comment")
-  // public ResponseEntity<GuestBookComment> viewGuestbookComment() {
-  // GuestBookComment comment = commentService.viewGuestBookComment();
+  @PostMapping("comment/update")
+  public int rewriteGuestBookComment(@RequestBody Map<String, Object> comment){
+    service.rewriteGuestBookComment(comment);
+    
+    System.out.println("수정완료");
+    return 1;
+  }
 
-  // return new ResponseEntity<GuestBookComment>(comment, HttpStatus.OK);
-  // }
+  @PostMapping("comment/delete")
+  public int deleteGuestBookComment(@RequestBody Map<String, Object> guestbookId ){
+    
+    service.deleteGuestBookComment(guestbookId);
+    
+    System.out.println("삭제완료");
+    return 1;
+  }
+
 }

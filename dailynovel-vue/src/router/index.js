@@ -30,5 +30,24 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+router.beforeEach((to, from, next) => {
+  // 현재 라우트가 '/member/room'인 경우에만 캔버스 요소에 포커스 설정
+  if (to.path === '/member/room') {
+    setTimeout(() => {
+
+      console.log("----------------------------")
+      const canvasElement = document.getElementById('canvas');
+      console.log(canvasElement);
+      if (canvasElement) {
+        canvasElement.focus();
+      }
+      next();
+    }, 0);
+  } else {
+    next();
+  }
+});
+
+
 
 export default router
