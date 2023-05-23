@@ -49,6 +49,7 @@ let myLocation = { lat: null, lng: null };
 
 onMounted(() => {
   // console.log(props.newestDiaryId);
+  geoFindMe(); //초기 맵구현시 필요
 });
 
 
