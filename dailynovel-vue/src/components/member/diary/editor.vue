@@ -316,7 +316,7 @@ const addDiary = function(isAdd){
 
 
     //ref 기본값 담기
-    objRef(null,1,null,"당신마음입력"
+    objRef(null,1,null,null
     ,null,"기분",100,"태그"
     ,null,38,128);
 
@@ -364,7 +364,7 @@ const loadDiary = function(diaryId){
     })
     .catch(error => {
       console.log('error', error);
-      loadDiary(diaryId);
+      // loadDiary(diaryId);
     });
   })
 };
@@ -380,11 +380,10 @@ const EditDiary = function(diaryId){
     // ,null,"기분",100,"태그"
     // ,null,38,128);
     // diaryObj = diaryRef.value;
+    diaryObj.member_id = null;
     diaryObj.id = diaryId;
     diaryObj.regDate = null;
     
-    console.log(diaryObj);
-
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
@@ -396,13 +395,40 @@ const EditDiary = function(diaryId){
 
     fetch("http://localhost:8080/diary", requestOptions)
       .then(response => response.text())
-      .then(result => loadDiary(diaryId))
+      .then(result => {
+        // loadDiary(diaryId);
+        emit("DoneAddDiary", true);
+        console.log("업데이트 완료"+diaryObj);
+        })
       .catch(error => console.log('error', error));
 
     resolve();
   })
 
 };
+
+const DelDiary = function(diaryId){
+  return new Promise(function(resolve, reject){
+
+    var requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow'
+    };
+
+    fetch(`http://localhost:8080/diary/${diaryId}`, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        loadDiary(props.newestDiaryId);
+        emit("DoneAddDiary", true);
+      })
+      .catch(error => console.log('error', error));
+
+  })};
+
+const delButton = function(){
+  let diaryId = diaryRef.value.id;
+  DelDiary(diaryId);
+}
 
 
 const toggleClickHandler = (e) =>{
@@ -451,6 +477,7 @@ const DropDownWatchEffect = watchEffect(() => {
   });
 
 
+  // 제목용
   const editHandler = (e) => {
     console.log(e.target.innerText);
     // console.log( diaryRef.value.title);
@@ -458,21 +485,22 @@ const DropDownWatchEffect = watchEffect(() => {
 
     diaryObj = diaryRef.value;
     diaryObj.title = e.target.innerText;
+    // diaryObj.title = diaryRef.value.title;
     EditDiary(defaultDiaryId);
 
   };
 
+let quillOutputValue = function(convertDeltaJson) {
 
-  // const textWatchEffect = watchEffect(() => {
-  //   diaryRef.value.tag;
+  // load 용
+  diaryObj = diaryRef.value;
+  diaryObj.content = convertDeltaJson;
+  console.log("나를 호출?");
 
+//이건 업데이트 용
+  EditDiary(defaultDiaryId);
 
-
-  // });
-
-let quillOutputValue = function() {
-
-  console.log("quillOutput");
+  console.log(diaryObj.content);
 
 };
 
@@ -531,7 +559,11 @@ let quillOutputValue = function() {
         </div>
       </div>
       
-      <div class="add-btn">-</div>
+      <div 
+        @click="delButton"
+        class="add-btn">-
+      </div>
+
     </div>
 
     <div class="editor-title">
@@ -575,7 +607,11 @@ let quillOutputValue = function() {
         /> -->
           <!-- <quillCopy/> -->
 
-          <quill3 />
+          <quill3 
+          @quillOutput = "quillOutputValue"
+          :loadDiaryContent ="diaryRef.content"
+          />
+          <!-- :quillOutputHnadler = "quillOutputValueHandler" -->
 
       </main>
 
