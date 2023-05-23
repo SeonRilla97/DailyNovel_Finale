@@ -47,10 +47,13 @@ function openPageHandler() {
   height: 72px;
 
   /* background-color: #fcfcfc; */
-  background-color: #FFF8F3;
+  /* background-color: #FFF8F3; */
 
   display: flex;
   justify-content: center;
+
+  box-shadow: 0 3px 20px #F2C6C2;
+
 }
 
 .member-main-header {
@@ -61,7 +64,7 @@ function openPageHandler() {
   grid-template-columns: 2fr 7fr 2.5fr;
 
   /* background-color: #fcfcfc; */
-  background-color: #FFF8F3;
+  /* background-color: #FFF8F3; */
 }
 
 .member-header-logo {

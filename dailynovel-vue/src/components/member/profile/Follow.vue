@@ -1,14 +1,32 @@
 <script setup>
 import FollowCard from './FollowCard.vue';
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
+import { onMounted } from 'vue';
 
 const user = useUserDetailsStore();
+const userId = user.id;
+const userFollowId = reactive({
+    list,
+})
 
-async function getFollowList(id){
-    // fetch(`http://localhost:8080/member/follow?id=${id}`,{
-    //     content-type:
-    // });
+async function getFollowIdList(id){    
+    await fetch(`http://localhost:8080/member/follow?id=${id}`,
+    {
+        method: "GET",
+        headers: {
+        // "Accept": "application/json",
+        "Content-type": "application/json"
+        },
+        body: JSON.stringify(cmtJson)
+    })
+    .then(response => response.json())
+    // .then((data) => { if (data == 1) console.log("완료") })
+    .catch(error => console.log(error));
 }
+
+onMounted(()=> {
+    // getFollowIdList(user.id);
+})
 
 </script>
 <template>

@@ -80,6 +80,7 @@ function animationedHandler() {
 
 
 <style scoped>
+
 /* 모달 화면 조정 css */
 @keyframes show-effect {
   from {
@@ -108,8 +109,8 @@ function animationedHandler() {
   display: flex;
   justify-content: center;
 
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 
   
 }

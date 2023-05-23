@@ -6,6 +6,12 @@ function gotofollowpage(id){
     router.go("/member/room/follow");
 }
 
+async function getFollowMemberInfo(id){
+    fetch(`http://localhost:8080/members/info?id=${id}`,{
+        
+    })
+}
+
 </script>
 
 <template>
