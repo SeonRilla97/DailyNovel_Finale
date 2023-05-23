@@ -1,7 +1,7 @@
 import Layout from '../components/member/display/Layout.vue';
 import Detail from '../components/member/display/Detail.vue';
 import DetailInterface from '../components/member/display/DetailInterface.vue';
-import InfinityScroll from '../components/member/display/InfinityScroll.vue';
+import Report from '../components/member/display/Report.vue';
 
 
 // export default [
@@ -23,11 +23,13 @@ export default [
     props: true,
     component:DetailInterface
   },
-  {
-    path: 'InfinityScroll',
-    component:InfinityScroll
-  },
 
+  {
+    path: 'community/Report/:id',
+    name: 'Report',
+    props: true,
+    component:Report
+  },
 
 
 ];

@@ -21,17 +21,12 @@ import follow from './follow.js';
 import profile from './profile.js';
 import { createRouter, createWebHistory } from 'vue-router';
 
-import InfinityScroll from '../components/member/display/InfinityScroll.vue';
 import { useUserDetailsStore } from "../components/store/useUserDetailsStore.js";
 
 const routes = [
 
   {
     path: '/', redirect: "login", component: LoginLayout, children: [
-      //{
-      //  path: 'InfinityScroll',
-      //  component: InfinityScroll
-      //},
       { path: 'signup', component: Signup },
       { path: 'signupsocial', component: signupSocial },
       { path: 'login', component: Login },
