@@ -7,11 +7,13 @@ import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
 
 const user = useUserDetailsStore();
 
+defineEmits(["initGuestbookList"]);
+
 let props = defineProps({
     guestbook: Object,
 
 }) ;
-
+// watcheffect
 let cmtJson = reactive({
     memberId: user.id,
     guestbookId: props.guestbook.id,
@@ -29,10 +31,11 @@ function showHandler(){
 }
 
 onUpdated(()=>{
-    console.log(cmtJson.comment);
+    console.log("업데이트 중");
 })
 
 onMounted(() => { 
+
 });
 
 async function writeGuestBookCommentHandler(cmtJson) {
@@ -118,23 +121,23 @@ async function deleteGuestBookCommentHandler(id) {
                     :value="props.guestbook.comment"></textarea>
                     <div class="m-gbcard-cmt-updateiconbox" v-if="props.guestbook.comment">
                         <div class="m-guestbook-icon-box pencil-icon" @click="showHandler"></div>
-                        <div class="m-guestbook-icon-box trash-icon" @click="deleteGuestBookCommentHandler(cmtJson.guestbookId)"></div>
+                        <div class="m-guestbook-icon-box trash-icon" @click="deleteGuestBookCommentHandler(cmtJson.guestbookId), $emit('initGuestbookList')"></div>
                     </div>
 
                     <!-- 답글을 처음 적을 때 -->
                     <textarea class="m-gbcard-cmt-writebox" v-if="!props.guestbook.comment" placeholder="답글을 적어보세요."                     
                     v-model="cmtJson.comment"></textarea>
                     <div class="m-gbcard-cmt-writeBtn" v-if="!props.guestbook.comment">
-                        <input type="submit" value="작성" @click.prevent="writeGuestBookCommentHandler(cmtJson)">
+                        <input type="submit" class="m-gbcard-modifyBtn" value="작성" @click.prevent="writeGuestBookCommentHandler(cmtJson), $emit('initGuestbookList')">
                     </div>                    
                 </form>   
-
+                <!-- v-model="cmtJson.comment"  -->
                 <!-- 답글을 수정할 때 -->
                 <form class="m-gbcard-cmt-form" v-show="reCmtShow">
                     
-                    <textarea class="m-gbcard-cmt-writebox" placeholder="확인용 답글을 적어보세요." v-model="cmtJson.comment" ></textarea>
+                    <textarea class="m-gbcard-cmt-writebox" placeholder="확인용 답글을 적어보세요." >{{ guestbook.comment }}</textarea>
                     <div class="m-gbcard-cmt-updateiconbox">
-                        <div class="m-guestbook-icon-box pencil-icon" @click.prevent="rewriteGuestBookCommentHandler(cmtJson), showHandler">수정</div>                        
+                        <div class="m-gbcard-modifyBtn" @click.prevent="rewriteGuestBookCommentHandler(cmtJson), $emit('initGuestbookList'), showHandler"><span style="font-size: 14px;">수정</span></div>                        
                     </div>
                 </form>       
 
@@ -150,16 +153,29 @@ async function deleteGuestBookCommentHandler(id) {
 </template>
 
 <style scoped>
+
+.m-gbcard-modifyBtn{
+    width:44px;
+    height: 44px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: antiquewhite;
+}
 .m-guestbook-icon-box{
   width:24px;
   height:24px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  border-radius: 6px;
 }
 
 .m-guestbook-icon-box:hover{
-  background-color: rgba(0,0,0,0.2);
+  /* background-color: rgba(0,0,0,0.2); */
+  background-color: antiquewhite;
 }
 
 /* 방명록 카드 박스 */
@@ -210,9 +226,10 @@ async function deleteGuestBookCommentHandler(id) {
 }
 .m-gbcard-cmt-form{
     display: flex;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 48px;
 }
 .m-gbcard-cmt-updateiconbox{
     display: flex;

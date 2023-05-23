@@ -15,16 +15,16 @@ let message = "오늘 선릴라의 점심은 무엇일까요? 길이 길어지�
     </div>
     <div class="m-follow-index-info">
       <div class="m-follow-index-info-detail shadow-1">
-        <div class="">
+        <div class="m-flw-index-diarycount">
           <span>하루를 정리한 수 </span>
           <span>{{ 12 }}</span>
           <span style="color: red;">{{ "그림자 줄이셔야 합니다~" }}</span>
         </div>
-        <div class="">
+        <div class="m-flw-index-displaycount">
           <span>공유한 일기 수</span>
           <span>{{ 34 }}</span>
         </div>
-        <div class="">
+        <div class="m-flw-index-collectioncount">
           <span>만든 컬렉션의 수</span>
           <span>{{ 56 }}</span>
         </div>
@@ -82,7 +82,7 @@ let message = "오늘 선릴라의 점심은 무엇일까요? 길이 길어지�
   background-size: cover;
   background-position: center;
   background-color: aqua;
-  background-image: url(../../../assets/img/temp/tempProfile.jpg);
+  background-image: url(http://localhost:8080/image/profile/default.jpg);
   background-repeat: no-repeat;
 }
 
