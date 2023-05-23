@@ -25,10 +25,17 @@
 
 <div class="achievement-box">
 
-  <div class="achievement" :class="{ 'completed': feelingData >= 6 }">
+  <div class="achievement" :class="{ 'completed': happyData >= 6 }">
     <div class="achievement-img1"></div>
-    <div class="achievement-data">행복 {{ feelingData }}/6</div>
+    <div class="achievement-data">행복 {{ happyData }}/6</div>
     <div class="achievement-data">행복사</div>
+  </div>
+
+  
+  <div class="achievement" :class="{ 'completed': feelingData >= 6 }">
+    <div class="achievement-img13"></div>
+    <div class="achievement-data">신남 {{ exctingData }}/6</div>
+    <div class="achievement-data">많이 신남</div>
   </div>
 
 
@@ -47,7 +54,8 @@ import { useUserDetailsStore } from "../../../store/useUserDetailsStore.js";
 let userDetails = useUserDetailsStore(); // 피니아 사용
 
 
-const feelingData = ref('');
+const happyData = ref('');
+const exctingData = ref('');
 
 
 var FrequestOptions = {
@@ -70,8 +78,15 @@ async function Fload() {
 
     for (let i = 0; i < 9; i++) {
       if (feeling[i] == "행복") {
-        feelingData.value = counts[i]
-        console.log(feelingData)
+        happyData.value = counts[i]
+        console.log(happyData)
+      }
+    }
+
+    for (let i = 0; i < 9; i++) {
+      if (feeling[i] == "신남") {
+        exctingData.value = counts[i]
+        console.log(exctingData)
       }
     }
   }
