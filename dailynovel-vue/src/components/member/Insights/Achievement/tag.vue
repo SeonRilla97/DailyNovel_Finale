@@ -32,11 +32,19 @@
         <div class="achievement-data">역마살 on</div>
       </div>
 
+      <div class="achievement" :class="{ 'completed': freeTag >= 10 }">
+        <div class="achievement-img12"></div>
+        <div class="achievement-data">자유 : {{ freeTag }}/10</div>
+        <div class="achievement-data">자유의 일기상</div>
+      </div>
+
       <div class="achievement" :class="{ 'completed': movieTag >= 24 }">
         <div class="achievement-img4"></div>
         <div class="achievement-data">영화 : {{ movieTag }}/24</div>
         <div class="achievement-data">이동진씨의 베프</div>
       </div>
+
+      
 
 
 
@@ -67,15 +75,17 @@ var TrequestOptions = {
 async function Tload() {
   const response = await fetch(`http://localhost:8080/insights/Tag?memberId=${userDetails.id}`, TrequestOptions);
   const data = await response.json();
-  console.log(data)
+  console.log("Tagdata:",data)
   let tags = [];
   let counts = [];
+
+  
 
   for (const key in data) {
     tags.push(key);
     counts.push(data[key]);
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 5; i++) {
       if (tags[i] == "여행") {
         tripTag.value = counts[i]
         console.log("여행은 ", tripTag.value)
