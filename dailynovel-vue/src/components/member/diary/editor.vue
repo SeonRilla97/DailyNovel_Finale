@@ -597,19 +597,19 @@ let quillOutputValue = function() {
       </div>
 
       <div class="img-map-container">
-        <div
-          v-if="imageToggle"
-          class="editor-image editor-sub">
-          이미지를 넣어넣어 놀자놀자
-        </div>
+          <div
+            v-if="imageToggle"
+            class="editor-image editor-sub">
+            이미지를 넣어넣어 놀자놀자
+          </div>
 
 
         <!-- 맵 삽입칸 -->
-        <div
-          v-if="mapToggle"
-          class="mapToggle-map editor-sub">
-          <MapBox :myLocation="myLocation" @coor="coor"/>
-        </div>
+          <div
+            v-if="mapToggle"
+            class="mapToggle-map editor-sub">
+            <MapBox :myLocation="myLocation" @coor="coor"/>
+          </div>
 
       </div>
 
@@ -660,6 +660,7 @@ let quillOutputValue = function() {
   margin: 10px 0 0 10px;
   border: 1px solid #E3E6E2;
   border-radius: 5px;
+  box-sizing: border-box;
 }
 
 .editor-sub-button{

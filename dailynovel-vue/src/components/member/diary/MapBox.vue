@@ -234,7 +234,7 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    height: 600px;
+    height: 200px;
     z-index: 10000;
     background-color: #ffffffaa;
     width: 150px;
@@ -312,7 +312,7 @@ button:hover {
 .kmap {
     flex: 1 1 auto;
     width: 100%;
-    height: 600px;
+    height: 200px;
 }
 
 .overlay-popup {
