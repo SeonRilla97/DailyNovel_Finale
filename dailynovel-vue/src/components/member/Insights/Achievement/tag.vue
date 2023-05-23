@@ -25,7 +25,13 @@
 
 <div class="achievement-box">
     
-    
+
+  <div class="achievement" :class="{ 'completed': tripTag >= 5 }">
+        <div class="achievement-img14"></div>
+        <div class="achievement-data">여행 : {{ tripTag }}/5</div>
+        <div class="achievement-data">초보 여행가</div>
+      </div>
+
     <div class="achievement" :class="{ 'completed': tripTag >= 10 }">
         <div class="achievement-img3"></div>
         <div class="achievement-data">여행 : {{ tripTag }}/10</div>
@@ -43,6 +49,8 @@
         <div class="achievement-data">영화 : {{ movieTag }}/24</div>
         <div class="achievement-data">이동진씨의 베프</div>
       </div>
+
+     
 
       
 
