@@ -24,12 +24,20 @@
                             </div>
                         </div>
                         <br>
-                        <p class="detail-width nodouble-drag">
-                            {{content}}<br>
-                            <br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>끝<br>도<br>완<br>득탬할 수 있는 기회가 바로 여기에 있습니다.
+                        <div class="detail-width nodouble-drag">
+                            <div>
+                                <div id="editor">
+                                
+                                </div>
+                            </div>
+                            <!-- {{content}} -->
+                            
+                            
+                            <br>
+                            
                             
 
-                        </p>
+                        </div>
                         <div class="center-grid padding-bottom sticky">
                             <div class="btn-box">
                                 <div class="more-btn nodouble-drag cursor" @click="likeSwitchHandler(diaryId)">
@@ -53,8 +61,10 @@
 <script setup>
 
 import Subscribe from './Subscribe.vue'
-import { reactive, ref, onMounted, defineProps, defineEmits, onBeforeMount, } from 'vue';
+import { reactive, ref, onMounted, defineProps, defineEmits, onBeforeMount, onUpdated } from 'vue';
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js'
+import Quill from 'quill';
+
 
 const emit = defineEmits([
     'updatePage'
@@ -111,13 +121,30 @@ async function load() {
 
         likeStatus = props.likeInfo
 
+        editTriger(content.value);
     }, 150);
     // })
 }
-
+let quill;
 onMounted(async () => {
     await load();
+    quill = new Quill('#editor',{
+        readOnly: true
+    });
+    console.log(quill);
 })
+
+onUpdated(()=>{
+    let text = quill.getText();
+    // console.log(data.content);
+
+})
+
+function editTriger(Json1){
+    let ToJson = JSON.parse(Json1);
+    quill.setContents(ToJson);
+}
+
 
 
 async function likeSwitchHandler(diaryId) {
@@ -154,7 +181,7 @@ function openSubscribeBoxHandler() {
     console.log(subscribeBox.value)
 }
 
-function unimplemented(){
+function unimplemented() {
     console.log("신고하는 중")
 };
 
@@ -165,10 +192,11 @@ function goBackHandler() {
 </script>
 
 <style scoped>
-.back-arrow{
+.back-arrow {
     width: 3rem;
     height: 3rem;
-    background-image: url('@/assets/img/display/backArrow-inactive.svg');;
+    background-image: url('@/assets/img/display/backArrow-inactive.svg');
+    ;
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: contain;
@@ -177,12 +205,14 @@ function goBackHandler() {
     cursor: pointer;
 }
 
-.back-arrow:hover{
-    background-image: url('@/assets/img/display/backArrow-active.svg');;
+.back-arrow:hover {
+    background-image: url('@/assets/img/display/backArrow-active.svg');
+    ;
 }
 
 .article-box {
-    width: 39rem;   /* 체크, 너비 */
+    width: 39rem;
+    /* 체크, 너비 */
     height: minmax(500px, auto);
 }
 
@@ -200,13 +230,14 @@ function goBackHandler() {
 }
 
 /* btn */
-.goBack-btn{
+.goBack-btn {
     position: fixed;
     /* padding-top: 1rem;
     padding-bottom: 1rem;
     top: 0px;
     background-color: #FAFFF9; */
 }
+
 .more-btn {
     /* 더보기 버튼 */
 
@@ -266,7 +297,7 @@ function goBackHandler() {
     z-index: 1;
 }
 
-.alert-btn{
+.alert-btn {
     width: 1rem;
     height: 1rem;
     background-image: url('@/assets/img/display/alert-btn.svg');
@@ -374,19 +405,18 @@ function goBackHandler() {
 
 }
 
-.cursor{
+.cursor {
     cursor: pointer;
 }
 
-.btn-box{
-    display:grid; 
-    grid-auto-flow:column;
+.btn-box {
+    display: grid;
+    grid-auto-flow: column;
 }
 
-.btn-grid{
-    justify-content:center; 
-    align-items:center ; 
-    grid-gap:0.2rem;
-}
-</style>
+.btn-grid {
+    justify-content: center;
+    align-items: center;
+    grid-gap: 0.2rem;
+}</style>
 

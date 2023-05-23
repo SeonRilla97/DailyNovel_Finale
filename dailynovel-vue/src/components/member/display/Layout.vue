@@ -31,7 +31,16 @@
                         </div>
                         <router-link :to="'community/'+i">
                             <div class="content-subject"> 
+
+
+                                <div>
+                                    <div id="editor">
+                                    
+                                    </div>
+                                </div>
                                 {{l.content}}
+
+
                             </div>
                         </router-link>
                         <div class="content-like-count">
@@ -50,11 +59,14 @@
 </template>
 <script setup>
 
-import { onMounted, reactive, ref, } from 'vue'
+import { onMounted, reactive, ref, onUpdated} from 'vue'
 import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
 import {useDisplayCategoryStore} from '../../store/useDisplayCategoryStore.js'
 
+import Quill from 'quill';
+
 // 되는 gpt코드 -> 비교해보기
+// let model = reactive([]);
 let model = reactive([]);
 let count = ref();
 let category = reactive([]);
@@ -70,20 +82,44 @@ let userDetails = useUserDetailsStore();
 let memberId = userDetails.id; // 지금은 멤버id를 1로 꽂아놨는데 이후에 확인해 봐야 함
 
 async function load() {
+    // setTimeout(async() => {
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
+        // console.log("리스트는"+list)
+        // console.log(typeof(list))
+        // console.log(typeof(resList))
     model.splice(0, model.length, ...list);
-    // console.log(list)
 
+    // console.log("모델"+model[0].content)
+    // console.log(editTriger(model[0].content));
+    
+    
     const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
     indeLikeList.splice(0, indeLikeList.length, ...data);
+    // }, 150);
+    
+    // editTriger(model[0].content);
 }
 
-
+let quill
 onMounted(() => {
     load()
+    // quill = new Quill('#editor',{
+    //     readOnly: true
+    // });
+    // editTriger(model[0].content);
 })
+
+// onUpdated(()=>{
+//     let text = quill.getText();
+// })
+
+// function editTriger(Json1){
+//     let ToJson = JSON.parse(Json1);
+//     quill.setContents(ToJson);
+//     console.log( quill.getText(Json1));
+// }
 
 function categoryClick(page) {
     DisplayCategory.saveCategory(page)
