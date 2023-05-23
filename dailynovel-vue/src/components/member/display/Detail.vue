@@ -25,21 +25,22 @@
                         <br>
                         <p class="detail-width nodouble-drag">
                             {{content}}<br>
-                            <!-- 도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득                            득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득도완득 -->
-                            <br>
-                            도
-                            <br>
-                            완
-                            <br>
-                            득
+                            <br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>득<br>도<br>완<br>끝<br>도<br>완<br>득탬할 수 있는 기회가 바로 여기에 있습니다.
+                            
+
                         </p>
                         <div class="center-grid padding-bottom sticky">
-                            <div style="display:inline-block">
-                                <div class="more-btn nodouble-drag d-inline" @click="likeSwitchHandler(diaryId)">
+                            <div class="btn-box">
+                                <div class="more-btn nodouble-drag cursor" @click="likeSwitchHandler(diaryId)">
                                     <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" > </div>
-                                    {{like}}좋아요
+                                        좋아요 {{like}}
+                                    </div>
+                                <div class="mgl-3 more-btn nodouble-drag btn-box btn-grid cursor" @click="unimplemented">
+                                    <router-link :to="'/member/room/community/report/'+diaryId">
+                                        <span class="alert-btn"></span>
+                                        <span>신고하기</span>
+                                    </router-link>
                                 </div>
-                                <div class="more-btn nodouble-drag d-inline">신고하기</div>
                             </div>
                         </div>
                     </article>
@@ -152,6 +153,10 @@ function openSubscribeBoxHandler() {
     console.log(subscribeBox.value)
 }
 
+function unimplemented(){
+    console.log("신고하는 중")
+};
+
 </script>
 
 <style scoped>
@@ -231,6 +236,18 @@ function openSubscribeBoxHandler() {
     top: 170px;
     left: 615px;
     z-index: 1;
+}
+
+.alert-btn{
+    width: 1rem;
+    height: 1rem;
+    background-image: url('@/assets/img/display/alert-btn.svg');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 
@@ -333,6 +350,15 @@ function openSubscribeBoxHandler() {
     cursor: pointer;
 }
 
+.btn-box{
+    display:grid; 
+    grid-auto-flow:column;
+}
 
+.btn-grid{
+    justify-content:center; 
+    align-items:center ; 
+    grid-gap:0.2rem;
+}
 </style>
 
