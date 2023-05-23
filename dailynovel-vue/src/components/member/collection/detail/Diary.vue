@@ -32,6 +32,10 @@ console.log(props.data.diarys)
     align-items: center;
     overflow-x:scroll;
     width:100%;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 .container .diary-list{
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbCollectionCommentRepository">
+
+	<resultMap id="CommentResultMap" type="MbCollectionComment">
+        <result property="collectionId" column="collection_id" />
+        <result property="memberId" column="member_id" />
+        <result property="regDate" column="reg_date" />
+        <result property="refId" column="ref_id" />
+	</resultMap>
+
+	<resultMap id="CommentMemberResultMap" type="MbCCommentMemberView">
+        <result property="collectionId" column="collection_id" />
+        <result property="memberId" column="member_id" />
+        <result property="regDate" column="reg_date" />
+        <result property="refId" column="ref_id" />
+        <result property="memberName" column="member_name" />
+	</resultMap>
+
+
+    <insert id="register" parameterType="MbCollectionComment" >
+        INSERT INTO collection_comment(collection_id, member_id, content,ref_id, depth)
+        VALUES      (#{collectionId},#{memberId},#{content},#{refId},#{depth})
+    </insert>
+
+    <select id="findAllByObj" resultMap="CommentMemberResultMap" parameterType="MbCCommentMemberView">
+        select c.*, m.nickname member_name, t3.comments from collection_comment c
+		left outer join member m
+            on c.member_id = m.id
+		left outer join (select t2.ref_id, count(1) comments from collection_comment t1
+						inner join collection_comment t2
+						on t1.id= t2.ref_id
+						group by ref_id) t3
+            on t3.ref_id = c.id
+        where c.collection_id = #{collectionId}
+        <if test="depth != null">
+                and c.depth = #{depth}
+        </if>
+        <if test="refId != null">
+                and c.ref_id = #{refId}
+        </if>
+        order by reg_date asc
+	</select>
+
+    <update id="update" parameterType="MbCollectionComment">
+        UPDATE collection_comment
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM collection_comment
+        WHERE id=#{id}
+    </delete>
+    <delete id="deleteAllByRefId">
+        DELETE FROM collection_comment
+        WHERE ref_id=#{id}
+    </delete>
+</mapper>

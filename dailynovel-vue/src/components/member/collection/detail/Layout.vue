@@ -15,18 +15,20 @@ collectionId.value = route.params.collectionId
 const memberId = userDetails.id;
 const data = reactive({
     diarys:{},
-    comments:{}
+    comments:{},
+    collectionId: collectionId.value
 })
-
+console.log(collectionId.value);
 // getListInCollection(memberId,collectionId.value);
 
 // router.push("detailDiary")
 // 댓글불러와야함
 
 // 해당 컬렉션에 포함된 모든 일기 불러오기
-function getListInCollection(memberId,collectionId) {
+function getListInCollection(memberId,colId) {
+    console.log("호출은 하고??")
     let member = memberId;
-    let collection = collectionId;
+    let collection = colId;
     var requestOptions = {
     method: 'GET',
     redirect: 'follow'
@@ -40,24 +42,51 @@ function getListInCollection(memberId,collectionId) {
     })
     .catch(error => console.log('error', error));
 }
+// 해당 컬렉션의 댓글 불러오기 ( memberId 빠져도 상관없음 -> collectionId 가 애초에 멤버로 불러오기때문 (그리고 나중에 확장을 고려하여 CollectionId 만 필요함))
+function getComment(colId, depth, refId){  //처음 부를때 -> colId만 || 답글 부를때 -> colId depth refId
+    console.log(colId, depth, refId)
+    let query = `?collectionId=${colId}`
+    if(depth) query+= `&depth=${depth}`
+    if(refId) query+= `&refId=${refId}`
+    
+    console.log("쿼리값!"+query)
 
+    // ================ Get Method============
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+
+    fetch(`http://localhost:8080/collection/comment${query}`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        data.comments = result
+        console.log(result)
+    })
+    .catch(error => console.log('error', error));
+}
+
+// 페이지 마운트전 동작할 함수
 onBeforeMount (()=> {
-    console.log("하하하하하")
+    
     getListInCollection(memberId,collectionId.value);
-
+    getComment(collectionId.value)
     const router = useRouter()
 
     router.push({name:'detailDiary'})
 })
 
-// 해당 컬렉션의 댓글 대댓글 모두 불러오기
-
-
+// 어떤 메뉴를 눌렀지? (일기 / 댓글)
 let menuControl= ref(1);
-
 function menuClickHandler(menuIdx){
     menuControl.value = menuIdx
 }
+
+// 해당 컬렉션의 댓글 대댓글 모두 불러오기
 </script>
 
 <template>
@@ -71,7 +100,9 @@ function menuClickHandler(menuIdx){
         </header>
         
         <router-view
-        :data = "data"></router-view>
+        :data = "data"
+        @callComments ="getComment">
+        </router-view>
     </div>
 </template>
 <style scoped>
@@ -81,10 +112,7 @@ function menuClickHandler(menuIdx){
     grid-template-rows: 72px auto;
     /* grid-template-areas: 1fr; */
     /* overflow:hidden; */
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
+
     max-width: 1280px;
 }
 
@@ -92,6 +120,10 @@ function menuClickHandler(menuIdx){
     display:flex;
     align-items: center;
     position:relative;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 .icon-back{
     background-image: url("../../../assets/img/backArrow.svg");
