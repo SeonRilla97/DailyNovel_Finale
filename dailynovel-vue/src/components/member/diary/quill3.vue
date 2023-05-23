@@ -6,6 +6,11 @@
       id="editor"
       @click="quillBolck"
       @keydown="enterHandler"></div>
+
+      <!-- <div
+      id="editor1">
+    </div> -->
+
     </div>
   </template>
 
@@ -71,11 +76,15 @@ const enterHandler = (e) => {
 
 
     if(e.code == 'ControlLeft'){
+        
         emitReady();
     };
+    if(e.code == 'F1'){
+        console.log(quill.getText())
+    }
 
 }
-
+// let quill2;
 onMounted(() => {
 
     quill = new Quill('#editor', {
@@ -84,6 +93,10 @@ onMounted(() => {
             toolbar: toolbarOptions
         },
     });
+
+    // quill2 = new Quill('#editor1',{
+    //     readOnly: true
+    // });
 
     quill.on('text-change', function(delta, oldDelta, source) {
         // console.log( quill.getLength());
@@ -121,6 +134,8 @@ onUpdated(() => {
     BeforeJson = props.loadDiaryContent;
 
     editTriger(BeforeJson);
+    // editTriger2(BeforeJson);
+    // console.log( quill2.getText());
         // isFirst = false;
     // }
     //이후 용
@@ -135,13 +150,16 @@ onUpdated(() => {
 
 });
 
+//원본 row한 스트링을 받음
 function editTriger(Json1){
-
-    // console.log( typeof(Json1));
-
     ToJson = JSON.parse(Json1);
     quill.setContents(ToJson);
 }
+
+// function editTriger2(Json1){
+//     ToJson = JSON.parse(Json1);
+//     quill2.setContents(ToJson);
+// }
 
 function editortrigger (delta, oldDelta, source) {
     // console.log(quill.value.getContents().ops[0].insert);

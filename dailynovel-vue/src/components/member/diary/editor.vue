@@ -68,7 +68,7 @@ function newestPromise(diaryId){
 let isOn = false;
 onUpdated(() => {
 
-
+  coor();
 
       // load id 가 null 이 아니면
   if(props.loadDiaryId != null){
@@ -177,9 +177,9 @@ function getDate(gotdate){
  //현재 위치 받아오기 API
 
 // 지도 설정한 좌표값 얻어오기
-function coor(coor) {
+function coor(coorGood) {
 
-  console.log(coor)
+  console.log(coorGood)
 }
 
  function geoFindMe() {
@@ -318,7 +318,7 @@ const addDiary = function(isAdd){
     //ref 기본값 담기
     objRef(null,1,null,null
     ,null,"기분",100,"태그"
-    ,null,38,128);
+    ,null,myLocation.lat,myLocation.lng);
 
     // console.log(diaryRef.value);
     diaryObj = diaryRef.value;
@@ -615,10 +615,9 @@ let quillOutputValue = function(convertDeltaJson) {
 
       </main>
 
-      <div
+      <!-- <div
         class="editor-sub-button editor-sub">
 
-        <!-- @click.prevent="mapToggleHandler"> -->
         <button
           @click="imageToggle = !imageToggle"
           >
@@ -630,21 +629,21 @@ let quillOutputValue = function(convertDeltaJson) {
           지도추가
       </button>
 
-      </div>
+      </div> -->
 
       <div class="img-map-container">
-          <div
+          <!-- <div
             v-if="imageToggle"
             class="editor-image editor-sub">
             이미지를 넣어넣어 놀자놀자
-          </div>
+          </div> -->
 
 
         <!-- 맵 삽입칸 -->
+        <!-- v-if="mapToggle" -->
           <div
-            v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocation="myLocation" @coor="coor"/>
+            <MapBox :myLocation="myLocation" @coor="coorGood"/>
           </div>
 
       </div>
