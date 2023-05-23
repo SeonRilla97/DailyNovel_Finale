@@ -102,7 +102,7 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
 <template>
     <section class="collection-container">
         <header>
-            <div class="pdl-5 h2 font-bold"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
+            <div class="pdl-5 h2 font-bold undrag"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
         </header>
         <transition name="fade">
             <router-view
@@ -127,10 +127,7 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
     grid-template-rows: 72px auto;
     grid-template-areas: 1fr;
     /* overflow:hidden; */
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
+
     max-width: 1280px;
 }
 

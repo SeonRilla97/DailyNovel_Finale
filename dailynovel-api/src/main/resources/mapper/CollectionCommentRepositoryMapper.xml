@@ -26,16 +26,22 @@
     </insert>
 
     <select id="findAllByObj" resultMap="CommentMemberResultMap" parameterType="MbCCommentMemberView">
-		select c.*, m.nickname member_name from collection_comment c
-            left outer join member m
+        select c.*, m.nickname member_name, t3.comments from collection_comment c
+		left outer join member m
             on c.member_id = m.id
-        where collection_id = #{collectionId}
+		left outer join (select t2.ref_id, count(1) comments from collection_comment t1
+						inner join collection_comment t2
+						on t1.id= t2.ref_id
+						group by ref_id) t3
+            on t3.ref_id = c.id
+        where c.collection_id = #{collectionId}
         <if test="depth != null">
-                and depth = #{depth}
+                and c.depth = #{depth}
         </if>
         <if test="refId != null">
-                and ref_id = #{refId}
+                and c.ref_id = #{refId}
         </if>
+        order by reg_date asc
 	</select>
 
     <update id="update" parameterType="MbCollectionComment">
@@ -48,5 +54,8 @@
         DELETE FROM collection_comment
         WHERE id=#{id}
     </delete>
-
+    <delete id="deleteAllByRefId">
+        DELETE FROM collection_comment
+        WHERE ref_id=#{id}
+    </delete>
 </mapper>

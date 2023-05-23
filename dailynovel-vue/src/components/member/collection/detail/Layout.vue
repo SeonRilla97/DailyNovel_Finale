@@ -15,18 +15,20 @@ collectionId.value = route.params.collectionId
 const memberId = userDetails.id;
 const data = reactive({
     diarys:{},
-    comments:{}
+    comments:{},
+    collectionId: collectionId.value
 })
-
+console.log(collectionId.value);
 // getListInCollection(memberId,collectionId.value);
 
 // router.push("detailDiary")
 // 댓글불러와야함
 
 // 해당 컬렉션에 포함된 모든 일기 불러오기
-function getListInCollection(memberId,collectionId) {
+function getListInCollection(memberId,colId) {
+    console.log("호출은 하고??")
     let member = memberId;
-    let collection = collectionId;
+    let collection = colId;
     var requestOptions = {
     method: 'GET',
     redirect: 'follow'
@@ -98,7 +100,9 @@ function menuClickHandler(menuIdx){
         </header>
         
         <router-view
-        :data = "data"></router-view>
+        :data = "data"
+        @callComments ="getComment">
+        </router-view>
     </div>
 </template>
 <style scoped>
@@ -108,10 +112,7 @@ function menuClickHandler(menuIdx){
     grid-template-rows: 72px auto;
     /* grid-template-areas: 1fr; */
     /* overflow:hidden; */
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
+
     max-width: 1280px;
 }
 
@@ -119,6 +120,10 @@ function menuClickHandler(menuIdx){
     display:flex;
     align-items: center;
     position:relative;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 .icon-back{
     background-image: url("../../../assets/img/backArrow.svg");

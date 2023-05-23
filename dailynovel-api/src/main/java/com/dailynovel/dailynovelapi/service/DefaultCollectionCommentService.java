@@ -29,7 +29,8 @@ public class DefaultCollectionCommentService implements CollectionCommentService
     @Override
     public Boolean delete(int commentId) {
         Boolean isSuccess = repository.delete(commentId);
-        return isSuccess;
+        Boolean deletereply = repository.deleteAllByRefId(commentId);
+        return (isSuccess &&deletereply);
     }
 
     @Override

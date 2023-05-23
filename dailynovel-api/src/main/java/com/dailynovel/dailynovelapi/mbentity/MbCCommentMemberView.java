@@ -20,4 +20,5 @@ public class MbCCommentMemberView {
     private Integer refId;
     private Integer depth;
     private String memberName;
+    private int comments;
 }

@@ -200,7 +200,7 @@ function colClickHandler(collectionId){
 
 <template>
 
-        <div class="collection-container" >
+        <div class="collection-container undrag" >
             <div class="register-form box mgl-5">
 
             <transition name="fades">
@@ -269,6 +269,7 @@ function colClickHandler(collectionId){
     display:flex;
     align-items: center;
     overflow-x: scroll;
+
 }
 
 /* Box 관련 CSS */

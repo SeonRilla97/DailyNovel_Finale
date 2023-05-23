@@ -17,5 +17,7 @@ public interface MbCollectionCommentRepository {
     Boolean delete(int commentId);
 
     Boolean register(MbCollectionComment comment);
+
+    Boolean deleteAllByRefId(int commentId);
     
 }
