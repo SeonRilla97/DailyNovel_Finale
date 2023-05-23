@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
 import com.dailynovel.dailynovelapi.entity.MemberFollow;
+import com.dailynovel.dailynovelapi.entity.Share;
 import com.dailynovel.dailynovelapi.service.DisplayService;
 
 @RestController
@@ -119,8 +120,13 @@ public class DisplayController {
         return  isDuplicate;
     }
 
-
-
+    @PostMapping("share")
+    public String share(
+        @RequestBody Share share
+    ){
+        service.insertShare(share.getMemberId(),share.getDiaryId());
+        return "공유 완료";
+    }
 }
 
 
