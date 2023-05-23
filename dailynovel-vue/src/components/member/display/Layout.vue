@@ -36,13 +36,13 @@
                         </router-link>
                         <div class="content-like-count">
                             <div @click="likeSwitchHandler(l.id)">
-                                <div class="inline" :class="isDiaryIdMatched(l.id)?'like-active':'like-deactive'"></div><span>{{l.like}}</span>
+                                <div class="inline" :class="isDiaryIdMatched(l.id)?'like-active':'like-deactive'"></div><span class="mgl-1">{{l.like}}</span>
                             </div>
                         </div>
                     </div>
                 </li>
             </ul>
-            <div class="center-grid "><div class="more-btn nodouble-drag" @click="goToNextPage()">더보기 + 99</div></div>
+            <!-- <div class="center-grid "><div class="more-btn nodouble-drag" @click="goToNextPage()">더보기 + 99</div></div> -->
         </section>
     </section>
     </main>
