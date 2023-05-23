@@ -228,6 +228,7 @@ getNewestDiary();
 let listReload = 0;
 function diaryAddHander(){
   listReload ++;
+  getListwithFiltering();
 }
 
 </script>
