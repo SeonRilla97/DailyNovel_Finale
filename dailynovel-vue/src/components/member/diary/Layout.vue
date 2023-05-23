@@ -225,10 +225,13 @@ function getNewestDiary(){
 getNewestDiary();
 
 //모재영 추가 완료용 emit 담는 곳
-let listReload = 0;
+// let listReload = 0;
 function diaryAddHander(){
-  listReload ++;
-  getListwithFiltering();
+//     let tmp = listReload;
+//   listReload ++;
+//   if()
+    console.log("호출호출호출호출호출호출호출호출호출호출호출호출")
+    getListwithFiltering();
 }
 
 </script>

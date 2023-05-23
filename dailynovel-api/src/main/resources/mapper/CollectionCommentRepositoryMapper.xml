@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbCollectionCommentRepository">
+
+	<resultMap id="CommentResultMap" type="MbCollectionComment">
+        <result property="collectionId" column="collection_id" />
+        <result property="memberId" column="member_id" />
+        <result property="regDate" column="reg_date" />
+        <result property="refId" column="ref_id" />
+	</resultMap>
+
+	<resultMap id="CommentMemberResultMap" type="MbCCommentMemberView">
+        <result property="collectionId" column="collection_id" />
+        <result property="memberId" column="member_id" />
+        <result property="regDate" column="reg_date" />
+        <result property="refId" column="ref_id" />
+        <result property="memberName" column="member_name" />
+	</resultMap>
+
+
+    <insert id="register" parameterType="MbCollectionComment" >
+        INSERT INTO collection_comment(collection_id, member_id, content,ref_id, depth)
+        VALUES      (#{collectionId},#{memberId},#{content},#{refId},#{depth})
+    </insert>
+
+    <select id="findAllByObj" resultMap="CommentMemberResultMap" parameterType="MbCCommentMemberView">
+		select c.*, m.nickname member_name from collection_comment c
+            left outer join member m
+            on c.member_id = m.id
+        where collection_id = #{collectionId}
+        <if test="depth != null">
+                and depth = #{depth}
+        </if>
+        <if test="refId != null">
+                and ref_id = #{refId}
+        </if>
+	</select>
+
+    <update id="update" parameterType="MbCollectionComment">
+        UPDATE collection_comment
+        SET content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM collection_comment
+        WHERE id=#{id}
+    </delete>
+
+</mapper>
