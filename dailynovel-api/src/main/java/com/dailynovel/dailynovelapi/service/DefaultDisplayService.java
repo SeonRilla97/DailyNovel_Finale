@@ -8,12 +8,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dailynovel.dailynovelapi.entity.DiaryDisplay;
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
 import com.dailynovel.dailynovelapi.entity.MemberFollow;
 import com.dailynovel.dailynovelapi.repository.DiaryLikeRepository;
 import com.dailynovel.dailynovelapi.repository.DisplayRepository;
 import com.dailynovel.dailynovelapi.repository.MemberFollowRepository;
+import com.dailynovel.dailynovelapi.repository.ShareRepository;
 
 @Service
 public class DefaultDisplayService implements DisplayService {
@@ -26,6 +28,9 @@ public class DefaultDisplayService implements DisplayService {
 
     @Autowired
     private MemberFollowRepository followRepository;
+
+    @Autowired
+    private ShareRepository shareRepository;
 
     @Override
     public List<DisplayView> getByList() {
@@ -99,6 +104,14 @@ public class DefaultDisplayService implements DisplayService {
     public List<MemberFollow> getFollowedList(int followId) {
         List<MemberFollow> followedList = followRepository.findByFollowId(followId);
         return followedList;
+    }
+
+    @Override
+    public void insertShare(int mId, int dId) {
+        DiaryDisplay diaryDisplay = new DiaryDisplay();
+        diaryDisplay.setMemberId(mId);
+        diaryDisplay.setDiaryId(dId);
+        shareRepository.save(diaryDisplay);
     }
 
 

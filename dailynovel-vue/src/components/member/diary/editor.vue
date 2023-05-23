@@ -440,6 +440,7 @@ const toggleClickHandler = (e) =>{
 // let previousValueTag = diaryRef.value.tag;
 let tagIsChange = false;
 let feelingIsChange = false;
+let honestyIsChange = false;
 
 const DropdownHandler = (e) =>{
 
@@ -454,12 +455,17 @@ const DropdownHandler = (e) =>{
     tagIsChange = true;
     diaryRef.value.tag = e.target.innerText;
   }
+  else if(e.target.className == "honestier"){
+    honestyIsChange = true;
+    diaryRef.value.honestier = e.target.innerText;
+  }
 };
 
 //헤더 부분 워치
 const DropDownWatchEffect = watchEffect(() => {
   diaryRef.value.tag;
   diaryRef.value.feeling;
+  diaryRef.value.honestier;
 
   if(tagIsChange == true){
     console.log("이제 잘 됨");
@@ -470,6 +476,12 @@ const DropDownWatchEffect = watchEffect(() => {
   else if(feelingIsChange == true){
     console.log("이제 잘 됨");
     feelingIsChange = (!feelingIsChange);
+    diaryObj = diaryRef.value;
+    EditDiary(defaultDiaryId);
+  }
+  else if(honestyIsChange == true){
+    console.log("이제 잘 됨");
+    honestyIsChange = (!honestyIsChange);
     diaryObj = diaryRef.value;
     EditDiary(defaultDiaryId);
   }
@@ -558,6 +570,27 @@ let quillOutputValue = function(convertDeltaJson) {
           <div class="feel" href="#">신남</div>
         </div>
       </div>
+
+      <div class="editor-attribue dropdown">
+        <button class="dropbtn">{{diaryRef.honestier}}</button>
+        
+        <div 
+          @click="DropdownHandler"          
+          class="dropdown-content dropdown-honestier-content">
+
+          <div class="honestier" href="#">0</div>
+          <div class="honestier" href="#">10</div>
+          <div class="honestier" href="#">20</div>
+          <div class="honestier" href="#">30</div>
+          <div class="honestier" href="#">40</div>
+          <div class="honestier" href="#">50</div>
+          <div class="honestier" href="#">60</div>
+          <div class="honestier" href="#">70</div>
+          <div class="honestier" href="#">80</div>
+          <div class="honestier" href="#">90</div>
+          <div class="honestier" href="#">100</div>
+        </div>
+      </div>
       
       <div 
         @click="delButton"
@@ -566,7 +599,7 @@ let quillOutputValue = function(convertDeltaJson) {
 
     </div>
 
-    <div class="editor-title">
+    <div class="editor-title"> 
         <header contenteditable="true"
                 class="editor-title-content editor-header"
                 @blur="editHandler"
@@ -1034,6 +1067,11 @@ let quillOutputValue = function(convertDeltaJson) {
   height: 120px;
 }
 
+
+.dropdown-honestier-content{
+  width: 30px;
+}
+
 .dropdown-content {
 
 }
@@ -1060,6 +1098,17 @@ let quillOutputValue = function(convertDeltaJson) {
   background-color: #ddd;
 }
 
+.honestier {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .honestier:hover {
+  background-color: #ddd;
+}
+
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -1068,6 +1117,7 @@ let quillOutputValue = function(convertDeltaJson) {
 .dropdown:hover .dropbtn{
   /* background-color: #3e8e41; */
 }
+
 
 
 

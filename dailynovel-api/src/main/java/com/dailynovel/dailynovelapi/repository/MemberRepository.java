@@ -12,6 +12,11 @@ import com.dailynovel.dailynovelapi.entity.Member;
 
 
 public interface MemberRepository extends JpaRepository<Member,Integer> {
+    @Query("SELECT m FROM Member m WHERE m.phone_number = :phoneNumber")
+    Member findByPhoneNumber(String email);
+
+
+
     @Query("SELECT m FROM Member m WHERE m.email = :email")
     Member findByEmail(String email);
 

@@ -15,6 +15,8 @@ public interface UserService {
 
     boolean signup(Member member);
 
+    String FindSamephoneNumber(String phoneNumber);
+
 
 
 }

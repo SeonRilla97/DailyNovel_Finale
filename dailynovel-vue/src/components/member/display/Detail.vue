@@ -1,5 +1,6 @@
 <template lang="">
-    <main class=" center-grid">
+    <main class=" center-grid scroll">
+        <div class="goBack-btn back-arrow" @click="goBackHandler"></div>
         <transition name="bounce">
             <div class="subscribeBtn nodouble-drag" v-show="subscribeBox">
                 <Subscribe :memberId="memberId" :writerId="writerId" :image="image" v-if="writerId!=''"></Subscribe>
@@ -9,13 +10,13 @@
         <div>
             <section class=" content-grid article-box ">
                 <h1 class="d-none">디테일</h1>
-                    <article class="scroll"> 
+                    <article class=""> 
                         <div class="sticky">
                             <h1 class="title nodouble-drag">{{title}}</h1>
                             <hr>
                             <div class="userInfo">
                                 <div class="d-inline" :class="likeStatus?'like-active':'like-deactive'" @click="likeSwitchHandler(diaryId)"></div>
-                                <div class="d-inline nodouble-drag">{{like}}</div>
+                                <div class="d-inline nodouble-drag mgl-1">{{like}}</div>
                                 <div class="d-inline nodouble-drag">
                                     <div class="profileImage" :style="`background-image: url(http://localhost:8080/image/profile/${image});`"></div>
                                 </div>
@@ -157,9 +158,29 @@ function unimplemented(){
     console.log("신고하는 중")
 };
 
+function goBackHandler() {
+    history.back()
+}
+
 </script>
 
 <style scoped>
+.back-arrow{
+    width: 3rem;
+    height: 3rem;
+    background-image: url('@/assets/img/display/backArrow-inactive.svg');;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.back-arrow:hover{
+    background-image: url('@/assets/img/display/backArrow-active.svg');;
+}
+
 .article-box {
     width: 39rem;   /* 체크, 너비 */
     height: minmax(500px, auto);
@@ -179,6 +200,13 @@ function unimplemented(){
 }
 
 /* btn */
+.goBack-btn{
+    position: fixed;
+    /* padding-top: 1rem;
+    padding-bottom: 1rem;
+    top: 0px;
+    background-color: #FAFFF9; */
+}
 .more-btn {
     /* 더보기 버튼 */
 

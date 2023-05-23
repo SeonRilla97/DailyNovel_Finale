@@ -42,6 +42,12 @@ public class UserController {
 		return samenickname;
 	}
 
+	@RequestMapping("PhoneNumberCheck")
+	public String phoneNumberCheck(String phoneNumber) {
+		String email = service.FindSamephoneNumber(phoneNumber);
+		return email;
+	}
+
 	@RequestMapping("emailCheck")
 	public boolean emailCheck(String email) {
 		boolean result= false;
@@ -51,12 +57,30 @@ public class UserController {
 			String authCode = mailService.randNum();
 			emailVerificationService.saveVerificationCode(email, authCode);
 			System.out.println(authCode);
-			boolean mailCheck = mailService.mailCheck(email, authCode, "회원가입 인증메일 입니다.", "이메일 인증번호:");
+			boolean mailCheck = mailService.mailCheck(email, authCode, "DailyNovel 인증메일 입니다.", "이 번호를 입력하세요:");
 			result =mailCheck;
 		}
 		return result;
 
 	}
+
+	@RequestMapping("EmailVerificationNumber")
+	public boolean EmailVerificationNumber(String email) {
+		boolean result= false;
+		boolean sameemail = service.FindSameEmail(email);
+
+		if(sameemail){
+			String authCode = mailService.randNum();
+			emailVerificationService.saveVerificationCode(email, authCode);
+			System.out.println(authCode);
+			boolean mailCheck = mailService.mailCheck(email, authCode, "DailyNovel 인증메일 입니다.", "이 번호를 입력하세요:");
+			result =mailCheck;
+		}
+		return result;
+
+	}
+	
+	
 
 	@RequestMapping("emailCheckAuth")
 	public boolean emailCheckAuth(String email) {
