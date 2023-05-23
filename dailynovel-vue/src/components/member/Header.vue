@@ -28,9 +28,10 @@ function openPageHandler() {
       </div>
       <div></div>
       <div class="member-header-info" @click="$emit('modalOpenHandler')">
-        <div class="member-header-alram header-alram-img">
+        <!-- <div class="member-header-alram header-alram-img">
           <div class="member-header-alram-count">{{ alramCount }}</div>
-        </div>
+        </div> -->
+        <div></div>
         <div class="member-header-profile">
           <div class="member-header-profile-img">프로필이미지</div>
           <div class="member-header-profile-nickname">{{ nickname }}</div>
@@ -45,7 +46,8 @@ function openPageHandler() {
   width: 1920px;
   height: 72px;
 
-  background-color: #fcfcfc;
+  /* background-color: #fcfcfc; */
+  background-color: #FFF8F3;
 
   display: flex;
   justify-content: center;
@@ -58,7 +60,8 @@ function openPageHandler() {
   display: grid;
   grid-template-columns: 2fr 7fr 2.5fr;
 
-  background-color: #fcfcfc;
+  /* background-color: #fcfcfc; */
+  background-color: #FFF8F3;
 }
 
 .member-header-logo {

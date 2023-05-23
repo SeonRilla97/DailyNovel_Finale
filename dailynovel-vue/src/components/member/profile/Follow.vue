@@ -1,5 +1,15 @@
 <script setup>
 import FollowCard from './FollowCard.vue';
+import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
+
+const user = useUserDetailsStore();
+
+async function getFollowList(id){
+    // fetch(`http://localhost:8080/member/follow?id=${id}`,{
+    //     content-type:
+    // });
+}
+
 </script>
 <template>
     <section class="m-follow-list-container">

@@ -11,10 +11,10 @@ function gotofollowpage(id){
 <template>
     <router-link to="/member/room/follow">
         <section class="m-flwcard-container">
-        <div class="m-follow-img">이미지</div>
-        <div class="m-follow-name">이름</div>
-        <div class="m-follow-checkbox">구독중</div>
-    </section>    
+            <div class="m-follow-img">이미지</div>
+            <div class="m-follow-name lc-center"><span>{{ "이름" }}</span></div>
+            <div class="m-follow-checkbox lc-center"><div>구독중</div></div>
+        </section>    
     </router-link>
     
 </template>
@@ -28,7 +28,7 @@ function gotofollowpage(id){
     justify-self: center;
     align-self: center;
 
-    background-color: blueviolet;
+    background-color: #FFF8F3;
 
     display: grid;
     grid-template-rows: 4fr 1fr 1fr;
@@ -41,6 +41,7 @@ function gotofollowpage(id){
     height:100px;
     justify-self: center;
     background-color: red;
+    background-image: url(http://localhost:8080/image/profile/8.png);
     border-radius: 30px;
 }
 </style>

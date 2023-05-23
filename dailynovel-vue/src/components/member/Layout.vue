@@ -48,7 +48,7 @@ function animationedHandler() {
 
 <template>
   <Header />
-  <section class="member-room-canvas mgt-2">
+  <section class="member-room-canvas ">
     <Canvas v-on:modalOpenHandler="modalOpenHandler" tabindex="0" ref="canvasRef" />
   </section>
   <section class="member-room-temp-linkes">
@@ -107,6 +107,11 @@ function animationedHandler() {
   width: 1920px;
   display: flex;
   justify-content: center;
+
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  
 }
 
 .member-room-temp-linkes {
