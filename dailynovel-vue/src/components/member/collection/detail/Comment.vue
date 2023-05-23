@@ -190,7 +190,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                         <div v-if="curModify!= cmt.id">
                             <div class="title">
                                 <div class="name ib">{{cmt.memberName}}</div>
-                                <div class="ib mgl-3 writer undrag" v-if="userDetails.id == cmt.memberId">작성자</div>
+                                <div class="ib mgl-3 writer undrag" v-if="userDetails.id == cmt.memberId">나</div>
                             </div>
                             <div class="mgt-2 content">{{ cmt.content }}</div>
                             <div class="ib mgt-3 date-container">
@@ -237,7 +237,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                     <div v-if="curModify!= reply.id">
                                         <div class="title">
                                             <div class="name ib">{{reply.memberName}}</div>
-                                            <div class="ib mgl-3 writer undrag" v-if="userDetails.id == reply.memberId">작성자</div>
+                                            <div class="ib mgl-3 writer undrag" v-if="userDetails.id == reply.memberId">나</div>
                                         </div>
                                         <div class="mgt-2 content">{{ reply.content }}</div>
                                         <div class="ib mgt-3 date-container">
@@ -343,7 +343,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
 }
 .comment-area .writer{
     border:solid 2px red;
-    padding:3px 6px;
+    padding:3px 15px;
     box-sizing: border-box;
     /* position:absolute; */
     top:3%;
