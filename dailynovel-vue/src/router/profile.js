@@ -4,6 +4,8 @@ import Follow from '../components/member/profile/Follow.vue';
 import Export from '../components/member/profile/Export.vue';
 import Info from '../components/member/profile/Info.vue';
 import GuestbookListLayout from '../components/member/guestbook/List.vue';
+import Export from  '../components/member/profile/Export.vue';
+
 
 const route = {path: 'profile', redirect:"room/profile/index" ,component:Layout ,children:[
   {path: 'index', component:Index},
