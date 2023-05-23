@@ -117,4 +117,14 @@ public class UserDefaultService implements UserService {
         return true;
     }
 
+    @Override
+    public String FindSamephoneNumber(String phoneNumber) {
+        Member member  = repository.findByPhoneNumber(phoneNumber);
+
+        if(member!=null){
+            return member.getEmail();
+        }
+        return null;
+    }
+
 }
