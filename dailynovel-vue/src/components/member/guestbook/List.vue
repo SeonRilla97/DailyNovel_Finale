@@ -1,11 +1,18 @@
 <script setup>
 import { onBeforeMount, onMounted, onUpdated, reactive, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
+import gbCard from './Card.vue';
 
 let userDetails = useUserDetailsStore();
+let route = useRoute();
+let router = useRouter();
+
 // 방명록 주인 ID
-let hostId = userDetails.id;
+const hostId = userDetails.id;
 let guestId = 2;
+
+let mode = ref("");
 
 // 방명록 리스트 불러오기
 let guestbooks = reactive({
@@ -18,7 +25,62 @@ let guestbook = reactive({
   content: null
 });
 
-let gbtojson = JSON.stringify(guestbook);
+let guestbookComment = reactive({
+  guestbookId: null,
+  memberId: hostId,
+  content: null
+})
+
+
+
+onMounted(() => {
+  console.log(hostId);
+
+  getGuestbookList();
+
+
+
+  // 현재 들고온 주소에 따라서 모드 확인
+  if (route.fullPath.match("profile"))
+    mode.value = "profile";
+  else
+    mode.value = "guest";
+
+  console.log(mode);
+})
+
+function deleteGuestBookCommentHandler(){
+
+}
+
+function rewriteGuestBookCommentHandler(){
+
+}
+
+function initComment(){
+  guestbookComment.guestbookId = null;
+  guestbookComment.content = null;
+}
+
+async function writeGuestBookCommentHandler(guestbookId) {
+
+  guestbookComment.guestbookId = guestbookId;
+
+  await fetch("http://localhost:8080/members/guestbooks/comment",
+    {
+      method: "POST",
+      headers: {
+        // "Accept": "application/json",
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(guestbookComment)
+    })
+    .then(response => response.json())
+    .then((data) => { if (data == 1) console.log("완료") })
+    .catch(error => console.log(error));
+
+  initComment();
+}
 
 function writeGuestBookHandler() {
   fetch("http://localhost:8080/members/guestbooks/save",
@@ -33,30 +95,10 @@ function writeGuestBookHandler() {
     .then(response => response.json())
     .then((data) => { if (data == 1) console.log("완료") })
     .catch(error => console.log(error));
+  
+  // getGuestbookList();
+
 }
-
-// onUpdated(() => {
-//   console.log(guestbooktxt);
-// })
-
-onMounted(() => {
-  console.log(hostId);
-  getGuestbookList();
-})
-
-
-// function getGuestbookList() {
-//   fetch("http://localhost:8080/members/guestbooks/list",
-//     {
-//       method: "POST",
-//       headers: {
-//         "Accept": "application/json",
-//         "Content-type": "application/x-www-form-urlencoded"
-//       },
-//     })
-//     .then(response => response.json())
-//     .then((data) => guestbooks.list = data);
-// }
 
 function getGuestbookList() {
   fetch(`http://localhost:8080/members/guestbooks?id=${hostId}`,
@@ -68,42 +110,110 @@ function getGuestbookList() {
       },
     })
     .then(response => response.json())
-    .then((data) => guestbooks.list = data);
+    .then((data) => guestbooks.list = data)   
 }
 
-// function saveGuestbook(){
-//   fetch("",{
-//     method:
-//   })
-// }
+function getFollowGuestbookList() {
+  fetch(`http://localhost:8080/members/guestbooks?id=${FollowId}`,
+    {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+    })
+    .then(response => response.json())
+    .then((data) => guestbooks.list = data)   
+}
 
 </script>
 <template>
   <ul class="m-guestbook-content-list">
-    <li class="lc-center" v-show="true">
+    <li class="lc-center" v-if="mode == 'guest'">
       <div class="m-guestbook-content-writeForm">
         <textarea class="m-guestbook-content-writeBox" v-model="guestbook.content"></textarea>
-        <button @click.prevent="writeGuestBookHandler" type="submit" value="">작성</button>
+        <button @click.prevent="writeGuestBookHandler" class="m-gb-writeBtn" type="submit" value="">작성</button>
       </div>
     </li>
-    <li class="lc-center" v-for="item in guestbooks.list">
-      <div class="m-guestbook-content-item">
-        <div class="m-guestbook-item-header">
-          <span>From.</span>
-          <div class="m-guestbook-content-writer"><span>{{ item.writerName }}</span></div>
+    <li class="m-gb-list" v-if="mode == 'guest'" v-for="item in 10">
+      <div class="m-gb-header lc-center">
+        <div><span>From.</span></div>
+        <div>{{ "글쓴이" }}</div>
+      </div>
+      <div class="m-gb-main">
+        <textarea class="txta-rsnone" readonly></textarea>
+        <div class="m-gb-cmt">
+          <div><span>답글</span></div>
+          <textarea class="txta-rsnone" readonly></textarea>
         </div>
-        <div class="m-guestbook-content-text"><span>{{ item.content }}</span></div>
-        <div class="m-guestbook-content-comment"><span>{{ item.comment }}</span></div>
       </div>
+
     </li>
+    <gbCard v-if="mode == 'profile'" v-for="item in guestbooks.list"  :guestbook = "item"></gbCard>
+  
+    <!-- <li v-show=false>
+      <span>아직 방명록이 남겨져 있지 않아요. 좋은 일기를 공유해보면서 소통해보면 어떨까요?</span>
+    </li> -->
   </ul>
 </template>
 
 <style scoped>
+.m-gb-list{
+  width:80%;
+  height:80%;
+
+  background-color: #fafafa;
+  border: 2px solid #FCD602;
+  border-radius: 8px;
+
+  justify-self: center;
+  align-self: center;
+
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+    box-sizing: border-box;
+
+
+}
+.m-gb-main{
+  height:100%;
+
+  display:grid;
+  grid-template-rows: 3fr 1fr;
+}
+.m-gb-header{
+  display: flex;
+  align-items: center;
+}
+.m-gb-cmt{
+  display: flex;
+  align-items: center;
+}
+.txta-rsnone{
+  resize: none;
+  border: none;
+}
+
+.txta-rsnone:focus{
+  resize: none;
+  outline: none;
+}
+.m-gb-writeBtn{
+  width:80px;
+  height:40px;
+  border-radius: 8px;;
+  background-color: #FCD602;
+  justify-self: center;
+}
+
+.m-gb-writeBtn:hover{
+  opacity: 0.5;
+} 
+
 .m-guestbook-content-list {
   width: 100%;
   /* height: 100%; */
-  min-height: 100%;
+  min-height: 70%;
   box-sizing: border-box;
   border-radius: 12px;
   /* border: 3px solid rgba(10, 115, 4, 0.606); */
@@ -122,7 +232,8 @@ function getGuestbookList() {
   /* overflow: scroll; */
 
   padding: 1rem;
-
+  
+  /* overflow:scroll; */
 }
 
 @media (max-width: 768px) {
@@ -175,7 +286,7 @@ function getGuestbookList() {
 
 .m-guestbook-content-writeForm {
   width: 240px;
-  height: 346px;
+  height: 80%;
 
   background-color: #fafafa;
   border: 2px solid #FCD602;
@@ -185,7 +296,8 @@ function getGuestbookList() {
 
   display: grid;
   grid-template-rows: 8fr 1fr;
-
+  padding:1rem;
+  
 
 }
 
@@ -196,6 +308,8 @@ function getGuestbookList() {
   border: 1px solid #FCD602;
 
   justify-self: center;
+
+  resize: none;
 }
 
 .m-guestbook-content-comment {
@@ -205,4 +319,6 @@ function getGuestbookList() {
   width: 100%;
   padding: 1rem;
 }
+
+
 </style>

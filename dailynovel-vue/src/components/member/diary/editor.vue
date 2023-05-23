@@ -40,10 +40,11 @@ const initHander = function (firstValue){
 
 let weatherDone = false;
 let ControllerAdd = props.isAdd;
+let myLocation = { lat: null, lng: null };
 
 onMounted(() => {
   console.log(props.newestDiaryId);
-
+  geoFindMe();
 });
 
 
@@ -167,6 +168,7 @@ function coor(coor) {
         //날씨 호출
         // weather(latitude, longitude);
         resolve([latitude,longitude]);
+        myLocate(latitude,longitude)
     }
     function error() {
       console.log("Unable to retrieve your location");
@@ -180,7 +182,13 @@ function coor(coor) {
     }
   });
   }
+  function myLocate(latitude,longitude){
+      myLocation.lat = latitude;
+      myLocation.lng = longitude;
 
+      return { lat: myLocation.lat, lng: myLocation.lng };
+
+    }
   function weather(latitude, longitude){
 
     return new Promise(function (resolve){
@@ -519,7 +527,7 @@ const feelingDropdownHandler = (e) =>{
         <div
           v-if="mapToggle"
           class="mapToggle-map editor-sub">
-          <MapBox :coor="coor" @coor="coor"/>
+          <MapBox :myLocation="myLocation" @coor="coor"/>
         </div>
 
       </div>
