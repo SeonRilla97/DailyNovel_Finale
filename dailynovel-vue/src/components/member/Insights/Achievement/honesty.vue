@@ -32,12 +32,26 @@
         <div class="achievement-data">콧대의 신!</div>
      </div>
 
-    <div class="achievement" :class="{ 'completed': honestyTotal >= 20 }">
+     <div class="achievement" :class="{ 'completed': NpinoData >= 5 }">
+        <div class="achievement-img19"></div>
+        <div class="achievement-data">솔직함(100) : {{ NpinoData }}/5</div>
+        <div class="achievement-data">나 뺴고!!!!</div>
+    </div>
+
+
+    <div class="achievement" :class="{ 'completed': honesty6Total >= 5 }">
+        <div class="achievement-img20"></div>
+        <div class="achievement-data">솔직함60이상 : {{ honesty6Total }}/5</div>
+        <div class="achievement-data">솔직한편</div>
+    </div>
+
+    <div class="achievement" :class="{ 'completed': honesty2Total >= 20 }">
         <div class="achievement-img6"></div>
         <div class="achievement-data">솔직함40미만 : {{ honestyTotal }}/20</div>
         <div class="achievement-data">내가 바로 소설가</div>
     </div>
 
+   
 
 </div>
 
@@ -58,7 +72,8 @@ const honesty2Data = ref('');
 const honesty4Data = ref('');
 const honesty6Data = ref('');
 const honesty8Data = ref('');
-const honestyTotal = ref('')
+const honesty2Total = ref('');
+const honesty6Total = ref('');
 const pinoData = ref('');
 const NpinoData = ref('');
 
@@ -131,7 +146,8 @@ async function Hload() {
   honesty6Data.value = counts[3];
   honesty8Data.value = counts[4];
 
-  honestyTotal.value = honesty0Data.value + honesty2Data.value;
+  honesty2Total.value = honesty0Data.value + honesty2Data.value;
+  honesty6Total.value = honesty6Data.value + honesty8Data.value
 
 }
 
