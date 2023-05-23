@@ -48,7 +48,7 @@ function animationedHandler() {
 
 <template>
   <Header />
-  <section class="member-room-canvas mgt-2">
+  <section class="member-room-canvas ">
     <Canvas v-on:modalOpenHandler="modalOpenHandler" tabindex="0" ref="canvasRef" />
   </section>
   <section class="member-room-temp-linkes">
@@ -80,6 +80,7 @@ function animationedHandler() {
 
 
 <style scoped>
+
 /* 모달 화면 조정 css */
 @keyframes show-effect {
   from {
@@ -107,6 +108,11 @@ function animationedHandler() {
   width: 1920px;
   display: flex;
   justify-content: center;
+
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+
+  
 }
 
 .member-room-temp-linkes {

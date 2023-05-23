@@ -22,6 +22,7 @@ function modalCloseHandler() {
     height: 100%;
 
     background-color: #F2C6C2;
+    box-shadow: 0px 3px 15px rgba(90, 83, 83, 0.3);
 
     position: relative;
     display: flex;

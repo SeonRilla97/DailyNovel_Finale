@@ -110,7 +110,13 @@ function getGuestbookList() {
       },
     })
     .then(response => response.json())
-    .then((data) => guestbooks.list = data)   
+    .then((data) => {
+      guestbooks.list = data;
+      console.log(data);
+    })   
+
+    
+    // console.log(data);
 }
 
 function getFollowGuestbookList() {
@@ -149,7 +155,7 @@ function getFollowGuestbookList() {
       </div>
 
     </li>
-    <gbCard v-if="mode == 'profile'" v-for="item in guestbooks.list"  :guestbook = "item"></gbCard>
+    <gbCard v-if="mode == 'profile'" v-for="item in guestbooks.list"  :guestbook = "item" @init-guestbook-list="getGuestbookList"></gbCard>
   
     <!-- <li v-show=false>
       <span>아직 방명록이 남겨져 있지 않아요. 좋은 일기를 공유해보면서 소통해보면 어떨까요?</span>

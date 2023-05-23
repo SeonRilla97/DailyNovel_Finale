@@ -2,6 +2,8 @@ import memberLayout from '../components/member/Layout.vue';
 
 
 import Login from '../components/user/Login.vue';
+import accountrecovery from '../components/user/AccountRecovery.vue';
+import passwordRecovery from '../components/user/PasswordRecovery.vue';
 import LoginLayout from '../components/user/Inc/Layout.vue';
 import Signup from '../components/user/Signup.vue';
 
@@ -30,6 +32,8 @@ const routes = [
       { path: 'signup', component: Signup },
       { path: 'signupsocial', component: signupSocial },
       { path: 'login', component: Login },
+      { path: 'accountrecovery', component: accountrecovery },  
+      { path: 'passwordRecovery', component: passwordRecovery },  
       {
         path: 'error', children: [
           { path: '403', component: () => import("./error/403.vue") }

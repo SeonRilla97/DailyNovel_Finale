@@ -68,7 +68,7 @@ function newestPromise(diaryId){
 let isOn = false;
 onUpdated(() => {
 
-
+  coor();
 
       // load id 가 null 이 아니면
   if(props.loadDiaryId != null){
@@ -177,9 +177,9 @@ function getDate(gotdate){
  //현재 위치 받아오기 API
 
 // 지도 설정한 좌표값 얻어오기
-function coor(coor) {
+function coor(coorGood) {
 
-  console.log(coor)
+  console.log(coorGood)
 }
 
  function geoFindMe() {
@@ -318,7 +318,7 @@ const addDiary = function(isAdd){
     //ref 기본값 담기
     objRef(null,1,null,null
     ,null,"기분",100,"태그"
-    ,null,38,128);
+    ,null,myLocation.lat,myLocation.lng);
 
     // console.log(diaryRef.value);
     diaryObj = diaryRef.value;
@@ -440,6 +440,7 @@ const toggleClickHandler = (e) =>{
 // let previousValueTag = diaryRef.value.tag;
 let tagIsChange = false;
 let feelingIsChange = false;
+let honestyIsChange = false;
 
 const DropdownHandler = (e) =>{
 
@@ -454,12 +455,17 @@ const DropdownHandler = (e) =>{
     tagIsChange = true;
     diaryRef.value.tag = e.target.innerText;
   }
+  else if(e.target.className == "honestier"){
+    honestyIsChange = true;
+    diaryRef.value.honestier = e.target.innerText;
+  }
 };
 
 //헤더 부분 워치
 const DropDownWatchEffect = watchEffect(() => {
   diaryRef.value.tag;
   diaryRef.value.feeling;
+  diaryRef.value.honestier;
 
   if(tagIsChange == true){
     console.log("이제 잘 됨");
@@ -470,6 +476,12 @@ const DropDownWatchEffect = watchEffect(() => {
   else if(feelingIsChange == true){
     console.log("이제 잘 됨");
     feelingIsChange = (!feelingIsChange);
+    diaryObj = diaryRef.value;
+    EditDiary(defaultDiaryId);
+  }
+  else if(honestyIsChange == true){
+    console.log("이제 잘 됨");
+    honestyIsChange = (!honestyIsChange);
     diaryObj = diaryRef.value;
     EditDiary(defaultDiaryId);
   }
@@ -558,6 +570,27 @@ let quillOutputValue = function(convertDeltaJson) {
           <div class="feel" href="#">신남</div>
         </div>
       </div>
+
+      <div class="editor-attribue dropdown">
+        <button class="dropbtn">{{diaryRef.honestier}}</button>
+        
+        <div 
+          @click="DropdownHandler"          
+          class="dropdown-content dropdown-honestier-content">
+
+          <div class="honestier" href="#">0</div>
+          <div class="honestier" href="#">10</div>
+          <div class="honestier" href="#">20</div>
+          <div class="honestier" href="#">30</div>
+          <div class="honestier" href="#">40</div>
+          <div class="honestier" href="#">50</div>
+          <div class="honestier" href="#">60</div>
+          <div class="honestier" href="#">70</div>
+          <div class="honestier" href="#">80</div>
+          <div class="honestier" href="#">90</div>
+          <div class="honestier" href="#">100</div>
+        </div>
+      </div>
       
       <div 
         @click="delButton"
@@ -566,7 +599,7 @@ let quillOutputValue = function(convertDeltaJson) {
 
     </div>
 
-    <div class="editor-title">
+    <div class="editor-title"> 
         <header contenteditable="true"
                 class="editor-title-content editor-header"
                 @blur="editHandler"
@@ -615,10 +648,9 @@ let quillOutputValue = function(convertDeltaJson) {
 
       </main>
 
-      <div
+      <!-- <div
         class="editor-sub-button editor-sub">
 
-        <!-- @click.prevent="mapToggleHandler"> -->
         <button
           @click="imageToggle = !imageToggle"
           >
@@ -630,21 +662,21 @@ let quillOutputValue = function(convertDeltaJson) {
           지도추가
       </button>
 
-      </div>
+      </div> -->
 
       <div class="img-map-container">
-          <div
+          <!-- <div
             v-if="imageToggle"
             class="editor-image editor-sub">
             이미지를 넣어넣어 놀자놀자
-          </div>
+          </div> -->
 
 
         <!-- 맵 삽입칸 -->
+        <!-- v-if="mapToggle" -->
           <div
-            v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocation="myLocation" @coor="coor"/>
+            <MapBox :myLocation="myLocation" @coor="coorGood"/>
           </div>
 
       </div>
@@ -1035,6 +1067,11 @@ let quillOutputValue = function(convertDeltaJson) {
   height: 120px;
 }
 
+
+.dropdown-honestier-content{
+  width: 30px;
+}
+
 .dropdown-content {
 
 }
@@ -1061,6 +1098,17 @@ let quillOutputValue = function(convertDeltaJson) {
   background-color: #ddd;
 }
 
+.honestier {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .honestier:hover {
+  background-color: #ddd;
+}
+
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -1069,6 +1117,7 @@ let quillOutputValue = function(convertDeltaJson) {
 .dropdown:hover .dropbtn{
   /* background-color: #3e8e41; */
 }
+
 
 
 
