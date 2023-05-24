@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dailynovel.dailynovelapi.entity.Member;
+import com.dailynovel.dailynovelapi.mbentity.MbMember;
 import com.dailynovel.dailynovelapi.service.MemberService;
 
 @RestController
@@ -83,5 +84,11 @@ public class MemberController {
         System.out.println(list+"asdfasdf");
         return list;
     }
+
+    @GetMapping("mInfo")
+    public MbMember getMemberInfoById(@RequestParam int id){
+        return service.getMemberInfo(id);
+    }
+
 
 }

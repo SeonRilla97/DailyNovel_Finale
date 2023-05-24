@@ -32,6 +32,7 @@ public class Member implements Persistable {
     private Timestamp timestamp;
     private Date birthday;
     private int gender;
+    private String message;
 
     public boolean isEmpty() {
         return false;
