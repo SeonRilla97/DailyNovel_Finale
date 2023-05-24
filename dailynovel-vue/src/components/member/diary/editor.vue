@@ -379,10 +379,17 @@ const loadDiary = function(diaryId){
   fetch(`http://localhost:8080/diary/${diaryId}`, requestOptions)
     .then(response => response.json())
     .then(result => {
+
+      mapToggle.value = false;
+
       memberID = result.member_id;
       console.log(memberID);
+      // isShare(memberID,result.diaryId);
+      console.log(result);
       diaryRef.value = result;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
+
+
       resolve(true);
     })
     .catch(error => {
@@ -496,6 +503,31 @@ fetch("http://localhost:8080/display/share", requestOptions)
     console.log("성공");
   })
   .catch(error => console.log('error', error));
+  }
+)};
+
+  function isShare(memberId, diaryId){
+    return new Promise(function(resolve,reject){
+
+    // let myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
+
+    // shareJson.memberId = memberId;
+    // shareJson.diaryId = diaryId;
+
+    // let raw = JSON.stringify(shareJson);
+
+    let requestOptions = {
+      method: 'GET',
+      // headers: myHeaders,
+      // body: raw,
+      redirect: 'follow'
+    };
+
+  fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
   }
 )};
 
