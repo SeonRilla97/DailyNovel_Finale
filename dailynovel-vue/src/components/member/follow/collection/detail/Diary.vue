@@ -30,8 +30,9 @@ console.log(props.data.diarys)
 
     display:flex;
     align-items: center;
-    overflow-x:scroll;
-    width:100%;
+    overflow-x: auto;
+    width: 100%;
+    height: 504px;
     -webkit-user-select:none;
     -moz-user-select:none;
     -ms-user-select:none;

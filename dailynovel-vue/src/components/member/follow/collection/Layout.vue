@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onBeforeMount } from 'vue';
 import { useUserDetailsStore } from "../../../store/useUserDetailsStore.js";
 // import Main from "./Main.vue"
 // import Main from './Main.vue';
@@ -9,12 +9,21 @@ let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 const collection = reactive({
     List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에","123"]
 })
+const props  = defineProps({
+    userId: {
+        type: Object,
+        required:true
+    }
+});
 
-getCollectionList();
+onBeforeMount(() => {
+    pfgetCollectionList();    
+})
+
 
 // 컬렉션 리스트 받아오기
-function getCollectionList(){
-fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`)
+function pfgetCollectionList(){
+fetch(`http://localhost:8080/collection?memberId=${props.userId}`)
     .then(response => response.json())
     .then(collections => {
         // 받은 데이터 일단 볼까
@@ -22,10 +31,6 @@ fetch(`http://localhost:8080/collection?memberId=${userDetails.id}`)
         console.log(collection.List);
     })
     .catch(error => console.log('error', error));
-}
-
-function successInit(){
-    regSuccess.value = false;
 }
 </script>
 
@@ -37,12 +42,10 @@ function successInit(){
                 class="main"
                 :collection="collection" 
                 :isDuplicated ="isColNameDuplicated" 
-                :successAddMenu = "regSuccess"
                 :displayedDiary = "diaryDisplayed"
                 @registerCollection = "regBtnClickHandler"
                 @initSuccesAddMenu = "successInit"
                 @callDisplayed="getSharedDiary"
-                @callgetCollectionList = "getCollectionList"
             >
             </router-view>
         </transition>

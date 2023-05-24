@@ -4,7 +4,6 @@ import { useRoute,useRouter } from 'vue-router'
 import { useUserDetailsStore } from '../../../../store/useUserDetailsStore';
 
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-let pageIndex = ref(1)
 
 const route = useRoute()
 console.log(route.path)
@@ -19,13 +18,13 @@ const data = reactive({
     collectionId: collectionId.value
 })
 console.log(collectionId.value);
-// getListInCollection(memberId,collectionId.value);
+// pfgetListInCollection(memberId,collectionId.value);
 
 // router.push("detailDiary")
 // 댓글불러와야함
 
 // 해당 컬렉션에 포함된 모든 일기 불러오기
-function getListInCollection(memberId,colId) {
+function pfgetListInCollection(memberId,colId) {
     console.log("호출은 하고??")
     let member = memberId;
     let collection = colId;
@@ -43,7 +42,7 @@ function getListInCollection(memberId,colId) {
     .catch(error => console.log('error', error));
 }
 // 해당 컬렉션의 댓글 불러오기 ( memberId 빠져도 상관없음 -> collectionId 가 애초에 멤버로 불러오기때문 (그리고 나중에 확장을 고려하여 CollectionId 만 필요함))
-function getComment(colId, depth, refId){  //처음 부를때 -> colId만 || 답글 부를때 -> colId depth refId
+function pfgetComment(colId, depth, refId){  //처음 부를때 -> colId만 || 답글 부를때 -> colId depth refId
     console.log(colId, depth, refId)
     let query = `?collectionId=${colId}`
     if(depth) query+= `&depth=${depth}`
@@ -73,8 +72,8 @@ function getComment(colId, depth, refId){  //처음 부를때 -> colId만 || 답
 // 페이지 마운트전 동작할 함수
 onBeforeMount (()=> {
     
-    getListInCollection(memberId,collectionId.value);
-    getComment(collectionId.value)
+    pfgetListInCollection(memberId,collectionId.value);
+    pfgetComment(collectionId.value)
     const router = useRouter()
 
     router.push({name:'detailDiary'})
@@ -93,15 +92,15 @@ function menuClickHandler(menuIdx){
     <div class="detail-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <router-link to="/member/room/collection/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
-                <router-link class="mgl-2" to="/member/room/collection/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
+                <router-link to="/member/room/follow/s/collection/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
+                <router-link class="mgl-2" to="/member/room/follow/s/collection/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
             </div>
             <div class="icon-back"></div>
         </header>
         
         <router-view
         :data = "data"
-        @callComments ="getComment">
+        @callComments ="pfgetComment">
         </router-view>
     </div>
 </template>

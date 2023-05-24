@@ -18,11 +18,11 @@ onBeforeMount (()=> {
 })
 
 // 날짜 알아낼때
-function getDate(date) {
+function pfgetDate(date) {
     return `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}.`;
 }
 // 시간 알아낼때
-function getTime(date) {
+function pfgetTime(date) {
     let hour =  date.getHours();
     let minute = date.getMinutes();
     if(hour < 10) hour = `0${hour}`;
@@ -34,7 +34,7 @@ function getTime(date) {
 // 수정중인 Comment ID
 let curModify = ref(null);
 // 수정 누를때
-function updateHandler(id){
+function pfupdateHandler(id){
     if(curReg.value != null){curReg.value=null;console.log(`작성꺼라${curReg.value}`)} 
     if(curModify.value == id) {curModify.value=null;return}
     curModify.value = id;
@@ -43,7 +43,7 @@ function updateHandler(id){
 // 작성중인 대댓글 ID
 let curReg = ref(null);
 // 답글쓰기 누를때
-function regHandler(id){
+function pfregHandler(id){
     if(curModify.value != null){curModify.value=null; console.log(`수정꺼라${curModify.value}`)} 
     if(curReg.value == id) {curReg.value=null;return}
     curReg.value = id;
@@ -55,10 +55,11 @@ let openReply = ref(null)
 let reply = reactive({
     list:null
 })
-function getReplyListFromDB(cmt,update){
+function pfgetReplyListFromDB(cmt,update){
     // 1.query 제작
-
-    if(cmt.comments == 0) return;
+    
+    if(cmt.comments == 0 ) return;
+    console.log("커멘트가 0인거 통과")
     if(openReply.value == cmt.id && update !=true) {
         console.log("설마 여길 들어오겠어?")
         openReply.value =null
@@ -78,11 +79,12 @@ function getReplyListFromDB(cmt,update){
 
 
 // (댓글/답글)의 수정폼에서 수정을 눌렀을때 (Fetch에서 분기됨)
-function updateClickHandler(e,cmt){
+function pfupdateClickHandler(e,cmt){
     console.log(cmt);
     // 2단계 위로가서 reg-input 찾기
     // html 구조 바뀌면 오류 발생할 지도 모름
     let content =e.target.parentNode.parentNode.querySelector(".reg-input").innerText;
+    console.log(content);
     if(content=="") return;
     // 서버에게 수정요청
     var myHeaders = new Headers();
@@ -103,10 +105,15 @@ function updateClickHandler(e,cmt){
     fetch("http://localhost:8080/collection/comment", requestOptions)
     .then(response => response.text())
     .then(result => {
-        if(cmt.depth == 0)// 댓글인경우
+        if(cmt.depth == 0){// 댓글인경우
         emit("callComments",cmt.collectionId);
-        else// 답글인경우
-        getReplyListFromDB(cmt,true);
+        console.log("이건 댓글!")
+        }
+        else{// 답글인경우
+            console.log(cmt)
+        pfgetReplyListFromDB(cmt,true);
+        console.log("이건 답글!")
+        }
         
         
         curModify.value=null;
@@ -116,7 +123,7 @@ function updateClickHandler(e,cmt){
 
 
 // 등록을 눌렀을때 (댓글/ 답글)
-function regClickHandler(e,memberId, collectionId,depth,refId,cmt){
+function pfregClickHandler(e,memberId, collectionId,depth,refId,cmt){
     let textdom = e.target.parentNode.parentNode.querySelector(".reg-input");
     let content =e.target.parentNode.parentNode.querySelector(".reg-input").innerText;
     if(content =="") {return}
@@ -153,7 +160,7 @@ function regClickHandler(e,memberId, collectionId,depth,refId,cmt){
         // if(refId) //답글쓰기
         
         emit("callComments",collectionId);
-        getReplyListFromDB(cmt,true);
+        pfgetReplyListFromDB(cmt,true);
 
         curReg.value=null;
         textdom.innerText="";
@@ -162,7 +169,7 @@ function regClickHandler(e,memberId, collectionId,depth,refId,cmt){
 }
 console.log(props.data.comments)
 
-function deleteHandler(cmt,upper){
+function pfpfdeleteHandler(cmt,upper){
     var requestOptions = {
   method: 'DELETE',
   redirect: 'follow'
@@ -172,8 +179,8 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
   .then(response => response.json())
   .then(result => {
     emit("callComments",cmt.collectionId);
-    if(upper) getReplyListFromDB(upper,true);
-    else getReplyListFromDB(cmt,true);
+    if(upper) pfgetReplyListFromDB(upper,true);
+    else pfgetReplyListFromDB(cmt,true);
   })
   .catch(error => console.log('error', error));
 }
@@ -194,14 +201,14 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                             </div>
                             <div class="mgt-2 content">{{ cmt.content }}</div>
                             <div class="ib mgt-3 date-container">
-                                <span class="date">{{getDate(new Date(cmt.regDate))}}</span>
-                                <span class="mgl-1 time">{{getTime(new Date(cmt.regDate))}}</span>
+                                <span class="date">{{pfgetDate(new Date(cmt.regDate))}}</span>
+                                <span class="mgl-1 time">{{pfgetTime(new Date(cmt.regDate))}}</span>
                             </div>
                             <div class="ib mgl-4 menu-box">
-                                <span class="menu-box undrag" v-if="cmt.depth ==0" @click="getReplyListFromDB(cmt)">답글보기</span><span class="undrag">({{ cmt.comments }})</span>
-                                <span class="menu-box mgl-3 undrag" @click="regHandler(cmt.id)">답글쓰기</span>
-                                <span class="mgl-3 menu-box undrag" @click="updateHandler(cmt.id)" v-if ="userDetails.id== cmt.memberId" >수정</span>
-                                <span class="mgl-3 menu-box undrag"  v-if ="userDetails.id== cmt.memberId" @click="deleteHandler(cmt)">삭제</span>
+                                <span class="menu-box undrag" v-if="cmt.depth ==0" @click="pfgetReplyListFromDB(cmt)">답글보기</span><span class="undrag">({{ cmt.comments }})</span>
+                                <span class="menu-box mgl-3 undrag" @click="pfregHandler(cmt.id)">답글쓰기</span>
+                                <span class="mgl-3 menu-box undrag" @click="pfupdateHandler(cmt.id)" v-if ="userDetails.id== cmt.memberId" >수정</span>
+                                <span class="mgl-3 menu-box undrag"  v-if ="userDetails.id== cmt.memberId" @click="pfpfdeleteHandler(cmt)">삭제</span>
                             </div>
                         </div>
                         <!-- 댓글 수정 폼 -->
@@ -210,7 +217,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                 <div class="name">{{userDetails.nickname}}</div>
                                 <div class="reg-input mgt-3" contenteditable="true">{{ cmt.content }}</div>
                                 <div class="reg-btn">
-                                    <div class="mgt-3 ib cursor-pt undrag" @click="updateClickHandler($event,cmt)">수정</div>
+                                    <div class="mgt-3 ib cursor-pt undrag" @click="pfupdateClickHandler($event,cmt)">수정</div>
                                     <div class="mgt-3 ib mgl-3 cursor-pt undrag" @click="curModify=null">취소</div>
                                 </div>
                             </div>
@@ -222,7 +229,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                 <div class="name">{{ userDetails.nickname}}</div>
                                 <div class="reg-input mgt-3" contenteditable="true"></div>
                                 <div class="reg-btn">
-                                    <div class="mgt-3 ib cursor-pt undrag" @click="regClickHandler($event, userDetails.id, cmt.collectionId,1,cmt.id,cmt)">등록</div>
+                                    <div class="mgt-3 ib cursor-pt undrag" @click="pfregClickHandler($event, userDetails.id, cmt.collectionId,1,cmt.id,cmt)">등록</div>
                                     <div class="mgt-3 ib mgl-3 cursor-pt undrag" @click="curReg=null">취소</div>
                                 </div>
                             </div>
@@ -241,13 +248,13 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                         </div>
                                         <div class="mgt-2 content">{{ reply.content }}</div>
                                         <div class="ib mgt-3 date-container">
-                                            <span class="date">{{getDate(new Date(reply.regDate))}}</span>
-                                            <span class="mgl-1 time">{{getTime(new Date(reply.regDate))}}</span>
+                                            <span class="date">{{pfgetDate(new Date(reply.regDate))}}</span>
+                                            <span class="mgl-1 time">{{pfgetTime(new Date(reply.regDate))}}</span>
                                         </div>
                                         <div class="ib mgl-2 menu-box">
-                                            <span class="menu-box mgl-3 undrag" @click="regHandler(reply.id)">답글쓰기</span>
-                                            <span class="mgl-3 menu-box undrag" @click="updateHandler(reply.id)" v-if ="userDetails.id== reply.memberId" >수정</span>
-                                            <span class="mgl-3 menu-box undrag"  v-if ="userDetails.id== reply.memberId" @click="deleteHandler(reply,cmt)">삭제</span>
+                                            <span class="menu-box mgl-3 undrag" @click="pfregHandler(reply.id)">답글쓰기</span>
+                                            <span class="mgl-3 menu-box undrag" @click="pfupdateHandler(reply.id)" v-if ="userDetails.id== reply.memberId" >수정</span>
+                                            <span class="mgl-3 menu-box undrag"  v-if ="userDetails.id== reply.memberId" @click="pfpfdeleteHandler(reply,cmt)">삭제</span>
                                         </div>
                                     </div>
                                     <!-- 대댓글 수정 폼 -->
@@ -256,7 +263,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                             <div class="name">{{userDetails.nickname}}</div>
                                             <div class="reg-input mgt-3" contenteditable="true">{{ reply.content }}</div>
                                             <div class="reg-btn">
-                                                <div class="mgt-3 ib cursor-pt undrag" @click="updateClickHandler($event,reply)">수정</div>
+                                                <div class="mgt-3 ib cursor-pt undrag" @click="pfupdateClickHandler($event,reply)">수정</div>
                                                 <div class="mgt-3 ib mgl-3 cursor-pt undrag" @click="curModify=null">취소</div>
                                             </div>
                                         </div>
@@ -270,7 +277,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                             <div class="reg-btn">
                                                 <div 
                                                 class="mgt-3 ib cursor-pt undrag" 
-                                                @click="regClickHandler($event, userDetails.id, cmt.collectionId,1,cmt.id,cmt)">등록</div>
+                                                @click="pfregClickHandler($event, userDetails.id, cmt.collectionId,1,cmt.id,cmt)">등록</div>
                                                 <div class="mgt-3 ib mgl-3 cursor-pt undrag" @click="curReg=null">취소</div>
                                             </div>
                                         </div>
@@ -290,7 +297,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                 <div class="form">
                     <div class="name">{{userDetails.nickname}}</div>
                     <div class="reg-input mgt-3" contenteditable="true"></div>
-                    <div class="reg-btn"><div class="mgt-3 ib cursor-pt" @click="regClickHandler($event,userDetails.id,data.collectionId)">등록</div></div>
+                    <div class="reg-btn"><div class="mgt-3 ib cursor-pt" @click="pfregClickHandler($event,userDetails.id,data.collectionId)">등록</div></div>
                 </div>
             </div>
 

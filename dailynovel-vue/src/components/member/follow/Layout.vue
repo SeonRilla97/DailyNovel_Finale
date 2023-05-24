@@ -1,19 +1,31 @@
 <script setup>
-import Index from './Index.vue';
+// import Index from './Index.vue';
 let name = "선릴라424";
 import { useRoute,useRouter  } from 'vue-router'
-import {ref, onBeforeMount} from 'vue'
+import {ref, onBeforeMount,onMounted} from 'vue'
 // let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 const route = useRoute()
 const router = useRouter()
 
 // 현재 누구의 페이지인지 알아야함(userId)
 let userId = ref();
+let member = ref();
+
 onBeforeMount(()=>{
   // userId 저장하고 index로 Go
-userId.value = route.params.memberId;
-router.push('/member/room/follow/s/index')
+  userId.value = route.params.memberId;
+  getUserInfo(userId.value);
 });
+
+function getUserInfo(userId){
+  fetch(`http://localhost:8080/members/info?id=${userId}`)
+  .then(response => response.json())
+  .then(result => {
+    member.value = result;
+    router.push(`/member/room/follow/${member.value.id}/index`)
+  })
+  .catch(error => console.log('error', error));
+}
 </script>
 
 <template>
@@ -24,7 +36,7 @@ router.push('/member/room/follow/s/index')
         <div class="m-follow-header-profile">
           <!-- <div class="m-follow-header-profile-img">프로필이미지</div> -->
           <div class="m-follow-header-profile-name">
-            <span class="font-bold h2">{{ name }}님의 페이지</span>
+            <span class="font-bold h2">{{ member.nickName}} 님의 페이지</span>
           </div>
         </div>
         <hr style="height: 50%; margin:0;">

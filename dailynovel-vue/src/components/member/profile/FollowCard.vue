@@ -23,7 +23,7 @@ console.log( props.data.nickName );
 </script>
 
 <template>
-  <router-link :to="`/member/room/follow/profile/${props.data.id}`">
+  <router-link :to="`/member/room/follow/${props.data.id}`">
         <section class="m-flwcard-container">
             <div class="m-follow-img">이미지</div>
             <div class="m-follow-name lc-center"><span>{{ props.data.nickName }}</span></div>
