@@ -150,10 +150,10 @@ function feelingTitle(){
 
         <!-- search box -->
         <div class="search-container">
-            <form action="#">
+            <div action="#" class="form">
                 <input class="box-search" type="text" placeholder="검색어를 입력하세요..." name="search" v-model="searchKeywork">
-                <div class="btn-search" @click="searchBtnHandler">검색</div>
-            </form>
+                <div class="btn-search cursor-pt" @click="searchBtnHandler">검색</div>
+            </div>
         </div>
     </header>
         
@@ -204,6 +204,7 @@ text-align: center;
 top: 20px;
 height: 120px;
 overflow-y:scroll;
+left:-60px;
 }
 
     /* 스크롤바 커스터마이징 */
@@ -224,7 +225,7 @@ overflow-y:scroll;
     position: absolute;
     z-index: 1;
     top:20px;
-    left:0;
+    left:-100px;
     width:300px;
     height: 300px;
     /* top: 20vh;
@@ -269,7 +270,7 @@ display: block;
 }
 
 
-.search-container form{
+.search-container .form{
     display:flex;
     align-items: center;
     background-color: #d8d8d8;

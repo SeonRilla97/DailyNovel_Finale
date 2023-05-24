@@ -58,7 +58,7 @@ const day = ["일","월","화","수","목","금","토"]
                 <div class="item-container" v-for="(value, key) in diary.list">
                     <div class="monthly-header">{{key}}</div>
                         <!-- 일 박스 -->
-                        <div class="date-container" v-for ="content in value" v-bind:data-id="content.diaryId" @click="diaryClickHandler" >
+                        <div class="date-container cursor-pt" v-for ="content in value" v-bind:data-id="content.diaryId" @click="diaryClickHandler" >
                             <div class="date">
                                 <span>{{day[content.regDate.getDay()]}}</span>
                                 <span>{{content.regDate.getDate()}}</span>
