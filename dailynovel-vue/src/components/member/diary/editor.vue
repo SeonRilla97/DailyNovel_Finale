@@ -4,7 +4,7 @@ import quill2 from './quill2.vue';
 import quillCopy from './quill copy.vue';
 import quill3 from './quill3.vue';
 
-import { ref,onMounted, onUpdated,  defineProps , defineEmits, watchEffect} from 'vue';
+import { ref,onMounted, onUpdated,  defineProps , defineEmits, watchEffect, normalizeStyle} from 'vue';
 import MapBox from './MapBox.vue';
 
 // "기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"
@@ -72,8 +72,6 @@ function newestPromise(diaryId){
 //insert 다중반복 막기 위해서
 let isOn = false;
 onUpdated(() => {
-
-  coor();
 
       // load id 가 null 이 아니면
   if(props.loadDiaryId != null){
@@ -185,6 +183,7 @@ function getDate(gotdate){
 function coor(coor) {
 
 console.log("coor:", coor);
+console.log("coor.lat:",coor.lat)
 }
 
 // function setLocate{
