@@ -5,13 +5,17 @@ import quillCopy from './quill copy.vue';
 import quill3 from './quill3.vue';
 
 import { ref,onMounted, onUpdated,  defineProps , defineEmits, watchEffect} from 'vue';
+
 import MapBox from './MapBox.vue';
+import {useUserDetailsStore} from '../../store/useUserDetailsStore'
 
 // "기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"
 // "자유"
 
+const loginuser = useUserDetailsStore();
+
 //전역 멤버 아이디
-let memberID = null;
+const memberID = loginuser.id;
 
 const props = defineProps({
     'isAdd' : '',
@@ -53,6 +57,8 @@ let myLocation = { lat: null, lng: null };
 onMounted(() => {
   // console.log(props.newestDiaryId);
   geoFindMe(); //초기 맵구현시 필요
+
+  console.log(memberID);
 });
 
 
@@ -319,7 +325,7 @@ const addDiary = function(isAdd){
 
 
     //ref 기본값 담기
-    objRef(null,1,null,null
+    objRef(null,memberID,null,null
     ,null,"기분",100,"태그"
     ,null,myLocation.lat,myLocation.lng);
 
@@ -365,7 +371,7 @@ const loadDiary = function(diaryId){
 
       mapToggle.value = false;
 
-      memberID = result.member_id;
+      // memberID = result.member_id;
       console.log(memberID);
       // isShare(memberID,result.diaryId);
       console.log(result);
