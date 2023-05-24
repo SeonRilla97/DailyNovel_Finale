@@ -326,14 +326,15 @@ const addDiary = function(isAdd){
 
     //ref 기본값 담기
     objRef(null,memberID,null,null
-    ,null,"기분",100,"태그"
+    ,null,"기분","진심도","태그"
     ,null,myLocation.lat,myLocation.lng);
 
     // console.log(diaryRef.value);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
-    // console.log(diaryObj);
+    console.log(diaryObj);
     let raw = JSON.stringify(diaryObj);
+    console.log(raw);
 
     let requestOptions = {
       method: 'POST',
@@ -401,7 +402,7 @@ const EditDiary = function(diaryId){
     // ,null,"기분",100,"태그"
     // ,null,38,128);
     // diaryObj = diaryRef.value;
-    diaryObj.member_id = null;
+    diaryObj.member_id = memberID;
     diaryObj.id = diaryId;
     diaryObj.regDate = staticRegDate;
     
