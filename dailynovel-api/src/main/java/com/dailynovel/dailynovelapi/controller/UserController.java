@@ -66,14 +66,15 @@ public class UserController {
 
 	@RequestMapping("EmailVerificationNumber")
 	public boolean EmailVerificationNumber(String email) {
-		boolean result= false;
+		boolean result= true;
 		boolean sameemail = service.FindSameEmail(email);
 
 		if(sameemail){
 			String authCode = mailService.randNum();
 			emailVerificationService.saveVerificationCode(email, authCode);
 			System.out.println(authCode);
-			boolean mailCheck = mailService.mailCheck(email, authCode, "DailyNovel 인증메일 입니다.", "이 번호를 입력하세요:");
+			boolean mailCheck = mailService.mailCheck(email, authCode, "DailyNovel 임시비밀번호 입니다.", "임시비밀번호 발급:");
+			service.ChangePaswword(email, authCode);
 			result =mailCheck;
 		}
 		return result;

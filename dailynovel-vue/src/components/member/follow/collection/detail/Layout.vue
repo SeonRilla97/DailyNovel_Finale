@@ -1,10 +1,9 @@
 <script setup>
 import { ref , onBeforeMount, reactive} from 'vue';
 import { useRoute,useRouter } from 'vue-router'
-import { useUserDetailsStore } from '../../../store/useUserDetailsStore';
+import { useUserDetailsStore } from '../../../../store/useUserDetailsStore';
 
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-
 let pageIndex = ref(1)
 
 const route = useRoute()

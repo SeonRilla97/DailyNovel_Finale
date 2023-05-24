@@ -5,10 +5,10 @@ import Header from './Header.vue';
 import Canvas from './Canvas.vue';
 
 import ModalHeader from './ModalHeader.vue'
-
+import { useUserDetailsStore } from '../store/useUserDetailsStore.js';
 import Footer from './Footer.vue';
 import { ref  } from 'vue';
-
+let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 
 //=============모달 관련 속성들===================
 const canvasRef = ref(null);
@@ -23,7 +23,7 @@ function modalOpenHandler() {
 
 function modalCloseHandler() {
   //모달 창이 뜰지 말지 결정하는 이벤트
-  // console.log("click!")
+  console.log("click!")
   isModalOpen.value = true;  //모달창 키기(상태유지)
   closeEffect.value = false; //내려오기 (애니메이션 작동)
 
@@ -58,14 +58,14 @@ function animationedHandler() {
     <router-link to="/member/room/community" @click="modalOpenHandler"><button>커뮤니티</button></router-link>
     <router-link to="/member/room/guestbook/list" @click="modalOpenHandler"><button>방명록</button></router-link>
     <router-link to="/member/room/profile" @click="modalOpenHandler"><button>내 정보</button></router-link>
-    <router-link to="/member/room/follow" @click="modalOpenHandler"><button>구독페이지</button></router-link>
+    <router-link :to="'/member/room/follow/'+userDetails.id" @click="modalOpenHandler"><button>구독페이지</button></router-link>
     <router-link to="/member/room"><button>메인</button></router-link>
     <router-link to="/InfinityScroll" @click="modalOpenHandler"><button>인피니티</button></router-link>
   </section>
   <Footer />
 
 
-
+  
   <!-- 모달창 -->
   <div class="modal-bg" :class="{ 'd-none': !isModalOpen }">
     <section class="modal-screen" :class="{ 'active': !closeEffect }" @animationend="animationedHandler" @click.stop>

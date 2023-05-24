@@ -1,6 +1,8 @@
 package com.dailynovel.dailynovelapi.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,6 +25,7 @@ public class MemberController {
     // 로그인 부분
     @Autowired
     private MemberService service;
+
 
     @PostMapping("login")
     public ResponseEntity<Map<String, Object>> isValid(String email, String password) {
@@ -49,29 +52,36 @@ public class MemberController {
     }
 
     @PostMapping("loginAuth")
-    public ResponseEntity<Map<String,Object>> isValid(String email){
+    public ResponseEntity<Map<String, Object>> isValid(String email) {
         System.out.println(email);
-        Map<String,Object> dto = new HashMap<>();
-        dto.put("result",false);
-        if(service.isValidLoginAuth(email)){
+        Map<String, Object> dto = new HashMap<>();
+        dto.put("result", false);
+        if (service.isValidLoginAuth(email)) {
             Member member = service.getByEmail(email);
             dto.put("result", member);
-            if(email =="newlec@gmail.com")
-            dto.put("roles", new String[]{"ADMIN","MEMBER"});
+            if (email == "newlec@gmail.com")
+                dto.put("roles", new String[] { "ADMIN", "MEMBER" });
             else
-            dto.put("roles", new String[]{"MEMBER"});
+                dto.put("roles", new String[] { "MEMBER" });
         }
 
         System.out.println(dto);
-        return new ResponseEntity<Map<String,Object>>(dto, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
     }
 
-
     @GetMapping("test")
-    public String test(String test){
+    public String test(String test) {
 
         System.out.println("asdfasdf");
-        return "test"; 
+        return "test";
+    }
+
+    @GetMapping("follow")
+    public List<Member> follow(int id) {
+        List<Member> list = new ArrayList<>(); // ArrayList를 사용하여 List<Member> 생성
+        list =service.getMemberFollow(id);
+        System.out.println(list+"asdfasdf");
+        return list;
     }
 
 }

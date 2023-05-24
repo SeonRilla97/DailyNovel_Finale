@@ -276,7 +276,7 @@ export default {
       }
       // 책장 -> 컬렉션
       else if (435 <= canvasX && 0 <= canvasY && canvasX <= 680 && canvasY <= 255) {
-        this.$router.push("/member/room/collection");
+        this.$router.push("/member/room/collection/main");
         this.$emit("modalOpenHandler");
       }
       // 컴퓨터 -> 전시회

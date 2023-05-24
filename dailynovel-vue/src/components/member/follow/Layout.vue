@@ -1,6 +1,19 @@
 <script setup>
 import Index from './Index.vue';
 let name = "선릴라424";
+import { useRoute,useRouter  } from 'vue-router'
+import {ref, onBeforeMount} from 'vue'
+// let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
+const route = useRoute()
+const router = useRouter()
+
+// 현재 누구의 페이지인지 알아야함(userId)
+let userId = ref();
+onBeforeMount(()=>{
+  // userId 저장하고 index로 Go
+userId.value = route.params.memberId;
+router.push('/member/room/follow/s/index')
+});
 </script>
 
 <template>
@@ -16,15 +29,15 @@ let name = "선릴라424";
         </div>
         <hr style="height: 50%; margin:0;">
 
-        <router-link to="/member/room/follow/index">
+        <router-link to="/member/room/follow/s/index">
           <span class="font-bold h2">메인</span>
         </router-link>
 
-        <router-link to="/member/room/follow/collection">
+        <router-link to="/member/room/follow/s/collection">
           <span class="font-bold h2">컬렉션</span>
         </router-link>
 
-        <router-link to="/member/room/follow/guestbook">
+        <router-link to="/member/room/follow/s/guestbook">
           <span class="font-bold h2">방명록</span>
         </router-link>
       </div>
@@ -37,7 +50,8 @@ let name = "선릴라424";
     </header>
 
     <main class="m-follow-main">
-      <router-view></router-view>
+      <router-view
+      :userId = "userId"></router-view>
     </main>
 
 
@@ -113,7 +127,7 @@ let name = "선릴라424";
 }
 
 .m-follow-main {
-  overflow: scroll;
+  overflow: auto;
   box-sizing: border-box;
 
 }

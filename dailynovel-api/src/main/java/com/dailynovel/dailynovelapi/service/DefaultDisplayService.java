@@ -114,6 +114,16 @@ public class DefaultDisplayService implements DisplayService {
         shareRepository.save(diaryDisplay);
     }
 
+    @Override
+    public List<DiaryDisplay> getSharedList(int memberId, int diaryId) {
+        // DiaryDisplay diaryDisplay = new DiaryDisplay();
+        // diaryDisplay.setMemberId(memberId);
+        // diaryDisplay.setDiaryId(diaryId);
+        List<DiaryDisplay> sharedList =  shareRepository.findByMemberIdAndDiaryId(memberId,diaryId);
+
+        return sharedList;
+    }
+
 
 
 
