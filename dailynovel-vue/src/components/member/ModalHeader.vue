@@ -28,6 +28,7 @@ function modalCloseHandler() {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1; /* 병우 필요에 의해 추가함 */
 }
 
 .modal .title {

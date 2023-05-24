@@ -1,7 +1,12 @@
 <template lang="">
     <section class="container">
     <main>
-        <div class="d-none"><div id="editor"></div></div>
+
+        <div>
+                                <div id="editor">
+                                
+                                </div>
+                            </div>
         <br>
         <ul class="ulMargin">
             <li class="point" :class="'1'==currentCategory?'active-commu-category':''" @click="categoryClick('1')"><h1>인기</h1></li>
@@ -27,6 +32,12 @@
                         <router-link :to="'community/'+i">
                             <div class="content-subject"> 
                                 {{content[i]}}
+                                <div>
+                                    <div id="editor">
+                                    
+                                    </div>
+                                </div>
+
                             </div>
                         </router-link>
                         <div class="content-like-count">
@@ -50,6 +61,8 @@ import { useDisplayCategoryStore } from '../../store/useDisplayCategoryStore.js'
 
 import Quill from 'quill';
 
+// 되는 gpt코드 -> 비교해보기
+// let model = reactive([]);
 let model = reactive([]);
 let test = reactive([]);
 let test2 = reactive([]);
@@ -74,24 +87,35 @@ async function load() {
 
     model.splice(0, model.length, ...list);
     test.splice(0, test.length, ...list.map(item => item.content))
+    console.log(test)
+
 
     const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
     indeLikeList.splice(0, indeLikeList.length, ...data);
 
+
+
     for (let i in test) {
         if (test[i] !== null) {
             try {
                 const parsedJSON = JSON.parse(test[i]);
+                // test[i]가 유효한 JSON 형식인 경우에 대한 처리
+                // console.log(test[i]);
+                // editTriger(test[i])
                 let ToJson = JSON.parse(test[i]);
+                console.log(ToJson)
                 quill.setContents(ToJson);
+                console.log(quill.getText(ToJson));
                 content[i]=quill.getText(ToJson);
+                console.log("콘텐츠 아이는"+content[i])
             } catch (error) {
-                content[i]=test[i]
+                // test[i]가 JSON 형식이 아닌 경우에 대한 처리
                 continue; // 스킵
             }
         }
     }
+
 }
 
 let quill
@@ -102,6 +126,11 @@ onMounted(() => {
     quill = new Quill('#editor', {
         readOnly: true
     });
+})
+
+onUpdated(() => {
+    
+    console.log("2. 콘텐츠는"+content);
 })
 
 function editTriger(Json1) {
