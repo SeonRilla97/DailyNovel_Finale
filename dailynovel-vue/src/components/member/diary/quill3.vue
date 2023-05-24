@@ -152,8 +152,19 @@ onUpdated(() => {
 
 //원본 row한 스트링을 받음
 function editTriger(Json1){
-    ToJson = JSON.parse(Json1);
-    quill.setContents(ToJson);
+
+    // let a = Json1.charAt(1);
+    // console.log(a);
+
+    // console.log(typeof(Json1));
+    console.log(Json1);
+    // if(typeof(Json1) == 'string'){
+        // quill.setText(Json1);
+    // }
+    // else{
+        ToJson = JSON.parse(Json1);
+        quill.setContents(ToJson);
+    // }
 }
 
 // function editTriger2(Json1){
