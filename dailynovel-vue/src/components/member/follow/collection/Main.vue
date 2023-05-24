@@ -12,12 +12,10 @@ const props  = defineProps({
     successAddMenu: null
 })
 
-const router = useRouter()
+let router = useRouter()
 function pfcolClickHandler(collectionId){
-    router.push({
-         name: 'detail', 
-         params: { "collectionId": collectionId } 
-    })
+    console.log("hihi")
+    router.push({path:`/member/room/follow/s/detail/${collectionId}`})
 }
 </script>
 

@@ -11,18 +11,20 @@ const router = useRouter()
 let userId = ref();
 let member = ref();
 
-onBeforeMount(()=>{
-  // userId 저장하고 index로 Go
+//onBeforeMount(()=>{
   userId.value = route.params.memberId;
-  getUserInfo(userId.value);
-});
+  pfgetUserInfo(userId.value);
+//});
 
-function getUserInfo(userId){
+
+function pfgetUserInfo(userId){
+  console.log("설마 이거 누가 불러?")
+  console.log("식빵")
   fetch(`http://localhost:8080/members/info?id=${userId}`)
   .then(response => response.json())
   .then(result => {
     member.value = result;
-    router.push(`/member/room/follow/${member.value.id}/index`)
+    router.push(`/member/room/follow/s/index`)
   })
   .catch(error => console.log('error', error));
 }
@@ -45,7 +47,7 @@ function getUserInfo(userId){
           <span class="font-bold h2">메인</span>
         </router-link>
 
-        <router-link to="/member/room/follow/s/collection">
+        <router-link to="/member/room/follow/s/col/main">
           <span class="font-bold h2">컬렉션</span>
         </router-link>
 

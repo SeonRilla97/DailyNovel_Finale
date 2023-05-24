@@ -1,6 +1,5 @@
 <script setup>
-import {ref, watchEffect,toRef} from 'vue'
-
+import {ref, watchEffect,toRef,onMounted,onUpdated} from 'vue'
 // 추가버튼 팝업메뉴 Open
 let menuOpen = ref(null);
 // 다이어리가 속한 컬렉션
@@ -104,7 +103,7 @@ function sortMenuClickHandler(menu,curClick) {
               <section class="box" v-for="(value, key) in displayedDiary.list" v-bind:data-id="value.diaryId">
                         <div class="title">{{value.title}}</div>
                         <div class="main">
-                            <div class="title-err mgt-4">{{value.content}}</div>
+                            <div class="content mgt-4">{{value.content}}</div>
                         </div>
                         <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{value.likes}}</span></div>   
                         <div class="dropdown collection-list">
@@ -173,12 +172,19 @@ function sortMenuClickHandler(menu,curClick) {
     grid-template-rows: 1fr 5fr 0.5fr;
     text-align: center;
     position:relative;
+    padding:12px;
+    box-sizing: border-box;
 }
 /* .shared-container .main .box:nth-child(1){
     margin-left:0
 } */
-
-
+.box .content {
+    overflow: hidden;
+    line-height: 18px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 12;
+}
 
 .shared-container .main .box .title{
     font-size: 20px;
@@ -231,7 +237,7 @@ function sortMenuClickHandler(menu,curClick) {
     bottom:0;
     align-self:center;
     position:absolute;
-    bottom: -40px;
+    bottom: -50px;
     left: 50%;
     transform: translate(-50%);
 
@@ -265,12 +271,26 @@ min-width: 220px;
 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 z-index: 1;
 text-align: center;
-left:4%;
-/* transform:translate(-50% ,-100%) */
+/* transform:translate(-50% ,-100%); */
 border-radius: 12px;
-bottom:100%;
+bottom:0;
+height:120px;
+overflow-y:auto;
+}
+.collection-list.dropdown .content::-webkit-scrollbar {
+    width: 8px;  /* 스크롤바의 너비 */
 }
 
+.collection-list.dropdown .content::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #217af4; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.collection-list.dropdown .content::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
 
 .collection-list.dropdown .content .item {
 color: black;

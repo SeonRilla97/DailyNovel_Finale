@@ -6,7 +6,7 @@ import { useUserDetailsStore } from '../../../../store/useUserDetailsStore';
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 
 const route = useRoute()
-console.log(route.path)
+console.log("설마??")
 // 현재 컬렉션 ID값 추출
 const collectionId = ref('');
 collectionId.value = route.params.collectionId
@@ -73,10 +73,10 @@ function pfgetComment(colId, depth, refId){  //처음 부를때 -> colId만 || �
 onBeforeMount (()=> {
     
     pfgetListInCollection(memberId,collectionId.value);
-    pfgetComment(collectionId.value)
-    const router = useRouter()
-
-    router.push({name:'detailDiary'})
+    pfgetComment(collectionId.value);
+    const router = useRouter();
+    console.log("마운트 전에 이거 부르긴 하냐?")
+    router.push({name:'pfdetailDiary'})
 })
 
 // 어떤 메뉴를 눌렀지? (일기 / 댓글)
@@ -92,8 +92,8 @@ function menuClickHandler(menuIdx){
     <div class="detail-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <router-link to="/member/room/follow/s/collection/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
-                <router-link class="mgl-2" to="/member/room/follow/s/collection/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
+                <router-link to="/member/room/follow/s/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
+                <router-link class="mgl-2" to="/member/room/follow/s/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
             </div>
             <div class="icon-back"></div>
         </header>

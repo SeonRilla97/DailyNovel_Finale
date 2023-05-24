@@ -4,14 +4,11 @@ import { useRoute,useRouter } from 'vue-router'
 import { useUserDetailsStore } from '../../../store/useUserDetailsStore';
 
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-
-let pageIndex = ref(1)
-
+console.log("Detail의 Layout입니다.")
 const route = useRoute()
 console.log(route.path)
 // 현재 컬렉션 ID값 추출
 const collectionId = ref('');
-collectionId.value = route.params.collectionId
 // 사용자의 ID값 추출
 const memberId = userDetails.id;
 const data = reactive({
@@ -73,11 +70,11 @@ function getComment(colId, depth, refId){  //처음 부를때 -> colId만 || 답
 
 // 페이지 마운트전 동작할 함수
 onBeforeMount (()=> {
-    
+    collectionId.value = route.params.collectionId
+    data.collectionId= route.params.collectionId;
     getListInCollection(memberId,collectionId.value);
     getComment(collectionId.value)
     const router = useRouter()
-
     router.push({name:'detailDiary'})
 })
 

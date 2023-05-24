@@ -56,12 +56,8 @@ let reply = reactive({
     list:null
 })
 function pfgetReplyListFromDB(cmt,update){
-    // 1.query 제작
-    
-    if(cmt.comments == 0 ) return;
-    console.log("커멘트가 0인거 통과")
+    if(cmt.comments == 0 ) return; //답글이 들어오는게 아니라 댓글이 들어와야함을 의미
     if(openReply.value == cmt.id && update !=true) {
-        console.log("설마 여길 들어오겠어?")
         openReply.value =null
         reply.list =null
         return;
@@ -79,7 +75,8 @@ function pfgetReplyListFromDB(cmt,update){
 
 
 // (댓글/답글)의 수정폼에서 수정을 눌렀을때 (Fetch에서 분기됨)
-function pfupdateClickHandler(e,cmt){
+function pfupdateClickHandler(e,cmt,upperCmt){
+    console.log("수정합니다");
     console.log(cmt);
     // 2단계 위로가서 reg-input 찾기
     // html 구조 바뀌면 오류 발생할 지도 모름
@@ -111,7 +108,7 @@ function pfupdateClickHandler(e,cmt){
         }
         else{// 답글인경우
             console.log(cmt)
-        pfgetReplyListFromDB(cmt,true);
+        pfgetReplyListFromDB(upperCmt,true);
         console.log("이건 답글!")
         }
         
@@ -125,6 +122,7 @@ function pfupdateClickHandler(e,cmt){
 // 등록을 눌렀을때 (댓글/ 답글)
 function pfregClickHandler(e,memberId, collectionId,depth,refId,cmt){
     let textdom = e.target.parentNode.parentNode.querySelector(".reg-input");
+    console.log(textdom.innerText)
     let content =e.target.parentNode.parentNode.querySelector(".reg-input").innerText;
     if(content =="") {return}
     console.log(`${memberId} ${collectionId} ${depth} ${refId} ${content}` )
@@ -158,11 +156,13 @@ function pfregClickHandler(e,memberId, collectionId,depth,refId,cmt){
     .then(response => response.text())
     .then(result => {
         // if(refId) //답글쓰기
-        
+
         emit("callComments",collectionId);
-        pfgetReplyListFromDB(cmt,true);
+        if(cmt)
+            pfgetReplyListFromDB(cmt,true);
 
         curReg.value=null;
+
         textdom.innerText="";
     })
     .catch(error => console.log('error', error));
@@ -263,7 +263,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                             <div class="name">{{userDetails.nickname}}</div>
                                             <div class="reg-input mgt-3" contenteditable="true">{{ reply.content }}</div>
                                             <div class="reg-btn">
-                                                <div class="mgt-3 ib cursor-pt undrag" @click="pfupdateClickHandler($event,reply)">수정</div>
+                                                <div class="mgt-3 ib cursor-pt undrag" @click="pfupdateClickHandler($event,reply,cmt)">수정</div>
                                                 <div class="mgt-3 ib mgl-3 cursor-pt undrag" @click="curModify=null">취소</div>
                                             </div>
                                         </div>

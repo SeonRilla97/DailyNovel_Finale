@@ -188,10 +188,11 @@ const router = useRouter()
 function colClickHandler(collectionId){
     console.log("내 컬렉션의 리스트중 하나 누르기 : " + collectionId)
     router.push({
-         name: 'detail', 
-         params: { "collectionId": collectionId } 
+         path: `./detail/${collectionId}`
+        //  params: { "collectionId": collectionId } 
     })
 }
+
 </script>
 
 

@@ -16,13 +16,15 @@ console.log(props.data.diarys)
             <section class="box" v-for="(value, key) in data.diarys">
                     <div class="title">{{value.title}}</div>
                     <div class="main">
-                        <div class="title-err mgt-4">{{value.content}}</div>
+                        <div class="content mgt-4">{{value.content}}</div>
                     </div>
                     <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{ value.likes }}</span></div>   
             </section>
             
         </div>
+        <div class="err-no-diary" v-if="data.diarys.length==0">일기가 없습니다.</div>
     </div>
+    
 </template>
 
 <style scoped>
@@ -58,8 +60,16 @@ console.log(props.data.diarys)
     grid-template-rows: 1fr 5fr 0.5fr;
     text-align: center;
     position:relative;
+    box-sizing: border-box;
+    padding:12px;
 }
-
+.box .main .content{
+    overflow: hidden;
+    line-height: 18px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 12;
+}
 .container .box .title{
 
     font-size: 20px;
@@ -83,5 +93,11 @@ console.log(props.data.diarys)
     width:16px;
     height: 16px;
 }
-
+.err-no-diary{
+    font-size:30px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50% ,-50%);
+}
 </style>
