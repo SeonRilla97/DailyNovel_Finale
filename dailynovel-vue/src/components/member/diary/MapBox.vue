@@ -66,19 +66,21 @@ export default {
     components: {
         KakaoMap,
     },
-    props:['myLocation'],
+    props:['myLocate'],
+    // setDiaryLocate
     data() {
         return {
             mapOption: {
                 center: {
-                    lat: this.myLocation.lat,
-                    lng: this.myLocation.lng,
+                    lat: this.myLocate.lat,
+                    lng: this.myLocate.lng,
                 },
                 level: 3,
             },
             myplaces: [],
             markers: null,
             activemyplace: null, //selected
+            setmyplace: null,
             overlay: null,// overlay 인스턴스
             overlayMyplace: null, //오버레이에 붙여줄 장소
             search: {
@@ -139,6 +141,14 @@ export default {
                 this.search.results = data;
             });
         },
+
+        // setDMap(setDiaryLocate){
+        //     this.mapOption.center = {
+        //         lat: setDiaryLocate.lat,
+        //         lng: setDiaryLocate.lng
+        //     }
+        //     console.log("테스트세트텟트ㅔ스테슽",this.mapOption.center.lat)
+        // },
 
         showonMap(place) {
             console.log("[center]", place)

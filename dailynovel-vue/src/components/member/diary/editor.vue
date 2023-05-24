@@ -49,6 +49,8 @@ const initHander = function (firstValue){
 let weatherDone = false;
 let ControllerAdd = props.isAdd;
 let myLocation = { lat: null, lng: null };
+// let setDiaryLocate = { lat: null, lng: null };
+
 
 onMounted(() => {
   // console.log(props.newestDiaryId);
@@ -185,6 +187,10 @@ function coor(coor) {
 console.log("coor:", coor);
 }
 
+// function setLocate{
+//   this.setMap()
+// }
+
 
  function geoFindMe() {
 
@@ -196,6 +202,7 @@ console.log("coor:", coor);
         // weather(latitude, longitude);
         resolve([latitude,longitude]);
         myLocate(latitude,longitude)
+        // setmylocate(latitude, longitude)
     }
     function error() {
       console.log("Unable to retrieve your location");
@@ -216,6 +223,16 @@ console.log("coor:", coor);
       return { lat: myLocation.lat, lng: myLocation.lng };
 
     }
+
+  // function setmylocate(latitude,longitude){
+  //   setDiaryLocate.lat = latitude;
+  //   setDiaryLocate.lng = longitude;
+
+  //   console.log(latitude,latitude,latitude,latitude,latitude,latitude,latitude)
+
+  //     return { lat: setDiaryLocate.lat, lng: setDiaryLocate.lng };
+
+  // }
   function weather(latitude, longitude){
 
     return new Promise(function (resolve){
@@ -707,7 +724,7 @@ let quillOutputValue = function(convertDeltaJson) {
       <button
           @click="mapToggle = !mapToggle"
           >
-          지도추가
+          지도보기
       </button>
 
       </div>
@@ -724,7 +741,8 @@ let quillOutputValue = function(convertDeltaJson) {
         <div
           v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocation="myLocation" @coorGood="coor" />
+            <MapBox :myLocate="myLocation"   @coorGood="coor" />
+            <!-- :setmylocate="setDiaryLocate" -->
           </div>
 
       </div>
@@ -1050,6 +1068,8 @@ let quillOutputValue = function(convertDeltaJson) {
 .toggleSwitch, .toggleButton {
   transition: all 0.2s ease-in;
 }
+
+
 
 .add-btn{
     font-size: 40px;
