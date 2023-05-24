@@ -18,5 +18,5 @@ public interface UserService {
     String FindSamephoneNumber(String phoneNumber);
 
 
-    boolean ChangePaswword(String email, String password);
+    boolean ChangePassword(String email, String password);
 }

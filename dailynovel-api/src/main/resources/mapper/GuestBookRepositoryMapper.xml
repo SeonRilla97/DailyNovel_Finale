@@ -16,6 +16,12 @@
     where member_id = #{id};
   </select>
 
+  <select id="getGuestbookAllbyGBId" resultMap="GuestBookAllMap">
+    select * 
+    from guestbook_all
+    where id = #{id};
+  </select>
+
   <insert id="insertGuestbook" parameterType="MbGuestBook">
     insert into guestbook 
     (member_id, 

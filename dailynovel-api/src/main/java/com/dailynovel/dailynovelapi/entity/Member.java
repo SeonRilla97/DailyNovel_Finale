@@ -32,6 +32,9 @@ public class Member implements Persistable {
     private Timestamp timestamp;
     private Date birthday;
     private int gender;
+    private String message;
+    @Column(name="password_change_period")
+    private Date passwordChangePeriod;
 
     public boolean isEmpty() {
         return false;

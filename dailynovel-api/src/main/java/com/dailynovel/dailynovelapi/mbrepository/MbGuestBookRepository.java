@@ -20,4 +20,6 @@ public interface MbGuestBookRepository {
   public void updateGuestbookComment(MbGuestBookComment comment);
 
   public void deleteGuestbookComment(int guestbookId);
+
+  public MbGuestBookAll getGuestbookAllbyGBId(int id);
 }

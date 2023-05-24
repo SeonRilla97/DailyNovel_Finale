@@ -7,7 +7,7 @@ import java.time.format.DateTimeParseException;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,23 +32,22 @@ public class UserController {
 	@PostMapping("signup")
 	public boolean signup(@RequestBody Member member) {
 	boolean result = service.signup(member);
-	System.out.println(result+"회원가입 결과");
 		return result;
 	}
 
-	@RequestMapping("nicknameCheck")
+	@GetMapping("nicknameCheck")
 	public boolean nicknameCheck(String nickname) {
 		boolean samenickname = service.FindSameNickname(nickname);
 		return samenickname;
 	}
 
-	@RequestMapping("PhoneNumberCheck")
+	@GetMapping("PhoneNumberCheck")
 	public String phoneNumberCheck(String phoneNumber) {
 		String email = service.FindSamephoneNumber(phoneNumber);
 		return email;
 	}
 
-	@RequestMapping("emailCheck")
+	@GetMapping("emailCheck")
 	public boolean emailCheck(String email) {
 		boolean result= false;
 		boolean sameemail = service.FindSameEmail(email);
@@ -64,7 +63,7 @@ public class UserController {
 
 	}
 
-	@RequestMapping("EmailVerificationNumber")
+	@GetMapping("EmailVerificationNumber")
 	public boolean EmailVerificationNumber(String email) {
 		boolean result= true;
 		boolean sameemail = service.FindSameEmail(email);
@@ -74,7 +73,7 @@ public class UserController {
 			emailVerificationService.saveVerificationCode(email, authCode);
 			System.out.println(authCode);
 			boolean mailCheck = mailService.mailCheck(email, authCode, "DailyNovel 임시비밀번호 입니다.", "임시비밀번호 발급:");
-			service.ChangePaswword(email, authCode);
+			service.ChangePassword(email, authCode);
 			result =mailCheck;
 		}
 		return result;
@@ -83,18 +82,20 @@ public class UserController {
 	
 	
 
-	@RequestMapping("emailCheckAuth")
+	@GetMapping("emailCheckAuth")
 	public boolean emailCheckAuth(String email) {
 		boolean sameemail = service.FindSameEmail(email);
 		return !sameemail;
 	}
 
-	@RequestMapping("emailCheckNum")
+	@GetMapping("emailCheckNum")
 	public boolean emailCheckNum(String email, String emailCheckNum) {
 
 		return emailVerificationService.getVerificationCodeResult(email, emailCheckNum);
 
 		
 	}
+
+
 
 }

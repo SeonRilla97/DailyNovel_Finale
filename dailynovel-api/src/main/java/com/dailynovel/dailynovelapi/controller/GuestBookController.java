@@ -31,6 +31,12 @@ public class GuestBookController {
     return new ResponseEntity<List<MbGuestBookAll>>(list, HttpStatus.OK);
   }
 
+  @GetMapping("all")
+  public ResponseEntity<MbGuestBookAll> getGusetbookbyId(@RequestParam("id") int id){
+    MbGuestBookAll gba = service.getGusetbookbyId(id);
+    return new ResponseEntity<MbGuestBookAll>(gba, HttpStatus.OK);
+  }
+
   @PostMapping("save")
   public int writeGuestBook(@RequestBody Map<String, Object> guestbook) {
     
