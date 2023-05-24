@@ -1,11 +1,13 @@
 <script setup>
 import FollowCard from './FollowCard.vue';
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
-import { onMounted } from 'vue';
+import { onMounted,reactive } from 'vue';
 
 const user = useUserDetailsStore();
 const userId = user.id;
-const userFollowId = reactive({list,})
+const userFollowId = reactive({
+
+})
 
 async function getFollowIdList(id){    
     await fetch(`http://localhost:8080/member/follow?id=${id}`,
