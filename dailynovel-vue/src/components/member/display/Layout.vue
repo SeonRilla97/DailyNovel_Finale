@@ -199,7 +199,8 @@ function goToNextPage() { //스크롤 페이징
 }
 
 .header-band {
-    background-color: #F2C6C2;
+    border-radius: 1px solid black;
+    /* background-color: #F2C6C2; */
     display: grid;
     justify-content: space-between;
     grid-auto-flow: column;
@@ -238,9 +239,9 @@ li {
 
 .content-box {
     /* 게시판 콘탠츠박스 디자인 */
-    /* border: 1px solid fff8f3; */
+    border: 1px solid black;
     border-radius: 1rem;
-    background-color: #fff8f3;
+    /* background-color: #fff8f3; */
     width: 17.5rem;
     height: 28.375rem;
     display: grid;
@@ -300,7 +301,7 @@ li {
 
     text-align: center;
     vertical-align: middle;
-    background-color: #F2C6C2;
+    /* background-color: #F2C6C2; */
     color: #000;
     width: 8rem;
     height: 4rem;

@@ -67,7 +67,8 @@ export default {
     components: {
         KakaoMap,
     },
-    props:['myLocate, mapCoor'],
+    // mycoor
+    props:['myLocate'],
     // setDiaryLocate
     data() {
         return {
@@ -98,22 +99,16 @@ export default {
 
         };
     },
-    mounted(mapCoor) {
+    mounted() {
         const vueKakaoMap = this.$refs.kmap;
         this.overlay = new KakaoOverlay(vueKakaoMap, this.$refs.myplaceOverlay);
+        // let markerPosition = new kakao.maps.LatLng(dtcoor.lat , dtcoor.lng);
 
-        let mapOption = {
-            center : new kakao.maps.LatLng(mapCoor.lat, mapCoor.lng),
-            level : 2
-        }
+        // let marker = new Window.kakao.maps.Marker({
+        //     position: markerPosition
+        // });
 
-        let markerPosition = new kakao.maps.LatLng(mapCoor.lat, mapCoor.lng);
-
-        let marker = new Window.kakao.maps.Marker({
-            position: markerPosition
-        });
-
-        marker.setMap(map)
+        // marker.setMap(map)
 
     },
     methods: {
