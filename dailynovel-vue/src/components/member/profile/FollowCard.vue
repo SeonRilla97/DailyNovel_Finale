@@ -27,7 +27,7 @@ console.log( props.data.nickName );
         <section class="m-flwcard-container">
             <div class="m-follow-img">이미지</div>
             <div class="m-follow-name lc-center"><span>{{ props.data.nickName }}</span></div>
-            <div class="m-follow-checkbox lc-center"><div>구독중</div></div>
+            <div class="m-follow-checkbox lc-center"><div> </div></div>
         </section>    
     </router-link>
     

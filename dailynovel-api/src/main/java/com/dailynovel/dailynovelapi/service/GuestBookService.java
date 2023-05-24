@@ -28,6 +28,8 @@ public interface GuestBookService {
 
   public void deleteGuestBookComment(Map<String, Object> guestbookId);
 
+  public MbGuestBookAll getGusetbookbyId(int id);
+
   // 방명록 답글 수정 (주인)
 
   // 방명록 답글 삭제 (주인)

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dailynovel.dailynovelapi.entity.Member;
+import com.dailynovel.dailynovelapi.mbentity.MbMember;
 
 public interface MemberService {
     boolean isValid(String email, String password);
@@ -22,5 +23,7 @@ public interface MemberService {
     List<Member> getMemberFollow(int id);
 
     boolean ChangePassword(String email, String password);
+
+    MbMember getMemberInfo(int id);
 
 }

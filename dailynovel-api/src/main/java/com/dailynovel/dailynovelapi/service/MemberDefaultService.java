@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.dailynovel.dailynovelapi.entity.Member;
 import com.dailynovel.dailynovelapi.entity.MemberFollow;
 import com.dailynovel.dailynovelapi.entity.MemberFollowId;
+import com.dailynovel.dailynovelapi.mbentity.MbMember;
+import com.dailynovel.dailynovelapi.mbrepository.MbMemberRepository;
 import com.dailynovel.dailynovelapi.repository.MemberFollowRepository;
 import com.dailynovel.dailynovelapi.repository.MemberRepository;
 
@@ -28,6 +30,9 @@ public class MemberDefaultService implements MemberService {
 
     @Autowired
     private MemberFollowRepository memberFollowRepository;
+
+    @Autowired
+    private MbMemberRepository mbrepository;
 
     @Override
     public boolean isValid(String email, String password) {
@@ -88,6 +93,11 @@ public class MemberDefaultService implements MemberService {
         System.out.println(list); // 또는 가져온 followId를 원하는 곳에 활용
 
         return list;
+    }
+
+    @Override
+    public MbMember getMemberInfo(int id) {
+        return mbrepository.findAllbyId(id);
     }
 
     @Override

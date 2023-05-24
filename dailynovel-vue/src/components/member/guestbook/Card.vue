@@ -10,17 +10,22 @@ const user = useUserDetailsStore();
 defineEmits(["initGuestbookList"]);
 
 let props = defineProps({
-    guestbook: Object,
+    guestbookId: Number,
 
 }) ;
-// watcheffect
-let cmtJson = reactive({
+
+const guestBookId = props.guestbookId;
+const guestBookJson = ref("");
+
+
+const cmtJson = reactive({
+    guestbookId: guestBookId,
     memberId: user.id,
-    guestbookId: props.guestbook.id,
-    comment: props.guestbook.comment,
+    comment: null,
 })
 
-let updatecmt = ref("");
+const updatecmt = ref("");
+const testCmt = ref("");
 
 let cmtShow = ref(true);
 let reCmtShow = ref(false);
@@ -35,12 +40,36 @@ onUpdated(()=>{
 })
 
 onMounted(() => { 
-
+    getGusetbookbyIdHandler(guestBookId);
 });
 
-async function writeGuestBookCommentHandler(cmtJson) {
+async function getGusetbookbyIdHandler(id){
+    await fetch(`http://localhost:8080/members/guestbooks/all?id=${id}`,
+    {
+        method: "GET",
+        headers: {
+        // "Accept": "application/json",
+        "Content-type": "application/json"
+        },        
+    })
+    .then(response => response.json())
+    .then((data) => { guestBookJson.value = data })
+    .then(() => {console.log(guestBookJson.value)})
+    // .then(cmtJson.comment = guestBookJson.value.comment)
+    .then(() => {updatecmt.value = guestBookJson.value.comment})
+    .then(()=>{console.log(updatecmt.value)})
+    // .then(()=>{console.log(cmtJson.comment)})
+    .catch(error => console.log(error));
+}
 
-    console.log(cmtJson)
+async function writeGuestBookCommentHandler() {
+    let cmtJson = {
+        guestbookId: guestBookId,
+        memberId: user.id,
+        comment: testCmt.value,
+    };
+    
+    console.log(cmtJson);
 
     await fetch("http://localhost:8080/members/guestbooks/comment",
     {
@@ -53,11 +82,20 @@ async function writeGuestBookCommentHandler(cmtJson) {
     })
     .then(response => response.json())
     .then((data) => { if (data == 1) console.log("완료") })
+    .then(() => {getGusetbookbyIdHandler(guestBookId)})
     .catch(error => console.log(error));
+
+    testCmt.value = null;
 }
 
-async function rewriteGuestBookCommentHandler(cmtJson) {   
+async function rewriteGuestBookCommentHandler() {   
 
+    let cmtJson = {
+        guestbookId: guestBookId,
+        memberId: user.id,
+        comment: updatecmt.value,
+    };
+    
     await fetch("http://localhost:8080/members/guestbooks/comment/update",
     {
         method: "POST",
@@ -69,7 +107,11 @@ async function rewriteGuestBookCommentHandler(cmtJson) {
     })
     .then(response => response.json())
     .then((data) => { if (data == 1) console.log("완료") })
+    .then(() => {getGusetbookbyIdHandler(guestBookId)})
+    .then(() => {showHandler()})
     .catch(error => console.log(error));
+    
+    testCmt.value = null;
 }
 
 async function deleteGuestBookCommentHandler(id) {   
@@ -85,7 +127,10 @@ async function deleteGuestBookCommentHandler(id) {
     })
     .then(response => response.json())
     .then((data) => { if (data == 1) console.log("완료") })
+    .then(() => {getGusetbookbyIdHandler(guestBookId)})
     .catch(error => console.log(error));
+
+    testCmt.value = null;
 }
 
 
@@ -98,7 +143,7 @@ async function deleteGuestBookCommentHandler(id) {
         <!-- 방명록 카드 헤더 -->
         <header class="m-gbcard-header">
             <span>From.</span>
-            <div class="m-gbcard-writer"><span>{{ props.guestbook.writerName }}</span></div>
+            <div class="m-gbcard-writer"><span>{{ guestBookJson.writerName }}</span></div>
         </header>
 
         <!-- 방명록 카드 메인 -->
@@ -106,7 +151,7 @@ async function deleteGuestBookCommentHandler(id) {
             
             <!-- 방명록 카드 내용 -->
             <div class="m-gbcard-content">
-                <span>{{ props.guestbook.content }}</span>
+                <span>{{ guestBookJson.content }}</span>
             </div>
 
             <!-- 방명록 카드 답글 -->
@@ -117,27 +162,27 @@ async function deleteGuestBookCommentHandler(id) {
                 <form class="m-gbcard-cmt-form" v-show="cmtShow">
                     
                     <!-- 답글을 이미 쓴 적이 있을 때 -->
-                    <textarea class="m-gbcard-cmt-writebox" v-if="props.guestbook.comment" readonly placeholder="답글을 적어보세요." 
-                    :value="props.guestbook.comment"></textarea>
-                    <div class="m-gbcard-cmt-updateiconbox" v-if="props.guestbook.comment">
+                    <textarea class="m-gbcard-cmt-writebox" v-if="guestBookJson.comment" readonly placeholder="답글을 적어보세요." 
+                    :value="guestBookJson.comment"></textarea>
+                    <div class="m-gbcard-cmt-updateiconbox" v-if="guestBookJson.comment">
                         <div class="m-guestbook-icon-box pencil-icon" @click="showHandler"></div>
                         <div class="m-guestbook-icon-box trash-icon" @click="deleteGuestBookCommentHandler(cmtJson.guestbookId), $emit('initGuestbookList')"></div>
                     </div>
 
                     <!-- 답글을 처음 적을 때 -->
-                    <textarea class="m-gbcard-cmt-writebox" v-if="!props.guestbook.comment" placeholder="답글을 적어보세요."                     
-                    v-model="cmtJson.comment"></textarea>
-                    <div class="m-gbcard-cmt-writeBtn" v-if="!props.guestbook.comment">
-                        <input type="submit" class="m-gbcard-modifyBtn" value="작성" @click.prevent="writeGuestBookCommentHandler(cmtJson), $emit('initGuestbookList')">
+                    <textarea class="m-gbcard-cmt-writebox" v-if="!guestBookJson.comment" placeholder="답글을 적어보세요." v-model="testCmt"                     
+                    ></textarea>
+                    <div class="m-gbcard-cmt-writeBtn" v-if="!guestBookJson.comment">
+                        <input type="submit" class="m-gbcard-modifyBtn" value="작성" @click.prevent="writeGuestBookCommentHandler()">
                     </div>                    
                 </form>   
                 <!-- v-model="cmtJson.comment"  -->
                 <!-- 답글을 수정할 때 -->
                 <form class="m-gbcard-cmt-form" v-show="reCmtShow">
                     
-                    <textarea class="m-gbcard-cmt-writebox" placeholder="확인용 답글을 적어보세요." >{{ guestbook.comment }}</textarea>
+                    <textarea class="m-gbcard-cmt-writebox"  v-model="updatecmt"></textarea>
                     <div class="m-gbcard-cmt-updateiconbox">
-                        <div class="m-gbcard-modifyBtn" @click.prevent="rewriteGuestBookCommentHandler(cmtJson), $emit('initGuestbookList'), showHandler"><span style="font-size: 14px;">수정</span></div>                        
+                        <div class="m-gbcard-modifyBtn" @click.prevent="rewriteGuestBookCommentHandler()"><span style="font-size: 14px;">수정</span></div>                        
                     </div>
                 </form>       
 
