@@ -130,15 +130,16 @@ public class DisplayController {
     }
     
     @GetMapping("shareScan")
-    public List<DiaryDisplay> shareScan(
+    public boolean shareScan(
         @RequestParam(name = "mId") int memberId,
         @RequestParam(name = "dId") int diaryId
     ){
         List<DiaryDisplay> sharedList = service.getSharedList(memberId, diaryId);
 
         System.out.println(sharedList);
+        System.out.println(sharedList.isEmpty()?false:true);
 
-        return sharedList;
+        return (sharedList.isEmpty()?false:true);
     }
 }
 

@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dailynovel.dailynovelapi.entity.Member;
+import com.dailynovel.dailynovelapi.mbentity.MbMember;
 import com.dailynovel.dailynovelapi.service.MemberService;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("members")
@@ -29,7 +32,6 @@ public class MemberController {
 
     @PostMapping("login")
     public ResponseEntity<Map<String, Object>> isValid(String email, String password) {
-        System.out.println(email + password);
         Map<String, Object> dto = new HashMap<>();
         dto.put("result", false);
         if (service.isValid(email, password)) {
@@ -40,6 +42,7 @@ public class MemberController {
             else
                 dto.put("roles", new String[] { "MEMBER" });
         }
+        System.out.println(dto);
         return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
     }
 
@@ -64,24 +67,31 @@ public class MemberController {
             else
                 dto.put("roles", new String[] { "MEMBER" });
         }
-
-        System.out.println(dto);
         return new ResponseEntity<Map<String, Object>>(dto, HttpStatus.OK);
-    }
-
-    @GetMapping("test")
-    public String test(String test) {
-
-        System.out.println("asdfasdf");
-        return "test";
     }
 
     @GetMapping("follow")
     public List<Member> follow(int id) {
         List<Member> list = new ArrayList<>(); // ArrayList를 사용하여 List<Member> 생성
         list =service.getMemberFollow(id);
-        System.out.println(list+"asdfasdf");
         return list;
     }
+
+
+    @PostMapping("passwordChange")
+    public boolean passwordChange(@RequestBody Member member) {
+        System.out.println(member.getEmail());
+        System.out.println(member.getPassword());
+        boolean result = service.ChangePassword(member.getEmail(),member.getPassword());
+
+        return result;
+    }
+    
+
+    @GetMapping("mInfo")
+    public MbMember getMemberInfoById(@RequestParam int id){
+        return service.getMemberInfo(id);
+    }
+
 
 }

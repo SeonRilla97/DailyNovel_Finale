@@ -5,13 +5,17 @@ import quillCopy from './quill copy.vue';
 import quill3 from './quill3.vue';
 
 import { ref,onMounted, onUpdated,  defineProps , defineEmits, watchEffect} from 'vue';
+
 import MapBox from './MapBox.vue';
+import {useUserDetailsStore} from '../../store/useUserDetailsStore'
 
 // "기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"
 // "자유"
 
+const loginuser = useUserDetailsStore();
+
 //전역 멤버 아이디
-let memberID = null;
+const memberID = loginuser.id;
 
 const props = defineProps({
     'isAdd' : '',
@@ -53,6 +57,8 @@ let myLocation = { lat: null, lng: null };
 onMounted(() => {
   // console.log(props.newestDiaryId);
   geoFindMe(); //초기 맵구현시 필요
+
+  console.log(memberID);
 });
 
 
@@ -71,7 +77,7 @@ function newestPromise(diaryId){
 let isOn = false;
 onUpdated(() => {
 
-  coor();
+  // coor();
 
       // load id 가 null 이 아니면
   if(props.loadDiaryId != null){
@@ -178,12 +184,27 @@ function getDate(gotdate){
 
 
  //현재 위치 받아오기 API
-
+let loadLocate = [2];
 // 지도 설정한 좌표값 얻어오기
-function coor(coorGood) {
+function coor(coor) {
 
-  console.log(coorGood)
-}
+  console.log("coor:", coor);
+
+  // console.log( coor.lat );
+  // console.log( coor.lng );
+
+  let latLng = coor;
+  console.log(latLng);
+  // console.log(latLng.lat);
+  // console.log( );
+
+
+  loadLocate[0] = coor.lat;
+  loadLocate[1] = coor.lng;
+  console.log(loadLocate);
+  // EditDiary(defaultDiaryId);
+
+};
 
  function geoFindMe() {
 
@@ -319,14 +340,16 @@ const addDiary = function(isAdd){
 
 
     //ref 기본값 담기
-    objRef(null,1,null,null
+    objRef(null,memberID,null,null
     ,null,"기분",100,"태그"
     ,null,myLocation.lat,myLocation.lng);
 
-    // console.log(diaryRef.value);
+    console.log(diaryRef.value.honesy);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
-    // console.log(diaryObj);
+
+    console.log(diaryObj.honesy);
+
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
@@ -350,6 +373,7 @@ const addDiary = function(isAdd){
     resolve("success");
 })};
 
+let staticRegDate = "";
 const loadDiary = function(diaryId){
   return new Promise(function(resolve){
 
@@ -364,13 +388,32 @@ const loadDiary = function(diaryId){
 
       mapToggle.value = false;
 
-      memberID = result.member_id;
-      console.log(memberID);
+      // memberID = result.member_id;
+      // console.log(memberID);
       // isShare(memberID,result.diaryId);
-      console.log(result);
+      // console.log(result);
+
       diaryRef.value = result;
+      staticRegDate = result.regDate;
+      myLocation.lat = result.lat;
+      myLocation.lng = result.lng;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
 
+      let promise = isShare(memberID, diaryId);
+      promise
+      .then(result => {
+        // console.log(result);
+
+        // if(result == true){
+        //   isSharedref.value = true;
+        // }
+        // else{
+        //   isSharedref.value = false;
+        // }
+        // console.log(isSharedref.value);
+
+      });
+      
 
       resolve(true);
     })
@@ -394,9 +437,15 @@ const EditDiary = function(diaryId){
     // diaryObj = diaryRef.value;
     diaryObj.member_id = null;
     diaryObj.id = diaryId;
-    diaryObj.regDate = null;
+    diaryObj.regDate = staticRegDate;
+    diaryObj.lat = loadLocate[0];
+    diaryObj.lng = loadLocate[1];
+    
+    console.log(diaryObj);
     
     let raw = JSON.stringify(diaryObj);
+
+    console.log(raw);
 
     let requestOptions = {
       method: 'PUT',
@@ -488,30 +537,49 @@ fetch("http://localhost:8080/display/share", requestOptions)
   }
 )};
 
-  function isShare(memberId, diaryId){
+function isShare(memberId, diaryId){
     return new Promise(function(resolve,reject){
 
-    // let myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "application/json");
+//       var myHeaders = new Headers();
+// myHeaders.append("Content-Type", "application/json");
 
-    // shareJson.memberId = memberId;
-    // shareJson.diaryId = diaryId;
+// var raw = JSON.stringify({
+//   "memberId": 1,
+//   "diaryId": 199
+// });
 
-    // let raw = JSON.stringify(shareJson);
+var requestOptions = {
+  method: 'GET',
+  // headers: myHeaders,
+  // body: raw,
+  redirect: 'follow'
+};
 
-    let requestOptions = {
-      method: 'GET',
-      // headers: myHeaders,
-      // body: raw,
-      redirect: 'follow'
-    };
+let a = parseInt(diaryId);
+console.log(a);
 
-  fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-  }
-)};
+console.log(memberId, a);
+fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
+  .then(response => response.text())
+  .then(result => {
+    console.log(result);
+    console.log( typeof(result));
+
+    console.log(result == 'true');
+
+    if(result === 'true'){
+      isSharedref.value = true;
+    }
+    else{
+      isSharedref.value = false;
+    }
+    console.log(isSharedref.value);
+
+    resolve(result);
+  })
+  .catch(error => console.log('error', error));
+  
+})};
 
 // let previousValueFeeling = diaryRef.value.feeling;
 // let previousValueTag = diaryRef.value.tag;
@@ -684,13 +752,6 @@ let quillOutputValue = function(convertDeltaJson) {
           <!-- {{titleDate+'의 일기'}} -->
           {{ diaryRef.title }}
         </header>
-        <div
-            v-if="isSharedref"
-            class="editor-share">공유 중</div>
-        <div
-            v-if="!isSharedref"
-            class="editor-share .active">공유 여부</div>
-
         <input 
         type="checkbox" id="toggle" class="toggle2" hidden>
         <label 
@@ -701,6 +762,13 @@ let quillOutputValue = function(convertDeltaJson) {
           
           <span class="toggleButton"></span>
         </label>
+        <div
+            v-if="isSharedref"
+            class="editor-share">공유 중</div>
+        <div
+            v-if="!isSharedref"
+            class="editor-share .active">공유 여부</div>
+
 
     </div>
 
@@ -755,7 +823,8 @@ let quillOutputValue = function(convertDeltaJson) {
         <div
           v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocation="myLocation" @coor="coorGood"/>
+            <MapBox :myLocate="myLocation"   @coorGood="coor" />
+            <!-- :setmylocate="setDiaryLocate" -->
           </div>
 
       </div>
@@ -951,6 +1020,7 @@ let quillOutputValue = function(convertDeltaJson) {
       color: #FCFCFC;
       font-size : 12px;
       text-align: center; */
+      margin-left: 20px;
 
       justify-self: center;
       align-self: center;

@@ -102,6 +102,7 @@ public class UserDefaultService implements UserService {
 			String birthdayString = dateFormat.format(member.getBirthday());
 			LocalDate birthday = LocalDate.parse(birthdayString, formatter);
 			member.setBirthday(java.sql.Date.valueOf(birthday));
+            member.setPasswordChangePeriod(java.sql.Date.valueOf(birthday));
 		} catch (DateTimeParseException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +129,7 @@ public class UserDefaultService implements UserService {
     }
 
     @Override
-    public boolean ChangePaswword(String email, String password) {
+    public boolean ChangePassword(String email, String password) {
    
         Member member  = repository.findByEmail(email);
         if(member !=null){
@@ -140,6 +141,10 @@ public class UserDefaultService implements UserService {
             if(passwordCheck!=password){
                 return false;
             }
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String dateString = dateFormat.format(date);
+            member.setBirthday(java.sql.Date.valueOf(dateString));
             return true;
         }
         return false;

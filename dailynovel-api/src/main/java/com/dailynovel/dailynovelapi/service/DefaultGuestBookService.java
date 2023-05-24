@@ -94,4 +94,12 @@ public class DefaultGuestBookService implements GuestBookService {
     mbRepository.deleteGuestbookComment(id);
   }
 
+  @Override
+  public MbGuestBookAll getGusetbookbyId(int id) {
+    
+    MbGuestBookAll guestbook = mbRepository.getGuestbookAllbyGBId(id);
+
+    return guestbook;
+  }
+
 }
