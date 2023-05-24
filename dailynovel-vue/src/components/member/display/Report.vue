@@ -32,6 +32,7 @@
                                 <option value="욕설">욕설</option>
                                 <option value="자살암시">자살암시</option>
                                 <option value="외설">외설</option>
+                                <option value="기타">도배</option>
                                 <option value="기타">기타</option>
                             </select>
                         </section>
@@ -43,7 +44,7 @@
                     </fieldset>
                 </section>
                 <div class="grid grid-column mgt-3">
-                    <button @click="goBackHandler">취소하기</button>
+                    <button @click="goBackHandler" v-text="changeBtn==1?'취소하기':'뒤로가기'"></button>
                     <button @click="sendHandler" class="reg mgl-3">등록하기</button>
                 </div>
         </form>
@@ -56,6 +57,8 @@
 import { ref, defineProps, onUpdated, onMounted, } from 'vue'
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js'
 
+let changeBtn = ref(1);
+
 const props = defineProps({
     id: {
         type: Number
@@ -67,6 +70,7 @@ function goBackHandler() {
 }
 function sendHandler() {
     alert("신고를 완료했습니다.")
+    changeBtn.value++
 }
 
 // onMounted(() => {

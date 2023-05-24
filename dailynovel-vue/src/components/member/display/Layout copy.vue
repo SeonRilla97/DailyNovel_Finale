@@ -1,7 +1,11 @@
 <template lang="">
     <section class="container">
     <main>
-        <div class="d-none"><div id="editor"></div></div>
+        <div>
+            <div id="editor">
+            
+            </div>
+        </div>
         <br>
         <ul class="ulMargin">
             <li class="point" :class="'1'==currentCategory?'active-commu-category':''" @click="categoryClick('1')"><h1>인기</h1></li>
@@ -9,6 +13,11 @@
             <li class="point" :class="'자유'==currentCategory?'active-commu-category':''" @click="categoryClick('자유')"><h1>자유</h1></li> 
             <li class="point" :class="'영화'==currentCategory?'active-commu-category':''" @click="categoryClick('영화')"><h1>영화</h1></li>
             <li class="point" :class="'여행'==currentCategory?'active-commu-category':''" @click="categoryClick('여행')"><h1>여행</h1></li>
+            <!-- <li class="point" :class="'1'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('1')"><h1>인기</h1></li>
+            <li class="point" :class="'2'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('2')"><h1>최신</h1></li>
+            <li class="point" :class="'자유'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('자유')"><h1>자유</h1></li> 
+            <li class="point" :class="'영화'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('영화')"><h1>영화</h1></li>
+            <li class="point" :class="'여행'==currentCategory?'active-commu-category':''" @click="useDisplayCategoryStore().saveCategory('여행')"><h1>여행</h1></li> -->
         </ul>
         <br>
         <br>
@@ -16,7 +25,8 @@
         <section class="community">
             <h1 class="d-none">게시판 리스트</h1>
             <ul class="commu-content-grid">
-                <li class=""  v-for="(l, i) in model" :key="i" v-show="currentCategory==l.tag || currentCategory === '1' && l.like >= 3 || currentCategory === '2'">
+                <!-- <li class="" v-for="m in model" :key="m.id" v-show="m.share==1 && (currentCategory==m.category || currentCategory==2)"> -->
+                    <li class=""  v-for="(l, i) in model" :key="i" v-show="currentCategory==l.tag || currentCategory === '1' && l.like >= 3 || currentCategory === '2'">
                     <div class="content-box">
                         <div class="content-title">
                             <p><b>{{l.title}}</b></p>
@@ -26,7 +36,16 @@
                         </div>
                         <router-link :to="'community/'+i">
                             <div class="content-subject"> 
-                                {{content[i]}}
+
+
+                                <div>
+                                    <div id="editor">
+                                    
+                                    </div>
+                                </div>
+                                {{l.content}}
+
+
                             </div>
                         </router-link>
                         <div class="content-like-count">
@@ -37,6 +56,7 @@
                     </div>
                 </li>
             </ul>
+            <!-- <div class="center-grid "><div class="more-btn nodouble-drag" @click="goToNextPage()">더보기 + 99</div></div> -->
         </section>
     </section>
     </main>
@@ -44,12 +64,14 @@
 </template>
 <script setup>
 
-import { onMounted, reactive, ref, onUpdated } from 'vue'
-import { useUserDetailsStore } from '../../store/useUserDetailsStore.js'
-import { useDisplayCategoryStore } from '../../store/useDisplayCategoryStore.js'
+import { onMounted, reactive, ref, onUpdated} from 'vue'
+import {useUserDetailsStore} from '../../store/useUserDetailsStore.js'
+import {useDisplayCategoryStore} from '../../store/useDisplayCategoryStore.js'
 
 import Quill from 'quill';
 
+// 되는 gpt코드 -> 비교해보기
+// let model = reactive([]);
 let model = reactive([]);
 let test = reactive([]);
 let test2 = reactive([]);
@@ -68,59 +90,67 @@ let memberId = userDetails.id; // 지금은 멤버id를 1로 꽂아놨는데 이
 
 
 async function load() {
-
+    // setTimeout(async() => {
     const resList = await fetch('http://localhost:8080/display/listall')
     const list = await resList.json()
-
+        // console.log("리스트는"+list)
+        // console.log(typeof(list))
+        // console.log(typeof(resList))
+    // console.log("지피티는"+list.map(item=> item.content));
     model.splice(0, model.length, ...list);
-    test.splice(0, test.length, ...list.map(item => item.content))
+    test.splice(0, test.length, ...list.map(item=> item.content))
+    // console.log(model)
+    // console.log(test)
+    // test.splice(0, model.length, ...list.content)
 
+    // console.log("모델"+model[0].content)
+    // console.log(editTriger(model[0].content));
+    
+    
     const likeList = await fetch(`http://localhost:8080/display/likeScan?mId=${memberId}`)
     const data = await likeList.json()
     indeLikeList.splice(0, indeLikeList.length, ...data);
+    // }, 150);
+    
+    // editTriger(model[0].content);
+    
+    for(let i in test)
+        test2.push(quill.setContents(test[i]));
+    
+    // for(let i in test2)
+    //     console.log(test2[i])
 
-    for (let i in test) {
-        if (test[i] !== null) {
-            try {
-                const parsedJSON = JSON.parse(test[i]);
-                let ToJson = JSON.parse(test[i]);
-                quill.setContents(ToJson);
-                content[i]=quill.getText(ToJson);
-            } catch (error) {
-                content[i]=test[i]
-                continue; // 스킵
-            }
-        }
-    }
+    for(let i in test2)
+        console.log(quill.setContents(test[i]))
+
 }
 
 let quill
-let content = reactive([]);
-
 onMounted(() => {
     load()
-    quill = new Quill('#editor', {
+    quill = new Quill('#editor',{
         readOnly: true
     });
+    // editTriger(model[0].content);
 })
 
-function editTriger(Json1) {
-    let ToJson = JSON.parse(Json1);
-    quill.setContents(ToJson);
-    let text = quill.getText();
-    quill.on('text-change', () => {
-        content = quill.getText();
-        outputArray.push(content);
-    });
-}
+// onUpdated(()=>{
+//     let text = quill.getText();
+// })
+
+// function editTriger(Json1){
+//     let ToJson = JSON.parse(Json1);
+//     quill.setContents(ToJson);
+//     console.log( quill.getText(Json1));
+// }
 
 function categoryClick(page) {
     DisplayCategory.saveCategory(page)
-    currentCategory = page
+    currentCategory=page
     load()
 }
 
-function isDiaryIdMatched(diaryId) {// 좋아요 클릭했는지 확인하는 함수
+function isDiaryIdMatched(diaryId){// 좋아요 클릭했는지 확인하는 함수
     return this.indeLikeList.some(item => item.diaryId === diaryId);
 }
 
@@ -128,7 +158,7 @@ function isDiaryIdMatched(diaryId) {// 좋아요 클릭했는지 확인하는 �
 // 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
 async function likeSwitchHandler(diaryId) {
     console.log("좋아요 " + (this.indeLikeList.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
-    console.log("멤버아이디: " + memberId);
+    console.log("멤버아이디: "+memberId);
 
     try {
         const response = await fetch(`http://localhost:8080/display/${this.indeLikeList.some(item => item.diaryId === diaryId) ? "deletelike" : "addlike"}`, {
@@ -155,7 +185,7 @@ async function likeSwitchHandler(diaryId) {
     setTimeout(load, 50);
 }
 
-function goToNextPage() { //스크롤 페이징
+function goToNextPage(){ //스크롤 페이징
     console.log("추가페이지")
 }
 
