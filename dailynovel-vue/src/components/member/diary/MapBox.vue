@@ -98,7 +98,6 @@ export default {
     mounted() {
         const vueKakaoMap = this.$refs.kmap;
         this.overlay = new KakaoOverlay(vueKakaoMap, this.$refs.myplaceOverlay);
-
         // api.myplace.all(res => {
         //     console.log("[내 장소]", res.myplaces)
         //     this.myplaces = res.myplaces
@@ -115,6 +114,7 @@ export default {
             const level = Math.min(8, Math.max(1, this.mapOption.level + delta))
             this.mapOption.level = level;
             console.log(this.mapOption.level)
+
         },
         closeOverlay() {
             const vueKakaoMap = this.$refs.kmap;
@@ -277,6 +277,7 @@ button:hover {
 
 
 .kmap {
+    position: relative;
     flex: 1 1 auto;
     width: 100%;
     height: 285px;
