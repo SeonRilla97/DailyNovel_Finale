@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useUserDetailsStore } from "../store/useUserDetailsStore.js";
 import { decodeCredential } from "vue3-google-login";
 import { googleLogout } from "vue3-google-login";
+let email = ref("");
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 let router = useRouter();
 let route = useRoute(); //라우팅의 정보를 가져다 주는애
@@ -17,14 +18,13 @@ let user = reactive({
 let loginFalse = ref(false);
 
 async function loginHandler() {
-  console.log(user.email);
   let response = await fetch("http://localhost:8080/members/login", {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-type": "application/x-www-form-urlencoded",
     },
-    body: `email=${user.email}&password=${user.password}`,
+    body: `email=${email.value}&password=${user.password}`,
   });
   let json = await response.json();
 
@@ -286,13 +286,15 @@ async function FindSignupUser(event) {
             <span style="color: rgb(220, 0, 0);">계정 및 암호를 확인해주세요</span>
 
           </div>
-          <div class="input3 mgt-3 outBox">
-            <div class="div-placeholder inputBox">
-              <input id="email" class="text04 " type="text" tabindex="0" required v-model="user.email" />
+          <div class="input3 mgt-3 outBox"  :class="email != '' ? 'existence' : ' ' "   >
+            <div class="div-placeholder inputBox" >
+              <input id="email" class="text04 " type="text" tabindex="0" required v-model="email"
+           
+               />
               <label for="email">이메일</label>
             </div>
           </div>
-          <div class="input3 mgt-1 outBox">
+          <div class="input3 mgt-2 outBox"  :class="user.password != '' ? 'existence' : ' ' ">
             <div class="div-placeholder inputBox">
               <input id="password" class="text04 " type="password"  required v-model="user.password"/>
               <label for="password">비밀번호</label>
@@ -430,16 +432,16 @@ async function FindSignupUser(event) {
 .button1 {
   width: 18.75rem;
   height: 3.25rem;
-  border-color: rgba(242, 178, 99, 1);
+  border-color: #F2C6C2;;
   border-style: solid;
   border-width: 1px;
   border-radius: 0.25rem;
-  background-color: rgba(242, 178, 99, 1);
+  background-color: #F2C6C2;;
 }
 
 .text07 {
   color: rgba(255, 255, 255, 1);
-  width: 3.75rem;
+  width: 3.8rem;
   font-size: 1.0625rem;
   font-style: Bold;
   text-align: center;

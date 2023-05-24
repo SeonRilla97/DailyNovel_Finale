@@ -78,7 +78,7 @@ function getReplyListFromDB(cmt,update){
 
 
 // (댓글/답글)의 수정폼에서 수정을 눌렀을때 (Fetch에서 분기됨)
-function updateClickHandler(e,cmt){
+function updateClickHandler(e,cmt,curcmt){
     console.log(cmt);
     // 2단계 위로가서 reg-input 찾기
     // html 구조 바뀌면 오류 발생할 지도 모름
@@ -106,7 +106,7 @@ function updateClickHandler(e,cmt){
         if(cmt.depth == 0)// 댓글인경우
         emit("callComments",cmt.collectionId);
         else// 답글인경우
-        getReplyListFromDB(cmt,true);
+        getReplyListFromDB(curcmt,true);
         
         
         curModify.value=null;
@@ -118,6 +118,7 @@ function updateClickHandler(e,cmt){
 // 등록을 눌렀을때 (댓글/ 답글)
 function regClickHandler(e,memberId, collectionId,depth,refId,cmt){
     let textdom = e.target.parentNode.parentNode.querySelector(".reg-input");
+    console.log(props.data);
     let content =e.target.parentNode.parentNode.querySelector(".reg-input").innerText;
     if(content =="") {return}
     console.log(`${memberId} ${collectionId} ${depth} ${refId} ${content}` )
@@ -125,21 +126,23 @@ function regClickHandler(e,memberId, collectionId,depth,refId,cmt){
     myHeaders.append("Content-Type", "application/json");
 
     var raw =null
-    if(refId)
-    raw = JSON.stringify({
-    "memberId": memberId,
-    "content": content,
-    "collectionId": collectionId,
-    "depth": depth,
-    "refId": refId
-    });
-    else
-    raw = JSON.stringify({
-    "memberId": memberId,
-    "content": content,
-    "collectionId": collectionId,
-    "depth": 0
-    });
+    if(refId){
+        raw = JSON.stringify({
+        "memberId": memberId,
+        "content": content,
+        "collectionId": collectionId,
+        "depth": depth,
+        "refId": refId
+        });
+    }
+    else{
+        raw = JSON.stringify({
+        "memberId": memberId,
+        "content": content,
+        "collectionId": collectionId,
+        "depth": 0
+        });
+    }
     var requestOptions = {
     method: 'POST',
     headers: myHeaders,
@@ -153,7 +156,8 @@ function regClickHandler(e,memberId, collectionId,depth,refId,cmt){
         // if(refId) //답글쓰기
         
         emit("callComments",collectionId);
-        getReplyListFromDB(cmt,true);
+        if(cmt)
+            getReplyListFromDB(cmt,true);
 
         curReg.value=null;
         textdom.innerText="";
@@ -256,7 +260,7 @@ fetch(`http://localhost:8080/collection/comment/${cmt.id}`, requestOptions)
                                             <div class="name">{{userDetails.nickname}}</div>
                                             <div class="reg-input mgt-3" contenteditable="true">{{ reply.content }}</div>
                                             <div class="reg-btn">
-                                                <div class="mgt-3 ib cursor-pt undrag" @click="updateClickHandler($event,reply)">수정</div>
+                                                <div class="mgt-3 ib cursor-pt undrag" @click="updateClickHandler($event,reply,cmt)">수정</div>
                                                 <div class="mgt-3 ib mgl-3 cursor-pt undrag" @click="curModify=null">취소</div>
                                             </div>
                                         </div>

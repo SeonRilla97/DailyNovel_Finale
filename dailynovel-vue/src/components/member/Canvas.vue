@@ -3,6 +3,8 @@
     <img src="../../assets/img/background.png" id="background" style="display: none" />
     <img src="../../assets/img/slime.png" id="slime" style="display: none" />
     <img src="../../assets/img/dialog.png" id="dialog" style="display: none" />
+    <img src="../../assets/img/sound.png" id="sound" style="display: none" />
+    <img src="../../assets/img/nosound.png" id="nosound" style="display: none" />
     <canvas
       id="canvas"
       class="canvas"
@@ -23,6 +25,8 @@ import Slime from "./Canvas/item/slime.js";
 import Background from "./Canvas/item/background.js";
 import Obstacle from "./Canvas/item/obstacle.js";
 import Dialog from "./Canvas/item/dialog.js";
+import Sound from "./Canvas/item/sound.js";
+import NoSound from "./Canvas/item/nosound.js";
 import BackgroundSound from "../../assets/sound/background.mp3";
 import SlimeSound from "../../assets/sound/slime.mp3";
 import { useRouter } from "vue-router";
@@ -35,11 +39,14 @@ export default {
       slime: null,
       background: null,
       dialog: null,
+      sound:null,
+      nosound:null,
       obstacles: [],
       canvasOffsetX: 0,
       canvasOffsetY: 0,
       showDialogBox: false,
       dialogText: "",
+      soundCheck: true
     };
   },
 
@@ -48,12 +55,15 @@ export default {
     this.ctx = this.canvas.getContext("2d");
     this.slime = new Slime(700, 600);
     this.background = new Background();
+    this.sound = new Sound(1200,650);
+    this.nosound = new NoSound(1200,650);
     this.dialog = new Dialog();
     this.createObstacles();
     this.run();
+    this.volume =0.4;
     this.backgroundBgm = new Audio(BackgroundSound);
-    // this.backgroundBgm.loop = true; // 무한 루프 설정
-    // this.backgroundBgm.play(); // 음악 재생
+     this.backgroundBgm.loop = true; // 무한 루프 설정
+     this.backgroundBgm.play(this.volume*2.5); // 음악 재생
     this.slimeSound = new Audio(SlimeSound);
     // 캔버스에 포커스를 설정
     this.canvas.setAttribute("tabindex", "0");
@@ -112,6 +122,10 @@ export default {
       if (this.showDialogBox) {
         this.dialog.draw(this.ctx);
       }
+      if(this.soundCheck)
+        this.sound.draw(this.ctx);
+      else
+        this.nosound.draw(this.ctx);
     },
 
     update() {
@@ -300,6 +314,20 @@ export default {
         this.$router.push("/member/room/profile");
         this.$emit("modalOpenHandler");
       }
+        //sound처리
+        else if (1200 <= canvasX && 650 <= canvasY && canvasX <= 1280 && canvasY < 700) {
+          this.soundCheck = !(this.soundCheck);
+          console.log(this.soundCheck)
+          if( this.soundCheck){
+              this.volume= 0.4;
+              this.backgroundBgm.volume = 1;
+          }
+          else{
+            this.backgroundBgm.volume = 0;
+            this.volume= 0;
+          }
+      }
+
       // 추가적인 클릭 이벤트 처리 가능
 
       // 대화창 클릭 이벤트 처리
@@ -376,7 +404,7 @@ export default {
         e.key === "ArrowDown"
       ) {
         this.slime.move(e.key);
-        this.SlimePlaySound(1);
+        this.SlimePlaySound(this.volume);
         console.log(e.key);
       }
     },
