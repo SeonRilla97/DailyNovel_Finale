@@ -347,11 +347,7 @@ const addDiary = function(isAdd){
     console.log(diaryRef.value.honesy);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
-<<<<<<< HEAD
-    console.log(diaryObj.honesy);
-=======
     // console.log(diaryObj);
->>>>>>> parent of 6560f35 (fix(editor): 진심도 기본텍스트 수정)
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
