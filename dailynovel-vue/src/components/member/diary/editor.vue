@@ -347,11 +347,9 @@ const addDiary = function(isAdd){
     console.log(diaryRef.value.honesy);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
-<<<<<<< HEAD
+
     console.log(diaryObj.honesy);
-=======
-    // console.log(diaryObj);
->>>>>>> parent of 6560f35 (fix(editor): 진심도 기본텍스트 수정)
+
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
@@ -391,9 +389,9 @@ const loadDiary = function(diaryId){
       mapToggle.value = false;
 
       // memberID = result.member_id;
-      console.log(memberID);
+      // console.log(memberID);
       // isShare(memberID,result.diaryId);
-      console.log(result);
+      // console.log(result);
 
       diaryRef.value = result;
       staticRegDate = result.regDate;
@@ -401,6 +399,21 @@ const loadDiary = function(diaryId){
       myLocation.lng = result.lng;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
 
+      let promise = isShare(memberID, diaryId);
+      promise
+      .then(result => {
+        // console.log(result);
+
+        // if(result == true){
+        //   isSharedref.value = true;
+        // }
+        // else{
+        //   isSharedref.value = false;
+        // }
+        // console.log(isSharedref.value);
+
+      });
+      
 
       resolve(true);
     })
@@ -431,6 +444,8 @@ const EditDiary = function(diaryId){
     console.log(diaryObj);
     
     let raw = JSON.stringify(diaryObj);
+
+    console.log(raw);
 
     let requestOptions = {
       method: 'PUT',
@@ -522,30 +537,49 @@ fetch("http://localhost:8080/display/share", requestOptions)
   }
 )};
 
-  function isShare(memberId, diaryId){
+function isShare(memberId, diaryId){
     return new Promise(function(resolve,reject){
 
-    // let myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "application/json");
+//       var myHeaders = new Headers();
+// myHeaders.append("Content-Type", "application/json");
 
-    // shareJson.memberId = memberId;
-    // shareJson.diaryId = diaryId;
+// var raw = JSON.stringify({
+//   "memberId": 1,
+//   "diaryId": 199
+// });
 
-    // let raw = JSON.stringify(shareJson);
+var requestOptions = {
+  method: 'GET',
+  // headers: myHeaders,
+  // body: raw,
+  redirect: 'follow'
+};
 
-    let requestOptions = {
-      method: 'GET',
-      // headers: myHeaders,
-      // body: raw,
-      redirect: 'follow'
-    };
+let a = parseInt(diaryId);
+console.log(a);
 
-  fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-  }
-)};
+console.log(memberId, a);
+fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
+  .then(response => response.text())
+  .then(result => {
+    console.log(result);
+    console.log( typeof(result));
+
+    console.log(result == 'true');
+
+    if(result === 'true'){
+      isSharedref.value = true;
+    }
+    else{
+      isSharedref.value = false;
+    }
+    console.log(isSharedref.value);
+
+    resolve(result);
+  })
+  .catch(error => console.log('error', error));
+  
+})};
 
 // let previousValueFeeling = diaryRef.value.feeling;
 // let previousValueTag = diaryRef.value.tag;
@@ -718,13 +752,6 @@ let quillOutputValue = function(convertDeltaJson) {
           <!-- {{titleDate+'의 일기'}} -->
           {{ diaryRef.title }}
         </header>
-        <div
-            v-if="isSharedref"
-            class="editor-share">공유 중</div>
-        <div
-            v-if="!isSharedref"
-            class="editor-share .active">공유 여부</div>
-
         <input 
         type="checkbox" id="toggle" class="toggle2" hidden>
         <label 
@@ -735,6 +762,13 @@ let quillOutputValue = function(convertDeltaJson) {
           
           <span class="toggleButton"></span>
         </label>
+        <div
+            v-if="isSharedref"
+            class="editor-share">공유 중</div>
+        <div
+            v-if="!isSharedref"
+            class="editor-share .active">공유 여부</div>
+
 
     </div>
 
@@ -986,6 +1020,7 @@ let quillOutputValue = function(convertDeltaJson) {
       color: #FCFCFC;
       font-size : 12px;
       text-align: center; */
+      margin-left: 20px;
 
       justify-self: center;
       align-self: center;

@@ -137,6 +137,7 @@ public class DisplayController {
         List<DiaryDisplay> sharedList = service.getSharedList(memberId, diaryId);
 
         System.out.println(sharedList);
+        System.out.println(sharedList.isEmpty()?false:true);
 
         return (sharedList.isEmpty()?false:true);
     }
