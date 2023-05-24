@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dailynovel.dailynovelapi.entity.DiaryDisplay;
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
 import com.dailynovel.dailynovelapi.entity.MemberFollow;
@@ -126,6 +127,18 @@ public class DisplayController {
     ){
         service.insertShare(share.getMemberId(),share.getDiaryId());
         return "공유 완료";
+    }
+    
+    @GetMapping("shareScan")
+    public List<DiaryDisplay> shareScan(
+        @RequestParam(name = "mId") int memberId,
+        @RequestParam(name = "dId") int diaryId
+    ){
+        List<DiaryDisplay> sharedList = service.getSharedList(memberId, diaryId);
+
+        System.out.println(sharedList);
+
+        return sharedList;
     }
 }
 

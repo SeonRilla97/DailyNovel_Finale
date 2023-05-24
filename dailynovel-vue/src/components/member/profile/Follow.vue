@@ -5,9 +5,7 @@ import { onMounted } from 'vue';
 
 const user = useUserDetailsStore();
 const userId = user.id;
-const userFollowId = reactive({
-    list,
-})
+const userFollowId = reactive({list,})
 
 async function getFollowIdList(id){    
     await fetch(`http://localhost:8080/member/follow?id=${id}`,
