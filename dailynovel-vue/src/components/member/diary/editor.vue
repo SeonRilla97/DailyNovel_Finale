@@ -186,9 +186,7 @@ console.log("coor:", coor);
 console.log("coor.lat:",coor.lat)
 }
 
-// function setLocate{
-//   this.setMap()
-// }
+
 
 
  function geoFindMe() {
@@ -772,7 +770,7 @@ let quillOutputValue = function(convertDeltaJson) {
         <div
           v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocate="myLocation"   @coorGood="coor" />
+            <MapBox :myLocate="myLocation"  :mapCoor="mycoor" @coorGood="coor" />
             <!-- :setmylocate="setDiaryLocate" -->
           </div>
 

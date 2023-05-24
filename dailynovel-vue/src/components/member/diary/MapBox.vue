@@ -62,11 +62,12 @@
 import KakaoMap from './map/KakaoMap.vue';
 import MarkerHandler from '../Diary/map/marker-handler.js';
 import KakaoOverlay from '../Diary/map/overlay';
+import { popScopeId } from 'vue';
 export default {
     components: {
         KakaoMap,
     },
-    props:['myLocate'],
+    props:['myLocate, mapCoor'],
     // setDiaryLocate
     data() {
         return {
@@ -75,7 +76,7 @@ export default {
                     lat: this.myLocate.lat,
                     lng: this.myLocate.lng,
                 },
-                level: 3,
+                level: 2,
             },
             myplaces: [],
             markers: null,
@@ -97,17 +98,23 @@ export default {
 
         };
     },
-    mounted() {
+    mounted(mapCoor) {
         const vueKakaoMap = this.$refs.kmap;
         this.overlay = new KakaoOverlay(vueKakaoMap, this.$refs.myplaceOverlay);
-        // api.myplace.all(res => {
-        //     console.log("[내 장소]", res.myplaces)
-        //     this.myplaces = res.myplaces
-        //     //create markers
-        //     this.markers.add(this.myplaces, (myplace) => {
-        //         return { lat: myplace.lat, lng: myplace.lng };
-        //     })
-        // })
+
+        let mapOption = {
+            center : new kakao.maps.LatLng(mapCoor.lat, mapCoor.lng),
+            level : 2
+        }
+
+        let markerPosition = new kakao.maps.LatLng(mapCoor.lat, mapCoor.lng);
+
+        let marker = new Window.kakao.maps.Marker({
+            position: markerPosition
+        });
+
+        marker.setMap(map)
+
     },
     methods: {
         zoom(delta) {
