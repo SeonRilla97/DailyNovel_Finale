@@ -174,6 +174,7 @@ function getListwithFiltering(backup) {
             console.log(diary.list)
             console.log(diary.list[(Object.keys(diary.list)[0])][0].diaryId)
             newestDiaryId.value = diary.list[(Object.keys(diary.list)[0])][0].diaryId;
+            console.log(newestDiaryId.value);
         })
         .catch(error => console.log('error', error));
     }

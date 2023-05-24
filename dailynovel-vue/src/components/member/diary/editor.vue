@@ -105,11 +105,7 @@ const addWatchEffect = watchEffect(() => {
 
     promise
     .then(response => weather(response[0],response[1]))
-    .then(result => {
-
-      // console.log(defineRef.value.loading , defineRef.value.isInit);
-      addDiary(result)
-    })
+    .then(result => { addDiary(result)})
     .then(success => {
       defineRef.value.loading = false;
       defineRef.value.isInit = false;
@@ -133,10 +129,13 @@ onUpdated(() => {
   else{ // load id 가 null 이면
     defaultDiaryId = props.newestDiaryId;
     initHander(defaultDiaryId);
-  }
+  };
   // console.log(defaultDiaryId);
 
-
+  // if(undefined === defaultDiaryId){
+  //   addWatchEffect();
+  //   newest = sucess;
+  // }
 
   //최초 데이터 받을 때
   if(!newest){
@@ -153,51 +152,12 @@ onUpdated(() => {
     // newest = true;
   };
 
-  // ControllerAdd = props.isAdd
-
-  // console.log(ControllerAdd);
-
-    //update 이중 방지용
-  // console.log(defineRef.value.loading , defineRef.value.isInit);
-  
-  
-  // if( ControllerAdd == true && weatherDone == false
-  //   && isOn == false){
-  //     console.log("들어옴?");
-  //   let promise = geoFindMe();
-  //   isOn = true;
-
-  //   defineRef.value.loading = true; //로딩창 소환
-  //   defineRef.value.isInit = true; //배경화면 끄기
-
-  //   promise
-  //   .then(response => weather(response[0],response[1]))
-  //   .then(result => {
-
-  //     // console.log(defineRef.value.loading , defineRef.value.isInit);
-  //     addDiary(result)
-  //   })
-  //   .then(success => {
-  //     defineRef.value.loading = false;
-  //     defineRef.value.isInit = false;
-  //     // console.log(defineRef.value.loading , defineRef.value.isInit);
-  //     console.log(success)
-  //   });
-  // }
-
-
-
-  // console.log("load: "+defineRef.value.loading ,"init: "+ defineRef.value.isInit);
-
-  // console.log(previousLoad, props.loadDiaryId);
-
-  //클릭했을 때 불러오는 조건
   if(previousLoad != defaultDiaryId){
     loadDiary(defaultDiaryId);
     previousLoad = defaultDiaryId;
   }
 
-})
+});
 
 function getDate(gotdate){
 
@@ -365,7 +325,7 @@ diaryRef.value = diaryObj;
 //값 기본 입력해주기
 function objRef
 (Did, Mid, DTitle ,DContent,
- DWeather,DFeeling,DHonesy, DTag,
+ DWeather,DFeeling,Dhonesty, DTag,
  DDate , DLat, Dlng){
 
   diaryRef.value.id = Did;
@@ -375,7 +335,7 @@ function objRef
 
   diaryRef.value.weather = weatherData.value.weatherDes;
   diaryRef.value.feeling = DFeeling;
-  diaryRef.value.honesy = DHonesy;
+  diaryRef.value.honesty = Dhonesty;
   diaryRef.value.tag = DTag;
 
   diaryRef.value.regDate = DDate;
@@ -396,7 +356,7 @@ const addDiary = function(isAdd){
 
     //ref 기본값 담기
     objRef(null,memberID,null,null
-    ,null,"기분",100,"태그"
+    ,null,"기분","진심도","태그"
     ,null,myLocation.lat,myLocation.lng);
 
     console.log(diaryRef.value.honesy);

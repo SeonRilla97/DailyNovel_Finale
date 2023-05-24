@@ -159,11 +159,15 @@ function editTriger(Json1){
     // console.log(typeof(Json1));
 
     console.log(Json1);
-    
+
     // if(typeof(Json1) == 'string'){
         // quill.setText(Json1);
     // }
     // else{
+
+        if(Json1 == undefined)
+            return;
+
         ToJson = JSON.parse(Json1);
         quill.setContents(ToJson);
     // }
@@ -192,7 +196,7 @@ function editortrigger (delta, oldDelta, source) {
 <style scoped>
 
 #editor{
-    height: 300px;
+    height: 380px;
 }
 
 
