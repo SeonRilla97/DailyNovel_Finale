@@ -7,6 +7,8 @@ import { googleLogout } from "vue3-google-login";
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 let router = useRouter();
 let route = useRoute(); //라우팅의 정보를 가져다 주는애
+let passworChangeDate = ref();
+let today = new Date();
 let user = reactive({
   useremail: "",
   password: "",
@@ -31,13 +33,17 @@ async function loginHandler() {
   userDetails.nickname = json.result.nickName;
   userDetails.email = json.result.email;
   userDetails.roles = json.roles;
-  console.log(userDetails.id,
-  userDetails.nickname ,
-  userDetails.email,
-  userDetails.roles )
+  passworChangeDate.value= new Date(json.result.passwordChangePeriod);
+  const diffInMilliseconds = today.getTime() - passworChangeDate.value.getTime();
+  const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));  // 밀리초를 일 단위로 변환
+  console.log(diffInDays);
   let returnURL = route.query.returnURL;
-  if (userDetails.email == null) loginFalse.value = true;
-  else if (returnURL) router.push(returnURL);
+  if (userDetails.email == null) 
+  loginFalse.value = true;
+  else if(diffInDays>90)
+  router.push("/PasswordChange");
+  else if (returnURL)
+   router.push(returnURL);
   else router.push("/member/room");
 }
 
@@ -58,6 +64,7 @@ async function loginoAuthHandler(event) {
   userDetails.nickname = json.result.nickName;
   userDetails.email = json.result.email;
   userDetails.roles = json.roles;
+
   let returnURL = route.query.returnURL;
   if (userDetails.email == null) loginFalse.value = true;
   else if (returnURL) router.push(returnURL);
@@ -295,14 +302,14 @@ async function FindSignupUser(event) {
             <router-link to="./login" class="text07">로그인</router-link>
           </button>
         </form>
-        <div class="lc-horizontal-alignment mgt-3">
+        <div class="lc-horizontal-alignment mgt-4">
           <div class="">
             <router-link to="./signup" class="text02">회원가입</router-link>
           </div>
         </div>
       </div>
       <div class="mgt-6">
-        <router-link to="./login" class="text09 mgt-4">SNS계정으로 간편 로그인/회원가입</router-link>
+        <router-link to="./login" class="text09 mgt-5">SNS계정으로 간편 로그인/회원가입</router-link>
       </div>
       <div class="lc-horizontal-alignment mgt-3">
         <!-- <GoogleLogin :callback="googleLogin">
@@ -321,7 +328,7 @@ async function FindSignupUser(event) {
       </div>
       <div class="mgt-3">
         <span class="text11">
-          <router-link to="./login">로그인에 무슨 문제 있으신가요?</router-link>
+          <router-link to="./accountRecovery">이메일 찾기</router-link>  <span>/</span> <router-link to="./passwordRecovery">임시 비밀번호 발급</router-link>
         </span>
       </div>
     </div>

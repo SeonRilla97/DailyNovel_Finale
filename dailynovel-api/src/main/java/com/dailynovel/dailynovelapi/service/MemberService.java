@@ -15,12 +15,14 @@ public interface MemberService {
     
     Member getByEmail(String email);
 
-
+    String PasswordEncoder(String password);
     boolean isValidLoginAuth(String email);
 
     Optional<Member> viewMemberInfo(int id);
 
     List<Member> getMemberFollow(int id);
+
+    boolean ChangePassword(String email, String password);
 
     MbMember getMemberInfo(int id);
 

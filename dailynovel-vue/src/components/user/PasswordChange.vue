@@ -5,7 +5,6 @@ import { useRoute, useRouter } from "vue-router";
 import { useUserDetailsStore } from "../store/useUserDetailsStore";
 
 let password = ref("");
-let userDetail = useUserDetailsStore();
 let passwordCheck = ref("");
 let content = ref("");
 let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/;
@@ -14,22 +13,24 @@ let showModal = ref(false);
 let passwordVerificationStrongResult = ref(false);
 let passwordVerificationMiddleResult = ref(false);
 let passwordVerifyResult = ref(false);
+let userDetail = useUserDetailsStore();
 let router = useRouter();
 async function showHandler(event) {
-   if(event == "비밀번호변경하기") {
-    await fetch("http://localhost:8080/members/passwordChange", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: userDetail.email,
-        password: password.value
+  let email = userDetail.email
+  if(event == "비밀번호변경하기") {
+     console.log(email);
+        await fetch("http://localhost:8080/members/passwordChange", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+        email: email,
+        password: password.value,
       }),
     })
       .then((response) => response.text())
-
       .then((data) => {
         console.log(data)
         if(data ==="true"){
@@ -74,8 +75,18 @@ function passwordverify() {
 <template>
   <div class="container-1-nmg container-s1">
     <div class="main lc-vertical-alignment">
-      <div class="text-1">비밀번호 재설정</div>
+      <div class="text-1">비밀번호 재설정<br><br> 
+      </div>
+      
+      <div>
+      <span class="text-2-no-magin">
 
+        「&nbsp;
+         회원님의 개인정보를 안전하게 보호하고,<br>&nbsp; 개인정보 도용으로 인한 피해를 막기 위해<br>
+        &nbsp; 90일 이상 비밀번호를 변경하지 않은 경우<br>  &nbsp;&nbsp;비밀번호 변경을 권장하고 있습니다. &nbsp; &nbsp; &nbsp; &nbsp;
+                                           」
+</span>
+</div>
       <div class="form-1">
         <div class="text-2">
           <span class="essential-color">*</span>
@@ -170,7 +181,7 @@ function passwordverify() {
         </form>
       </div>
       <div class="div-btn">
-        <button class="btn-2" @click="showHandler('회원가입')">
+        <button class="btn-2" @click="showHandler('비밀번호변경하기')">
           <span class="text-5"> 비밀번호 변경하기 </span>
         </button>
       </div>
@@ -206,13 +217,21 @@ function passwordverify() {
 }
 
 .text-1 {
-  margin-bottom: 50px;
+
   font-size: 32px;
   line-height: 35px;
   font-weight: 500;
   text-align: center;
   letter-spacing: -1px;
   color: #333;
+}
+
+
+.text-2-no-magin {
+  font-size: 16px;
+  color: rgb(235, 143, 143);
+  line-height: 17px;
+  text-align: right;
 }
 
 .text-2 {

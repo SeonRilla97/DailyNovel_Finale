@@ -5,7 +5,8 @@ import Login from '../components/user/Login.vue';
 import accountrecovery from '../components/user/AccountRecovery.vue';
 import passwordRecovery from '../components/user/PasswordRecovery.vue';
 import LoginLayout from '../components/user/Inc/Layout.vue';
-import Signup from '../components/user/Signup.vue';
+import signup from '../components/user/Signup.vue';
+import passwordChange from '../components/user/PasswordChange.vue';
 
 import signupSocial from '../components/user/SignupSocial.vue';
 import Achievement from '../components/member/Insights/Achievements.vue';
@@ -29,11 +30,13 @@ const routes = [
 
   {
     path: '/', redirect: "login", component: LoginLayout, children: [
-      { path: 'signup', component: Signup },
+      { path: 'signup', component: signup },
       { path: 'signupsocial', component: signupSocial },
       { path: 'login', component: Login },
       { path: 'accountrecovery', component: accountrecovery },  
       { path: 'passwordRecovery', component: passwordRecovery },  
+
+      { path: 'PasswordChange', component: passwordChange },  
       {
         path: 'error', children: [
           { path: '403', component: () => import("./error/403.vue") }
