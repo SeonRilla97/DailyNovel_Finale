@@ -66,13 +66,13 @@ export default {
     components: {
         KakaoMap,
     },
-    props:['myLocation'],
+    props:['myLocate'],
     data() {
         return {
             mapOption: {
                 center: {
-                    lat: this.myLocation.lat,
-                    lng: this.myLocation.lng,
+                    lat: this.myLocate.lat,
+                    lng: this.myLocate.lng,
                 },
                 level: 3,
             },
@@ -179,7 +179,7 @@ export default {
             const lat = vueKakaoMap.options.center.lat;
             const lng = vueKakaoMap.options.center.lng;
             const coor = {lat, lng};
-            this.$emit('coor', coor)
+            this.$emit('coorGood', coor)
             // emit한것은 파라미터로 들어간다. 직접전인값이아님.
 
             this.draggable = false;

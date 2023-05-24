@@ -77,7 +77,7 @@ function newestPromise(diaryId){
 let isOn = false;
 onUpdated(() => {
 
-  coor();
+  // coor();
 
       // load id 가 null 이 아니면
   if(props.loadDiaryId != null){
@@ -184,12 +184,27 @@ function getDate(gotdate){
 
 
  //현재 위치 받아오기 API
-
+let loadLocate = [2];
 // 지도 설정한 좌표값 얻어오기
-function coor(coorGood) {
+function coor(coor) {
 
-  console.log(coorGood)
-}
+  console.log("coor:", coor);
+
+  // console.log( coor.lat );
+  // console.log( coor.lng );
+
+  let latLng = coor;
+  console.log(latLng);
+  // console.log(latLng.lat);
+  // console.log( );
+
+
+  loadLocate[0] = coor.lat;
+  loadLocate[1] = coor.lng;
+  console.log(loadLocate);
+  // EditDiary(defaultDiaryId);
+
+};
 
  function geoFindMe() {
 
@@ -326,15 +341,18 @@ const addDiary = function(isAdd){
 
     //ref 기본값 담기
     objRef(null,memberID,null,null
-    ,null,"기분","진심도","태그"
+    ,null,"기분",100,"태그"
     ,null,myLocation.lat,myLocation.lng);
 
-    // console.log(diaryRef.value);
+    console.log(diaryRef.value.honesy);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
-    console.log(diaryObj);
+<<<<<<< HEAD
+    console.log(diaryObj.honesy);
+=======
+    // console.log(diaryObj);
+>>>>>>> parent of 6560f35 (fix(editor): 진심도 기본텍스트 수정)
     let raw = JSON.stringify(diaryObj);
-    console.log(raw);
 
     let requestOptions = {
       method: 'POST',
@@ -379,6 +397,8 @@ const loadDiary = function(diaryId){
 
       diaryRef.value = result;
       staticRegDate = result.regDate;
+      myLocation.lat = result.lat;
+      myLocation.lng = result.lng;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
 
 
@@ -402,9 +422,13 @@ const EditDiary = function(diaryId){
     // ,null,"기분",100,"태그"
     // ,null,38,128);
     // diaryObj = diaryRef.value;
-    diaryObj.member_id = memberID;
+    diaryObj.member_id = null;
     diaryObj.id = diaryId;
     diaryObj.regDate = staticRegDate;
+    diaryObj.lat = loadLocate[0];
+    diaryObj.lng = loadLocate[1];
+    
+    console.log(diaryObj);
     
     let raw = JSON.stringify(diaryObj);
 
@@ -765,7 +789,8 @@ let quillOutputValue = function(convertDeltaJson) {
         <div
           v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocation="myLocation" @coor="coorGood"/>
+            <MapBox :myLocate="myLocation"   @coorGood="coor" />
+            <!-- :setmylocate="setDiaryLocate" -->
           </div>
 
       </div>
