@@ -130,7 +130,7 @@ public class DisplayController {
     }
     
     @GetMapping("shareScan")
-    public List<DiaryDisplay> shareScan(
+    public boolean shareScan(
         @RequestParam(name = "mId") int memberId,
         @RequestParam(name = "dId") int diaryId
     ){
@@ -138,7 +138,7 @@ public class DisplayController {
 
         System.out.println(sharedList);
 
-        return sharedList;
+        return (sharedList.isEmpty()?false:true);
     }
 }
 
