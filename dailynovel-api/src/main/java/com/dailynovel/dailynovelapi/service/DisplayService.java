@@ -21,4 +21,6 @@ public interface DisplayService {
     int updateFollow(int followedId, int followId);
 
     List<MemberFollow> getFollowedList(int followId); // 테스트만 하고 바로 삭제
+
+    void insertShare(int mId, int dId);
 }
