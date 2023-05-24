@@ -350,6 +350,7 @@ const addDiary = function(isAdd){
     resolve("success");
 })};
 
+let staticRegDate = "";
 const loadDiary = function(diaryId){
   return new Promise(function(resolve){
 
@@ -368,7 +369,9 @@ const loadDiary = function(diaryId){
       console.log(memberID);
       // isShare(memberID,result.diaryId);
       console.log(result);
+
       diaryRef.value = result;
+      staticRegDate = result.regDate;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
 
 
@@ -394,7 +397,7 @@ const EditDiary = function(diaryId){
     // diaryObj = diaryRef.value;
     diaryObj.member_id = null;
     diaryObj.id = diaryId;
-    diaryObj.regDate = null;
+    diaryObj.regDate = staticRegDate;
     
     let raw = JSON.stringify(diaryObj);
 
