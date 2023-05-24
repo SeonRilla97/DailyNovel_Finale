@@ -1,9 +1,11 @@
+
 package com.dailynovel.dailynovelapi.service;
 
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.dailynovel.dailynovelapi.entity.DiaryDisplay;
 import com.dailynovel.dailynovelapi.entity.DiaryLike;
 import com.dailynovel.dailynovelapi.entity.DisplayView;
 import com.dailynovel.dailynovelapi.entity.MemberFollow;
@@ -23,4 +25,6 @@ public interface DisplayService {
     List<MemberFollow> getFollowedList(int followId); // 테스트만 하고 바로 삭제
 
     void insertShare(int mId, int dId);
+
+    List<DiaryDisplay> getSharedList(int memberId,int diaryId);
 }
