@@ -26,8 +26,19 @@ const props = defineProps({
 let defaultDiaryId = props.newestDiaryId;
 
 
+// 일기관련 CRUD 완료했을 때 리스트 reload하는 리스트들
 const emit = defineEmits(
     ["DoneAddDiary"]);
+let ChangeDone = false;
+
+function ChangeDoneHandler(){
+
+  ChangeDone = !(ChangeDone);
+  console.log("올라가냐?올라가냐?올라가냐?올라가냐?");
+
+  emit("DoneAddDiary", ChangeDone);
+};
+
 
 const defineRef = ref({
   'loading' : '',
@@ -73,47 +84,21 @@ function newestPromise(diaryId){
   })
 };
 
-//insert 다중반복 막기 위해서
-let isOn = false;
-onUpdated(() => {
+//추가버튼 눌렀는지에 대해서
+const addWatchEffect = watchEffect(() => {
 
-  // coor();
+  props.isAdd
+  // if()
+    ControllerAdd = props.isAdd
 
-      // load id 가 null 이 아니면
-  if(props.loadDiaryId != null){
-    defaultDiaryId = props.loadDiaryId;
-  }
-  else{ // load id 가 null 이면
-    defaultDiaryId = props.newestDiaryId;
-    initHander(defaultDiaryId);
-  }
-  console.log(defaultDiaryId);
-
-
-
-  //최초 데이터 받을 때
-  if(!newest){
-    // defineRef.value.isInit = false; //배경화면 끄기
-    // defineRef.value.loading = true; //로딩창 소환
-    let promise = newestPromise(defaultDiaryId);
-    promise
-    .then( result => loadDiary(result))
-    .then( sucess => {
-      // defineRef.value.isInit = true;
-      // defineRef.value.loading = false;
-      newest = sucess;
-    });
-    // newest = true;
-  }
-
-  ControllerAdd = props.isAdd
-  // console.log(ControllerAdd);
-    //update 이중 방지용
-  // console.log(defineRef.value.loading , defineRef.value.isInit);
-  if( ControllerAdd == true && weatherDone == false
-    && isOn == false){
+    //최초때이면 실행 안함
+    if(!newest)
+      return;
+    // if( ControllerAdd == true && weatherDone == false
+    // && isOn == false){
+      console.log("들어옴?");
     let promise = geoFindMe();
-    isOn = true;
+    // isOn = true;
 
     defineRef.value.loading = true; //로딩창 소환
     defineRef.value.isInit = true; //배경화면 끄기
@@ -131,7 +116,77 @@ onUpdated(() => {
       // console.log(defineRef.value.loading , defineRef.value.isInit);
       console.log(success)
     });
+  // }
+
+});
+
+//insert 다중반복 막기 위해서
+let isOn = false;
+onUpdated(() => {
+
+  // coor();
+
+      // load id 가 null 이 아니면
+  if(props.loadDiaryId != null){
+    defaultDiaryId = props.loadDiaryId;
   }
+  else{ // load id 가 null 이면
+    defaultDiaryId = props.newestDiaryId;
+    initHander(defaultDiaryId);
+  }
+  // console.log(defaultDiaryId);
+
+
+
+  //최초 데이터 받을 때
+  if(!newest){
+    // defineRef.value.isInit = false; //배경화면 끄기
+    // defineRef.value.loading = true; //로딩창 소환
+    let promise = newestPromise(defaultDiaryId);
+    promise
+    .then( result => loadDiary(result))
+    .then( sucess => {
+      // defineRef.value.isInit = true;
+      // defineRef.value.loading = false;
+      newest = sucess;
+    });
+    // newest = true;
+  };
+
+  // ControllerAdd = props.isAdd
+
+  // console.log(ControllerAdd);
+
+    //update 이중 방지용
+  // console.log(defineRef.value.loading , defineRef.value.isInit);
+  
+  
+  // if( ControllerAdd == true && weatherDone == false
+  //   && isOn == false){
+  //     console.log("들어옴?");
+  //   let promise = geoFindMe();
+  //   isOn = true;
+
+  //   defineRef.value.loading = true; //로딩창 소환
+  //   defineRef.value.isInit = true; //배경화면 끄기
+
+  //   promise
+  //   .then(response => weather(response[0],response[1]))
+  //   .then(result => {
+
+  //     // console.log(defineRef.value.loading , defineRef.value.isInit);
+  //     addDiary(result)
+  //   })
+  //   .then(success => {
+  //     defineRef.value.loading = false;
+  //     defineRef.value.isInit = false;
+  //     // console.log(defineRef.value.loading , defineRef.value.isInit);
+  //     console.log(success)
+  //   });
+  // }
+
+
+
   // console.log("load: "+defineRef.value.loading ,"init: "+ defineRef.value.isInit);
 
   // console.log(previousLoad, props.loadDiaryId);
@@ -186,25 +241,25 @@ function getDate(gotdate){
  //현재 위치 받아오기 API
 let loadLocate = [2];
 // 지도 설정한 좌표값 얻어오기
-function coor(coor) {
+  function coor(coor) {
 
-  console.log("coor:", coor);
+    console.log("coor:", coor);
 
-  // console.log( coor.lat );
-  // console.log( coor.lng );
+    // console.log( coor.lat );
+    // console.log( coor.lng );
 
-  let latLng = coor;
-  console.log(latLng);
-  // console.log(latLng.lat);
-  // console.log( );
+    let latLng = coor;
+    console.log(latLng);
+    // console.log(latLng.lat);
+    // console.log( );
 
 
-  loadLocate[0] = coor.lat;
-  loadLocate[1] = coor.lng;
-  console.log(loadLocate);
-  // EditDiary(defaultDiaryId);
+    loadLocate[0] = coor.lat;
+    loadLocate[1] = coor.lng;
+    console.log(loadLocate);
+    // EditDiary(defaultDiaryId);
 
-};
+  };
 
  function geoFindMe() {
 
@@ -358,11 +413,12 @@ const addDiary = function(isAdd){
       body: raw,
       redirect: 'follow'
     };
-
+    ControllerAdd = false;
     fetch("http://localhost:8080/diary", requestOptions)
       .then(response => response.text())
       .then(result => {
-        emit("DoneAddDiary", true);
+        // emit("DoneAddDiary", true);
+        ChangeDoneHandler();
         diaryRef.value.regDate = getDate(new Date);
         // console.log(diaryObj.regDate);
         // console.log(diaryRef.value.regDate);
@@ -458,7 +514,8 @@ const EditDiary = function(diaryId){
       .then(response => response.text())
       .then(result => {
         loadDiary(diaryId);
-        emit("DoneAddDiary", true);
+        ChangeDoneHandler();
+        // emit("DoneAddDiary", true);
         console.log("업데이트 완료"+diaryObj);
         })
       .catch(error => console.log('error', error));
@@ -480,7 +537,8 @@ const DelDiary = function(diaryId){
       .then(response => response.text())
       .then(result => {
         loadDiary(props.newestDiaryId);
-        emit("DoneAddDiary", true);
+        ChangeDoneHandler();
+        // emit("DoneAddDiary", true);
       })
       .catch(error => console.log('error', error));
 
@@ -530,8 +588,10 @@ function addShare(memberId, diaryId){
 fetch("http://localhost:8080/display/share", requestOptions)
   .then(response => response.text())
   .then(result => 
-  { console.log(result);
-    console.log("성공");
+  { 
+    ChangeDoneHandler();
+    // console.log(result);
+    // console.log("성공");
   })
   .catch(error => console.log('error', error));
   }
@@ -556,24 +616,26 @@ var requestOptions = {
 };
 
 let a = parseInt(diaryId);
-console.log(a);
+// console.log(a);
 
-console.log(memberId, a);
+// console.log(memberId, a);
 fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
   .then(response => response.text())
   .then(result => {
-    console.log(result);
-    console.log( typeof(result));
+    // console.log(result);
+    // console.log( typeof(result));
 
-    console.log(result == 'true');
+    // console.log(result == 'true');
 
     if(result === 'true'){
       isSharedref.value = true;
+      ChangeDoneHandler();
+      // emit("DoneAddDiary", true);
     }
     else{
       isSharedref.value = false;
     }
-    console.log(isSharedref.value);
+    // console.log(isSharedref.value);
 
     resolve(result);
   })
@@ -806,7 +868,7 @@ let quillOutputValue = function(convertDeltaJson) {
       <button
           @click="mapToggle = !mapToggle"
           >
-          지도추가
+          지도보기
       </button>
 
       </div>

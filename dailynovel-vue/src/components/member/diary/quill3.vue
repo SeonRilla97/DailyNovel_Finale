@@ -129,7 +129,7 @@ onUpdated(() => {
     // console.log(props.loadDiaryContent);
     // if(BeforeJson == null){
         
-    console.log(BeforeJson);
+    // console.log(BeforeJson);
 //db 에 있는 데이터 quill 에 뿌려주기
     BeforeJson = props.loadDiaryContent;
 
@@ -157,7 +157,9 @@ function editTriger(Json1){
     // console.log(a);
 
     // console.log(typeof(Json1));
+
     console.log(Json1);
+    
     // if(typeof(Json1) == 'string'){
         // quill.setText(Json1);
     // }

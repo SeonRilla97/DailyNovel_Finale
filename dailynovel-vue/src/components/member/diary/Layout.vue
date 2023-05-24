@@ -216,7 +216,8 @@ function diaryClickHandler(diaryId){
 // 다이어리 추가 버튼을 눌렀는지 감지
 let isClickDiaryAdd= ref(false);
 function diaryAddbtnClickHandler(){
-    isClickDiaryAdd.value=true;
+    // isClickDiaryAdd.value = true;
+    isClickDiaryAdd.value = !(isClickDiaryAdd.value);
     console.log(`다이어리 만들라고? ${isClickDiaryAdd.value}`)
 }
 function getNewestDiary(){
@@ -230,7 +231,8 @@ function diaryAddHander(){
 //     let tmp = listReload;
 //   listReload ++;
 //   if()
-    console.log("호출호출호출호출호출호출호출호출호출호출호출호출")
+
+    console.log("호출/호출/호출/호출/호출/호출/호출/호출/호출/호출/호출/호출")
     getListwithFiltering();
 }
 
