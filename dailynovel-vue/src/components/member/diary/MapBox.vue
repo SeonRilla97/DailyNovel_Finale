@@ -179,7 +179,7 @@ export default {
             const lat = vueKakaoMap.options.center.lat;
             const lng = vueKakaoMap.options.center.lng;
             const coor = {lat, lng};
-            this.$emit('coor', coor)
+            this.$emit('coorGood', coor)
             // emit한것은 파라미터로 들어간다. 직접전인값이아님.
 
             this.draggable = false;
@@ -234,7 +234,7 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    height: 200px;
+    height: 285px;
     z-index: 10000;
     background-color: #ffffffaa;
     width: 150px;
@@ -258,6 +258,7 @@ button:hover {
 
 .place-result:hover {
     background-color: antiquewhite;
+    color: #124981;
     cursor: pointer;
 
 
@@ -273,46 +274,12 @@ button:hover {
     position: relative;
 }
 
-.myplaces {
-    top: 0;
-    right: 100;
-}
 
-
-.myplaces .myplace {
-
-    padding: 10px;
-    border: 1px solid transparent;
-}
-
-.myplaces .myplace:hover {
-    background-color: aliceblue;
-    border-color: #469aef;
-    cursor: pointer;
-}
-
-.myplaces .myplace:active {
-    background-color: aliceblue;
-    border-color: #124981;
-}
-
-.myplaces .myplace.active {
-    background-color: rgb(253, 229, 150);
-    border-color: rgb(238, 222, 3);
-}
-
-.myplaces .myplace h4 {
-    margin: 0;
-}
-
-.map-area .kmap {
-    flex: auto;
-}
 
 .kmap {
     flex: 1 1 auto;
     width: 100%;
-    height: 200px;
+    height: 285px;
 }
 
 .overlay-popup {
