@@ -1,11 +1,13 @@
 <script setup>
 import FollowCard from './FollowCard.vue';
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js';
+
 import { onMounted, reactive } from 'vue';
 
 const user = useUserDetailsStore();
 const userId = user.id;
 const userFollow = reactive({
+
 
 })
 

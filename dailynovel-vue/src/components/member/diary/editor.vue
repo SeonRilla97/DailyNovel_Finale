@@ -10,6 +10,9 @@ import MapBox from './MapBox.vue';
 // "기분","화남","불편","평온","실망","불안","행복","슬픔","감동","신남"
 // "자유"
 
+//전역 멤버 아이디
+let memberID = null;
+
 const props = defineProps({
     'isAdd' : '',
     'loadDiaryId' : '',
@@ -358,6 +361,8 @@ const loadDiary = function(diaryId){
   fetch(`http://localhost:8080/diary/${diaryId}`, requestOptions)
     .then(response => response.json())
     .then(result => {
+      memberID = result.member_id;
+      console.log(memberID);
       diaryRef.value = result;
       diaryRef.value.regDate = getDate(new Date(result.regDate));
       resolve(true);
@@ -396,7 +401,7 @@ const EditDiary = function(diaryId){
     fetch("http://localhost:8080/diary", requestOptions)
       .then(response => response.text())
       .then(result => {
-        // loadDiary(diaryId);
+        loadDiary(diaryId);
         emit("DoneAddDiary", true);
         console.log("업데이트 완료"+diaryObj);
         })
@@ -432,9 +437,49 @@ const delButton = function(){
 
 
 const toggleClickHandler = (e) =>{
-  isSharedref.value = (isSharedref.value == true) ? (false) : (true);
+  // isSharedref.value = (isSharedref.value == true) ? (false) : (true);
   // console.log(isSharedref.value);
+
+  isSharedref.value = true;
+  
+  addShare(memberID, diaryRef.value.id);
+
 };
+
+let shareJson = {
+    "memberId": "",
+    "diaryId": ""
+  };
+let refShareJson = ref();
+refShareJson.value = shareJson;
+
+function addShare(memberId, diaryId){
+
+  return new Promise(function(resolve,reject){
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  shareJson.memberId = memberId;
+  shareJson.diaryId = diaryId;
+
+  let raw = JSON.stringify(shareJson);
+
+  let requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+fetch("http://localhost:8080/display/share", requestOptions)
+  .then(response => response.text())
+  .then(result => 
+  { console.log(result);
+    console.log("성공");
+  })
+  .catch(error => console.log('error', error));
+  }
+)};
 
 // let previousValueFeeling = diaryRef.value.feeling;
 // let previousValueTag = diaryRef.value.tag;
@@ -457,7 +502,7 @@ const DropdownHandler = (e) =>{
   }
   else if(e.target.className == "honestier"){
     honestyIsChange = true;
-    diaryRef.value.honestier = e.target.innerText;
+    diaryRef.value.honesty = e.target.innerText;
   }
 };
 
@@ -465,7 +510,7 @@ const DropdownHandler = (e) =>{
 const DropDownWatchEffect = watchEffect(() => {
   diaryRef.value.tag;
   diaryRef.value.feeling;
-  diaryRef.value.honestier;
+  diaryRef.value.honesty;
 
   if(tagIsChange == true){
     console.log("이제 잘 됨");
@@ -572,7 +617,7 @@ let quillOutputValue = function(convertDeltaJson) {
       </div>
 
       <div class="editor-attribue dropdown">
-        <button class="dropbtn">{{diaryRef.honestier}}</button>
+        <button class="dropbtn">{{diaryRef.honesty}}</button>
         
         <div 
           @click="DropdownHandler"          
@@ -614,8 +659,10 @@ let quillOutputValue = function(convertDeltaJson) {
             v-if="!isSharedref"
             class="editor-share .active">공유 여부</div>
 
-        <input type="checkbox" id="toggle" class="toggle2" hidden>
+        <input 
+        type="checkbox" id="toggle" class="toggle2" hidden>
         <label 
+          v-if="!isSharedref"
           @click="toggleClickHandler"
           for="toggle" 
           class="toggleSwitch">
@@ -648,21 +695,21 @@ let quillOutputValue = function(convertDeltaJson) {
 
       </main>
 
-      <!-- <div
+      <div
         class="editor-sub-button editor-sub">
 
-        <button
+        <!-- <button
           @click="imageToggle = !imageToggle"
           >
           사진추가
-        </button>
+        </button> -->
       <button
           @click="mapToggle = !mapToggle"
           >
           지도추가
       </button>
 
-      </div> -->
+      </div>
 
       <div class="img-map-container">
           <!-- <div
@@ -673,8 +720,8 @@ let quillOutputValue = function(convertDeltaJson) {
 
 
         <!-- 맵 삽입칸 -->
-        <!-- v-if="mapToggle" -->
-          <div
+        <div
+          v-if="mapToggle"
             class="mapToggle-map editor-sub">
             <MapBox :myLocation="myLocation" @coor="coorGood"/>
           </div>
