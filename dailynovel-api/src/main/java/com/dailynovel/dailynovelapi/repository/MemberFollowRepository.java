@@ -12,4 +12,6 @@ public interface MemberFollowRepository extends JpaRepository<MemberFollow, Memb
     
 
     List<MemberFollow> findByFollowId(int followId);
+
+    List<MemberFollow> findByFollowedId(int followedId);
 }

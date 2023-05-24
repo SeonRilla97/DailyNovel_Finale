@@ -127,4 +127,22 @@ public class UserDefaultService implements UserService {
         return null;
     }
 
+    @Override
+    public boolean ChangePaswword(String email, String password) {
+   
+        Member member  = repository.findByEmail(email);
+        if(member !=null){
+            System.out.println(password);
+            password = PasswordEncoder(password);
+            System.out.println(password);
+            member.setPassword(password);
+            String passwordCheck =repository.saveAndFlush(member).getPassword();
+            if(passwordCheck!=password){
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

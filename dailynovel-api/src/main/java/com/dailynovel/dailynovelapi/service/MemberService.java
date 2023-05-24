@@ -1,5 +1,6 @@
 package com.dailynovel.dailynovelapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.dailynovel.dailynovelapi.entity.Member;
@@ -17,5 +18,7 @@ public interface MemberService {
     boolean isValidLoginAuth(String email);
 
     Optional<Member> viewMemberInfo(int id);
+
+    List<Member> getMemberFollow(int id);
 
 }

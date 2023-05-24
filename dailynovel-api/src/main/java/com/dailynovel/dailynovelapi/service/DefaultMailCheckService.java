@@ -33,9 +33,6 @@ public class DefaultMailCheckService implements MailCheckService{
 
     @Override
     public boolean mailCheck(String email, String authCode, String Subject, String Text) {
-        Member member = repository.findByEmail(email);
-        System.out.println(member);
-        if (member== null) {
             MimeMessage message = sender.createMimeMessage();
             // use the true flag to indicate you need a multipart message
             MimeMessageHelper helper;
@@ -52,8 +49,6 @@ public class DefaultMailCheckService implements MailCheckService{
                 e.printStackTrace();
             }
             return true;
-        }
-        return false;
 
     }
 }

@@ -2,6 +2,13 @@
 import { useRouter } from 'vue-router';
 let router = useRouter();
 
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+});
+
 function gotofollowpage(id){
     router.go("/member/room/follow");
 }
@@ -11,14 +18,15 @@ async function getFollowMemberInfo(id){
         
     })
 }
+console.log( props.data.nickName );
 
 </script>
 
 <template>
-    <router-link to="/member/room/follow">
+  <router-link :to="`/member/room/follow/profile/${props.data.id}`">
         <section class="m-flwcard-container">
             <div class="m-follow-img">이미지</div>
-            <div class="m-follow-name lc-center"><span>{{ "이름" }}</span></div>
+            <div class="m-follow-name lc-center"><span>{{ props.data.nickName }}</span></div>
             <div class="m-follow-checkbox lc-center"><div>구독중</div></div>
         </section>    
     </router-link>

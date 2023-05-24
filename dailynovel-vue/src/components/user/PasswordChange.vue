@@ -2,114 +2,30 @@
 import { ref } from "vue";
 import Modal from "./LoginModal.vue";
 import { useRoute, useRouter } from "vue-router";
-let email = ref("");
-let emailBtn = ref(false);
+import { useUserDetailsStore } from "../store/useUserDetailsStore";
+
 let password = ref("");
-let passwordBtn = ref(false);
+let userDetail = useUserDetailsStore();
 let passwordCheck = ref("");
-let phoneNumber = ref("");
-let phoneNumberBtn = ref(false);
-let emailcheck = ref("");
-let mailcheckBtn = ref(false);
-let nickName = ref("");
-let nickNameBtn = ref(false);
 let content = ref("");
-let birthYear = ref();
-let birthMonth = ref();
-let birthDay = ref();
-//1은남자 2는여자
-let gender = ref();
-let emailVerification = /^[a-zA-Z0-9+-_.]+@[a-zA-Z-]+\.[a-zA-Z-.]+$/;
 let passwordVerificationStrong = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,25}$/;
 let passwordVerificationMiddle = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
-let phoneNumberVerification = /^(\d{3})(\d{3,4})(\d{4})$/;
 let showModal = ref(false);
-let birthYearVerification = /^(\d{4})$/;
-let birthMonthVerification = /^(\d{2})$/;
-let birthDayVerification = /^(\d{2})$/;
-
-let emailVerificationResult = ref(false);
 let passwordVerificationStrongResult = ref(false);
 let passwordVerificationMiddleResult = ref(false);
 let passwordVerifyResult = ref(false);
-let phoneNumberVerificationResult = ref(false);
 let router = useRouter();
 async function showHandler(event) {
-  if (event == "닉네임") {
-    let response = await fetch(
-      "http://localhost:8080/users/nicknameCheck?nickname=" + nickName.value
-    );
-    let data = await response.text();
-
-    if (data === "false") {
-      content.value = "사용할 수 있는 닉네임입니다.";
-      nickNameBtn.value = true;
-    } else if (data === "true") {
-      nickNameBtn.value = false;
-      content.value = "중복된 닉네임입니다.";
-    } else {
-      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-      content.value = "응답을 처리할 수 없습니다.";
-    }
-  } else if (event === "이메일") {
-  content.value = "이메일 확인 중..."; // 로딩 표시기 표시
-  showModal.value = true;
-  try {
-    let response = await fetch("http://localhost:8080/users/EmailVerificationNumber?email=" + email.value);
-    let data = await response.text();
-
-    // 최소한 1초간 로딩 메시지를 표시하기 위해 setTimeout 사용
-    setTimeout(() => {
-      if (data === "true") {
-        content.value = "임시비밀번호를 확인해주세요";
-        emailBtn.value = true;
-      } else if (data === "false") {
-        content.value = "가입 되어있지 않은 이메일입니다.";
-      } else {
-        // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-        content.value = "이메일을 다시 확인해주세요";
-      }
-    }, 1000); // 1초 (1000ms) 지연
-  } catch (error) {
-    content.value = "요청 중 오류가 발생했습니다.";
-  }
-} else if (event == "이메일인증번호확인") {
-    let response = await fetch(
-      "http://localhost:8080/users/emailCheckNum?email=" +
-        email.value +
-        "&emailCheckNum=" +
-        emailcheck.value
-    );
-    let data = await response.text();
-
-    if (data === "true") {
-      content.value = "인증에 성공했습니다.";
-      mailcheckBtn.value = true;
-    } else if (data === "false") {
-      content.value = "인증에 실패했습니다.";
-      emailBtn.value = true;
-    } else {
-      // 예외 처리: 예상하지 못한 응답 형식이나 오류 처리
-      content.value = "응답을 처리할 수 없습니다.";
-    }
-  } else if(event == "회원가입") {
-    let date = new Date(birthYear.value, birthMonth.value - 1, birthDay.value);
-    date.setDate(date.getDate() + 1);
-    let dateString = date.toISOString().split("T")[0];
-    console.log(dateString);
-    await fetch("http://localhost:8080/users/signup", {
+   if(event == "비밀번호변경하기") {
+    await fetch("http://localhost:8080/members/passwordChange", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email.value,
-        password: password.value,
-        nickName: nickName.value,
-        phoneNumber: phoneNumber.value,
-        gender: gender.value,
-        birthday: dateString,
+        email: userDetail.email,
+        password: password.value
       }),
     })
       .then((response) => response.text())
@@ -118,10 +34,10 @@ async function showHandler(event) {
         console.log(data)
         if(data ==="true"){
         // 응답 처리
-        content.value = "회원가입에 성공했습니다.";
+        content.value = "비밀번호 변경하기에 성공했습니다.";
         }
         else if(data ==="false")
-        content.value = "회원가입에 실패했습니다 빠진 정보를 확인해주세요.";
+        content.value = "비밀번호 변경하기에 실패했습니다.";
         else
         content.value = "서버에 문제가 있습니다 잠시후 시도해주세요";
 
@@ -153,47 +69,12 @@ function passwordverify() {
   } else passwordVerifyResult.value = false;
 }
 
-function nickNameVerify() {
-  nickNameBtn.value = false;
-}
 
-/**let checkphone = phoneNumber.value.replace(/\d/g, "");
-let formattedPhone = checkphone.replace(phoneNumberVerification, "$1-$2-$3");*/
-function phoneNumberChange() {
-  let phoneNumberCheck = phoneNumber.value.replace(/\D/g, "");
-  let formattedPhone = phoneNumberCheck.replace(phoneNumberVerification, "$1-$2-$3");
-
-  return formattedPhone;
-}
-function phoneNumberInput() {
-  let formattedPhoneNumber = phoneNumberChange();
-  phoneNumber.value = formattedPhoneNumber;
-}
-
-async function updateInput(event) {
-  if (event === "이메일") {
-    if (email.value.match(emailVerification)) {
-      emailVerificationResult.value = true;
-      emailBtn.value = false;
-    } else {
-      content.value = "올바른 이메일을 입력해주세요";
-      emailVerificationResult.value = false;
-      emailBtn.value = false;
-    }
-  }
-}
-
-function limitInput(inputValue, maxLength) {
-  if (inputValue) {
-    return inputValue.toString().slice(0, maxLength);
-  }
-  return '';
-}
 </script>
 <template>
   <div class="container-1-nmg container-s1">
     <div class="main lc-vertical-alignment">
-      <div class="text-1">임시 비밀번호 발급</div>
+      <div class="text-1">비밀번호 재설정</div>
 
       <div class="form-1">
         <div class="text-2">
@@ -202,60 +83,97 @@ function limitInput(inputValue, maxLength) {
         </div>
         <form
           class="mgt-1 lc-vertical-alignment"
-          enctype="application/x-www-form-urlencoded">
-                    <!--이메일-->
-                    <div class="mgt-3 display-flex">
+          enctype="application/x-www-form-urlencoded"
+        >
+          <!--비밀번호-->
+          <div class="mgt-3 display-flex">
             <div class="div-label">
-              <label for="email">
-                이메일
+              <label for="password">
+                비밀번호
                 <span class="essential-color">*</span>
               </label>
             </div>
             <div class="div-input">
               <input
-                id="email"
+                id="password"
                 :class="[
-                  email === ''
+                  password === ''
                     ? 'input-1'
-                    : emailVerificationResult
+                    : (passwordVerificationMiddleResult ||
+                        passwordVerificationStrongResult) == true
                     ? 'input-1-ok'
                     : 'input-1-no',
                 ]"
-                type="text"
+                type="password"
                 tabindex="0"
-                placeholder="이메일을 입력해주세요"
-                required
-                @input="updateInput('이메일')"
-                v-model="email"
+                placeholder="패스워드를 입력해주세요"
+                v-model="password"
+                v-on:input="passwordVerification(), passwordverify()"
               />
-            </div>
-            <div class="mgl-3">
-              <button
-                type="button"
-                :class="[emailBtn ? 'btn-1-off' : 'btn-1']"
-                @click="showHandler('이메일')"
-                :disabled="emailBtn == true"
-              >
-                인증번호 받기
-              </button>
             </div>
           </div>
           <div
             class="mgt-2"
             :class="[
-              email == '' ? 'd-none' : emailVerificationResult ? 'd-none' : 'color-red',
+              password === ''
+                ? 'd-none'
+                : passwordVerificationStrongResult
+                ? 'color-green'
+                : passwordVerificationMiddleResult
+                ? 'color-yellow'
+                : 'color-red',
             ]"
           >
-            이메일 형식을 지켜주세요
+            비밀번호 형식(8~25 문자 및 숫자포함)
           </div>
-  
+
+          <!--비밀번호 확인-->
+          <div class="mgt-3 display-flex">
+            <div class="div-label">
+              <label for="password-check">
+                비밀번호 확인
+                <span class="essential-color">*</span>
+              </label>
+            </div>
+            <div class="div-input">
+              <input
+                id="password-check"
+                :class="[
+                  passwordCheck === ''
+                    ? 'input-1'
+                    : passwordVerifyResult == true
+                    ? 'input-1-ok'
+                    : 'input-1-no',
+                ]"
+                type="password"
+                tabindex="0"
+                placeholder="패스워드를 한번 더 입력해주세요"
+                required
+                v-model="passwordCheck"
+                @input="passwordverify()"
+              />
+            </div>
+          </div>
+          <div
+            class="mgt-2"
+            :class="[
+              passwordCheck === ''
+                ? 'd-none'
+                : passwordVerifyResult == true
+                ? 'd-none'
+                : 'color-red',
+            ]"
+          >
+            비밀번호와 일치하지 않습니다.
+          </div>
+
         </form>
       </div>
       <div class="div-btn">
-        <router-link class="btn-2" to="/login">
-          <span class="text-5" > 로그인</span>
-        </router-link> 
-        </div>
+        <button class="btn-2" @click="showHandler('회원가입')">
+          <span class="text-5"> 비밀번호 변경하기 </span>
+        </button>
+      </div>
     </div>
   </div>
   <Modal :content="content" :show="showModal" @ok="dlgHandler"> </Modal>
@@ -307,11 +225,11 @@ function limitInput(inputValue, maxLength) {
 }
 
 .text-5 {
-  margin-top: 18px;
   display: inline-block;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
 }
+
 .btn-1 {
   width: 120px;
   font-weight: 500;
@@ -436,9 +354,9 @@ function limitInput(inputValue, maxLength) {
   background: rgb(235, 155, 56); /* 선택 시 원하는 배경색을 지정하세요 */
 }
 
-.input-1-noborder input[type="radio"]:checked + label {
-  color: rgb(235, 155, 56); /* 선택 시 원하는 텍스트 색상을 지정하세요 */
-}
+/* .input-1-noborder input[type="radio"]:checked + label {
+  color: rgb(235, 155, 56); /* 선택 시 원하는 텍스트 색상을 지정하세요 
+} */
 
 .input-1-ok {
   width: 360px;
@@ -513,10 +431,11 @@ function limitInput(inputValue, maxLength) {
 }
 
 .color-green {
-  color: greenyellow;
+  color:rgb(4, 211, 38);
+
 }
 
 .color-yellow {
-  color: yellow;
+  color:rgb(225, 144, 45);
 }
 </style>
