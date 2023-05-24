@@ -31,11 +31,19 @@ let guestbookComment = reactive({
   content: null
 })
 
+// 프로필로부터 해당 프로필의 유저 ID 받아온것 -- 선유진 추가 (이거 이용해서 해당 유저의 방명록 불러와야합니다)
+let props = defineProps({
+  userId: {
+        type: Object,
+        required:true
+    }
+});
+
 
 
 onMounted(() => {
   console.log(hostId);
-
+  console.log(props.userId)
   getGuestbookList();
 
 

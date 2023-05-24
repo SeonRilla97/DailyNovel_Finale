@@ -8,7 +8,7 @@
                     <span :class="isSubscribed=='true' ? 'subscribe-inactive' : 'subscribe-active'"></span>
                     <span>{{ isSubscribed=='true' ? '구독취소' : '구독하기' }}</span>
             </div>
-            <router-link :to="'/member/room/follow/'+writerId" class="btn cursor btn-box"  v-show="isSubscribed=='true'">
+            <router-link :to="{path:'../follow/'+writerId }" class="btn cursor btn-box"  v-show="isSubscribed=='true'">
                 <span class="go-to-page"></span>
                 <span>구경가기</span> 
             </router-link>
