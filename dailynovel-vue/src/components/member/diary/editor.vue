@@ -1020,6 +1020,7 @@ let quillOutputValue = function(convertDeltaJson) {
       color: #FCFCFC;
       font-size : 12px;
       text-align: center; */
+      margin-left: 20px;
 
       justify-self: center;
       align-self: center;
