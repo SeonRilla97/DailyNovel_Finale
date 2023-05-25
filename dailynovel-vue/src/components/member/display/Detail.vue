@@ -1,5 +1,5 @@
 <template lang="">
-    <main class=" center-grid scroll">
+    <main class=" center-grid">
         <div class="goBack-btn back-arrow" @click="goBackHandler"></div>
         <transition name="bounce">
             <div class="subscribeBtn nodouble-drag" v-show="subscribeBox">
@@ -10,7 +10,7 @@
         <div>
             <section class=" content-grid article-box ">
                 <h1 class="d-none">디테일</h1>
-                    <article class=""> 
+                    <article class="" > 
                         <div class="sticky">
                             <h1 class="title nodouble-drag">{{title}}</h1>
                             <hr>
@@ -24,11 +24,14 @@
                             </div>
                         </div>
                         <br>
-                        <div class="detail-width nodouble-drag">
+                        <div class="detail-width nodouble-drag scroll" >
                             <div>
-                                <div id="editor">
+                                <div>
+                                    <div id="editor">
+                                    </div>
                                 </div>
                             </div>
+                            
                             <br>
                         </div>
                         <div class="center-grid padding-bottom sticky">
@@ -112,7 +115,7 @@ async function load() {
         likeStatus = props.likeInfo
 
         editTriger(content.value);
-    }, 150);
+    }, 200);
     // })
 }
 let quill;
@@ -317,8 +320,8 @@ function goBackHandler() {
 
 .detail-width {
     width: 100%;
-    min-width: 500px;
-    max-width: 1100px;
+    min-width: 600px;
+    max-width: 600px;
     min-height: 420px;
     text-align: left;
 }
@@ -341,6 +344,7 @@ function goBackHandler() {
     padding-bottom: 1rem;
     top: 0px;
     background-color: #FAFFF9;
+    /* z-index: 1; */
 }
 
 .fixed {
