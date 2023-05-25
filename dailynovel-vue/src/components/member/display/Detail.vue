@@ -29,6 +29,7 @@
                                 <div id="editor">
                                 </div>
                             </div>
+                            
                             <br>
                         </div>
                         <div class="center-grid padding-bottom sticky">
@@ -317,8 +318,8 @@ function goBackHandler() {
 
 .detail-width {
     width: 100%;
-    min-width: 500px;
-    max-width: 1100px;
+    min-width: 600px;
+    max-width: 600px;
     min-height: 420px;
     text-align: left;
 }
