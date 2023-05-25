@@ -11,5 +11,7 @@ import com.dailynovel.dailynovelapi.mbentity.MbMember;
 public interface MbMemberRepository {
     public MbMember findAllbyId(int memberId);
 
+    public void updateProfileImage(String newFilename, int id);
+
     
 }

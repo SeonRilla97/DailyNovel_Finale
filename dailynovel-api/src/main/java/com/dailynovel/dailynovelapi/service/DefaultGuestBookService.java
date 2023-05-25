@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dailynovel.dailynovelapi.entity.GuestBook;
 import com.dailynovel.dailynovelapi.entity.GuestBookComment;
@@ -39,10 +40,15 @@ public class DefaultGuestBookService implements GuestBookService {
   }
 
   // 방명록 작성 서비스
-  @Override
+  @Override  
   public void writeGuestBook(Map<String, Object> guestbook) {
-    Integer memberId = (Integer) guestbook.get("memberId");
-    Integer writerId = (Integer) guestbook.get("writerId");
+    
+    // Integer memberId = Integer.parseInt((String) guestbook.get("memberId")); 
+    // Integer writerId = Integer.parseInt((String) guestbook.get("writerId")); 
+
+    Integer memberId = (Integer) guestbook.get("memberId"); 
+    Integer writerId = (Integer) guestbook.get("writerId"); 
+    
     String content = guestbook.get("content").toString();
 
     MbGuestBook temp = MbGuestBook.builder()

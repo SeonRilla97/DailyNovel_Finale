@@ -191,7 +191,7 @@ public class DiaryController {
     // }
 
 
-    // 사진 업로드 구현
+    // 사진 업로드 구현 
     // @PostMapping("!!1")
     // public String saveImage(MultipartFile image){
     //    //너가 파일명 조작해서 디비에 저장하면 됨

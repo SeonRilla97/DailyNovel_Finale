@@ -26,4 +26,6 @@ public interface MemberService {
 
     MbMember getMemberInfo(int id);
 
+    void saveProfileImage(String newFilename, int id);
+
 }

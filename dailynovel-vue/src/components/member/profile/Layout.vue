@@ -32,11 +32,8 @@ let name = userDetails.nickname;
 
         <router-link to="/member/room/profile/follow">
           <span class="font-bold h2">구독목록</span>
-        </router-link>
-         
-        <router-link to="/member/room/profile/info">
-          <span class="font-bold h2">프로필 수정</span>
-        </router-link>
+        </router-link>       
+      
       </div>
 
     </header>

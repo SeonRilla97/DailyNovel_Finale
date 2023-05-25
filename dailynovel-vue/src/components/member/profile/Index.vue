@@ -15,6 +15,7 @@ const image = ref("default.jpg");
 
 let onchanged = ref(false);
 let imageInfo = ref(false);
+
 async function getMemberInfoById(id) {
     await fetch(`http://localhost:8080/members/mInfo?id=${id}`,
     {
@@ -38,8 +39,9 @@ async function getMemberInfoById(id) {
     .catch(error => console.log(error));
 }
 
-onMounted(()=>{
-  getMemberInfoById(loginuser.id);  
+onMounted(async()=>{
+  await getMemberInfoById(loginuser.id);
+  console.log("나 재 실행?");
 })
 
 
@@ -56,10 +58,11 @@ async function changed(e){
   let formData = new FormData();
   formData.append("image", e.target.files[0]);
   formData.append("id", loginuser.id);
-  let response = fetch("http://localhost:8080/~~~~~~~~~~~",{
+  // let response = 
+  fetch("http://localhost:8080/members/profile/image",{
     method : "POST",
     body : formData
-  })
+  });
 }
 
 function createURL(target){
@@ -107,7 +110,7 @@ function createURL(target){
         </div>               
       </div>
       <div class="m-profile-index-info-follow shadow-1">
-        
+        <!-- <span>{{ member.info.email  }}</span> -->
       </div>
     </div>
   </main>
@@ -176,7 +179,7 @@ function createURL(target){
 
   background-size: cover;
   background-position: center;
-  background-color: aqua;
+  background-color: white;
   background-image: url(http://localhost:8080/image/profile/8.png);
   background-repeat: no-repeat;
 }

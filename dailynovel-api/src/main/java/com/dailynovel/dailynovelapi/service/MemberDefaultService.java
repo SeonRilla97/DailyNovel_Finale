@@ -125,4 +125,9 @@ public class MemberDefaultService implements MemberService {
         return false;
     }
 
+    @Override
+    public void saveProfileImage(String newFilename, int id) {
+        mbrepository.updateProfileImage(newFilename, id);
+    }
+
 }

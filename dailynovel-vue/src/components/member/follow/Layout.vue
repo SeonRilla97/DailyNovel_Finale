@@ -16,7 +16,6 @@ let member = ref();
   pfgetUserInfo(userId.value);
 //});
 
-
 function pfgetUserInfo(userId){
   console.log("설마 이거 누가 불러?")
   console.log("식빵")
