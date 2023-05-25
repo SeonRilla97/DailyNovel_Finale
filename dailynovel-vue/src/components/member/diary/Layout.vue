@@ -174,6 +174,7 @@ function getListwithFiltering(backup) {
             console.log(diary.list)
             console.log(diary.list[(Object.keys(diary.list)[0])][0].diaryId)
             newestDiaryId.value = diary.list[(Object.keys(diary.list)[0])][0].diaryId;
+            console.log(newestDiaryId.value);
         })
         .catch(error => console.log('error', error));
     }
@@ -216,7 +217,8 @@ function diaryClickHandler(diaryId){
 // 다이어리 추가 버튼을 눌렀는지 감지
 let isClickDiaryAdd= ref(false);
 function diaryAddbtnClickHandler(){
-    isClickDiaryAdd.value=true;
+    // isClickDiaryAdd.value = true;
+    isClickDiaryAdd.value = !(isClickDiaryAdd.value);
     console.log(`다이어리 만들라고? ${isClickDiaryAdd.value}`)
 }
 
@@ -231,7 +233,8 @@ function diaryAddHander(){
 //     let tmp = listReload;
 //   listReload ++;
 //   if()
-    console.log("호출호출호출호출호출호출호출호출호출호출호출호출")
+
+    console.log("호출/호출/호출/호출/호출/호출/호출/호출/호출/호출/호출/호출")
     getListwithFiltering();
 }
 
