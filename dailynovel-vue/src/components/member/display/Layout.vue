@@ -124,7 +124,6 @@ function isDiaryIdMatched(diaryId) {// 좋아요 클릭했는지 확인하는 �
     return this.indeLikeList.some(item => item.diaryId === diaryId);
 }
 
-
 // 이거 if문을 앞쪽으로 옮겨서 fetch만 바꾸면 집중화 할 수 있을 거 같다.)
 async function likeSwitchHandler(diaryId) {
     console.log("좋아요 " + (this.indeLikeList.some(item => item.diaryId === diaryId) ? "delete" : "insert"));
@@ -158,11 +157,7 @@ async function likeSwitchHandler(diaryId) {
 function goToNextPage() { //스크롤 페이징
     console.log("추가페이지")
 }
-
 </script>
-
-
-
 
 <style scoped>
 .container {

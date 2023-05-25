@@ -64,11 +64,13 @@ const initHander = function (firstValue){
 let weatherDone = false;
 let ControllerAdd = props.isAdd;
 let myLocation = { lat: null, lng: null };
+// let setDiaryLocate = { lat: null, lng: null };
+const dtlat = ref('');
+const dtlng = ref('')
 
 onMounted(() => {
   // console.log(props.newestDiaryId);
   geoFindMe(); //초기 맵구현시 필요
-
   console.log(memberID);
 });
 
@@ -221,6 +223,10 @@ let loadLocate = [2];
 
   };
 
+
+
+
+
  function geoFindMe() {
 
   return new Promise(function (resolve){
@@ -231,6 +237,7 @@ let loadLocate = [2];
         // weather(latitude, longitude);
         resolve([latitude,longitude]);
         myLocate(latitude,longitude)
+        // setmylocate(latitude, longitude)
     }
     function error() {
       console.log("Unable to retrieve your location");
@@ -251,6 +258,16 @@ let loadLocate = [2];
       return { lat: myLocation.lat, lng: myLocation.lng };
 
     }
+
+  // function setmylocate(latitude,longitude){
+  //   setDiaryLocate.lat = latitude;
+  //   setDiaryLocate.lng = longitude;
+
+  //   console.log(latitude,latitude,latitude,latitude,latitude,latitude,latitude)
+
+  //     return { lat: setDiaryLocate.lat, lng: setDiaryLocate.lng };
+
+  // }
   function weather(latitude, longitude){
 
     return new Promise(function (resolve){
@@ -391,7 +408,7 @@ const addDiary = function(isAdd){
 })};
 
 let staticRegDate = "";
-const loadDiary = function(diaryId){
+const loadDiary = function load(diaryId){
   return new Promise(function(resolve){
 
   let requestOptions = {
@@ -414,6 +431,11 @@ const loadDiary = function(diaryId){
       staticRegDate = result.regDate;
       myLocation.lat = result.lat;
       myLocation.lng = result.lng;
+      console.log("result.lat:",result.lat)
+      dtlat.value = result.lat;
+      dtlng.value = result.lng;
+
+
       diaryRef.value.regDate = getDate(new Date(result.regDate));
 
       let promise = isShare(memberID, diaryId);
@@ -846,7 +868,9 @@ let quillOutputValue = function(convertDeltaJson) {
         <div
           v-if="mapToggle"
             class="mapToggle-map editor-sub">
-            <MapBox :myLocate="myLocation"   @coorGood="coor" />
+            <MapBox 
+            :myLocate="myLocation"  
+            @coorGood="coor" />
             <!-- :setmylocate="setDiaryLocate" -->
           </div>
 
@@ -871,11 +895,10 @@ let quillOutputValue = function(convertDeltaJson) {
 
 .editor-main-quill{
     height: 80%;
-    overflow-y: scroll;
 
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 40px 1fr 1fr;
+    grid-template-rows: 40px 1fr;
 }
 
 .editor-main{
@@ -1078,9 +1101,7 @@ let quillOutputValue = function(convertDeltaJson) {
 }
 
 
-.img-map-container{
-  overflow-y: scroll;
-}
+
 
 
 /**
@@ -1176,6 +1197,8 @@ let quillOutputValue = function(convertDeltaJson) {
 .toggleSwitch, .toggleButton {
   transition: all 0.2s ease-in;
 }
+
+
 
 .add-btn{
     font-size: 40px;

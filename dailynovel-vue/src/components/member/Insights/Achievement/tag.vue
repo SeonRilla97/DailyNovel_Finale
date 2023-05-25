@@ -44,6 +44,13 @@
         <div class="achievement-data">자유의 일기상</div>
       </div>
 
+       <div class="achievement" :class="{ 'completed': freeTag >= 15 }">
+        <div class="achievement-img21"></div>
+        <div class="achievement-data">자유 : {{ freeTag }}/15</div>
+        <div class="achievement-data">도비 직장동기
+        </div>
+      </div>
+
       <div class="achievement" :class="{ 'completed': movieTag >= 24 }">
         <div class="achievement-img4"></div>
         <div class="achievement-data">영화 : {{ movieTag }}/24</div>
@@ -159,7 +166,7 @@ onMounted(() => {
   font-weight: bold;
 }
 .Move:hover {
-  color: rgb(226, 226, 99);
+  color: rgb(255, 208, 0);
   text-decoration: underline;
 }
 
@@ -191,6 +198,6 @@ onMounted(() => {
 }
 
 .achievement.completed {
-  background-color: rgb(127, 127, 204);
+  background-color: #F2C6C2;
 }
 </style>
