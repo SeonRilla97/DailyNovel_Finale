@@ -5,17 +5,8 @@
     <img src="../../assets/img/dialog.png" id="dialog" style="display: none" />
     <img src="../../assets/img/sound.png" id="sound" style="display: none" />
     <img src="../../assets/img/nosound.png" id="nosound" style="display: none" />
-    <canvas
-      id="canvas"
-      class="canvas"
-      width="1280"
-      height="720"
-      ref="canvas"
-      @click="canvasClickHandler"
-      @keydown="keyDownHandler"
-      @keyup="keyUpHandler"
-      :tabindex="0"
-    ></canvas>
+    <canvas id="canvas" class="canvas" width="1280" height="720" ref="canvas" @click="canvasClickHandler"
+      @keydown="keyDownHandler" @keyup="keyUpHandler" @mousemove="MouseMoveHandler" :tabindex="0"></canvas>
   </div>
 </template>
 
@@ -39,8 +30,8 @@ export default {
       slime: null,
       background: null,
       dialog: null,
-      sound:null,
-      nosound:null,
+      sound: null,
+      nosound: null,
       obstacles: [],
       canvasOffsetX: 0,
       canvasOffsetY: 0,
@@ -55,15 +46,15 @@ export default {
     this.ctx = this.canvas.getContext("2d");
     this.slime = new Slime(700, 600);
     this.background = new Background();
-    this.sound = new Sound(1200,650);
-    this.nosound = new NoSound(1200,650);
+    this.sound = new Sound(1200, 650);
+    this.nosound = new NoSound(1200, 650);
     this.dialog = new Dialog();
     this.createObstacles();
     this.run();
-    this.volume =0.4;
+    this.volume = 0.4;
     this.backgroundBgm = new Audio(BackgroundSound);
-     this.backgroundBgm.loop = true; // 무한 루프 설정
-     this.backgroundBgm.play(this.volume*2.5); // 음악 재생
+    this.backgroundBgm.loop = true; // 무한 루프 설정
+    this.backgroundBgm.play(this.volume * 2.5); // 음악 재생
     this.slimeSound = new Audio(SlimeSound);
     // 캔버스에 포커스를 설정
     this.canvas.setAttribute("tabindex", "0");
@@ -122,7 +113,7 @@ export default {
       if (this.showDialogBox) {
         this.dialog.draw(this.ctx);
       }
-      if(this.soundCheck)
+      if (this.soundCheck)
         this.sound.draw(this.ctx);
       else
         this.nosound.draw(this.ctx);
@@ -134,7 +125,6 @@ export default {
       this.slime.update();
 
       let collisionDetected = false;
-
       for (const obstacle of this.obstacles) {
         if (this.isWithinDistance(this.slime, obstacle)) {
           this.showDialogBox = true;
@@ -157,7 +147,7 @@ export default {
             this.dialog.show();
           } else if (obstacle.type === "wall") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("구독 페이지를\n 보러 가볼까요?(y)");
+            this.dialog.setText("방명록\n보러 가볼까요?(y)");
             this.dialog.show();
           } else if (obstacle.type === "trophy") {
             this.dialog.setPosition(dialogX, dialogY);
@@ -165,11 +155,11 @@ export default {
             this.dialog.show();
           } else if (obstacle.type === "bed") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("로그 아웃 할까요?(y)");
+            this.dialog.setText("마이페이지로 \n갈까요?(y)");
             this.dialog.show();
           } else if (obstacle.type === "door") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("문으로 나가볼까요?(y)");
+            this.dialog.setText("로그아웃 할까요?(y)");
             this.dialog.show();
           } else {
             this.dialog.setPosition(dialogX, dialogY);
@@ -178,10 +168,10 @@ export default {
           }
         }
 
-        if (!collisionDetected) {
-          // 충돌이 없을 때의 대화 상자 숨기기
-          this.dialog.hide();
-        }
+        // if (!collisionDetected) {
+        //   // 충돌이 없을 때의 대화 상자 숨기기
+        //   this.dialog.hide();
+        // }
 
         if (this.isCollision(this.slime, obstacle)) {
           this.showDialogBox = true;
@@ -201,30 +191,25 @@ export default {
             this.dialog.show();
           } else if (obstacle.type === "shelf") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("책장과\n 충돌했습니다.");
+            this.dialog.setText("책장과\n충돌했습니다.");
             this.dialog.show();
           } else if (obstacle.type === "computer") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("컴퓨터 책상과\n 충돌했습니다.");
+            this.dialog.setText("컴퓨터 책상과\n충돌했습니다.");
             this.dialog.show();
           } else if (obstacle.type === "wall") {
             this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText("구독 페이지를\n 보러 가볼까요?(y)");
+            this.dialog.setText("방명록을\n보러 가볼까요?(y)");
             this.dialog.show();
           } else if (obstacle.type === "trophy") {
             this.dialog.setPosition(dialogX, dialogY);
             this.dialog.setText("트로피와 \n부딪혔습니다.");
             this.dialog.show();
-          } else {
-            this.dialog.setPosition(dialogX, dialogY);
-            this.dialog.setText(` 충돌했습니다.`);
-            this.dialog.show();
           }
         }
 
         if (!collisionDetected) {
-          // 충돌이 없을 때의 대화 상자 숨기기
-          this.dialog.hide();
+            this.dialog.hide();
         }
       }
     },
@@ -310,22 +295,22 @@ export default {
       }
 
       // 침대 -> 마이페이지
-      else if (435 <= canvasX && 205 <= canvasY && canvasX <= 680 && canvasY < 255) {
+      else if (70 <= canvasX && 528 <= canvasY && canvasX <= 433 && canvasY <= 680) {
         this.$router.push("/member/room/profile");
         this.$emit("modalOpenHandler");
       }
-        //sound처리
-        else if (1200 <= canvasX && 650 <= canvasY && canvasX <= 1280 && canvasY < 700) {
-          this.soundCheck = !(this.soundCheck);
-          console.log(this.soundCheck)
-          if( this.soundCheck){
-              this.volume= 0.4;
-              this.backgroundBgm.volume = 1;
-          }
-          else{
-            this.backgroundBgm.volume = 0;
-            this.volume= 0;
-          }
+      //sound처리
+      else if (1200 <= canvasX && 650 <= canvasY && canvasX <= 1280 && canvasY < 700) {
+        this.soundCheck = !(this.soundCheck);
+  
+        if (this.soundCheck) {
+          this.volume = 0.4;
+          this.backgroundBgm.volume = 1;
+        }
+        else {
+          this.backgroundBgm.volume = 0;
+          this.volume = 0;
+        }
       }
 
       // 추가적인 클릭 이벤트 처리 가능
@@ -412,6 +397,58 @@ export default {
       // this.boy.kreset();
       this.slime.stop(e.key);
     },
+    MouseMoveHandler(e) {
+
+
+      let canvasX = e.x - this.canvasOffsetX; // 실제 좌표를 캔버스 상대 좌표로 변환
+      let canvasY = e.y - this.canvasOffsetY;
+
+      if (70 <= canvasX && 260 <= canvasY && canvasX <= 200 && canvasY < 410) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-100, canvasY-100);
+        this.dialog.setText("일기를 쓰러\n가볼까요?(y)");
+        this.dialog.show();
+        console.log("asdfasdfs")
+      } else if (435 <= canvasX && 0 <= canvasY && canvasX <= 680 && canvasY <= 255) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-100, canvasY-100);
+        this.dialog.setText("일기장을 보러\n가볼까요?(y)");
+        this.dialog.show();
+      } else if (958 <= canvasX && 50 <= canvasY && canvasX <= 1258 && canvasY <= 260) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-100, canvasY-100);
+        this.dialog.setText("다른 사람\n일기를 보러\n가볼까요?(y)");
+        this.dialog.show();
+      } else if (1100 <= canvasX && 350 <= canvasY && canvasX <= 1300 && canvasY <= 500) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-200, canvasY-100);
+        this.dialog.setText("내 업적을 확인하러\n가볼까요?(y)");
+        this.dialog.show();
+      } else if (0 <= canvasX && 0 <= canvasY && canvasX <= 300 && canvasY <= 180) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-100, canvasY-100);
+        this.dialog.setText("방명록\n보러 가볼까요?(y)");
+        this.dialog.show();
+      } else if (70 <= canvasX && 528 <= canvasY && canvasX <= 433 && canvasY <= 680) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-100, canvasY-100);
+        this.dialog.setText("마이페이지로 \n갈까요?(y)");
+        this.dialog.show();
+      } else if (763 <= canvasX && 43 <= canvasY && canvasX <= 892 && canvasY < 200) {
+        this.showDialogBox = true;
+        this.dialog.setPosition(canvasX-100, canvasY-100);
+        this.dialog.setText("로그아웃 할까요?(y)");
+        this.dialog.show();
+      }
+      else{
+        this.dialog.hide();
+      }
+
+
+    }
   },
+
+
+
 };
 </script>

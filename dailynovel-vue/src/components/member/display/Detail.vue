@@ -335,7 +335,7 @@ function goBackHandler() {
 
 .scroll {
     overflow: auto;
-    height: 648px;
+    height: 430px;
 }
 
 .sticky {

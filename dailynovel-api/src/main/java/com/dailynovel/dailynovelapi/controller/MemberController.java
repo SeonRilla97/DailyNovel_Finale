@@ -98,6 +98,15 @@ public class MemberController {
 
         return result;
     }
+
+    @PostMapping("passwordNoChange")
+    public boolean passwordNoChange(@RequestBody Member member) {
+
+        boolean result = service.ChangeNoPassword(member.getEmail());
+
+        return result;
+    }
+
     
 
     @GetMapping("mInfo")

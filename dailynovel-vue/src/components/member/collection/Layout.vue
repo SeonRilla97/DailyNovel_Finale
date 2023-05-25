@@ -1,6 +1,7 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import { useUserDetailsStore } from "../../store/useUserDetailsStore.js";
+import Quill from 'quill';
 // import Main from "./Main.vue"
 // import Main from './Main.vue';
 
@@ -10,7 +11,9 @@ const collection = reactive({
     List : ["가장 행복했던 여름","영화 모음","여행 모음","집가는 중에","123"]
 })
 const diaryDisplayed= reactive({
-    list : null
+    list : null,
+    diaryCntText:{}, //TEXT
+    diaryCntHtml:{} // HTML
 })
 getCollectionList();
 
@@ -91,11 +94,37 @@ if(sortMenu)
 fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
 .then(response => response.json())
 .then(result => {
+
+
     diaryDisplayed.list = result;
+
+    let contentText = [];  //text만 뽑는거
+        let contentHtml = [];  //html 형식까지 다 똑같이 가져오는 친구
+        for(let diary of result){
+            // content -> Json변환 -> quill형식 변환
+            contentHtml.push(quill.setContents(JSON.parse(diary.content)));
+            //변환된 Quill Content contentText에 삽입
+            contentText.push(quill.getText(diary.content));
+
+        }
+
+        diaryDisplayed.diaryCntHtml = contentHtml;
+        diaryDisplayed.diaryCntText = contentText;
+        console.log(contentHtml)
+        console.log(contentText)
 
 })
 .catch(error => console.log('error', error));
 }
+
+
+let quill;
+// 퀼 정보 모으자
+onMounted(() => {
+    quill = new Quill('#editor', {
+        readOnly: true
+    });
+})
 </script>
 
 
@@ -103,6 +132,7 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
     <section class="collection-container">
         <header>
             <div class="pdl-5 h2 font-bold undrag"><router-link class="" to="/member/room/collection/main">컬렉션</router-link></div>
+            <div id="editor" style="width:0 ; height: 0; display:none; position: absolute;"></div>
         </header>
         <transition name="fade">
             <router-view
@@ -118,6 +148,7 @@ fetch(`http://localhost:8080/diary/displayed?${query}`, requestOptions)
             </router-view>
         </transition>
     </section>
+    
 </template>
 
 
