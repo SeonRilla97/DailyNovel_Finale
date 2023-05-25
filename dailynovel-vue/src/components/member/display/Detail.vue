@@ -208,7 +208,7 @@ function goBackHandler() {
 }
 
 .article-box .title {
-    font-size: 2.25rem;
+    font-size: 1.5rem;
     text-align: center;
 }
 
