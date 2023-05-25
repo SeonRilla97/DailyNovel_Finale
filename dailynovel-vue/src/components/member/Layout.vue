@@ -51,7 +51,7 @@ function animationedHandler() {
   <section class="member-room-canvas ">
     <Canvas v-on:modalOpenHandler="modalOpenHandler" tabindex="0" ref="canvasRef" />
   </section>
-  <section class="member-room-temp-linkes">
+  <!-- <section class="member-room-temp-linkes">
     <router-link to="/member/room/collection/main" @click="modalOpenHandler"><button>컬렉션</button></router-link>
     <router-link to="/member/room/diary" @click="modalOpenHandler"><button>셋팅</button></router-link>
     <router-link to="/member/room/achievement" @click="modalOpenHandler"><button>업적</button></router-link>
@@ -60,7 +60,7 @@ function animationedHandler() {
     <router-link to="/member/room/profile" @click="modalOpenHandler"><button>내 정보</button></router-link>
     <router-link :to="'/member/room/follow/'+userDetails.id" @click="modalOpenHandler"><button>구독페이지</button></router-link>
     <router-link to="/member/room"><button>메인</button></router-link>
-  </section>
+  </section> -->
   <Footer />
 
 

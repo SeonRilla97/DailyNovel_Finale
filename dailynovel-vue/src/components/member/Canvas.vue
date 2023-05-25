@@ -359,7 +359,7 @@ export default {
             this.$emit("modalOpenHandler");
           } else if (obstacle.type === "shelf") {
             console.log("책장과 충돌했습니다.");
-            this.$router.push("/member/room/collection");
+            this.$router.push("/member/room/collection/main");
             this.$emit("modalOpenHandler");
           } else if (obstacle.type === "computer") {
             console.log("컴퓨터와 충돌했습니다.");

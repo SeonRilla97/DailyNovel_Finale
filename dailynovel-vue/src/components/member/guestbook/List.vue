@@ -31,8 +31,13 @@ console.log(hostId);
 console.log(props.userId)
 getGuestbookList();
 
+
 // 방명록 리스트 불러오기
 let guestbooks = reactive({
+  list: null
+});
+
+let myguestbooks = reactive({
   list: null
 });
 
@@ -50,7 +55,7 @@ let guestbookComment = reactive({
 
 
 onMounted(() => {
-
+  getMyGuestbookList();
 
   // 현재 들고온 주소에 따라서 모드 확인
   if (route.fullPath.match("profile"))
@@ -120,9 +125,24 @@ function getGuestbookList() {
     .then((data) => {
       guestbooks.list = data;
       console.log(data);
-    })   
+    })       
+    // console.log(data);
+}
 
-    
+function getMyGuestbookList() {
+  fetch(`http://localhost:8080/members/guestbooks?id=${hostId}`,
+    {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+    })
+    .then(response => response.json())
+    .then((data) => {
+      myguestbooks.list = data;
+      console.log(data);
+    })       
     // console.log(data);
 }
 
@@ -162,7 +182,7 @@ function getFollowGuestbookList() {
       </div>
 
     </li>
-    <gbCard v-if="mode == 'profile'" v-for="item in guestbooks.list"  :guestbookId = "item.id" @init-guestbook-list="getGuestbookList"></gbCard>
+    <gbCard v-if="mode == 'profile'" v-for="item in myguestbooks.list"  :guestbookId = "item.id" @init-guestbook-list="getGuestbookList"></gbCard>
   
     <!-- <li v-show=false>
       <span>아직 방명록이 남겨져 있지 않아요. 좋은 일기를 공유해보면서 소통해보면 어떨까요?</span>

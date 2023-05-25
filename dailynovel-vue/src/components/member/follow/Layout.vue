@@ -57,7 +57,7 @@ function pfgetUserInfo(userId){
 
       <div class="m-follow-header-btn">
         <div class="">
-          <span>구독하기</span>
+          <!-- <span>구독하기</span> -->
         </div>
       </div>
     </header>
