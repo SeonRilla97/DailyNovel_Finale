@@ -44,7 +44,25 @@ async function showHandler(event) {
 
       })
   }
+  else if(event =="비밀번호다음에변경하기"){
+    await fetch("http://localhost:8080/members/passwordNoChange", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+        email: email,
+      }),
+    })
+      .then(
+        router.push("/member/room")
 
+      )
+
+
+  }
+  
   showModal.value = true;
 }
 function dlgHandler() {
@@ -184,6 +202,9 @@ function passwordverify() {
         <button class="btn-2" @click="showHandler('비밀번호변경하기')">
           <span class="text-5"> 비밀번호 변경하기 </span>
         </button>
+        <button class="btn-2-gray mgl-5" @click="showHandler('비밀번호다음에변경하기')">
+          <span class="text-5">다음에 변경하기 </span>
+        </button>
       </div>
     </div>
   </div>
@@ -259,9 +280,9 @@ function passwordverify() {
   overflow: hidden;
   height: 52px;
   border-radius: 3px;
-  color: rgb(235, 155, 56);
+  color: #F2C6C2;
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(235, 155, 56);
+  border: 1px solid #F2C6C2;
   margin: 0;
 }
 
@@ -294,13 +315,26 @@ function passwordverify() {
   padding: 0px 10px;
   text-align: center;
   overflow: hidden;
-  width: 240px;
+  width: 160px;
   height: 56px;
   border-radius: 3px;
   color: rgb(255, 255, 255);
-  background-color: rgb(235, 155, 56);
+  background-color: #F2C6C2;
   border: 0px none;
 }
+.btn-2-gray{
+  display: block;
+  padding: 0px 10px;
+  text-align: center;
+  overflow: hidden;
+  width: 160px;
+  height: 56px;
+  border-radius: 3px;
+  color: rgb(255, 255, 255);
+  background-color: #e8dbda;
+  border: 0px none;
+}
+
 
 .div-input {
   position: relative;

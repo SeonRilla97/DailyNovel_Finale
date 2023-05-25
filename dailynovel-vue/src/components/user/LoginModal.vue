@@ -19,7 +19,7 @@ function navigateToMemberRoom(){
             <div class="content">
                 {{ content }}
             </div>
-            <button v-if="content === '회원가입에 성공했습니다.' || '비밀번호 변경하기에 성공했습니다.'" @click="navigateToMemberRoom">로그인 하러가기</button>
+            <button v-if="content === '회원가입에 성공했습니다.'" @click="navigateToMemberRoom">로그인 하러가기</button>
             <button v-else @click="navigateToDefaultRoute">
         ok
       </button>

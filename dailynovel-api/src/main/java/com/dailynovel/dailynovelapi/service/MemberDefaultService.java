@@ -125,4 +125,21 @@ public class MemberDefaultService implements MemberService {
         return false;
     }
 
+    @Override
+    public boolean ChangeNoPassword(String email) {
+
+        Member member  = repository.findByEmail(email);
+        if(member !=null){
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String dateString = dateFormat.format(date);
+            System.out.println(dateString);
+            member.setPasswordChangePeriod(java.sql.Date.valueOf(dateString));
+            repository.saveAndFlush(member);
+            System.out.println(member.getPasswordChangePeriod());
+            return true;
+        }
+        return false;
+    }
+
 }

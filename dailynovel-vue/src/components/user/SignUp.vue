@@ -574,7 +574,7 @@ function limitInput(inputValue, maxLength) {
   border-radius: 3px;
   color: rgb(235, 155, 56);
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(235, 155, 56);
+  border: 1px solid #F2C6C2;
   margin: 0;
 }
 
@@ -611,7 +611,7 @@ function limitInput(inputValue, maxLength) {
   height: 56px;
   border-radius: 3px;
   color: rgb(255, 255, 255);
-  background-color: rgb(235, 155, 56);
+  background-color: #F2C6C2;
   border: 0px none;
 }
 
@@ -676,7 +676,7 @@ function limitInput(inputValue, maxLength) {
   transform: scale(1.5); /* 원하는 크기를 설정하세요 */
   vertical-align: middle;
   appearance: none;
-  border: max(1px, 0.1em) solid rgb(235, 155, 56);
+  border: max(1px, 0.1em) solid #F2C6C2;
   border-radius: 50%;
   width: 1em;
   height: 1em;
