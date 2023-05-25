@@ -17,7 +17,7 @@ const route = {path: 'follow/:memberId', component:Layout,children:[
       path: 'detail/:collectionId',name:"pfdetail", component:colDetailLayout, children:[
         { path: 'diary',name:"pfdetailDiary", component:Diary},
         { path: 'comment', component:Comment},
-        { path: 'one/:idx', component:Detail}
+        { path: 'one/:did', component:Detail}
 
       ]
     }
