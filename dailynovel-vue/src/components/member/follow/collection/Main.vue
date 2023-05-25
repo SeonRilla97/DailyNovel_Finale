@@ -15,7 +15,7 @@ const props  = defineProps({
 let router = useRouter()
 function pfcolClickHandler(collectionId){
     console.log("hihi")
-    router.push({path:`/member/room/follow/s/detail/${collectionId}`})
+    router.push({path:`/member/room/follow/s/col/detail/${collectionId}`})
 }
 </script>
 

@@ -12,13 +12,14 @@ const route = {path: 'follow/:memberId', component:Layout,children:[
   {path: 'guestbook', component: GuestbookListLayout},
   {path: 'col', component: CollectionLayout, children:[
     {path:'main', component: ColMain,},
-  ]},
-  {
-    path: 'detail/:collectionId',name:"pfdetail", component:colDetailLayout, children:[
-      { path: 'diary',name:"pfdetailDiary", component:Diary},
-      { path: 'comment', component:Comment}
-    ]
-  }
+    {
+      path: 'detail/:collectionId',name:"pfdetail", component:colDetailLayout, children:[
+        { path: 'diary',name:"pfdetailDiary", component:Diary},
+        { path: 'comment', component:Comment}
+      ]
+    }
+  ]}
+
 ]};
 
 export default route;

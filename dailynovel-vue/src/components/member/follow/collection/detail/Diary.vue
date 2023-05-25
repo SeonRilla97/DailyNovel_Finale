@@ -6,8 +6,9 @@ const props = defineProps({
         required:true
     }
 })
-
+console.log("============================")
 console.log(props.data.diarys)
+console.log("============================")
 </script>
 <template>
     <div class="container">

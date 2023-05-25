@@ -219,6 +219,7 @@ function diaryAddbtnClickHandler(){
     isClickDiaryAdd.value=true;
     console.log(`다이어리 만들라고? ${isClickDiaryAdd.value}`)
 }
+
 function getNewestDiary(){
     console.log(diary)
 }

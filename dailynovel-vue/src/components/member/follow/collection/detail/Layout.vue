@@ -4,7 +4,12 @@ import { useRoute,useRouter } from 'vue-router'
 import { useUserDetailsStore } from '../../../../store/useUserDetailsStore';
 
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-
+const props  = defineProps({
+    userId: {
+        type: Object,
+        required:true
+    }
+});
 const route = useRoute()
 console.log("설마??")
 // 현재 컬렉션 ID값 추출
@@ -12,6 +17,7 @@ const collectionId = ref('');
 collectionId.value = route.params.collectionId
 // 사용자의 ID값 추출
 const memberId = userDetails.id;
+
 const data = reactive({
     diarys:{},
     comments:{},
@@ -37,6 +43,12 @@ function pfgetListInCollection(memberId,colId) {
     .then(response => response.json())
     .then(result => {
         data.diarys= result;
+        console.log("일기===========================")
+        console.log(data.diarys)
+        console.log(result)
+        console.log(colId);
+        console.log(memberId);
+        console.log("===========================")
         
     })
     .catch(error => console.log('error', error));
@@ -71,8 +83,10 @@ function pfgetComment(colId, depth, refId){  //처음 부를때 -> colId만 || �
 
 // 페이지 마운트전 동작할 함수
 onBeforeMount (()=> {
-    
-    pfgetListInCollection(memberId,collectionId.value);
+    console.log("======================넘어온 아이디")
+    console.log(props.userId);
+    console.log("======================")
+    pfgetListInCollection(props.userId,collectionId.value);
     pfgetComment(collectionId.value);
     const router = useRouter();
     console.log("마운트 전에 이거 부르긴 하냐?")
@@ -92,8 +106,8 @@ function menuClickHandler(menuIdx){
     <div class="detail-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <router-link to="/member/room/follow/s/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
-                <router-link class="mgl-2" to="/member/room/follow/s/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
+                <router-link to="/member/room/follow/s/col/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
+                <router-link class="mgl-2" to="/member/room/follow/s/col/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
             </div>
             <div class="icon-back"></div>
         </header>
