@@ -1,23 +1,33 @@
 <script setup>
 // detail Layout으로부터 data 받기
+import {onBeforeMount,onMounted} from 'vue'
+import { useRouter,useRoute } from 'vue-router'
+let router = useRouter()
 const props = defineProps({
     data: {
         type: Object,
         required:true
     }
 })
-console.log("============================")
+onBeforeMount(()=>{
+console.log("이얍!")
 console.log(props.data.diarys)
-console.log("============================")
+});
+console.log(props.data.diarys)
+
+function mvDetailPage(idx){
+    console.log(idx);
+    router.push({path:`/member/room/follow/s/col/detail/s/one/${idx}`})
+}
 </script>
 <template>
     <div class="container">
         <div class="diary-list" >
 
-            <section class="box" v-for="(value, key) in data.diarys">
+            <section class="box" v-for="(value, idx) in data.diarys" @click="mvDetailPage(idx)">
                     <div class="title">{{value.title}}</div>
                     <div class="main">
-                        <div class="content mgt-4">{{value.content}}</div>
+                        <div class="content mgt-4">{{ data.diaryCntText[idx]}}</div>
                     </div>
                     <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{ value.likes }}</span></div>   
             </section>

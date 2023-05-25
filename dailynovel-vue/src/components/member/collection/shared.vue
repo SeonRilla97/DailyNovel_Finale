@@ -88,6 +88,9 @@ function sortMenuClickHandler(menu,curClick) {
     // 정렬 기준 알려주고
     emit("callDisplayed",menu)
 }
+
+
+
 </script>
 <template>
     <div class="shared-container">
@@ -274,7 +277,8 @@ text-align: center;
 /* transform:translate(-50% ,-100%); */
 border-radius: 12px;
 bottom:0;
-height:120px;
+height:auto;
+max-height:120px;
 overflow-y:auto;
 }
 .collection-list.dropdown .content::-webkit-scrollbar {

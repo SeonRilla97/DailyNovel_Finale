@@ -1,5 +1,6 @@
 <script setup>
 // detail Layout으로부터 data 받기
+import { onBeforeMount,onMounted } from 'vue';
 const props = defineProps({
     data: {
         type: Object,
@@ -7,7 +8,10 @@ const props = defineProps({
     }
 })
 
+onBeforeMount(()=>{
+console.log("이얍!")
 console.log(props.data.diarys)
+});
 </script>
 <template>
     <div class="container">
