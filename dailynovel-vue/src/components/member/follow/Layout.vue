@@ -16,7 +16,6 @@ let member = ref();
   pfgetUserInfo(userId.value);
 //});
 
-
 function pfgetUserInfo(userId){
   console.log("설마 이거 누가 불러?")
   console.log("식빵")
@@ -58,7 +57,7 @@ function pfgetUserInfo(userId){
 
       <div class="m-follow-header-btn">
         <div class="">
-          <span>구독하기</span>
+          <!-- <span>구독하기</span> -->
         </div>
       </div>
     </header>

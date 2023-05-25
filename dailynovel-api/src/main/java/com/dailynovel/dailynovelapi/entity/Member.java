@@ -33,6 +33,7 @@ public class Member implements Persistable {
     private Date birthday;
     private int gender;
     private String message;
+    private String image;
     @Column(name="password_change_period")
     private Date passwordChangePeriod;
 

@@ -21,5 +21,13 @@
     where id = #{memberId};
   </select>
 
+  <update id="updateProfileImage">
+    update
+    member
+    set
+    image = #{newFilename}
+    where id = #{id};
 
+
+  </update>
 </mapper>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dailynovel.dailynovelapi.mbentity.MbCollectionItems;
 import com.dailynovel.dailynovelapi.mbentity.MbDiary;
@@ -190,13 +191,19 @@ public class DiaryController {
     // }
 
 
-
-
+    // 사진 업로드 구현 
+    // @PostMapping("!!1")
+    // public String saveImage(MultipartFile image){
+    //    //너가 파일명 조작해서 디비에 저장하면 됨
+    //    image.getOriginalFilename();
+       
+    //    //webapp에 업로드되는 로직
+    //    upload(image);
+    // }
     
 
 
 }
-
 
 
 

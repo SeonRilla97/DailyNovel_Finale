@@ -28,4 +28,6 @@ public interface MemberService {
 
     boolean ChangeNoPassword(String email);
 
+    void saveProfileImage(String newFilename, int id);
+
 }

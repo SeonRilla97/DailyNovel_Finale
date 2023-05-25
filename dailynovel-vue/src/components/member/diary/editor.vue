@@ -379,6 +379,7 @@ const addDiary = function(isAdd){
     console.log(diaryRef.value.honesy);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
+    // console.log(diaryObj);
 
     console.log(diaryObj.honesy);
 

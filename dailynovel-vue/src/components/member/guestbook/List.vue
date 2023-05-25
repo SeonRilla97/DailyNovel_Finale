@@ -7,21 +7,43 @@ import gbCard from './Card.vue';
 let userDetails = useUserDetailsStore();
 let route = useRoute();
 let router = useRouter();
+// let props;
 
 // 방명록 주인 ID
 const hostId = userDetails.id;
-let guestId = 2;
+const guestId = 2;
+
+//구독페이지 에서의 ID 정리
+const gbWriterId = userDetails.id;
+
 
 let mode = ref("");
+
+
+// 프로필로부터 해당 프로필의 유저 ID 받아온것 -- 선유진 추가 (이거 이용해서 해당 유저의 방명록 불러와야합니다)
+let props = defineProps({
+  userId: {
+        type: Number,
+        required:true
+    }
+});
+console.log(hostId);
+console.log(props.userId)
+getGuestbookList();
+
 
 // 방명록 리스트 불러오기
 let guestbooks = reactive({
   list: null
 });
 
+let myguestbooks = reactive({
+  list: null
+});
+
 let guestbook = reactive({
-  memberId: hostId,
-  writerId: guestId,
+  memberId: parseInt(props.userId),
+  writerId: gbWriterId,
   content: null
 });
 
@@ -31,22 +53,9 @@ let guestbookComment = reactive({
   content: null
 })
 
-// 프로필로부터 해당 프로필의 유저 ID 받아온것 -- 선유진 추가 (이거 이용해서 해당 유저의 방명록 불러와야합니다)
-let props = defineProps({
-  userId: {
-        type: Object,
-        required:true
-    }
-});
-
-
 
 onMounted(() => {
-  console.log(hostId);
-  console.log(props.userId)
-  getGuestbookList();
-
-
+  getMyGuestbookList();
 
   // 현재 들고온 주소에 따라서 모드 확인
   if (route.fullPath.match("profile"))
@@ -57,13 +66,6 @@ onMounted(() => {
   console.log(mode);
 })
 
-function deleteGuestBookCommentHandler(){
-
-}
-
-function rewriteGuestBookCommentHandler(){
-
-}
 
 function initComment(){
   guestbookComment.guestbookId = null;
@@ -91,6 +93,7 @@ async function writeGuestBookCommentHandler(guestbookId) {
 }
 
 function writeGuestBookHandler() {
+  console.log(guestbook);
   fetch("http://localhost:8080/members/guestbooks/save",
     {
       method: "POST",
@@ -100,8 +103,9 @@ function writeGuestBookHandler() {
       },
       body: JSON.stringify(guestbook)
     })
-    .then(response => response.json())
-    .then((data) => { if (data == 1) console.log("완료") })
+    // .then(response => response.json())
+    // .then((data) => { if (data == 1) console.log("완료") })
+    .then(() => {getGuestbookList()})
     .catch(error => console.log(error));
   
   // getGuestbookList();
@@ -109,7 +113,7 @@ function writeGuestBookHandler() {
 }
 
 function getGuestbookList() {
-  fetch(`http://localhost:8080/members/guestbooks?id=${hostId}`,
+  fetch(`http://localhost:8080/members/guestbooks?id=${props.userId}`,
     {
       method: "GET",
       headers: {
@@ -121,9 +125,24 @@ function getGuestbookList() {
     .then((data) => {
       guestbooks.list = data;
       console.log(data);
-    })   
+    })       
+    // console.log(data);
+}
 
-    
+function getMyGuestbookList() {
+  fetch(`http://localhost:8080/members/guestbooks?id=${hostId}`,
+    {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+    })
+    .then(response => response.json())
+    .then((data) => {
+      myguestbooks.list = data;
+      console.log(data);
+    })       
     // console.log(data);
 }
 
@@ -149,21 +168,21 @@ function getFollowGuestbookList() {
         <button @click.prevent="writeGuestBookHandler" class="m-gb-writeBtn" type="submit" value="">작성</button>
       </div>
     </li>
-    <li class="m-gb-list" v-if="mode == 'guest'" v-for="item in 10">
+    <li class="m-gb-list" v-if="mode == 'guest'" v-for="item in guestbooks.list">
       <div class="m-gb-header lc-center">
         <div><span>From.</span></div>
-        <div>{{ "글쓴이" }}</div>
+        <div>{{ item.writerName }}</div>
       </div>
       <div class="m-gb-main">
-        <textarea class="txta-rsnone" readonly></textarea>
+        <textarea class="txta-rsnone" readonly :value="item.content"></textarea>
         <div class="m-gb-cmt">
           <div><span>답글</span></div>
-          <textarea class="txta-rsnone" readonly></textarea>
+          <textarea class="txta-rsnone" readonly  :value="item.comment"></textarea>
         </div>
       </div>
 
     </li>
-    <gbCard v-if="mode == 'profile'" v-for="item in guestbooks.list"  :guestbookId = "item.id" @init-guestbook-list="getGuestbookList"></gbCard>
+    <gbCard v-if="mode == 'profile'" v-for="item in myguestbooks.list"  :guestbookId = "item.id" @init-guestbook-list="getGuestbookList"></gbCard>
   
     <!-- <li v-show=false>
       <span>아직 방명록이 남겨져 있지 않아요. 좋은 일기를 공유해보면서 소통해보면 어떨까요?</span>
@@ -206,6 +225,11 @@ function getFollowGuestbookList() {
 .txta-rsnone{
   resize: none;
   border: none;
+
+  background-color: #FFF8F3;
+  border-radius: 16px;
+
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
 .txta-rsnone:focus{

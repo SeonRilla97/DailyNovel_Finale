@@ -39,7 +39,7 @@ public class GuestBookController {
 
   @PostMapping("save")
   public int writeGuestBook(@RequestBody Map<String, Object> guestbook) {
-    
+    System.out.println(guestbook);
     service.writeGuestBook(guestbook);
     return 1;
   }

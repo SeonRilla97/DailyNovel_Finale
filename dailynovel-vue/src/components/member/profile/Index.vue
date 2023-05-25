@@ -13,6 +13,9 @@ const member = reactive({
 const message = ref("");
 const image = ref("default.jpg");
 
+let onchanged = ref(false);
+let imageInfo = ref(false);
+
 async function getMemberInfoById(id) {
     await fetch(`http://localhost:8080/members/mInfo?id=${id}`,
     {
@@ -36,16 +39,45 @@ async function getMemberInfoById(id) {
     .catch(error => console.log(error));
 }
 
-onMounted(()=>{
-  getMemberInfoById(loginuser.id);  
+onMounted(async()=>{
+  await getMemberInfoById(loginuser.id);
+  console.log("나 재 실행?");
 })
+
+
+function changeImage(e){
+  let fileSelector = e.target.nextElementSibling;
+  fileSelector.click();
+}
+
+async function changed(e){
+  console.log("나 발생?")
+  let fileSrc = createURL(e.target.files[0]);
+  imageInfo.value = fileSrc;
+  onchanged.value = true;
+  let formData = new FormData();
+  formData.append("image", e.target.files[0]);
+  formData.append("id", loginuser.id);
+  // let response = 
+  fetch("http://localhost:8080/members/profile/image",{
+    method : "POST",
+    body : formData
+  });
+}
+
+function createURL(target){
+  let objectURL = URL.createObjectURL(target);
+  return objectURL;
+}
 
 </script>
 <template>
   <main class="m-profile-index-container">
     <div class="m-profile-index-profile shadow-1">
       <div class="m-profile-index-profile-imgBox">
-        <div class="m-profile-index-profile-img" :style="`background-image: url(http://localhost:8080/image/profile/${image})`"></div>
+        <div class="m-profile-index-profile-img" :style="`background-image: url(http://localhost:8080/image/profile/${image})`" @click="changeImage" v-if="!onchanged"></div>
+        <img class="m-profile-index-profile-img" :src="imageInfo" @click="changeImage" v-if="onchanged" />
+        <input type="file" class="d-none"  @change="changed"/>
       </div>
       <div class="m-profile-index-profile-messageBox">
         <div class="m-profile-index-profile-message">
@@ -78,7 +110,7 @@ onMounted(()=>{
         </div>               
       </div>
       <div class="m-profile-index-info-follow shadow-1">
-        
+        <!-- <span>{{ member.info.email  }}</span> -->
       </div>
     </div>
   </main>
@@ -147,7 +179,7 @@ onMounted(()=>{
 
   background-size: cover;
   background-position: center;
-  background-color: aqua;
+  background-color: white;
   background-image: url(http://localhost:8080/image/profile/8.png);
   background-repeat: no-repeat;
 }

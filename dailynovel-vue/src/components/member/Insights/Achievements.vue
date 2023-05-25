@@ -118,11 +118,11 @@ async function Tload() {
      else {
         console.log("태그는 필요없어!");
      }
-     write.value = tripTag.value + movieTag.value + freeTag.value;
 
   }
+  write.value = tripTag.value + movieTag.value + freeTag.value;
 
-  console.log("작성:",write.value);
+  console.log("작성(write):",write.value);
 }
 }
 
