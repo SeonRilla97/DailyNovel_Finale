@@ -88,6 +88,9 @@ function sortMenuClickHandler(menu,curClick) {
     // 정렬 기준 알려주고
     emit("callDisplayed",menu)
 }
+
+
+
 </script>
 <template>
     <div class="shared-container">
@@ -103,7 +106,7 @@ function sortMenuClickHandler(menu,curClick) {
               <section class="box" v-for="(value, key) in displayedDiary.list" v-bind:data-id="value.diaryId">
                         <div class="title">{{value.title}}</div>
                         <div class="main">
-                            <div class="content mgt-4">{{value.content}}</div>
+                            <div class="content mgt-4">{{displayedDiary.diaryCntText[key]}}</div>
                         </div>
                         <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{value.likes}}</span></div>   
                         <div class="dropdown collection-list">
@@ -274,7 +277,8 @@ text-align: center;
 /* transform:translate(-50% ,-100%); */
 border-radius: 12px;
 bottom:0;
-height:120px;
+height:auto;
+max-height:120px;
 overflow-y:auto;
 }
 .collection-list.dropdown .content::-webkit-scrollbar {

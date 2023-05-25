@@ -1,5 +1,6 @@
 <script setup>
 // detail Layout으로부터 data 받기
+import { onBeforeMount,onMounted } from 'vue';
 const props = defineProps({
     data: {
         type: Object,
@@ -7,7 +8,10 @@ const props = defineProps({
     }
 })
 
+onBeforeMount(()=>{
+console.log("이얍!")
 console.log(props.data.diarys)
+});
 </script>
 <template>
     <div class="container">
@@ -16,7 +20,7 @@ console.log(props.data.diarys)
             <section class="box" v-for="(value, key) in data.diarys">
                     <div class="title">{{value.title}}</div>
                     <div class="main">
-                        <div class="content mgt-4">{{value.content}}</div>
+                        <div class="content mgt-4">{{data.diaryCntText[key]}}</div>
                     </div>
                     <div class="lc-center"><div class="icon-like ib"></div><span class="ib mgl-2">{{ value.likes }}</span></div>   
             </section>

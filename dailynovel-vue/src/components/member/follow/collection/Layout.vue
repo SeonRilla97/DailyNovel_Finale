@@ -17,7 +17,8 @@ const props  = defineProps({
 });
 
 onBeforeMount(() => {
-    pfgetCollectionList();    
+    pfgetCollectionList(); 
+    console.log(props.userId)   
 })
 
 
@@ -39,6 +40,7 @@ fetch(`http://localhost:8080/collection?memberId=${props.userId}`)
     <section class="collection-container">
         <transition name="fade">
             <router-view
+                :userId="userId"
                 class="main"
                 :collection="collection" 
                 :isDuplicated ="isColNameDuplicated" 
