@@ -251,12 +251,13 @@ li {
     justify-self: center;
     align-self: center;
     user-select: none;
+    
 }
 
 .content-title p {
     /* 콘텐츠박스 제목의 중앙*/
     font-size: 1.5rem;
-    width: 10rem;
+    width: 17rem;
     /* 최대 5글자까지만 보이도록 요소의 너비를 지정 */
     white-space: nowrap;
     /* 텍스트를 한 줄로 표시 */

@@ -305,7 +305,7 @@ onMounted(() => {
 }
 
 .Move:hover {
-  color: rgb(226, 226, 99);
+  color: rgb(255, 208, 0);
   text-decoration: underline;
 }
 

@@ -212,7 +212,7 @@ onMounted(() => {
   font-weight: bold;
 }
 .Move:hover {
-  color: rgb(226, 226, 99);
+  color: rgb(255, 208, 0);
   text-decoration: underline;
 }
 
@@ -244,6 +244,6 @@ onMounted(() => {
 }
 
 .achievement.completed {
-  background-color: rgb(127, 127, 204);
+  background-color: #F2C6C2;
 }
 </style>
