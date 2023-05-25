@@ -62,11 +62,14 @@
 import KakaoMap from './map/KakaoMap.vue';
 import MarkerHandler from '../Diary/map/marker-handler.js';
 import KakaoOverlay from '../Diary/map/overlay';
+import { popScopeId } from 'vue';
 export default {
     components: {
         KakaoMap,
     },
+    // mycoor
     props:['myLocate'],
+    // setDiaryLocate
     data() {
         return {
             mapOption: {
@@ -74,11 +77,12 @@ export default {
                     lat: this.myLocate.lat,
                     lng: this.myLocate.lng,
                 },
-                level: 3,
+                level: 2,
             },
             myplaces: [],
             markers: null,
             activemyplace: null, //selected
+            setmyplace: null,
             overlay: null,// overlay 인스턴스
             overlayMyplace: null, //오버레이에 붙여줄 장소
             search: {
@@ -98,15 +102,14 @@ export default {
     mounted() {
         const vueKakaoMap = this.$refs.kmap;
         this.overlay = new KakaoOverlay(vueKakaoMap, this.$refs.myplaceOverlay);
+        // let markerPosition = new kakao.maps.LatLng(dtcoor.lat , dtcoor.lng);
 
-        // api.myplace.all(res => {
-        //     console.log("[내 장소]", res.myplaces)
-        //     this.myplaces = res.myplaces
-        //     //create markers
-        //     this.markers.add(this.myplaces, (myplace) => {
-        //         return { lat: myplace.lat, lng: myplace.lng };
-        //     })
-        // })
+        // let marker = new Window.kakao.maps.Marker({
+        //     position: markerPosition
+        // });
+
+        // marker.setMap(map)
+
     },
     methods: {
         zoom(delta) {
@@ -115,6 +118,7 @@ export default {
             const level = Math.min(8, Math.max(1, this.mapOption.level + delta))
             this.mapOption.level = level;
             console.log(this.mapOption.level)
+
         },
         closeOverlay() {
             const vueKakaoMap = this.$refs.kmap;
@@ -139,6 +143,14 @@ export default {
                 this.search.results = data;
             });
         },
+
+        // setDMap(setDiaryLocate){
+        //     this.mapOption.center = {
+        //         lat: setDiaryLocate.lat,
+        //         lng: setDiaryLocate.lng
+        //     }
+        //     console.log("테스트세트텟트ㅔ스테슽",this.mapOption.center.lat)
+        // },
 
         showonMap(place) {
             console.log("[center]", place)
@@ -234,7 +246,7 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    height: 200px;
+    height: 285px;
     z-index: 10000;
     background-color: #ffffffaa;
     width: 150px;
@@ -258,6 +270,7 @@ button:hover {
 
 .place-result:hover {
     background-color: antiquewhite;
+    color: #124981;
     cursor: pointer;
 
 
@@ -273,46 +286,13 @@ button:hover {
     position: relative;
 }
 
-.myplaces {
-    top: 0;
-    right: 100;
-}
 
-
-.myplaces .myplace {
-
-    padding: 10px;
-    border: 1px solid transparent;
-}
-
-.myplaces .myplace:hover {
-    background-color: aliceblue;
-    border-color: #469aef;
-    cursor: pointer;
-}
-
-.myplaces .myplace:active {
-    background-color: aliceblue;
-    border-color: #124981;
-}
-
-.myplaces .myplace.active {
-    background-color: rgb(253, 229, 150);
-    border-color: rgb(238, 222, 3);
-}
-
-.myplaces .myplace h4 {
-    margin: 0;
-}
-
-.map-area .kmap {
-    flex: auto;
-}
 
 .kmap {
+    position: relative;
     flex: 1 1 auto;
     width: 100%;
-    height: 200px;
+    height: 285px;
 }
 
 .overlay-popup {
