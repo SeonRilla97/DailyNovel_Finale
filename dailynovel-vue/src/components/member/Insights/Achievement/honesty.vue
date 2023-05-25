@@ -100,26 +100,6 @@ var NpinorequestOptions = {
   redirect: 'follow'
 };
 
-const completedElements = document.querySelectorAll('.achievement.completed');
-
-// 선택한 요소들을 배열로 변환합니다.
-const completedArray = Array.from(completedElements);
-
-// 배열을 "completed" 기준으로 정렬합니다.
-completedArray.sort((a, b) => {
-  // "completed" 클래스가 있는지 확인합니다.
-  const aCompleted = a.classList.contains('completed');
-  const bCompleted = b.classList.contains('completed');
-
-  // "completed" 클래스 여부에 따라 정렬합니다.
-  if (aCompleted && !bCompleted) {
-    return -1; // a를 먼저 정렬
-  } else if (!aCompleted && bCompleted) {
-    return 1; // b를 먼저 정렬
-  } else {
-    return 0; // 순서 유지
-  }
-});
 
 
 async function Npinoload() {
