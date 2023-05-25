@@ -26,4 +26,6 @@ public interface MemberService {
 
     MbMember getMemberInfo(int id);
 
+    boolean ChangeNoPassword(String email);
+
 }

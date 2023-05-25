@@ -29,9 +29,11 @@ public class UserController {
 	@Autowired
 	private EmailVerificationService emailVerificationService;
 	
+	
 	@PostMapping("signup")
 	public boolean signup(@RequestBody Member member) {
 	boolean result = service.signup(member);
+
 		return result;
 	}
 

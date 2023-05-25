@@ -350,14 +350,14 @@ async function FindSignupUser(event) {
 .outBox .inputBox input[type="password"] { height:50px; font-size:16px; box-sizing:border-box;  outline:none;}
 .outBox .inputBox label {position:absolute; left:0; bottom:0; padding:0 6px; color:#999; font-size:14px; font-weight:normal; background:#fff; transform:scale(1) translate(4px, -18px); transition:all .15s; pointer-events:none;}
 .outBox .inputBox input[type="text"]:focus,
-.outBox.existence .inputBox input[type="text"] {border:2px solid red;}
+.outBox.existence .inputBox input[type="text"] {border:2px solid #393737;}
 .outBox .inputBox input[type="text"]:focus + label,
-.outBox.existence .inputBox label {color:red; transform:scale(.85) translate(-10px, -48px);}
+.outBox.existence .inputBox label {color:#393737; transform:scale(.85) translate(-10px, -48px);}
 
 .outBox .inputBox input[type="password"]:focus,
-.outBox.existence .inputBox input[type="password"] {border:2px solid red;}
+.outBox.existence .inputBox input[type="password"] {border:2px solid #000000;}
 .outBox .inputBox input[type="password"]:focus + label,
-.outBox.existence .inputBox label {color:red; transform:scale(.85) translate(-10px, -48px);}
+.outBox.existence .inputBox label {color:#000000; transform:scale(.85) translate(-10px, -48px);}
 
 
 .layout-full-screen {
