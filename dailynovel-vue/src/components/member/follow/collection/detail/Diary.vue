@@ -15,16 +15,17 @@ console.log(props.data.diarys)
 });
 console.log(props.data.diarys)
 
-function mvDetailPage(idx){
-    console.log(idx);
-    router.push({path:`/member/room/follow/s/col/detail/s/one/${idx}`})
+function mvDetailPage(did){
+    // console.log(idx);
+    console.log(props.data.diarys)
+    router.push({path:`/member/room/follow/s/col/detail/s/one/${did}`})
 }
 </script>
 <template>
     <div class="container">
         <div class="diary-list" >
 
-            <section class="box" v-for="(value, idx) in data.diarys" @click="mvDetailPage(idx)">
+            <section class="box" v-for="(value, idx) in data.diarys" @click="mvDetailPage(value.diaryId)">
                     <div class="title">{{value.title}}</div>
                     <div class="main">
                         <div class="content mgt-4">{{ data.diaryCntText[idx]}}</div>
@@ -97,7 +98,7 @@ function mvDetailPage(idx){
 }
 
 .icon-like{
-    background-image: url("../../../../assets/img/like.svg");
+    background-image: url("../../../../../assets/img/like.svg");
     background-repeat: no-repeat;
     background-size: 16px 16px;
     background-position: center center;
