@@ -1,8 +1,8 @@
 <script setup>
-import { ref , onBeforeMount, reactive} from 'vue';
+import { ref , onBeforeMount, reactive, onMounted} from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { useUserDetailsStore } from '../../../store/useUserDetailsStore';
-
+import Quill from 'quill';
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
 console.log("Detail의 Layout입니다.")
 const route = useRoute()
@@ -14,7 +14,9 @@ const memberId = userDetails.id;
 const data = reactive({
     diarys:{},
     comments:{},
-    collectionId: collectionId.value
+    collectionId: collectionId.value,
+    diaryCntText:{}, //TEXT
+    diaryCntHtml:{} // HTML
 })
 console.log(collectionId.value);
 // getListInCollection(memberId,collectionId.value);
@@ -36,6 +38,17 @@ function getListInCollection(memberId,colId) {
     .then(response => response.json())
     .then(result => {
         data.diarys= result;
+
+        let contentText = [];  //text만 뽑는거
+        let contentHtml = [];  //html 형식까지 다 똑같이 가져오는 친구
+        for(let diary of result){
+            // content -> Json변환 -> quill형식 변환
+            contentHtml.push(quill.setContents(JSON.parse(diary.content)));
+            //변환된 Quill Content contentText에 삽입
+            contentText.push(quill.getText(diary.content));
+        }
+        data.diaryCntHtml = contentHtml;
+        data.diaryCntText = contentText;
         
     })
     .catch(error => console.log('error', error));
@@ -85,6 +98,16 @@ function menuClickHandler(menuIdx){
 }
 
 // 해당 컬렉션의 댓글 대댓글 모두 불러오기
+
+
+
+let quill;
+// 퀼 정보 모으자
+onMounted(() => {
+    quill = new Quill('#editor', {
+        readOnly: true
+    });
+})
 </script>
 
 <template>
@@ -102,6 +125,10 @@ function menuClickHandler(menuIdx){
         @callComments ="getComment">
         </router-view>
     </div>
+
+    <div id="editor" style="width:0 ; height: 0; display:none; position: absolute;"></div>
+
+
 </template>
 <style scoped>
 
