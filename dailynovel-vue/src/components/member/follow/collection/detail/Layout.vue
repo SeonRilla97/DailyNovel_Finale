@@ -1,10 +1,15 @@
 <script setup>
-import { ref , onBeforeMount, reactive} from 'vue';
+import { ref , onBeforeMount, reactive,onMounted} from 'vue';
 import { useRoute,useRouter } from 'vue-router'
 import { useUserDetailsStore } from '../../../../store/useUserDetailsStore';
-
+import Quill from 'quill';
 let userDetails = useUserDetailsStore(); //피impo니아를 사용하는 방법
-
+const props  = defineProps({
+    userId: {
+        type: Object,
+        required:true
+    }
+});
 const route = useRoute()
 console.log("설마??")
 // 현재 컬렉션 ID값 추출
@@ -12,10 +17,13 @@ const collectionId = ref('');
 collectionId.value = route.params.collectionId
 // 사용자의 ID값 추출
 const memberId = userDetails.id;
+
 const data = reactive({
     diarys:{},
     comments:{},
-    collectionId: collectionId.value
+    collectionId: collectionId.value,
+    diaryCntText:{}, //TEXT
+    diaryCntHtml:{} // HTML
 })
 console.log(collectionId.value);
 // pfgetListInCollection(memberId,collectionId.value);
@@ -37,7 +45,29 @@ function pfgetListInCollection(memberId,colId) {
     .then(response => response.json())
     .then(result => {
         data.diarys= result;
-        
+        console.log("일기===========================")
+        console.log(data.diarys)
+        console.log(result)
+        console.log(colId);
+        console.log(memberId);
+        console.log("===========================")
+        let contentText = [];  //text만 뽑는거
+        let contentHtml = [];  //html 형식까지 다 똑같이 가져오는 친구
+        for(let diary of result){
+            console.log("야 이거 나오냐?" + diary.content)
+            // content -> Json변환 -> quill형식 변환
+            contentHtml.push(quill.setContents(JSON.parse(diary.content)));
+            //변환된 Quill Content contentText에 삽입
+            contentText.push(quill.getText(diary.content));
+
+        }
+        console.log("=========변환===================================")
+        console.log(contentHtml)
+        console.log(contentText)
+        console.log("============================================")
+        data.diaryCntHtml = contentHtml;
+        data.diaryCntText = contentText;
+        console.log(data.diaryCntHtml, data.diaryCntText)
     })
     .catch(error => console.log('error', error));
 }
@@ -71,8 +101,10 @@ function pfgetComment(colId, depth, refId){  //처음 부를때 -> colId만 || �
 
 // 페이지 마운트전 동작할 함수
 onBeforeMount (()=> {
-    
-    pfgetListInCollection(memberId,collectionId.value);
+    console.log("======================넘어온 아이디")
+    console.log(props.userId);
+    console.log("======================")
+    pfgetListInCollection(props.userId,collectionId.value);
     pfgetComment(collectionId.value);
     const router = useRouter();
     console.log("마운트 전에 이거 부르긴 하냐?")
@@ -86,14 +118,23 @@ function menuClickHandler(menuIdx){
 }
 
 // 해당 컬렉션의 댓글 대댓글 모두 불러오기
+
+
+let quill;
+// 퀼 정보 모으자
+onMounted(() => {
+    quill = new Quill('#editor', {
+        readOnly: true
+    });
+})
 </script>
 
 <template>
     <div class="detail-container">
         <header class="header">
             <div class="pdl-5 h2 font-bold">
-                <router-link to="/member/room/follow/s/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
-                <router-link class="mgl-2" to="/member/room/follow/s/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
+                <router-link to="/member/room/follow/s/col/detail/s/diary"><div class="ib" @click="menuClickHandler(1)" :class="{active : menuControl==1}">일기</div></router-link>
+                <router-link class="mgl-2" to="/member/room/follow/s/col/detail/s/comment"><div class="ib" @click="menuClickHandler(2)" :class="{active : menuControl==2}">댓글</div></router-link>
             </div>
             <div class="icon-back"></div>
         </header>
@@ -103,6 +144,8 @@ function menuClickHandler(menuIdx){
         @callComments ="pfgetComment">
         </router-view>
     </div>
+
+    <div id="editor" style="width:0 ; height: 0;"></div>
 </template>
 <style scoped>
 
