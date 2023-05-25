@@ -129,7 +129,7 @@ onUpdated(() => {
     // console.log(props.loadDiaryContent);
     // if(BeforeJson == null){
         
-    console.log(BeforeJson);
+    // console.log(BeforeJson);
 //db 에 있는 데이터 quill 에 뿌려주기
     BeforeJson = props.loadDiaryContent;
 
@@ -152,8 +152,25 @@ onUpdated(() => {
 
 //원본 row한 스트링을 받음
 function editTriger(Json1){
-    ToJson = JSON.parse(Json1);
-    quill.setContents(ToJson);
+
+    // let a = Json1.charAt(1);
+    // console.log(a);
+
+    // console.log(typeof(Json1));
+
+    console.log(Json1);
+
+    // if(typeof(Json1) == 'string'){
+        // quill.setText(Json1);
+    // }
+    // else{
+
+        if(Json1 == undefined)
+            return;
+
+        ToJson = JSON.parse(Json1);
+        quill.setContents(ToJson);
+    // }
 }
 
 // function editTriger2(Json1){
@@ -179,7 +196,7 @@ function editortrigger (delta, oldDelta, source) {
 <style scoped>
 
 #editor{
-    height: 300px;
+    height: 380px;
 }
 
 

@@ -26,8 +26,19 @@ const props = defineProps({
 let defaultDiaryId = props.newestDiaryId;
 
 
+// 일기관련 CRUD 완료했을 때 리스트 reload하는 리스트들
 const emit = defineEmits(
     ["DoneAddDiary"]);
+let ChangeDone = false;
+
+function ChangeDoneHandler(){
+
+  ChangeDone = !(ChangeDone);
+  console.log("올라가냐?올라가냐?올라가냐?올라가냐?");
+
+  emit("DoneAddDiary", ChangeDone);
+};
+
 
 const defineRef = ref({
   'loading' : '',
@@ -75,6 +86,38 @@ function newestPromise(diaryId){
   })
 };
 
+//추가버튼 눌렀는지에 대해서
+const addWatchEffect = watchEffect(() => {
+
+  props.isAdd
+  // if()
+    ControllerAdd = props.isAdd
+
+    //최초때이면 실행 안함
+    if(!newest)
+      return;
+    // if( ControllerAdd == true && weatherDone == false
+    // && isOn == false){
+      console.log("들어옴?");
+    let promise = geoFindMe();
+    // isOn = true;
+
+    defineRef.value.loading = true; //로딩창 소환
+    defineRef.value.isInit = true; //배경화면 끄기
+
+    promise
+    .then(response => weather(response[0],response[1]))
+    .then(result => { addDiary(result)})
+    .then(success => {
+      defineRef.value.loading = false;
+      defineRef.value.isInit = false;
+      // console.log(defineRef.value.loading , defineRef.value.isInit);
+      console.log(success)
+    });
+  // }
+
+});
+
 //insert 다중반복 막기 위해서
 let isOn = false;
 onUpdated(() => {
@@ -88,10 +131,13 @@ onUpdated(() => {
   else{ // load id 가 null 이면
     defaultDiaryId = props.newestDiaryId;
     initHander(defaultDiaryId);
-  }
-  console.log(defaultDiaryId);
+  };
+  // console.log(defaultDiaryId);
 
-
+  // if(undefined === defaultDiaryId){
+  //   addWatchEffect();
+  //   newest = sucess;
+  // }
 
   //최초 데이터 받을 때
   if(!newest){
@@ -106,45 +152,14 @@ onUpdated(() => {
       newest = sucess;
     });
     // newest = true;
-  }
+  };
 
-  ControllerAdd = props.isAdd
-  // console.log(ControllerAdd);
-    //update 이중 방지용
-  // console.log(defineRef.value.loading , defineRef.value.isInit);
-  if( ControllerAdd == true && weatherDone == false
-    && isOn == false){
-    let promise = geoFindMe();
-    isOn = true;
-
-    defineRef.value.loading = true; //로딩창 소환
-    defineRef.value.isInit = true; //배경화면 끄기
-
-    promise
-    .then(response => weather(response[0],response[1]))
-    .then(result => {
-
-      // console.log(defineRef.value.loading , defineRef.value.isInit);
-      addDiary(result)
-    })
-    .then(success => {
-      defineRef.value.loading = false;
-      defineRef.value.isInit = false;
-      // console.log(defineRef.value.loading , defineRef.value.isInit);
-      console.log(success)
-    });
-  }
-  // console.log("load: "+defineRef.value.loading ,"init: "+ defineRef.value.isInit);
-
-  // console.log(previousLoad, props.loadDiaryId);
-
-  //클릭했을 때 불러오는 조건
   if(previousLoad != defaultDiaryId){
     loadDiary(defaultDiaryId);
     previousLoad = defaultDiaryId;
   }
 
-})
+});
 
 function getDate(gotdate){
 
@@ -188,25 +203,25 @@ function getDate(gotdate){
  //현재 위치 받아오기 API
 let loadLocate = [2];
 // 지도 설정한 좌표값 얻어오기
-function coor(coor) {
+  function coor(coor) {
 
-  console.log("coor:", coor);
+    console.log("coor:", coor);
 
-  // console.log( coor.lat );
-  // console.log( coor.lng );
+    // console.log( coor.lat );
+    // console.log( coor.lng );
 
-  let latLng = coor;
-  console.log(latLng);
-  // console.log(latLng.lat);
-  // console.log( );
+    let latLng = coor;
+    console.log(latLng);
+    // console.log(latLng.lat);
+    // console.log( );
 
 
-  loadLocate[0] = coor.lat;
-  loadLocate[1] = coor.lng;
-  console.log(loadLocate);
-  // EditDiary(defaultDiaryId);
+    loadLocate[0] = coor.lat;
+    loadLocate[1] = coor.lng;
+    console.log(loadLocate);
+    // EditDiary(defaultDiaryId);
 
-};
+  };
 
 
 
@@ -327,7 +342,7 @@ diaryRef.value = diaryObj;
 //값 기본 입력해주기
 function objRef
 (Did, Mid, DTitle ,DContent,
- DWeather,DFeeling,DHonesy, DTag,
+ DWeather,DFeeling,Dhonesty, DTag,
  DDate , DLat, Dlng){
 
   diaryRef.value.id = Did;
@@ -337,7 +352,7 @@ function objRef
 
   diaryRef.value.weather = weatherData.value.weatherDes;
   diaryRef.value.feeling = DFeeling;
-  diaryRef.value.honesy = DHonesy;
+  diaryRef.value.honesty = Dhonesty;
   diaryRef.value.tag = DTag;
 
   diaryRef.value.regDate = DDate;
@@ -358,14 +373,15 @@ const addDiary = function(isAdd){
 
     //ref 기본값 담기
     objRef(null,memberID,null,null
-    ,null,"기분",100,"태그"
+    ,null,"기분","진심도","태그"
     ,null,myLocation.lat,myLocation.lng);
 
     console.log(diaryRef.value.honesy);
     diaryObj = diaryRef.value;
     // diaryObj.regDate = null;
+
     console.log(diaryObj.honesy);
-    // console.log(diaryObj);
+
     let raw = JSON.stringify(diaryObj);
 
     let requestOptions = {
@@ -374,11 +390,12 @@ const addDiary = function(isAdd){
       body: raw,
       redirect: 'follow'
     };
-
+    ControllerAdd = false;
     fetch("http://localhost:8080/diary", requestOptions)
       .then(response => response.text())
       .then(result => {
-        emit("DoneAddDiary", true);
+        // emit("DoneAddDiary", true);
+        ChangeDoneHandler();
         diaryRef.value.regDate = getDate(new Date);
         // console.log(diaryObj.regDate);
         // console.log(diaryRef.value.regDate);
@@ -405,9 +422,9 @@ const loadDiary = function load(diaryId){
       mapToggle.value = false;
 
       // memberID = result.member_id;
-      console.log(memberID);
+      // console.log(memberID);
       // isShare(memberID,result.diaryId);
-      console.log(result);
+      // console.log(result);
 
       diaryRef.value = result;
       staticRegDate = result.regDate;
@@ -420,6 +437,21 @@ const loadDiary = function load(diaryId){
 
       diaryRef.value.regDate = getDate(new Date(result.regDate));
 
+      let promise = isShare(memberID, diaryId);
+      promise
+      .then(result => {
+        // console.log(result);
+
+        // if(result == true){
+        //   isSharedref.value = true;
+        // }
+        // else{
+        //   isSharedref.value = false;
+        // }
+        // console.log(isSharedref.value);
+
+      });
+      
 
       resolve(true);
     })
@@ -451,6 +483,8 @@ const EditDiary = function(diaryId){
     
     let raw = JSON.stringify(diaryObj);
 
+    console.log(raw);
+
     let requestOptions = {
       method: 'PUT',
       headers: myHeaders,
@@ -462,7 +496,8 @@ const EditDiary = function(diaryId){
       .then(response => response.text())
       .then(result => {
         loadDiary(diaryId);
-        emit("DoneAddDiary", true);
+        ChangeDoneHandler();
+        // emit("DoneAddDiary", true);
         console.log("업데이트 완료"+diaryObj);
         })
       .catch(error => console.log('error', error));
@@ -484,7 +519,8 @@ const DelDiary = function(diaryId){
       .then(response => response.text())
       .then(result => {
         loadDiary(props.newestDiaryId);
-        emit("DoneAddDiary", true);
+        ChangeDoneHandler();
+        // emit("DoneAddDiary", true);
       })
       .catch(error => console.log('error', error));
 
@@ -534,37 +570,60 @@ function addShare(memberId, diaryId){
 fetch("http://localhost:8080/display/share", requestOptions)
   .then(response => response.text())
   .then(result => 
-  { console.log(result);
-    console.log("성공");
+  { 
+    ChangeDoneHandler();
+    // console.log(result);
+    // console.log("성공");
   })
   .catch(error => console.log('error', error));
   }
 )};
 
-  function isShare(memberId, diaryId){
+function isShare(memberId, diaryId){
     return new Promise(function(resolve,reject){
 
-    // let myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "application/json");
+//       var myHeaders = new Headers();
+// myHeaders.append("Content-Type", "application/json");
 
-    // shareJson.memberId = memberId;
-    // shareJson.diaryId = diaryId;
+// var raw = JSON.stringify({
+//   "memberId": 1,
+//   "diaryId": 199
+// });
 
-    // let raw = JSON.stringify(shareJson);
+var requestOptions = {
+  method: 'GET',
+  // headers: myHeaders,
+  // body: raw,
+  redirect: 'follow'
+};
 
-    let requestOptions = {
-      method: 'GET',
-      // headers: myHeaders,
-      // body: raw,
-      redirect: 'follow'
-    };
+let a = parseInt(diaryId);
+// console.log(a);
 
-  fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-  }
-)};
+// console.log(memberId, a);
+fetch(`http://localhost:8080/display/shareScan?mId=${memberId}&dId=${diaryId}`, requestOptions)
+  .then(response => response.text())
+  .then(result => {
+    // console.log(result);
+    // console.log( typeof(result));
+
+    // console.log(result == 'true');
+
+    if(result === 'true'){
+      isSharedref.value = true;
+      ChangeDoneHandler();
+      // emit("DoneAddDiary", true);
+    }
+    else{
+      isSharedref.value = false;
+    }
+    // console.log(isSharedref.value);
+
+    resolve(result);
+  })
+  .catch(error => console.log('error', error));
+  
+})};
 
 // let previousValueFeeling = diaryRef.value.feeling;
 // let previousValueTag = diaryRef.value.tag;
@@ -737,13 +796,6 @@ let quillOutputValue = function(convertDeltaJson) {
           <!-- {{titleDate+'의 일기'}} -->
           {{ diaryRef.title }}
         </header>
-        <div
-            v-if="isSharedref"
-            class="editor-share">공유 중</div>
-        <div
-            v-if="!isSharedref"
-            class="editor-share .active">공유 여부</div>
-
         <input 
         type="checkbox" id="toggle" class="toggle2" hidden>
         <label 
@@ -754,6 +806,13 @@ let quillOutputValue = function(convertDeltaJson) {
           
           <span class="toggleButton"></span>
         </label>
+        <div
+            v-if="isSharedref"
+            class="editor-share">공유 중</div>
+        <div
+            v-if="!isSharedref"
+            class="editor-share .active">공유 여부</div>
+
 
     </div>
 
@@ -1006,6 +1065,7 @@ let quillOutputValue = function(convertDeltaJson) {
       color: #FCFCFC;
       font-size : 12px;
       text-align: center; */
+      margin-left: 20px;
 
       justify-self: center;
       align-self: center;

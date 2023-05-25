@@ -11,15 +11,11 @@ const props  = defineProps({
     isDuplicated: null,
     successAddMenu: null
 })
-function menuClickHandler(e){
-    console.log(e.target);
-}
-const router = useRouter()
-function colClickHandler(collectionId){
-    router.push({
-         name: 'detail', 
-         params: { "collectionId": collectionId } 
-    })
+
+let router = useRouter()
+function pfcolClickHandler(collectionId){
+    console.log("hihi")
+    router.push({path:`/member/room/follow/s/detail/${collectionId}`})
 }
 </script>
 
@@ -27,7 +23,7 @@ function colClickHandler(collectionId){
 <template>
     <div class="collection-container undrag" >
         <!-- <router-link to="./detail/comment" class="mgl-5" v-for="colList in collection.List"  > -->
-            <div class="box mgl-5" v-bind:data-id="colList.id"  v-for="colList in collection.List" @click.stop="colClickHandler(colList.id)">
+            <div class="box mgl-5 cursor-pt" v-bind:data-id="colList.id"  v-for="colList in collection.List" @click.stop="pfcolClickHandler(colList.id)">
                 <div class="header">
                     <!-- <div class="icon-tack">\
                     </div> -->
@@ -46,7 +42,7 @@ function colClickHandler(collectionId){
     align-items: center;
     overflow-x: scroll; 
     width:100%;
-    height: 100%;
+    height: 576px;
 
 }
 

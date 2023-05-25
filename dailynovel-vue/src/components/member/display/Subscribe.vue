@@ -12,7 +12,7 @@
                 <span class="go-to-page"></span>
                 <span>구경가기</span> 
             </router-link>
-                    <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
+                <!-- 해당 member_id에 맞는 컬렉션으로 접속되도록 바꿔야 한다. -->
         </div>
     </section>
 </template>
@@ -43,24 +43,21 @@ function load() {
     writerId.value = props['writerId'];
     image.value = props['image'];
 
-    // console.log(memberId.value);
-    // console.log(writerId.value);
-
     SubscriptionStatus();
 }
 
 async function SubscriptionStatus() {
-    const response = await fetch(`http://localhost:8080/display/subscribeScan?mId=${memberId.value}&fId=${writerId.value}`);
+    const response = await fetch(`http://localhost:8080/display/subscribeScan?mId=${memberId.value}&fId=${writerId.value}`);  //구독 했는지 안 했는지 확인
     isSubscribed.value = await response.text()
 }
 
 async function subscribeHandler(writerId) {
     console.log("구독했습니다.")
-    // console.log("구독 " + (likeStatus? "delete" : "insert"));
-    if (memberId == writerId)
-        alert("5252, 본인은 구독할 수 없다구~")
+    if (memberId.value === writerId){
+        alert("자신의 일기 입니다.")
+    }
     else {
-        console.log(memberId)
+        console.log(memberId.value)
         console.log(writerId)
 
         try {

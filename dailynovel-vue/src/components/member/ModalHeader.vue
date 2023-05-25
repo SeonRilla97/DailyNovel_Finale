@@ -10,7 +10,7 @@ function modalCloseHandler() {
 <template>
     <header class="modal-header">
         <router-link to="/member/room" class="exit"><button @click="$emit('modalCloseEventHandler')"
-                class="close-btn"></button></router-link>
+                class="close-btn cursor-pt"></button></router-link>
         <!-- <div class="title ">모아 보기</div> -->
     </header>
 </template>

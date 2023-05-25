@@ -27,16 +27,9 @@
                         <div class="detail-width nodouble-drag">
                             <div>
                                 <div id="editor">
-                                
                                 </div>
                             </div>
-                            <!-- {{content}} -->
-                            
-                            
                             <br>
-                            
-                            
-
                         </div>
                         <div class="center-grid padding-bottom sticky">
                             <div class="btn-box">
@@ -65,11 +58,9 @@ import { reactive, ref, onMounted, defineProps, defineEmits, onBeforeMount, onUp
 import { useUserDetailsStore } from '../../store/useUserDetailsStore.js'
 import Quill from 'quill';
 
-
 const emit = defineEmits([
     'updatePage'
 ]);
-
 
 const props = defineProps({
     detailPage: {
@@ -97,7 +88,6 @@ let likeStatus = ref('');
 let memberId = userDetails.id; // 멤버 아이디 받아오는 걱 수정해야 함
 
 let SubscriptionStatus = ref();
-
 
 onBeforeMount(async () => {
     await load();
@@ -144,8 +134,6 @@ function editTriger(Json1){
     let ToJson = JSON.parse(Json1);
     quill.setContents(ToJson);
 }
-
-
 
 async function likeSwitchHandler(diaryId) {
     console.log("좋아요 " + (likeStatus ? "delete" : "insert"));
