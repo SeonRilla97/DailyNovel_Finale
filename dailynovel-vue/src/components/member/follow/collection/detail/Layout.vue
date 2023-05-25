@@ -45,12 +45,7 @@ function pfgetListInCollection(memberId,colId) {
     .then(response => response.json())
     .then(result => {
         data.diarys= result;
-        console.log("일기===========================")
-        console.log(data.diarys)
-        console.log(result)
-        console.log(colId);
-        console.log(memberId);
-        console.log("===========================")
+
         let contentText = [];  //text만 뽑는거
         let contentHtml = [];  //html 형식까지 다 똑같이 가져오는 친구
         for(let diary of result){
@@ -59,15 +54,12 @@ function pfgetListInCollection(memberId,colId) {
             contentHtml.push(quill.setContents(JSON.parse(diary.content)));
             //변환된 Quill Content contentText에 삽입
             contentText.push(quill.getText(diary.content));
-
         }
-        console.log("=========변환===================================")
-        console.log(contentHtml)
-        console.log(contentText)
-        console.log("============================================")
+        
         data.diaryCntHtml = contentHtml;
         data.diaryCntText = contentText;
         console.log(data.diaryCntHtml, data.diaryCntText)
+        
     })
     .catch(error => console.log('error', error));
 }
@@ -145,7 +137,8 @@ onMounted(() => {
         </router-view>
     </div>
 
-    <div id="editor" style="width:0 ; height: 0;"></div>
+    <div id="editor" style="width:0 ; height: 0; display:none; position: absolute;"></div>
+    
 </template>
 <style scoped>
 
