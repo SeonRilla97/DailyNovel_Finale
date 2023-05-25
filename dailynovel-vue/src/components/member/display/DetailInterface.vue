@@ -1,6 +1,4 @@
 <template lang="">
-    <!-- <detail :detailPage="model[id]" :likeInfo="likeStatus" :segnal="load(memberId)"></detail> -->
-    <!-- <detail :detailPage="model[id]" :likeInfo="likeStatus" :pageStatus="pageRefresh" @updatePage="updatePage"></detail> -->
     <detail :detailPage="model[id]" :likeInfo="likeStatus" @updatePage="updatePage"></detail>
      
 </template>
@@ -35,9 +33,7 @@ async function load() {
     id.value = route.params.id;
     
     likeStatus = myFavorites.some(item => item.diaryId === model[id.value].id)
-    // console.log(likeStatus)  
 }
-
 
 onMounted(()=>{
     load()
