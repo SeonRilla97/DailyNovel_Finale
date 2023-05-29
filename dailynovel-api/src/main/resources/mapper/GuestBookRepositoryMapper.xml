@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbGuestBookRepository">
+  <resultMap id="GuestBookAllMap" type="MbGuestBookAll">
+    <result property="memberId" column="member_id" />
+    <result property="writerId" column="writer_id" />
+    <result property="writerName" column="writer_nickname" />
+    <result property="regDate" column="reg_date" />
+  </resultMap>
+
+  <select id="findAllbyId" resultMap="GuestBookAllMap">
+    select *
+    from guestbook_all
+    where member_id = #{id};
+  </select>
+
+  <select id="getGuestbookAllbyGBId" resultMap="GuestBookAllMap">
+    select * 
+    from guestbook_all
+    where id = #{id};
+  </select>
+
+  <insert id="insertGuestbook" parameterType="MbGuestBook">
+    insert into guestbook 
+    (member_id, 
+    writer_id, 
+    content) 
+    values 
+    (#{memberId},
+    #{writerId},
+    #{content});
+  </insert>
+  
+  <insert id="insertGuestbookComment" parameterType="MbGuestBookComment">
+    insert into guestbook_comment 
+    (guestbook_id,
+    member_id,     
+    content) 
+    values 
+    (#{guestbookId},
+    #{memberId},
+    #{content});
+  </insert>
+  
+  <update id="updateGuestbookComment" parameterType="MbGuestBookComment">
+    update guestbook_comment
+    set
+    content = #{content}
+    where 
+    guestbook_id = #{guestbookId};
+  </update>
+  
+  <delete id="deleteGuestbookComment">
+    delete 
+    from guestbook_comment
+    where
+    guestbook_id = #{guestbookId};
+
+  </delete>
+</mapper>

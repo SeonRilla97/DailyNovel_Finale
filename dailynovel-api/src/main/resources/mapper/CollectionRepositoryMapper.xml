@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dailynovel.dailynovelapi.mbrepository.MbCollectionRepository">
+
+	<resultMap id="CollectionResultMap" type="MbCollection">
+      <result property="memberId" column="member_id" />
+      <result property="createDate" column="create_date" />
+	</resultMap>
+
+
+	<insert id="insert" parameterType="MbCollection">
+ 		INSERT INTO collection(member_id, name)
+ 		VALUES      (#{memberId}, #{name})
+ 	</insert>
+
+
+  <select id="findByName" resultMap="CollectionResultMap" parameterType="MbCollection">
+		select * 
+        from collection
+        where member_id = #{memberId}
+        and name = #{name}
+	</select>
+
+  <select id="findAllByMemberId" resultMap="CollectionResultMap">
+  select * 
+      from collection
+      where member_id = #{memberId}
+  </select>
+
+
+  <update id="update" parameterType="MbCollection">
+    UPDATE collection
+    SET name = #{name}
+    WHERE id = #{id}
+  </update>
+  
+  <delete id="delete">
+    DELETE FROM collection
+    WHERE id=#{collectionId}
+  </delete>
+</mapper>
